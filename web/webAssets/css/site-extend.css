@@ -1,0 +1,50 @@
+.footer-logo {
+    height: 24px;
+    margin-right: 24px;
+}
+
+.help-block{
+    color:#f96868;
+    text-align: left;
+}
+
+.datepicker table tr td.disabled, .datepicker table tr td.disabled:hover {
+    background: none;
+    color: #777777;
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.datepicker table tr td.old, .datepicker table tr td.new {
+    color: #a3afb7;
+    opacity: 0.3;
+}
+
+.footer-logo {
+    height: 24px;
+    margin-right: 24px;
+}
+
+.site-footer .site-footer-legal a {
+    color: rgb(251, 245, 243);
+    line-height: 2.5em;
+    display: inline-block;
+    height: 100%;
+    margin: 0px 8px;
+}
+
+.site-footer {
+    background-color: rgb(61, 141, 208);
+    color: rgb(251, 245, 243);
+    font-size: 0.7em;
+}
+
+.grid-view .dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
