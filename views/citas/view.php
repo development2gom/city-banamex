@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use app\models\Calendario;
 use app\models\EntCitas;
+use yii\bootstrap\Modal;
+use yii\bootstrap\ActiveForm;
 
 
 /* @var $this yii\web\View */
@@ -114,3 +116,48 @@ $this->registerJsFile(
             ]) ?>
     </div>
 </div>
+
+
+<?php 
+$model->scenario = 'cancelar';
+Modal::begin([
+    'header'=>'<h4>Motivo de rechazo</h4>',
+    'id'=>'cita-rechazo-modal',
+    
+    //'size'=>'modal-lg',
+]);
+
+    $form = ActiveForm::begin([
+        'id'=>'cita-rechazo-form',
+        'action'=>'rechazar?token='.$model->txt_token
+        ]);
+
+    echo $form->field($model, 'txt_motivo_cancelacion_rechazo')->textArea(['required'=>'required'])->label("Motivo de rechazo");
+
+    echo Html::submitButton('Rechazar cita', ['class' => 'btn btn-warning']);
+
+ActiveForm::end();
+Modal::end();
+?>
+
+
+<?php 
+Modal::begin([
+    'header'=>'<h4>Motivo de cancelación</h4>',
+    'id'=>'cita-cancelacion-modal',
+    
+    //'size'=>'modal-lg',
+]);
+
+    $form = ActiveForm::begin([
+        'id'=>'cita-rechazo-form',
+        'action'=>'cancelar?token='.$model->txt_token
+        ]);
+
+    echo $form->field($model, 'txt_motivo_cancelacion_rechazo')->textArea(['required'=>'required'])->label("Motivo de cancelación");
+
+    echo Html::submitButton('Cancelar cita', ['class' => 'btn btn-warning']);
+
+ActiveForm::end();
+Modal::end();
+?>

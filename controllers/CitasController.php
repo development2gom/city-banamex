@@ -213,10 +213,39 @@ class CitasController extends Controller
     public function actionAprobarCitaSupervisor($token=null){
         $model = EntCitas::find()->where(['txt_token'=>$token])->one();
         
-        EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita aprobada por supervisor");
+        
         if($model->id_status==Constantes::STATUS_CREADA){
             $model->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR;
             if($model->save()){
+                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita aprobada por supervisor");
+                $this->redirect(["index"]);
+            } 
+        }else{
+            $this->redirect(['view', 'token'=>$token]);
+        }
+    }
+
+    public function actionCancelar($token=null){
+        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
+
+        if($model->id_status==Constantes::STATUS_CREADA){
+            $model->id_status = Constantes::STATUS_CANCELADA;
+            if($model->save()){
+                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita cancelada");
+                $this->redirect(["index"]);
+            } 
+        }else{
+            $this->redirect(['view', 'token'=>$token]);
+        }
+    }
+
+    public function actionRechazar($token=null){
+        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
+
+        if($model->id_status==Constantes::STATUS_CREADA){
+            $model->id_status = Constantes::STATUS_RECHAZADA;
+            if($model->save()){
+                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita rechazada");
                 $this->redirect(["index"]);
             } 
         }else{

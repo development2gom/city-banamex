@@ -17,5 +17,17 @@ $(document).ready(function(){
           function() {
             window.location.href =url;
           });
+    });
+
+    $(".js-rechazar").on("click", function(e){
+        e.preventDefault();
+        $("#cita-rechazo-modal").modal('show');
+
+    });
+
+    $(".js-cancelar").on("click", function(e){
+        e.preventDefault();
+        $("#cita-cancelacion-modal").modal('show');
+
     })
 });
