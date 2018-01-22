@@ -69,13 +69,21 @@ class EntCitasSearch extends EntCitas
         }
 
         $usuario = Yii::$app->user->identity;
-        if( $usuario->txt_auth_item=="call-center"){
+        if( $usuario->txt_auth_item==Constantes::USUARIO_CALL_CENTER){
             $this->id_usuario = $usuario->id_usuario;
+            $query->andFilterWhere(['id_usuario' => $this->id_usuario]);
         }
 
-        if($usuario->txt_auth_item=="supervisor-call-center"){
+        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR){
+            $misUsuarios = $usuario->idUsuarios;
+            $usuarioAsignado = [];
+            foreach($misUsuarios as $miUsuario){
+                $usuarioAsignado[] = $miUsuario->id_usuario_asignado;
+            }
+            //$query->andFilterWhere(['in','id_usuario', $usuarioAsignado]);
 
         }
+       
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -90,7 +98,7 @@ class EntCitasSearch extends EntCitas
             'id_equipo' => $this->id_equipo,
             'id_area' => $this->id_area,
             'id_tipo_entrega' => $this->id_tipo_entrega,
-            'id_usuario' => $this->id_usuario,
+            
             'id_status' => $this->id_status,
         ]);
 

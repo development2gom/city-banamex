@@ -17,6 +17,7 @@ use app\modules\ModUsuarios\models\Utils;
 use app\modules\ModUsuarios\models\EntUsuarios;
 use app\models\Constantes;
 use app\models\EntHistorialCambiosCitas;
+use yii\data\ActiveDataProvider;
 
 /**
  * CitasController implements the CRUD actions for EntCitas model.
@@ -62,10 +63,49 @@ class CitasController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($token)
     {
+
+        $areaDefault = CatAreas::findOne(1); 
+        $idArea = $areaDefault->id_area;
+        $numServicios = $areaDefault->txt_dias_servicio;
+        $tipoEntrega = 1;
+
+        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
+
+        $tiposTramites = CatTiposTramites::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
+        $tiposClientes = CatTiposClientes::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
+        $tiposIdentificaciones = CatTiposIdentificaciones::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
+        $areas = CatAreas::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
+        
+        if ($model->load(Yii::$app->request->post())) {
+            $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
+            $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
+
+            if($model->save()){
+                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita editada");
+                return $this->redirect(['index']);
+            }    
+
+        } 
+        
+        $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
+        $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);
+
+        $historialCambios = $model->getEntHistorialCambiosCitas();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $historialCambios
+        ]);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'tiposTramites'=>$tiposTramites,
+            'tiposClientes'=>$tiposClientes,
+            'tiposIdentificaciones'=>$tiposIdentificaciones,
+            'areas'=>$areas,
+            'areaDefault'=>$areaDefault,
+            'historial'=>$dataProvider
         ]);
     }
 
@@ -89,11 +129,11 @@ class CitasController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
-            date_default_timezone_set('America/Mexico_City');
+            
             $model->fch_creacion = Utils::getFechaActual();
 
-            if($model->save()){
-                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita creada por");
+            if($model->validarEdicionCita() && $model->save()){
+                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita creada");
                 return $this->redirect(['index']);
             }    
 
@@ -106,8 +146,7 @@ class CitasController extends Controller
         $tiposIdentificaciones = CatTiposIdentificaciones::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
         $areas = CatAreas::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
        
-    
-        date_default_timezone_set('America/Mexico_City');
+
         $model->fch_cita = EntCitas::getFechaEntrega(Utils::getFechaActual());
         $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
 
@@ -169,4 +208,19 @@ class CitasController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionAprobarCitaSupervisor($token=null){
+        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
+        
+        EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita aprobada por supervisor");
+        if($model->id_status==Constantes::STATUS_CREADA){
+            $model->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR;
+            if($model->save()){
+                $this->redirect(["index"]);
+            } 
+        }else{
+            $this->redirect(['view', 'token'=>$token]);
+        }
+    }
+    
 }

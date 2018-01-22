@@ -22,4 +22,7 @@ class Constantes{
     const COLOR_STATUS_RECHAZADA = "danger";
     const COLOR_STATUS_CANCELADA = "danger";
     const COLOR_STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL = " bg-green-800";
+
+    // Tiempo que se puede editar una cita
+    const TIEMPO_EDICION = 2;
 }

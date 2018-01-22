@@ -33,7 +33,7 @@ $equipo = $model->idEquipo;
         <div class="panel-body pt-20">
             <div class="row">
                 <div class="col-md-3">
-                    <?= $form->field($model, 'txt_telefono')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
+                    <?= $form->field($model, 'txt_telefono')->textInput(['maxlength' => true, 'class'=>'form-control input-number' ]) ?>
                 </div>
                 <div class="col-md-3">
                     <?= $form->field($model, 'txt_nombre')->textInput(['maxlength' => true]) ?>
@@ -344,7 +344,7 @@ $equipo = $model->idEquipo;
     </div>
 
     <div class="form-group">
-        <?= Html::submitButton("<span class='ladda-label'>".($model->isNewRecord ? 'Generar cita' : 'Actualizar cita')."</span>", ['class' => ($model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')." float-right ladda-button", "data-style"=>"zoom-in"]) ?>
+        <?= $model->getBotonGuardar() ?>
     </div>
 
     <?php ActiveForm::end(); ?>

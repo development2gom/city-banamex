@@ -14,6 +14,7 @@ use Yii;
  * @property string $txt_hora_final
  * @property string $num_disponibles
  *
+ * @property EntCitas[] $entCitas
  * @property CatAreas $idArea
  */
 class EntHorariosAreas extends \yii\db\ActiveRecord
@@ -52,6 +53,14 @@ class EntHorariosAreas extends \yii\db\ActiveRecord
             'txt_hora_final' => 'Txt Hora Final',
             'num_disponibles' => 'Num Disponibles',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEntCitas()
+    {
+        return $this->hasMany(EntCitas::className(), ['id_horario' => 'id_horario_area']);
     }
 
     /**

@@ -52,7 +52,7 @@ class EntHistorialCambiosCitas extends \yii\db\ActiveRecord
             'id_cambio_cita' => 'Id Cambio Cita',
             'id_usuario' => 'Id Usuario',
             'id_cita' => 'Id Cita',
-            'txt_modificacion' => 'Txt Modificacion',
+            'txt_modificacion' => 'Modificación',
             'fch_modificacion' => 'Fch Modificacion',
         ];
     }

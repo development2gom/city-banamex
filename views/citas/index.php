@@ -42,7 +42,7 @@ $this->registerJsFile(
 <div class="row">
     
     <?php
-    if(!\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){?>
+    if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){?>
     <div class="col-md-3">
         <div class="list-group bg-blue-grey-100">
             <?php
@@ -72,7 +72,7 @@ $this->registerJsFile(
     ?>
 
     
-    <div class="col-md-<?=\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)?"12":"9"?>">
+    <div class="col-md-<?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)?"9":"12"?>">
         <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true" role="tablist">
             <div class="panel">
                 <div class="panel-heading" id="exampleHeadingDefaultOne" role="tab">

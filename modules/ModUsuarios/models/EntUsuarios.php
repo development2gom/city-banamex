@@ -586,5 +586,21 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 
 	public static function label(){
         return (new EntUsuarios)->attributeLabels();
+	}
+	
+	/**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdUsuarioAsignados()
+    {
+        return $this->hasMany(EntUsuarios::className(), ['id_usuario' => 'id_usuario_asignado'])->viaTable('ent_grupos_trabajo', ['id_usuario' => 'id_usuario']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdUsuarios()
+    {
+        return $this->hasMany(EntUsuarios::className(), ['id_usuario' => 'id_usuario'])->viaTable('ent_grupos_trabajo', ['id_usuario_asignado' => 'id_usuario']);
     }
 }

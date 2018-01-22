@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use app\modules\ModUsuarios\models\EntUsuarios;
 use app\modules\ModUsuarios\models\Utils;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "ent_citas".
@@ -60,6 +61,9 @@ use app\modules\ModUsuarios\models\Utils;
  */
 class EntCitas extends \yii\db\ActiveRecord
 {
+    public $btnAprobarSupervisor = "<a href='#'  class='btn btn-success js-aprobar'>Aprobar</a>";
+    public $btnRechazar = "<a href='#'  class='btn btn-warning js-rechazar'>Rechazar</a>";
+    public $btnCancelar = "<a href='#'  class='btn btn-danger js-cancelar'>Cancelar</a>";
     // Constructor
     
 
@@ -138,7 +142,7 @@ class EntCitas extends \yii\db\ActiveRecord
             [['txt_token'], 'unique'],
             [['id_area'], 'exist', 'skipOnError' => true, 'targetClass' => CatAreas::className(), 'targetAttribute' => ['id_area' => 'id_area']],
             [['id_equipo'], 'exist', 'skipOnError' => true, 'targetClass' => CatEquipos::className(), 'targetAttribute' => ['id_equipo' => 'id_equipo']],
-            //[['id_horario'], 'exist', 'skipOnError' => true, 'targetClass' => CatHorarios::className(), 'targetAttribute' => ['id_horario' => 'id_horario']],
+            [['id_horario'], 'exist', 'skipOnError' => true, 'targetClass' => EntHorariosAreas::className(), 'targetAttribute' => ['id_horario' => 'id_horario_area']],
             [['id_status'], 'exist', 'skipOnError' => true, 'targetClass' => CatStatusCitas::className(), 'targetAttribute' => ['id_status' => 'id_statu_cita']],
             [['id_tipo_cliente'], 'exist', 'skipOnError' => true, 'targetClass' => CatTiposClientes::className(), 'targetAttribute' => ['id_tipo_cliente' => 'id_tipo_cliente']],
             [['id_tipo_entrega'], 'exist', 'skipOnError' => true, 'targetClass' => CatTiposEntrega::className(), 'targetAttribute' => ['id_tipo_entrega' => 'id_tipo_entrega']],
@@ -281,7 +285,7 @@ class EntCitas extends \yii\db\ActiveRecord
     */
    public function getEntHistorialCambiosCitas()
    {
-       return $this->hasMany(EntHistorialCambiosCitas::className(), ['id_cita' => 'id_cita']);
+       return $this->hasMany(EntHistorialCambiosCitas::className(), ['id_cita' => 'id_cita'])->orderBy('fch_modificacion DESC');
    }
 
     public static function validarDiaEntrega($fecha)
@@ -336,4 +340,48 @@ class EntCitas extends \yii\db\ActiveRecord
 
         return $statusColor;
     }
+
+    public function getBotonesSupervisor(){
+
+        if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) && Constantes::STATUS_CREADA==$this->id_status){
+            $botones = $this->btnAprobarSupervisor.$this->btnCancelar.$this->btnRechazar;
+            $contenedor = "<div class='pt-15 example-buttons text-right'>".$botones."</div>";
+           return $contenedor;
+        }
+
+        return "";
+    }
+
+    public function getBotonGuardar(){
+        if($this->validarEdicionCita()){
+            return Html::submitButton("<span class='ladda-label'>".($this->isNewRecord ? 'Generar cita' : 'Actualizar cita')."</span>", ['class' => ($this->isNewRecord ? 'btn btn-success' : 'btn btn-primary ')."  float-right ladda-button", "data-style"=>"zoom-in"]);
+        }
+        
+        return "";
+    }
+
+    public function validarEdicionCita(){
+        if((Utils::getHorasEdicion($this->fch_creacion) < Constantes::TIEMPO_EDICION ) && $this->validarEdicionCitaStatus()){
+            return true;
+        }
+        return false;
+       
+    }
+
+    public function validarEdicionCitaStatus(){
+
+        // si el usuario es call-center y la cita sigue en crear podra editar la cita
+        if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER) && Constantes::STATUS_CREADA==$this->id_status){
+                return true;
+        }
+
+        if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) 
+            && (Constantes::STATUS_CREADA==$this->id_status)){
+                return true;
+        }
+
+        return false;
+    }
+
+    
 }
