@@ -209,6 +209,7 @@ class CitasController extends Controller
         }
     }
 
+    
     public function actionAprobarCitaSupervisor($token=null){
         $model = EntCitas::find()->where(['txt_token'=>$token])->one();
         
