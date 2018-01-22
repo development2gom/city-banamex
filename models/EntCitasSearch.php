@@ -73,6 +73,10 @@ class EntCitasSearch extends EntCitas
             $this->id_usuario = $usuario->id_usuario;
         }
 
+        if($usuario->txt_auth_item=="supervisor-call-center"){
+
+        }
+
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');

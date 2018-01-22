@@ -11,7 +11,7 @@ use app\models\Constantes;
         <ul class="site-menu" data-plugin="menu">
           <li class="site-menu-category">General</li>
           <li class="dropdown site-menu-item">
-            <a data-toggle="dropdown" href="/clientes/oscar/flow/web" data-dropdown-toggle="false">
+            <a data-toggle="dropdown" href="<?=Url::base()?>" data-dropdown-toggle="false">
               <i class="site-menu-icon pe-7s-edit" aria-hidden="true"></i>
               <span class="site-menu-title">Dashboard</span>
             </a>

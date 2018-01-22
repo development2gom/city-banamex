@@ -67,6 +67,9 @@ $equipo = $model->idEquipo;
                 <div class="col-md-3">
                     <?= $form->field($model, 'txt_email')->textInput(['maxlength' => true]) ?>
                 </div>
+                <div class="col-md-3">
+                    <?= $form->field($model, 'txt_tpv')->textInput(['maxlength' => true]) ?>
+                </div>
             </div>
 
             <div class="row">

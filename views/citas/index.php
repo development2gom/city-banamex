@@ -8,6 +8,7 @@ use kartik\grid\GridView;
 use app\models\Calendario;
 use kartik\export\ExportMenu;
 use app\models\EntCitas;
+use app\models\Constantes;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\ModUsuarios\models\EntUsuariosSearch */
@@ -39,6 +40,9 @@ $this->registerJsFile(
 
 
 <div class="row">
+    
+    <?php
+    if(!\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){?>
     <div class="col-md-3">
         <div class="list-group bg-blue-grey-100">
             <?php
@@ -62,8 +66,13 @@ $this->registerJsFile(
             </a>
            
         </div>
-    </div>
-    <div class="col-md-9">
+    </div>    
+    <?php
+    }
+    ?>
+
+    
+    <div class="col-md-<?=\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)?"12":"9"?>">
         <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true" role="tablist">
             <div class="panel">
                 <div class="panel-heading" id="exampleHeadingDefaultOne" role="tab">
@@ -163,7 +172,7 @@ $this->registerJsFile(
             
                             return Html::a(
                                 $data->idStatus->txt_nombre,
-                                Url::to(['citas/ver-cita', 'token' => $data->txt_token]), 
+                                Url::to(['citas/view', 'token' => $data->txt_token]), 
                                 [
                                     'class'=>'btn badge badge-'.$statusColor.'',
                                 ]

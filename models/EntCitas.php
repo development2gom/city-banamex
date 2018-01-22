@@ -138,7 +138,7 @@ class EntCitas extends \yii\db\ActiveRecord
             [['txt_token'], 'unique'],
             [['id_area'], 'exist', 'skipOnError' => true, 'targetClass' => CatAreas::className(), 'targetAttribute' => ['id_area' => 'id_area']],
             [['id_equipo'], 'exist', 'skipOnError' => true, 'targetClass' => CatEquipos::className(), 'targetAttribute' => ['id_equipo' => 'id_equipo']],
-            [['id_horario'], 'exist', 'skipOnError' => true, 'targetClass' => CatHorarios::className(), 'targetAttribute' => ['id_horario' => 'id_horario']],
+            //[['id_horario'], 'exist', 'skipOnError' => true, 'targetClass' => CatHorarios::className(), 'targetAttribute' => ['id_horario' => 'id_horario']],
             [['id_status'], 'exist', 'skipOnError' => true, 'targetClass' => CatStatusCitas::className(), 'targetAttribute' => ['id_status' => 'id_statu_cita']],
             [['id_tipo_cliente'], 'exist', 'skipOnError' => true, 'targetClass' => CatTiposClientes::className(), 'targetAttribute' => ['id_tipo_cliente' => 'id_tipo_cliente']],
             [['id_tipo_entrega'], 'exist', 'skipOnError' => true, 'targetClass' => CatTiposEntrega::className(), 'targetAttribute' => ['id_tipo_entrega' => 'id_tipo_entrega']],
@@ -192,6 +192,7 @@ class EntCitas extends \yii\db\ActiveRecord
             'txt_motivo_cancelacion_rechazo' => 'Motivo cancelación o rechazo',
             'fch_cita' => 'Fecha de la cita',
             'fch_creacion' => 'Fecha creación',
+            'txt_tpv'=>'TPV',
         ];
     }
 
