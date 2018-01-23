@@ -217,7 +217,37 @@ class CitasController extends Controller
         if($model->id_status==Constantes::STATUS_CREADA){
             $model->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR;
             if($model->save()){
-                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita aprobada por supervisor");
+                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita aprobada");
+                $this->redirect(["index"]);
+            } 
+        }else{
+            $this->redirect(['view', 'token'=>$token]);
+        }
+    }
+
+    public function actionAprobarCitaSupervisorAt($token=null){
+        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
+        
+        
+        if($model->id_status==Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL){
+            $model->id_status = Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL;
+            if($model->save()){
+                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita aprobada administrador telcel");
+                $this->redirect(["index"]);
+            } 
+        }else{
+            $this->redirect(['view', 'token'=>$token]);
+        }
+    }
+
+    public function actionAprobarCitaSupervisorT($token=null){
+        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
+        
+        
+        if($model->id_status==Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR){
+            $model->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL;
+            if($model->save()){
+                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita aprobada supervisor telcel");
                 $this->redirect(["index"]);
             } 
         }else{

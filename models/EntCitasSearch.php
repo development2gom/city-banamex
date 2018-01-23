@@ -81,7 +81,15 @@ class EntCitasSearch extends EntCitas
                 $usuarioAsignado[] = $miUsuario->id_usuario_asignado;
             }
             //$query->andFilterWhere(['in','id_usuario', $usuarioAsignado]);
+        }
 
+        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL){
+            
+            $query->andFilterWhere(['in', 'id_status', [Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR, Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL ]]);
+        }else  if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL){
+            $query->andFilterWhere(['in', 'id_status', [Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL, Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL]]);
+        }else{
+            $query->andFilterWhere(['id_status' => $this->id_status]);
         }
        
 
@@ -98,8 +106,7 @@ class EntCitasSearch extends EntCitas
             'id_equipo' => $this->id_equipo,
             'id_area' => $this->id_area,
             'id_tipo_entrega' => $this->id_tipo_entrega,
-            
-            'id_status' => $this->id_status,
+        
         ]);
 
         $query->andFilterWhere(['like', 'num_dias_servicio', $this->num_dias_servicio])
