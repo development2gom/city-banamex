@@ -346,19 +346,19 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public function getBotonesSupervisor(){
         $usuario = EntUsuarios::getUsuarioLogueado();
-        if($usuario->txt_auth_item = Constantes::USUARIO_SUPERVISOR && Constantes::STATUS_CREADA==$this->id_status){
+        if($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR && Constantes::STATUS_CREADA==$this->id_status){
             $botones = $this->btnAprobarSupervisor.$this->btnCancelar.$this->btnRechazar;
             $contenedor = "<div class='pt-15 example-buttons text-right'>".$botones."</div>";
            return $contenedor;
         }
 
-        if($usuario->txt_auth_item = Constantes::USUARIO_SUPERVISOR_TELCEL && Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR==$this->id_status){
+        if($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR_TELCEL && Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR==$this->id_status){
             $botones = $this->btnAprobarSupervisorTelcel.$this->btnCancelar.$this->btnRechazar;
             $contenedor = "<div class='pt-15 example-buttons text-right'>".$botones."</div>";
            return $contenedor;
         }
 
-        if($usuario->txt_auth_item = Constantes::USUARIO_ADMINISTRADOR_TELCEL && Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL==$this->id_status){
+        if($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL && Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL==$this->id_status){
             $botones = $this->btnAprobarAdministradorTelcel.$this->btnCancelar.$this->btnRechazar;
             $contenedor = "<div class='pt-15 example-buttons text-right'>".$botones."</div>";
            return $contenedor;
@@ -386,11 +386,11 @@ class EntCitas extends \yii\db\ActiveRecord
     public function validarEdicionCitaStatus(){
         $usuario = EntUsuarios::getUsuarioLogueado();
         // si el usuario es call-center y la cita sigue en crear podra editar la cita
-        if($usuario->txt_auth_item = Constantes::USUARIO_CALL_CENTER && Constantes::STATUS_CREADA==$this->id_status){
+        if($usuario->txt_auth_item == Constantes::USUARIO_CALL_CENTER && Constantes::STATUS_CREADA==$this->id_status){
                 return true;
         }
 
-        if($usuario->txt_auth_item = Constantes::USUARIO_SUPERVISOR 
+        if($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR 
             && (Constantes::STATUS_CREADA==$this->id_status)){
                 return true;
         }
