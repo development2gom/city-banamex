@@ -60,7 +60,20 @@ class CitasController extends Controller
     public function actionIndex()
     {
 
-        $statusCitas = CatStatusCitas::find()->where(['b_habilitado'=>1])->all();
+        if ((\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)) ){
+            $statusCitas = CatStatusCitas::find()->where(['in', 'id_statu_cita', [
+                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR, 
+                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
+                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL, 
+                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
+                Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
+                Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL 
+
+            ]])->all();
+        }else{
+            $statusCitas = CatStatusCitas::find()->where(['b_habilitado'=>1])->all();
+        }
+        
 
         $searchModel = new EntCitasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -102,6 +115,7 @@ class CitasController extends Controller
                 $model->statusAprobacionDependiendoUsuario();
                 if($model->save()){
                     $model->guardarHistorialDependiendoUsuario();
+                    $model->generarNumeroEnvio();
                     return $this->redirect(['index']);
                 } 
             }
@@ -165,7 +179,7 @@ class CitasController extends Controller
             $model->getConsecutivo();
             $model->statusAprobacionDependiendoUsuario();
             if($model->save()){
-                $model->guardarHistorialDependiendoUsuario();
+                $model->guardarHistorialDependiendoUsuario(true);
                 
                 return $this->redirect(['index']);
             }   
@@ -242,78 +256,17 @@ class CitasController extends Controller
         }
     }
 
-    
-    public function actionAprobarCitaSupervisor($token=null){
-        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
-        
-        
-        if($model->id_status==Constantes::STATUS_CREADA){
-            $model->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR;
-            if($model->save()){
-                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita aprobada");
-                $this->redirect(["index"]);
-            } 
-        }else{
-            $this->redirect(['view', 'token'=>$token]);
-        }
-    }
-
-    public function actionAprobarCitaSupervisorAt($token=null){
-        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
-        
-        
-        if($model->id_status==Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL){
-            $model->id_status = Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL;
-            if($model->save()){
-                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita aprobada administrador telcel");
-                $this->redirect(["index"]);
-            } 
-        }else{
-            $this->redirect(['view', 'token'=>$token]);
-        }
-    }
-
-    public function actionAprobarCitaSupervisorT($token=null){
-        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
-        
-        
-        if($model->id_status==Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR){
-            $model->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL;
-            if($model->save()){
-                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita aprobada supervisor telcel");
-                $this->redirect(["index"]);
-            } 
-        }else{
-            $this->redirect(['view', 'token'=>$token]);
-        }
-    }
 
     public function actionCancelar($token=null){
         $model = EntCitas::find()->where(['txt_token'=>$token])->one();
 
-        if($model->id_status==Constantes::STATUS_CREADA){
-            $model->id_status = Constantes::STATUS_CANCELADA;
-            if($model->save()){
-                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita cancelada");
-                $this->redirect(["index"]);
-            } 
-        }else{
-            $this->redirect(['view', 'token'=>$token]);
-        }
-    }
-
-    public function actionRechazar($token=null){
-        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
-
-        if($model->id_status==Constantes::STATUS_CREADA){
-            $model->id_status = Constantes::STATUS_RECHAZADA;
-            if($model->save()){
-                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita rechazada");
-                $this->redirect(["index"]);
-            } 
-        }else{
-            $this->redirect(['view', 'token'=>$token]);
-        }
+        
+        $model->statusCancelarDependiendoUsuario();
+        if($model->save()){
+            $model->guardarHistorialDependiendoUsuario(false, true);
+            $this->redirect(["index"]);
+        } 
+       
     }
     
 }

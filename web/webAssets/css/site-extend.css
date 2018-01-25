@@ -54,4 +54,13 @@
     background-color: #b80e29;
 }
 
+.select2-container--krajee .select2-dropdown {
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    border-color: #66afe9;
+    overflow-x: hidden;
+    margin-top: -1px;
+    z-index: 9999;
+}
+
 

@@ -44,7 +44,7 @@ $this->registerJsFile(
 <div class="row">
     
     <?php
-    if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){?>
+    if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)){?>
     <div class="col-md-3">
         <div class="list-group bg-blue-grey-100">
             <?php

@@ -33,7 +33,7 @@ class UsuariosController extends Controller
                     [
                         'actions' => ['index', 'create', 'update', 'view'],
                     'allow' => true,
-                        'roles' => [Constantes::USUARIO_SUPERVISOR],
+                        'roles' => [Constantes::USUARIO_SUPERVISOR, Constantes::USUARIO_SUPERVISOR_TELCEL],
                     ],
                     
                   

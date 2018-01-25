@@ -86,8 +86,41 @@ class EntCitas extends \yii\db\ActiveRecord
             $this->id_status = Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC;
         }
 
+        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL){
+            $this->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL;
+        }
+
+        if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL){
+            $this->id_status = Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL;
+        }
+
     }
-    public function guardarHistorialDependiendoUsuario(){
+
+    public function statusCancelarDependiendoUsuario(){
+        $usuario = EntUsuarios::getUsuarioLogueado();
+        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR){
+            $this->id_status = Constantes::STATUS_CANCELADA_SUPERVISOR_CC;
+        }
+
+        if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC){
+            $this->id_status = Constantes::STATUS_CANCELADA_ADMINISTRADOR_CC;
+        }
+
+        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL){
+            $this->id_status = Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL;
+        }
+
+        if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL){
+            $this->id_status = Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL;
+        }
+
+    }
+
+    public function generarNumeroEnvio(){
+        // Generar # de envio
+    }
+
+    public function guardarHistorialDependiendoUsuario($new=false ,$cancel=false){
         $usuario = EntUsuarios::getUsuarioLogueado();
 
         if($usuario->txt_auth_item==Constantes::USUARIO_CALL_CENTER){
@@ -95,19 +128,48 @@ class EntCitas extends \yii\db\ActiveRecord
         }   
 
         if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR){
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita creada y autorizada por supervisor cc");    
+            if($new){
+                $message = "Cita creada y autorizada por supervisor cc";
+            }else{
+                $message = "Cita autorizada por supervisor cc";
+            }
+
+            if($cancel){
+                $message = "Cita cancelada por supervisor cc";
+            }   
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);    
         }
         
         if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC){
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita creada y autorizada por administrador cc");    
+
+            if($new){
+                $message = "Cita creada y autorizada por administrador cc";
+            }else{
+                $message = "Cita autorizada por administrador cc";
+            }
+
+            if($cancel){
+                $message = "Cita cancelada por administrador cc";
+            }
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);    
         }
 
         if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL){
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita autorizada por supervisor telcel");
+
+            $message = "Cita autorizada por supervisor telcel";
+            if($cancel){
+                $message = "Cita cancelada por supervisor telcel";
+            }
+
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
         }
 
         if($usuario->txt_auth_item== Constantes::USUARIO_ADMINISTRADOR_TELCEL){
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita autorizada administrador telcel");
+            $message = "Cita autorizada administrador telcel";
+            if($cancel){
+                $message = "Cita cancelada por administrador telcel";
+            }
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
         }
         
     }
@@ -280,7 +342,8 @@ class EntCitas extends \yii\db\ActiveRecord
             'b_documentos'=>'Solo documentos',
             'b_promocionales'=>'Con promocionales',
             'b_sim'=>'Con sim',
-            'txt_identificador_cliente'=>'Consecutivo'
+            'txt_identificador_cliente'=>'Consecutivo',
+            'id_tipo_cancelacion'=>""
         ];
     }
 
@@ -399,25 +462,35 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public static function getColorStatus($idStatus)
     {
+        
         switch ($idStatus) {
-            case '1':
+            case Constantes::STATUS_CREADA:
                 $statusColor = Constantes::COLOR_STATUS_CREADA;
                 break;
-            case '2':
+            case Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR :
                 $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR;
                 break;
-            case '3':
+            case Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC :
+                $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR;
+            break;    
+            case Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL :
                 $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL;
                 break;
-            case '4':
-                $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR;
-                break;
-            case '5':
-                $statusColor = Constantes::COLOR_STATUS_CANCELADA;
-                break;
-            case '7':
+            case Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL :
                 $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL;
-                break;
+            break;
+            case Constantes::STATUS_CANCELADA_SUPERVISOR_CC:
+                $statusColor = Constantes::COLOR_STATUS_CANCELADA;
+            break;
+            case Constantes::STATUS_CANCELADA_ADMINISTRADOR_CC:
+                $statusColor = Constantes::COLOR_STATUS_CANCELADA;
+            break;
+            case Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL:
+                $statusColor = Constantes::COLOR_STATUS_CANCELADA;
+            break;
+            case Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL:
+                $statusColor = Constantes::COLOR_STATUS_CANCELADA;
+            break;
 
             default:
                 # code...
@@ -436,17 +509,13 @@ class EntCitas extends \yii\db\ActiveRecord
             return $contenedor;
         }
 
-        if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR_TELCEL && Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR == $this->id_status) {
-            $botones = $this->btnAprobarSupervisorTelcel . $this->btnCancelar . $this->btnRechazar;
+        if ((\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)) 
+        && (Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR == $this->id_status || Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC== $this->id_status)) {
+            $botones = $this->btnAprobarSupervisor . $this->btnCancelar;
             $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
             return $contenedor;
         }
 
-        if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL && Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL == $this->id_status) {
-            $botones = $this->btnAprobarAdministradorTelcel . $this->btnCancelar . $this->btnRechazar;
-            $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
-            return $contenedor;
-        }
 
         return "";
     }
