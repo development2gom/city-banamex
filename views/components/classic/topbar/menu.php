@@ -16,8 +16,7 @@ use app\models\Constantes;
               <span class="site-menu-title">Dashboard</span>
             </a>
           </li>
-          <?php
-          if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){?>
+          
           
           <li class="dropdown site-menu-item has-sub">
             <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
@@ -37,6 +36,8 @@ use app\models\Constantes;
                             Listado de citas</span>
                         </a>
                       </li>
+                      <?php
+                      if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){?>
                       <li class="site-menu-item">
                         <a class="animsition-link" href="<?=Url::base()?>/citas/create">
                           <span class="site-menu-title">
@@ -45,18 +46,18 @@ use app\models\Constantes;
                           </span>
                         </a>
                       </li>
+                      <?php
+                      }
+                      ?>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
           </li>
-          <?php
-          }
-          ?>
-          <?php
-          if(\Yii::$app->user->can(Constantes::USURIO_ADMIN)){?>
           
+          <?php
+          if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL) || \Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_CC)){?>
           <li class="dropdown site-menu-item has-sub">
             <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
               <i class="site-menu-icon pe-users" aria-hidden="true"></i>
@@ -70,12 +71,19 @@ use app\models\Constantes;
                     <ul class="site-menu-sub site-menu-normal-list">
                       <li class="site-menu-item">
                         <a class="animsition-link" href="<?=Url::base()?>/usuarios">
-                          <span class="site-menu-title">Listado de usuarios</span>
+                          <span class="site-menu-title">
+                          <i class="site-menu-icon pe-7s-users" aria-hidden="true"></i>
+                             Usuarios
+                            </span>
                         </a>
                       </li>
+                     
                       <li class="site-menu-item">
-                        <a class="animsition-link" href="<?=Url::base()?>/admin/resultados-por-empleados">
-                          <span class="site-menu-title">Agregar usuario</span>
+                        <a class="animsition-link" href="<?=Url::base()?>/usuarios/importar-data">
+                          <span class="site-menu-title">
+                          <i class="site-menu-icon pe-7s-cloud-upload" aria-hidden="true"></i>
+                              Importar usuarios
+                          </span>
                         </a>
                       </li>
                     </ul>
@@ -84,11 +92,9 @@ use app\models\Constantes;
               </div>
             </div>
           </li>
-          <?php
+         <?php
           }
-          ?>
-
-          
+         ?>
         </ul>
       </div>
     </div>

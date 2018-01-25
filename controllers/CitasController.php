@@ -18,6 +18,7 @@ use app\modules\ModUsuarios\models\EntUsuarios;
 use app\models\Constantes;
 use app\models\EntHistorialCambiosCitas;
 use yii\data\ActiveDataProvider;
+use app\components\AccessControlExtend;
 
 /**
  * CitasController implements the CRUD actions for EntCitas model.
@@ -30,6 +31,19 @@ class CitasController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControlExtend::className(),
+                'only' => ['create'],
+                'rules' => [
+                    [
+                        'actions' => ['create'],
+                    'allow' => true,
+                        'roles' => [Constantes::USUARIO_CALL_CENTER],
+                    ],
+                    
+                  
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -72,6 +86,7 @@ class CitasController extends Controller
         $tipoEntrega = 1;
 
         $model = EntCitas::find()->where(['txt_token'=>$token])->one();
+        $model->scenario = "autorizar";
 
         $tiposTramites = CatTiposTramites::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
         $tiposClientes = CatTiposClientes::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
@@ -79,13 +94,17 @@ class CitasController extends Controller
         $areas = CatAreas::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
         
         if ($model->load(Yii::$app->request->post())) {
+            
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
 
-            if($model->save()){
-                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita editada");
-                return $this->redirect(['index']);
-            }    
+            if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL) ){
+                $model->statusAprobacionDependiendoUsuario();
+                if($model->save()){
+                    $model->guardarHistorialDependiendoUsuario();
+                    return $this->redirect(['index']);
+                } 
+            }
 
         } 
         
@@ -109,6 +128,8 @@ class CitasController extends Controller
         ]);
     }
 
+    
+
     /**
      * Creates a new EntCitas model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -122,20 +143,32 @@ class CitasController extends Controller
         $numServicios = $areaDefault->txt_dias_servicio;
         $tipoEntrega = 1;
         
-        $status = Constantes::STATUS_CREADA;
+        $usuario = EntUsuarios::getUsuarioLogueado();
+        
         $model = new EntCitas();
-        $model->iniciarModelo($status, $idArea, $numServicios, $tipoEntrega);
+
+        if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
+            $model = new EntCitas(['scenario'=>'autorizar']);
+        }
+        $model->iniciarModelo($idArea, $numServicios, $tipoEntrega);
 
         if ($model->load(Yii::$app->request->post())) {
+
+            if($model->id_equipo==Constantes::SIN_EQUIPO){
+                $model->b_documentos = 1;
+            }
+
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
             
             $model->fch_creacion = Utils::getFechaActual();
-
-            if($model->validarEdicionCita() && $model->save()){
-                EntHistorialCambiosCitas::guardarHistorial($model->id_cita, "Cita creada");
+            $model->getConsecutivo();
+            $model->statusAprobacionDependiendoUsuario();
+            if($model->save()){
+                $model->guardarHistorialDependiendoUsuario();
+                
                 return $this->redirect(['index']);
-            }    
+            }   
 
             $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
             $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);

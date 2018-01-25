@@ -10,6 +10,7 @@ use app\modules\ModUsuarios\models\Utils;
 use kartik\password\StrengthValidator;
 use yii\web\UploadedFile;
 use app\models\AuthItem;
+use app\models\Constantes;
 
 /**
  * This is the model class for table "ent_usuarios".
@@ -55,6 +56,15 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	 */
 	public function rules() {
 		return [ 
+				[
+					['id_usuario_asignado'], 'required',
+					'when' => function ($model) {
+						return $model->txt_auth_item==Constantes::USUARIO_CALL_CENTER;
+					}, 'whenClient' => "function (attribute, value) {
+						
+						return $('#entusuarios-txt_auth_item').val()=='".Constantes::USUARIO_CALL_CENTER."';
+					}"
+				],
 				[ 
 						'password',
 						'compare',
@@ -203,7 +213,8 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				'txt_email' => 'Correo electrónico',
 				'fch_creacion' => 'Fecha creación',
 				'fch_actualizacion' => 'Fch Actualizacion',
-				'id_status' => 'Id Status' 
+				'id_status' => 'Id Status',
+				'id_usuario_asignado' =>'Supervisor a asignar'
 		];
 	}
 	
@@ -413,6 +424,8 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	 */
 	public function signup($isFacebook=false) {
 		
+		
+
 		if (! $this->validate ()) {
 			return null;
 		}
@@ -427,6 +440,9 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 		$user->txt_apellido_paterno = $this->txt_apellido_paterno;
 		$user->txt_apellido_materno = $this->txt_apellido_materno;
 		$user->txt_email = $this->txt_email;
+		$user->txt_auth_item = $this->txt_auth_item;
+		$user->id_usuario_asignado = $this->id_usuario_asignado;
+		
 		if($user->image){
 			$user->txt_imagen = $user->txt_token.".".$user->image->extension;
 			if(!$user->upload()){
@@ -443,8 +459,18 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 		} else {
 			$user->id_status = self::STATUS_ACTIVED;
 		}
+
+		if($user->save()){
+			$usuario =$user;
+         	$auth = \Yii::$app->authManager;
+         	$authorRole = $auth->getRole($this->txt_auth_item);
+			$auth->assign($authorRole, $usuario->getId());
+			return $user;
+		}else{
+			return null;
+		}
 		
-		return $user->save () ? $user : null;
+		
 	}
 
 
@@ -591,9 +617,9 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	/**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdUsuarioAsignados()
+    public function getIdUsuarioAsignado()
     {
-        return $this->hasMany(EntUsuarios::className(), ['id_usuario' => 'id_usuario_asignado'])->viaTable('ent_grupos_trabajo', ['id_usuario' => 'id_usuario']);
+        return $this->hasOne(EntUsuarios::className(), ['id_usuario' => 'id_usuario_asignado']);
     }
 
     /**
@@ -601,6 +627,6 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getIdUsuarios()
     {
-        return $this->hasMany(EntUsuarios::className(), ['id_usuario' => 'id_usuario'])->viaTable('ent_grupos_trabajo', ['id_usuario_asignado' => 'id_usuario']);
+        return $this->hasMany(EntUsuarios::className(), ['id_usuario_asignado' => 'id_usuario']);
     }
 }

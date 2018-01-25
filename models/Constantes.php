@@ -4,7 +4,7 @@ class Constantes{
     const STATUS_CREADA = 1;
     const STATUS_AUTORIZADA_POR_SUPERVISOR = 2;
     const STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL = 3;
-    const STATUS_RECHAZADA = 4;
+    const STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC = 4;
     const STATUS_CANCELADA = 5;
     const STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL = 7;
 
@@ -14,6 +14,7 @@ class Constantes{
     const USUARIO_SUPERVISOR = "supervisor-call-center";
     const USUARIO_SUPERVISOR_TELCEL = "supervisor-tel";
     const USUARIO_ADMINISTRADOR_TELCEL = "administrador-tel";
+    const USUARIO_ADMINISTRADOR_CC = "administrador-call-center";
 
     // Colores status
     const COLOR_STATUS_CREADA = "warning";
@@ -25,4 +26,14 @@ class Constantes{
 
     // Tiempo que se puede editar una cita
     const TIEMPO_EDICION = 2;
+
+    // Identificador del cliente
+    const IDENTIFICADOR_CLIENTE = "BSMH-";
+
+    // Sin equipo
+    const SIN_EQUIPO = 1;
+
+    // tipos de errors
+    const CALL_CENTER = "call-center";
+    const TELCEL = "telcel";
 }

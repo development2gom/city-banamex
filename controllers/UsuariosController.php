@@ -10,6 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\modules\ModUsuarios\models\Utils;
 use app\models\AuthItem;
+use app\models\Constantes;
+use app\components\AccessControlExtend;
+use yii\web\UploadedFile;
 
 /**
  * UsuariosController implements the CRUD actions for EntUsuarios model.
@@ -23,12 +26,19 @@ class UsuariosController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControlExtend::className(),
+                'only' => ['index', 'create', 'update', 'view'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'create', 'update', 'view'],
+                    'allow' => true,
+                        'roles' => [Constantes::USUARIO_SUPERVISOR],
+                    ],
+                    
+                  
                 ],
-            ],
+            ]
         ];
     }
 
@@ -38,12 +48,13 @@ class UsuariosController extends Controller
      */
     public function actionIndex()
     {
-        $usuario = EntUsuarios::getIdentity();
+        $usuario = EntUsuarios::getUsuarioLogueado();
 
         $auth = Yii::$app->authManager;
 
         $hijos = $auth->getChildRoles($usuario->txt_auth_item);
         ksort($hijos);
+       
         $roles = AuthItem::find()->where(['in', 'name', array_keys($hijos)])->orderBy("name")->all();
 
         $searchModel = new UsuariosSearch();
@@ -84,6 +95,8 @@ class UsuariosController extends Controller
         ksort($hijos);
         $roles = AuthItem::find()->where(['in', 'name', array_keys($hijos)])->orderBy("name")->all();
 
+        $supervisores = EntUsuarios::find()->where(['txt_auth_item'=>Constantes::USUARIO_SUPERVISOR])->orderBy("txt_username, txt_apellido_paterno")->all();
+
         $model = new EntUsuarios([
             'scenario' => 'registerInput'
         ]);
@@ -97,37 +110,15 @@ class UsuariosController extends Controller
 
             if ($user = $model->signup()) {
 
-                if (Yii::$app->params['modUsuarios']['mandarCorreoActivacion']) {
-
-                    $activacion = new EntUsuariosActivacion();
-                    $activacion->saveUsuarioActivacion($user->id_usuario);
-                
-                // Enviar correo de activación
-                    $utils = new Utils();
-                // Parametros para el email
-                    $parametrosEmail['url'] = Yii::$app->urlManager->createAbsoluteUrl([
-                        'activar-cuenta/' . $activacion->txt_token
-                    ]);
-                    $parametrosEmail['user'] = $user->getNombreCompleto();
-                
-                // Envio de correo electronico
-                    $utils->sendEmailActivacion($user->txt_email, $parametrosEmail);
-                    $this->redirect([
-                        'login'
-                    ]);
-                } else {
-
-                    if (Yii::$app->getUser()->login($user)) {
-                        return $this->goHome();
-                    }
-                }
+                return $this->redirect(['index']);
             }
         
         // return $this->redirect(['view', 'id' => $model->id_usuario]);
         }
         return $this->render('create', [
             'model' => $model,
-            'roles'=>$roles
+            'roles'=>$roles,
+            'supervisores'=>$supervisores
         ]);
     }
 
@@ -139,15 +130,41 @@ class UsuariosController extends Controller
      */
     public function actionUpdate($id)
     {
+        $usuario = EntUsuarios::getIdentity();
+
+        $auth = Yii::$app->authManager;
+
+        $hijos = $auth->getChildRoles($usuario->txt_auth_item);
+        ksort($hijos);
+        $roles = AuthItem::find()->where(['in', 'name', array_keys($hijos)])->orderBy("name")->all();
+
+        $supervisores = EntUsuarios::find()->where(['txt_auth_item'=>Constantes::USUARIO_SUPERVISOR])->orderBy("txt_username, txt_apellido_paterno")->all();
+
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_usuario]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
         }
+
+        if ($model->load(Yii::$app->request->post())){
+            if(isset($_POST["EntUsuarios"]['password'])){
+                $model->setPassword($_POST["EntUsuarios"]['password']);
+                $model->generateAuthKey();
+            }
+            if($model->save()){
+                
+                return $this->redirect(['index']);
+            }
+        }
+        
+        $model->scenario = 'updateModel';
+        return $this->render('update', [
+            'model' => $model,
+            'roles'=>$roles,
+            'supervisores'=>$supervisores
+        ]);
+        
     }
 
     /**
@@ -177,5 +194,27 @@ class UsuariosController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+   
+
+    public function actionImportarData(){
+
+        if (Yii::$app->request->isPost) {
+            $file = UploadedFile::getInstanceByName('file-import');
+
+            if ($file) {                
+               
+                try{
+                    $inputFileType = \PHPExcel_IOFactory::identify($file->tempName);
+                    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+                    $objPHPExcel = $objReader->load($file);
+                }catch(\Exception $e){
+
+                }
+            }
+        }
+
+        return $this->render("importar-data");
     }
 }

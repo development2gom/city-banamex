@@ -4,14 +4,13 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use app\models\Calendario;
 use app\models\EntCitas;
-use yii\bootstrap\Modal;
 use yii\bootstrap\ActiveForm;
-
-
+use app\models\Constantes;
+use yii\web\View;
 /* @var $this yii\web\View */
 /* @var $model app\models\EntCitas */
 
-$this->title = 'Ver cita '.'<span class="badge badge-'.EntCitas::getColorStatus($model->id_status   ).'">'.$model->idStatus->txt_nombre.'</span>';
+$this->title = 'Cita '.$model->txt_identificador_cliente.' <span class="badge badge-'.EntCitas::getColorStatus($model->id_status   ).'">'.$model->idStatus->txt_nombre.'</span>';
 $this->params['breadcrumbs'][] = [
     'label' => '<i class="icon wb-calendar"></i> Citas', 
     'url' => ['index'],
@@ -19,7 +18,7 @@ $this->params['breadcrumbs'][] = [
     'encode' => false
 ];
 $this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon wb-eye"></i> Ver cita',
+    'label' => '<i class="icon wb-eye"></i> Cita '.$model->txt_identificador_cliente,
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
     'encode' => false];
 
@@ -63,6 +62,8 @@ $this->registerJsFile(
             'areas'=>$areas,
             'areaDefault'=>$areaDefault
         ]) ?>
+
+        <?=$model->getBotonesSupervisor()?>
     </div>
 </div>
 
@@ -93,7 +94,7 @@ $this->registerJsFile(
                         'label' => 'Fecha de modificación',
                         'value'=>function($data){
             
-                            return Calendario::getDateComplete($data->fch_modificacion);
+                            return Calendario::getDateCompleteHour($data->fch_modificacion);
                         }
                     ],
                     
@@ -118,46 +119,72 @@ $this->registerJsFile(
 </div>
 
 
-<?php 
-$model->scenario = 'cancelar';
-Modal::begin([
-    'header'=>'<h4>Motivo de rechazo</h4>',
-    'id'=>'cita-rechazo-modal',
+<?php
+if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
+    $this->registerJs(
+    '
+    $(document).ready(function(){
+
+        $("#form-cita").on("afterValidate", function(e, messages, errorAttributes){
+            if(errorAttributes.length > 0){
+                swal({
+                    title: "Datos no válidos",
+                    text: "Hay datos no válidos en la cita",
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonClass: "btn-warning",
+                    confirmButtonText: "Revisar datos",
+                    cancelButtonText: "No, revisaré una vez más",
+                    closeOnConfirm: true,
+                    //closeOnCancel: false
+                });
+                return false;
+            }
+        });
+
+        $(".js-aprobar").on("click", function(e){
+            e.preventDefault();
+            swal({
+                title: "¿Estas seguro de aprobar esta cita?",
+                text: "Al autorizar se guardaran los campos modificados",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-warning",
+                confirmButtonText: "Sí, aprobar cita",
+                cancelButtonText: "No, revisaré una vez más",
+                closeOnConfirm: true,
+                //closeOnCancel: false
+            },
+            function() {
+                
+                $("#form-cita").submit();
+                return false;
+            });
+                        
+            
+            
+        });
+    });
     
-    //'size'=>'modal-lg',
-]);
+    ',
+    View::POS_END,
+    'aprobar-cita'
+    );
 
-    $form = ActiveForm::begin([
-        'id'=>'cita-rechazo-form',
-        'action'=>'rechazar?token='.$model->txt_token
-        ]);
-
-    echo $form->field($model, 'txt_motivo_cancelacion_rechazo')->textArea(['required'=>'required'])->label("Motivo de rechazo");
-
-    echo Html::submitButton('Rechazar cita', ['class' => 'btn btn-warning']);
-
-ActiveForm::end();
-Modal::end();
-?>
-
-
-<?php 
-Modal::begin([
-    'header'=>'<h4>Motivo de cancelación</h4>',
-    'id'=>'cita-cancelacion-modal',
+    $this->registerJs(
+        '
+        $(".js-cancelar").on("click", function(e){
+            e.preventDefault();
+            $("#cita-cancelacion-modal").modal("show");
     
-    //'size'=>'modal-lg',
-]);
+        })
+        ',
+        View::POS_END,
+        'cancelar-cita'
+        );
 
-    $form = ActiveForm::begin([
-        'id'=>'cita-rechazo-form',
-        'action'=>'cancelar?token='.$model->txt_token
-        ]);
+    
 
-    echo $form->field($model, 'txt_motivo_cancelacion_rechazo')->textArea(['required'=>'required'])->label("Motivo de cancelación");
-
-    echo Html::submitButton('Cancelar cita', ['class' => 'btn btn-warning']);
-
-ActiveForm::end();
-Modal::end();
+echo $this->render("_modal-cancelacion", ['model'=>$model]);
+}
 ?>

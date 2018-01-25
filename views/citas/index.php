@@ -16,7 +16,9 @@ use app\models\Constantes;
 
 $this->title = 'Citas';
 $this->params['classBody'] = "site-navbar-small site-menubar-hide";
-$this->params['headerActions'] = '<a class="btn btn-success ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
+if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){
+    $this->params['headerActions'] = '<a class="btn btn-success ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
+}
 $this->params['breadcrumbs'][] = [
     'label' => '<i class="icon wb-calendar"></i>Citas',
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
@@ -102,6 +104,7 @@ $this->registerJsFile(
     <?php
 
     $gridColumns =  [
+        'txt_identificador_cliente',
         [
             'attribute' => 'id_status',
             'format'=>'raw',
@@ -120,7 +123,7 @@ $this->registerJsFile(
             'format'=>'raw',
             'value'=>function($data){
 
-                return Calendario::getDateComplete($data->fch_creacion);
+                return Calendario::getDateCompleteHour($data->fch_creacion);
             }
         ],
         [
@@ -163,6 +166,7 @@ $this->registerJsFile(
         <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'columns' =>[
+                    'txt_identificador_cliente',
                     [
                         'attribute' => 'id_status',
                         'format'=>'raw',
@@ -189,7 +193,7 @@ $this->registerJsFile(
                         'format'=>'raw',
                         'value'=>function($data){
             
-                            return Calendario::getDateComplete($data->fch_creacion);
+                            return Calendario::getDateCompleteHour($data->fch_creacion);
                         }
                     ],
                     [

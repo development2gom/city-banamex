@@ -8,6 +8,8 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use kartik\depdrop\DepDrop;
+use app\models\Constantes;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\EntCitas */
@@ -18,6 +20,7 @@ $equipo = $model->idEquipo;
 
     <?php $form = ActiveForm::begin([
         'errorCssClass'=>"has-danger",
+        'id'=>'form-cita',
         'fieldConfig' => [
             "labelOptions" => [
                 "class" => "form-control-label"
@@ -135,6 +138,55 @@ $equipo = $model->idEquipo;
                     <?= $form->field($model, 'txt_numero_telefonico_nuevo')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
                 </div>
             </div>
+            <?php 
+             if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
+            ?>
+            <div class="row">
+                <div class="col-md-3">
+                    <?= $form->field($model, 'txt_imei')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="col-md-3">
+                    <?= $form->field($model, 'txt_iccid')->textInput(['maxlength' => true]) ?>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col-md-3">
+                    
+                    <?= $form->field($model, 'b_documentos', [
+                            'template'=>"{input}{label}{error}",
+                            'options' => [
+                                'class' => 'checkbox-custom checkbox-primary',
+                                
+                                ]
+                            ])->checkbox([], false) ?>
+                </div>
+                <div class="col-md-3">
+                    
+                    <?= $form->field($model, 'b_promocionales', [
+                            'template'=>"{input}{label}{error}",
+                            'options' => [
+                                'class' => 'checkbox-custom checkbox-primary',
+                                
+                                ]
+                            ])->checkbox([], false)  ?>
+                </div>
+                <div class="col-md-3">
+                    
+                    <?= $form->field($model, 'b_sim', [
+                            'template'=>"{input}{label}{error}",
+                            'options' => [
+                                'class' => 'checkbox-custom checkbox-primary',
+                                
+                                ]
+                            ])->checkbox([], false) ?>
+                </div>
+            </div>
+
+           
+            <?php
+                }
+            ?>
         </div>
     </div>
     
@@ -193,9 +245,6 @@ $equipo = $model->idEquipo;
                     <?= $form->field($model, 'txt_calle_numero')->textInput(['maxlength' => true]) ?>
                 </div>
                 
-                    
-
-               
             </div>
 
             <div class="row">
@@ -348,3 +397,32 @@ $equipo = $model->idEquipo;
     </div>
 
     <?php ActiveForm::end(); ?>
+
+
+    <?php
+$this->registerJs(
+  '
+  var claseOcultar = "hidden-xl-down";
+  checkStatus();
+function checkStatus(){
+    var val = $("#entcitas-id_equipo").val();
+    
+    if(val=="'.Constantes::SIN_EQUIPO.'"){
+        $("#entcitas-b_documentos").prop("checked", true);
+        $("#entcitas-b_documentos").attr("disabled", true);
+    }else{
+        $("#entcitas-b_documentos").prop("checked", false);
+        $("#entcitas-b_documentos").attr("disabled", false);
+    }
+}
+
+  
+  $("#entcitas-id_equipo").on("change", function(){
+    checkStatus();
+
+  });
+  ',
+  View::POS_END,
+  'tipo-usuario'
+);
+?>

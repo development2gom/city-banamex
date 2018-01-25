@@ -1,5 +1,7 @@
 <?php
 use app\models\Calendario;
+use yii\helpers\Html;
+use yii\helpers\Url;
 ?>
 <div class="media">
     <div class="pr-20">
@@ -10,7 +12,7 @@ use app\models\Calendario;
     </div>
     <div class="media-body">
         <h5 class="mt-0 mb-5">
-            <?=$model->nombreCompleto?>
+            <?= Html::a($model->nombreCompleto, ['usuarios/update/'.$model->id_usuario])?>
             <small><?=$model->txtAuthItem->description?></small>
         </h5>
         <p>
@@ -26,6 +28,6 @@ use app\models\Calendario;
         </div>
     </div>
     <div class="pl-20 align-self-center">
-        <button type="button" class="btn btn-outline btn-success btn-sm">Follow</button>
+        <a href="<?=Url::base()?>/usuarios/update/<?=$model->id_usuario?>" class="btn btn-success btn-sm">Editar</a>
     </div>
 </div>

@@ -34,7 +34,7 @@
 }
 
 .site-footer {
-    background-color: rgb(61, 141, 208);
+    background-color: #b80e29;
     color: rgb(251, 245, 243);
     font-size: 0.7em;
 }
@@ -48,3 +48,10 @@
     color: #333;
     white-space: nowrap;
 }
+
+.navbar-inverse {
+    border-color: rgba(0,0,0,.1);
+    background-color: #b80e29;
+}
+
+
