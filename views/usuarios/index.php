@@ -75,7 +75,7 @@ $this->registerJsFile(
               'tag'=>"li",
               'class'=>"list-group-item"
             ],
-            'layout'=>$sorter.'<ul class="list-group">{items}</ul>{pager}{summary}',
+            'layout'=>$sorter.'<ul class="list-group">{items}</ul>{pager}',
             'sorter'=>[
               'class'=>LinkSorterExtends::className(),
               'attributes'=>[
@@ -83,7 +83,8 @@ $this->registerJsFile(
                 'txt_apellido_paterno',
                 'txt_apellido_materno',
                 'txt_email',
-                'fch_creacion'
+                'fch_creacion',
+                
               ],
               'options'=>[
                 'class'=>"dropdown-menu animation-scale-up animation-top-right animation-duration-250",
@@ -99,7 +100,7 @@ $this->registerJsFile(
               'triggerText'=>'Cargar más datos',
               'noneLeftText'=>'No hay datos por cargar',
               'triggerOffset'=>999999999999999999999999999999999999999,
-              'negativeMargin'=>100,
+              'negativeMargin'=>5000,
               'enabledExtensions' => [
                   ScrollPager::EXTENSION_TRIGGER,
                   ScrollPager::EXTENSION_SPINNER,

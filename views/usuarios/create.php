@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\View;
+use app\models\Constantes;
 
 
 /* @var $this yii\web\View */
@@ -35,7 +37,28 @@ $this->params['breadcrumbs'][] = [
     <div class="panel-body">
         <?= $this->render('_form', [
             'model' => $model,
-            'roles'=>$roles
+            'roles'=>$roles,
+            'supervisores'=>$supervisores
         ]) ?>
     </div>
 </div>
+
+<?php
+$this->registerJs(
+  '
+  var claseOcultar = "hidden-xl-down";
+  $("#entusuarios-txt_auth_item").on("change", function(){
+    var val = $(this).val();
+    var contenedor = $(".asignar-supervisor-contenedor");
+    if(val=="'.Constantes::USUARIO_CALL_CENTER.'"){
+      contenedor.removeClass(claseOcultar);
+    }else{
+      contenedor.addClass(claseOcultar);
+    }
+
+  });
+  ',
+  View::POS_END,
+  'tipo-usuario'
+);
+?>

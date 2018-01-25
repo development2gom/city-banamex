@@ -6,6 +6,7 @@ use Yii;
 use app\modules\ModUsuarios\models\EntUsuarios;
 use app\modules\ModUsuarios\models\Utils;
 use yii\helpers\Html;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "ent_citas".
@@ -62,23 +63,71 @@ use yii\helpers\Html;
 class EntCitas extends \yii\db\ActiveRecord
 {
     public $btnAprobarSupervisor = "<a href='#'  class='btn btn-success js-aprobar'>Aprobar</a>";
-    public $btnRechazar = "<a href='#'  class='btn btn-warning js-rechazar'>Rechazar</a>";
     public $btnCancelar = "<a href='#'  class='btn btn-danger js-cancelar'>Cancelar</a>";
     public $btnAprobarSupervisorTelcel = "<a href='#'  class='btn btn-success js-aprobar-s-telcel'>Aprobar</a>";
     public $btnAprobarAdministradorTelcel = "<a href='#'  class='btn btn-success js-aprobar-a-telcel'>Aprobar</a>";
-    // Constructor
-    
 
-    public function iniciarModelo($status=null, $idArea=null, $numServicios=null, $tipoEntrega=null){
 
-        $this->id_status = $status;
+    public function getConsecutivo(){
+        $consecutivo = count(EntCitas::find()->where(new Expression('date_format(fch_creacion, "%Y-%m-%d")=date_format(NOW(), "%Y-%m-%d")'))->all());
+        $consecutivo++;
+        $identificador = Constantes::IDENTIFICADOR_CLIENTE.Calendario::getYearLastDigit().Calendario::getMonthNumber().Calendario::getDayNumber()."-".$consecutivo;
+        $this->txt_identificador_cliente = $identificador;
+        
+    }
+
+    public function statusAprobacionDependiendoUsuario(){
+        $usuario = EntUsuarios::getUsuarioLogueado();
+        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR){
+            $this->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR;
+        }
+
+        if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC){
+            $this->id_status = Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC;
+        }
+
+    }
+    public function guardarHistorialDependiendoUsuario(){
+        $usuario = EntUsuarios::getUsuarioLogueado();
+
+        if($usuario->txt_auth_item==Constantes::USUARIO_CALL_CENTER){
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita creada");    
+        }   
+
+        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR){
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita creada y autorizada por supervisor cc");    
+        }
+        
+        if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC){
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita creada y autorizada por administrador cc");    
+        }
+
+        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL){
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita autorizada por supervisor telcel");
+        }
+
+        if($usuario->txt_auth_item== Constantes::USUARIO_ADMINISTRADOR_TELCEL){
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita autorizada administrador telcel");
+        }
+        
+    }
+
+    public function iniciarModelo( $idArea = null, $numServicios = null, $tipoEntrega = null)
+    {
+        $usuario = EntUsuarios::getUsuarioLogueado();
+        if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
+            $this->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR;
+        }else{
+            $this->id_status = Constantes::STATUS_CREADA;
+        }
+        
         $this->id_area = $idArea;
         $this->num_dias_servicio = $numServicios;
         $this->id_tipo_entrega = $tipoEntrega;
-        $this->id_usuario = EntUsuarios::getUsuarioLogueado()->id_usuario;;
+        $this->id_usuario = $usuario->id_usuario;;
         $this->txt_token = Utils::generateToken("cit_");
 
-        if(YII_ENV_DEV){
+        if (YII_ENV_DEV) {
             $this->txt_telefono = "1234567890";
             $this->txt_nombre = "John";
             $this->txt_apellido_paterno = "Doe";
@@ -97,7 +146,7 @@ class EntCitas extends \yii\db\ActiveRecord
             $this->id_tipo_identificacion = 1;
             $this->txt_folio_identificacion = "12345678";
         }
-        
+
     }
 
 
@@ -115,21 +164,49 @@ class EntCitas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status', 'id_envio', 'id_tipo_cliente', 'id_tipo_identificacion', 'id_horario'], 'integer'],
-            [['id_usuario', 'id_status', 'txt_telefono', 'txt_email','txt_nombre', 'txt_apellido_paterno','txt_folio_identificacion',
-            'txt_email',
-            'fch_nacimiento',
-            'num_dias_servicio',
-            'txt_estado',
-            'txt_calle_numero',
-            'txt_colonia',
-            'txt_codigo_postal',
-            'txt_municipio',
-            'fch_cita',
-            'txt_numero_referencia',
-            'txt_token','id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status',  'id_tipo_cliente', 'id_tipo_identificacion', 'id_horario'], 'required'],
-            [['txt_motivo_cancelacion_rechazo'], 'required', 'on'=>'cancelar'],
-            [['txt_telefono', 'txt_numero_referencia'], 'string', 'max' => 10, 'min' => 10, 'tooLong' => 'El campo no debe superar 10 dígitos','tooShort' => 'El campo debe ser mínimo de 10 digítos'],
+            [
+                ['b_documentos'], 'required', 'on'=>'autorizar',
+                'when' => function ($model) {
+                    return $model->id_equipo==Constantes::SIN_EQUIPO;
+                }, 'whenClient' => "function (attribute, value) {
+                    
+                    return $('#entcitas-id_equipo').val()=='".Constantes::SIN_EQUIPO."';
+                }"
+            ],
+            [
+                [
+                    'id_tipo_tramite', 
+                    'id_equipo', 
+                    'id_area', 
+                    'id_tipo_entrega', 
+                    'id_usuario', 
+                    'id_status', 
+                    'id_envio', 
+                    'id_tipo_cliente', 
+                    'id_tipo_identificacion', 
+                    'id_horario',
+                    'b_documentos',
+                    'b_promocionales',
+                    'b_sim'
+                ], 
+                'integer'],
+            [[
+                'id_usuario', 'id_status', 'txt_telefono', 'txt_email', 'txt_nombre', 'txt_apellido_paterno', 'txt_folio_identificacion',
+                'txt_email',
+                'fch_nacimiento',
+                'num_dias_servicio',
+                'txt_estado',
+                'txt_calle_numero',
+                'txt_colonia',
+                'txt_codigo_postal',
+                'txt_municipio',
+                'fch_cita',
+                'txt_numero_referencia',
+                'txt_token', 'id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status', 'id_tipo_cliente', 'id_tipo_identificacion', 'id_horario'
+            ], 'required'],
+            [['id_tipo_cancelacion'], 'exist', 'skipOnError' => true, 'targetClass' => CatTiposCancelacion::className(), 'targetAttribute' => ['id_tipo_cancelacion' => 'id_tipo_cancelacion']], 
+            [['id_tipo_cancelacion'], 'required', 'on' => 'cancelar'],
+            [['txt_telefono', 'txt_numero_referencia'], 'string', 'max' => 10, 'min' => 10, 'tooLong' => 'El campo no debe superar 10 dígitos', 'tooShort' => 'El campo debe ser mínimo de 10 digítos'],
             [['txt_email'], 'email'],
             [['fch_nacimiento', 'fch_cita', 'fch_creacion'], 'safe'],
             [['txt_telefono', 'txt_rfc', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3', 'txt_estado'], 'string', 'max' => 20],
@@ -137,7 +214,7 @@ class EntCitas extends \yii\db\ActiveRecord
             [['txt_numero_telefonico_nuevo'], 'string', 'max' => 10],
             [['txt_email', 'txt_colonia', 'txt_municipio'], 'string', 'max' => 100],
             [['num_dias_servicio'], 'string', 'max' => 50],
-            [['txt_token'], 'string', 'max' => 60],
+            [['txt_token', 'txt_identificador_cliente'], 'string', 'max' => 60],
             [['txt_iccid', 'txt_imei', 'txt_calle_numero'], 'string', 'max' => 150],
             [['txt_codigo_postal'], 'string', 'max' => 5],
             [['txt_entre_calles', 'txt_observaciones_punto_referencia'], 'string', 'max' => 500],
@@ -199,7 +276,11 @@ class EntCitas extends \yii\db\ActiveRecord
             'txt_motivo_cancelacion_rechazo' => 'Motivo cancelación o rechazo',
             'fch_cita' => 'Fecha de la cita',
             'fch_creacion' => 'Fecha creación',
-            'txt_tpv'=>'TPV',
+            'txt_tpv' => 'TPV',
+            'b_documentos'=>'Solo documentos',
+            'b_promocionales'=>'Con promocionales',
+            'b_sim'=>'Con sim',
+            'txt_identificador_cliente'=>'Consecutivo'
         ];
     }
 
@@ -284,12 +365,12 @@ class EntCitas extends \yii\db\ActiveRecord
     }
 
     /**
-    * @return \yii\db\ActiveQuery
-    */
-   public function getEntHistorialCambiosCitas()
-   {
-       return $this->hasMany(EntHistorialCambiosCitas::className(), ['id_cita' => 'id_cita'])->orderBy('fch_modificacion DESC');
-   }
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEntHistorialCambiosCitas()
+    {
+        return $this->hasMany(EntHistorialCambiosCitas::className(), ['id_cita' => 'id_cita'])->orderBy('fch_modificacion DESC');
+    }
 
     public static function validarDiaEntrega($fecha)
     {
@@ -308,14 +389,16 @@ class EntCitas extends \yii\db\ActiveRecord
 
     }
 
-    public static function getFechaEntrega($fecha){
-        $tiempo = strtotime($fecha. "+2 day");
+    public static function getFechaEntrega($fecha)
+    {
+        $tiempo = strtotime($fecha . "+2 day");
         $fecha = date('d-m-Y', $tiempo);
 
         return self::validarDiaEntrega($fecha);
     }
 
-    public static function getColorStatus($idStatus){
+    public static function getColorStatus($idStatus)
+    {
         switch ($idStatus) {
             case '1':
                 $statusColor = Constantes::COLOR_STATUS_CREADA;
@@ -325,17 +408,17 @@ class EntCitas extends \yii\db\ActiveRecord
                 break;
             case '3':
                 $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL;
-                break;    
+                break;
             case '4':
-                $statusColor = Constantes::COLOR_STATUS_RECHAZADA;
+                $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR;
                 break;
             case '5':
                 $statusColor = Constantes::COLOR_STATUS_CANCELADA;
-            break;  
+                break;
             case '7':
                 $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL;
-            break;  
-                  
+                break;
+
             default:
                 # code...
                 break;
@@ -344,59 +427,74 @@ class EntCitas extends \yii\db\ActiveRecord
         return $statusColor;
     }
 
-    public function getBotonesSupervisor(){
+    public function getBotonesSupervisor()
+    {
         $usuario = EntUsuarios::getUsuarioLogueado();
-        if($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR && Constantes::STATUS_CREADA==$this->id_status){
-            $botones = $this->btnAprobarSupervisor.$this->btnCancelar.$this->btnRechazar;
-            $contenedor = "<div class='pt-15 example-buttons text-right'>".$botones."</div>";
-           return $contenedor;
+        if ((\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)) && Constantes::STATUS_CREADA == $this->id_status) {
+            $botones = $this->btnAprobarSupervisor . $this->btnCancelar;
+            $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
+            return $contenedor;
         }
 
-        if($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR_TELCEL && Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR==$this->id_status){
-            $botones = $this->btnAprobarSupervisorTelcel.$this->btnCancelar.$this->btnRechazar;
-            $contenedor = "<div class='pt-15 example-buttons text-right'>".$botones."</div>";
-           return $contenedor;
+        if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR_TELCEL && Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR == $this->id_status) {
+            $botones = $this->btnAprobarSupervisorTelcel . $this->btnCancelar . $this->btnRechazar;
+            $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
+            return $contenedor;
         }
 
-        if($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL && Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL==$this->id_status){
-            $botones = $this->btnAprobarAdministradorTelcel.$this->btnCancelar.$this->btnRechazar;
-            $contenedor = "<div class='pt-15 example-buttons text-right'>".$botones."</div>";
-           return $contenedor;
+        if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL && Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL == $this->id_status) {
+            $botones = $this->btnAprobarAdministradorTelcel . $this->btnCancelar . $this->btnRechazar;
+            $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
+            return $contenedor;
         }
 
         return "";
     }
 
-    public function getBotonGuardar(){
-        if($this->validarEdicionCita()){
-            return Html::submitButton("<span class='ladda-label'>".($this->isNewRecord ? 'Generar cita' : 'Actualizar cita')."</span>", ['class' => ($this->isNewRecord ? 'btn btn-success' : 'btn btn-primary ')."  float-right ladda-button", "data-style"=>"zoom-in"]);
+    public function getBotonGuardar()
+    {
+        if($this->isNewRecord){
+            return Html::submitButton("<span class='ladda-label'>" . ($this->isNewRecord ? 'Generar cita' : 'Actualizar cita') . "</span>", ['class' => ($this->isNewRecord ? 'btn btn-success' : 'btn btn-primary ') . "  float-right ladda-button", "data-style" => "zoom-in"]);
         }
-        
         return "";
     }
 
-    public function validarEdicionCita(){
-        if((Utils::getHorasEdicion($this->fch_creacion) < Constantes::TIEMPO_EDICION ) && $this->validarEdicionCitaStatus()){
+    public function validarEdicionCita()
+    {
+        if ((Utils::getHorasEdicion($this->fch_creacion) < Constantes::TIEMPO_EDICION) && $this->validarEdicionCitaStatus()) {
             return true;
         }
         return false;
-       
+
     }
 
-    public function validarEdicionCitaStatus(){
+    public function validarEdicionCitaStatus()
+    {
         $usuario = EntUsuarios::getUsuarioLogueado();
         // si el usuario es call-center y la cita sigue en crear podra editar la cita
-        if($usuario->txt_auth_item == Constantes::USUARIO_CALL_CENTER && Constantes::STATUS_CREADA==$this->id_status){
-                return true;
+        if ($usuario->txt_auth_item == Constantes::USUARIO_CALL_CENTER && Constantes::STATUS_CREADA == $this->id_status) {
+            return true;
         }
 
-        if($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR 
-            && (Constantes::STATUS_CREADA==$this->id_status)){
-                return true;
+        if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR
+            && (Constantes::STATUS_CREADA == $this->id_status)) {
+            return true;
+        }
+
+        if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_CC) {
+            return true;
         }
 
         return false;
     }
 
-    
+    /** 
+    * @return \yii\db\ActiveQuery 
+    */ 
+   public function getIdTipoCancelacion() 
+   { 
+       return $this->hasOne(CatTiposCancelacion::className(), ['id_tipo_cancelacion' => 'id_tipo_cancelacion']); 
+   } 
+
+
 }
