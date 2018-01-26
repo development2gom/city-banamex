@@ -65,6 +65,25 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 						return $('#entusuarios-txt_auth_item').val()=='".Constantes::USUARIO_CALL_CENTER."';
 					}"
 				],
+				[
+					['repeatPassword', 'password'], 'required', 'on'=>'update',
+					'when' => function ($model) {
+						return $model->password || $model->repeatPassword;
+					}, 'whenClient' => "function (attribute, value) {
+						
+						return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
+					}"
+				],
+
+				[
+					['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'update',
+					'when' => function ($model) {
+						return $model->password || $model->repeatPassword;
+					}, 'whenClient' => "function (attribute, value) {
+						
+						return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
+					}"
+				],
 				[ 
 						'password',
 						'compare',
@@ -94,7 +113,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 								'txt_auth_item' 
 						],
 						'required',
-						'on' => 'registerInput',
+						'on' => ['registerInput', 'update'],
 						'message'=>'Campo requerido'
 				],
 				// [ 
@@ -214,7 +233,9 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				'fch_creacion' => 'Fecha creación',
 				'fch_actualizacion' => 'Fch Actualizacion',
 				'id_status' => 'Id Status',
-				'id_usuario_asignado' =>'Supervisor a asignar'
+				'id_usuario_asignado' =>'Supervisor a asignar',
+				'password'=>'Contraseña',
+				'repeatPassword'=>'Repetir contraseña'
 		];
 	}
 	

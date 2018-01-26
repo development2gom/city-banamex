@@ -141,6 +141,8 @@ class UsuariosController extends Controller
         $supervisores = EntUsuarios::find()->where(['txt_auth_item'=>Constantes::USUARIO_SUPERVISOR])->orderBy("txt_username, txt_apellido_paterno")->all();
 
         $model = $this->findModel($id);
+        $rol = $model->txt_auth_item;
+        $model->scenario = "update";
 
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -153,18 +155,37 @@ class UsuariosController extends Controller
                 $model->generateAuthKey();
             }
             if($model->save()){
+
+                $manager = Yii::$app->authManager;
+                $item = $manager->getRole($rol);
+                $item = $item ? : $manager->getPermission($rol);
+                $manager->revoke($item,$model->id_usuario);
+
+                $authorRole = $manager->getRole($model->txt_auth_item);
+                $manager->assign($authorRole, $model->id_usuario);
+                
                 
                 return $this->redirect(['index']);
             }
         }
         
-        $model->scenario = 'updateModel';
+        
         return $this->render('update', [
             'model' => $model,
             'roles'=>$roles,
             'supervisores'=>$supervisores
         ]);
         
+    }
+
+    public function actionTestRemover(){
+        $manager = Yii::$app->authManager;
+        $item = $manager->getRole(Constantes::USUARIO_ADMINISTRADOR_TELCEL);
+        $item = $item ? : $manager->getPermission(Constantes::USUARIO_ADMINISTRADOR_TELCEL);
+        $manager->revoke($item,194);
+
+        $authorRole = $manager->getRole(Constantes::USUARIO_SUPERVISOR_TELCEL);
+        $manager->assign($authorRole, 194);
     }
 
     /**

@@ -74,7 +74,7 @@ $this->registerJsFile(
     ?>
 
     
-    <div class="col-md-<?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)?"9":"12"?>">
+    <div class="col-md-<?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)?"9":"12"?>">
         <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true" role="tablist">
             <div class="panel">
                 <div class="panel-heading" id="exampleHeadingDefaultOne" role="tab">

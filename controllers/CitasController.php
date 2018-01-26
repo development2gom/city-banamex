@@ -59,7 +59,6 @@ class CitasController extends Controller
      */
     public function actionIndex()
     {
-
         if ((\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)) ){
             $statusCitas = CatStatusCitas::find()->where(['in', 'id_statu_cita', [
                 Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR, 
