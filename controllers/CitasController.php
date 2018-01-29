@@ -98,7 +98,7 @@ class CitasController extends Controller
         $tipoEntrega = 1;
 
         $model = EntCitas::find()->where(['txt_token'=>$token])->one();
-        $model->scenario = "autorizar";
+        $model->scenario = "autorizar-update";
 
         $tiposTramites = CatTiposTramites::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
         $tiposClientes = CatTiposClientes::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
@@ -158,7 +158,7 @@ class CitasController extends Controller
         
         $usuario = EntUsuarios::getUsuarioLogueado();
         
-        $model = new EntCitas();
+        $model = new EntCitas(['scenario'=>'create-call-center']);
 
         if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
             $model = new EntCitas(['scenario'=>'autorizar']);
@@ -266,6 +266,32 @@ class CitasController extends Controller
             $this->redirect(["index"]);
         } 
        
+    }
+
+    public function actionValidarTelefono($tel=null){
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $respuesta["status"] = "success";
+        $respuesta["mensaje"] = "Teléfono disponible";
+        $respuesta["tel"] = $tel;
+
+        $telefonoDisponible = EntCitas::find()
+            ->where(['txt_telefono'=>$tel])
+            ->andWhere(['in', 'id_status', [
+                Constantes::STATUS_CREADA,
+                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
+                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR
+                ]])
+            ->all();
+
+        if($telefonoDisponible){
+            $respuesta["status"] = "error";
+            $respuesta["mensaje"] = "Teléfono no esta disponible";
+        }
+        
+
+        return $respuesta;
+
     }
     
 }

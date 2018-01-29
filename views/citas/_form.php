@@ -36,7 +36,19 @@ $equipo = $model->idEquipo;
         <div class="panel-body pt-20">
             <div class="row">
                 <div class="col-md-3">
-                    <?= $form->field($model, 'txt_telefono')->textInput(['maxlength' => true, 'class'=>'form-control input-number' ]) ?>
+                    <?php 
+                    if($model->isNewRecord){
+                        echo $form->field($model, 'txt_telefono')->textInput(['maxlength' => true, 'class'=>'form-control input-number' ]); 
+                    }else{
+                    ?>
+                    <div class="form-group">
+                        <label class="form-control-label" for="telefono">Télefono</label>
+                        <?=Html::textInput("telefono", $model->txt_telefono, ["class"=>"form-control", 'disabled'=>true])?>
+                        <div class="help-block"></div>
+                    </div>
+                    <?php
+                    }    
+                    ?>
                 </div>
                 <div class="col-md-3">
                     <?= $form->field($model, 'txt_nombre')->textInput(['maxlength' => true]) ?>
@@ -412,6 +424,36 @@ $equipo = $model->idEquipo;
     <?php
 $this->registerJs(
   '
+
+  $("#entcitas-txt_telefono").on("change", function(){
+    var elemento = $(this);
+    var data = elemento.val();
+    if(elemento.val().length==10){
+        $.ajax({
+            url: baseUrl+"citas/validar-telefono?tel="+data,
+            success:function(res){
+
+                if(res.status=="error"){
+                    swal({
+                        title: "Datos no válido",
+                        text: "El número teléfonico " + res.tel + " ya se encuentra en una cita activa",
+                        type: "warning",
+                        showCancelButton: false,
+                        confirmButtonClass: "btn-warning",
+                        confirmButtonText: "Ok",
+                        cancelButtonText: "No, revisaré una vez más",
+                        closeOnConfirm: true,
+                        //closeOnCancel: false
+                    });
+                    elemento.val("");
+                    elemento.trigger("change");
+                }    
+            }
+        });
+    }
+
+  });
+
   var claseOcultar = "hidden-xl-down";
   checkStatus();
   checkPromocionales();
