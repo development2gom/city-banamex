@@ -280,7 +280,7 @@ class EntCitas extends \yii\db\ActiveRecord
             [['txt_iccid', 'txt_imei', 'txt_calle_numero'], 'string', 'max' => 150],
             [['txt_codigo_postal'], 'string', 'max' => 5],
             [['txt_entre_calles', 'txt_observaciones_punto_referencia'], 'string', 'max' => 500],
-            [['txt_motivo_cancelacion_rechazo'], 'string', 'max' => 700],
+            [['txt_motivo_cancelacion_rechazo', 'txt_promocionales'], 'string', 'max' => 700],
             [['txt_token'], 'unique'],
             [['id_area'], 'exist', 'skipOnError' => true, 'targetClass' => CatAreas::className(), 'targetAttribute' => ['id_area' => 'id_area']],
             [['id_equipo'], 'exist', 'skipOnError' => true, 'targetClass' => CatEquipos::className(), 'targetAttribute' => ['id_equipo' => 'id_equipo']],
@@ -343,7 +343,8 @@ class EntCitas extends \yii\db\ActiveRecord
             'b_promocionales'=>'Con promocionales',
             'b_sim'=>'Con sim',
             'txt_identificador_cliente'=>'Consecutivo',
-            'id_tipo_cancelacion'=>""
+            'id_tipo_cancelacion'=>"",
+            'txt_promocional'=>"Promocionales"
         ];
     }
 

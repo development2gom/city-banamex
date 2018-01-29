@@ -71,7 +71,7 @@ $equipo = $model->idEquipo;
                     <?= $form->field($model, 'txt_email')->textInput(['maxlength' => true]) ?>
                 </div>
                 <div class="col-md-3">
-                    <?= $form->field($model, 'txt_tpv')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'txt_tpv')->textInput(['maxlength' => true, "class"=>"form-control input-number"]) ?>
                 </div>
             </div>
 
@@ -171,6 +171,7 @@ $equipo = $model->idEquipo;
                                 ]
                             ])->checkbox([], false)  ?>
                 </div>
+                
                 <div class="col-md-3">
                     
                     <?= $form->field($model, 'b_sim', [
@@ -180,6 +181,15 @@ $equipo = $model->idEquipo;
                                 
                                 ]
                             ])->checkbox([], false) ?>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                
+                </div>
+                <div class="col-md-3 contenedor-promocionales">
+                    <?= $form->field($model, 'txt_promocional')->textInput(['maxlength' => true]) ?>
                 </div>
             </div>
 
@@ -404,6 +414,8 @@ $this->registerJs(
   '
   var claseOcultar = "hidden-xl-down";
   checkStatus();
+  checkPromocionales();
+
 function checkStatus(){
     var val = $("#entcitas-id_equipo").val();
     
@@ -416,6 +428,19 @@ function checkStatus(){
     }
 }
 
+
+function checkPromocionales(){
+    if($("#entcitas-b_promocionales").prop("checked")){
+        $(".contenedor-promocionales").show();
+    }else{
+        $(".contenedor-promocionales").hide();
+    }
+
+}
+
+$("#entcitas-b_promocionales").on("change", function(){
+    checkPromocionales();
+});
   
   $("#entcitas-id_equipo").on("change", function(){
     checkStatus();
