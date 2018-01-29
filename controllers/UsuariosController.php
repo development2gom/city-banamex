@@ -13,6 +13,7 @@ use app\models\AuthItem;
 use app\models\Constantes;
 use app\components\AccessControlExtend;
 use yii\web\UploadedFile;
+use app\models\EntGruposTrabajo;
 
 /**
  * UsuariosController implements the CRUD actions for EntUsuarios model.
@@ -75,6 +76,7 @@ class UsuariosController extends Controller
      */
     public function actionView($id)
     {
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -93,7 +95,7 @@ class UsuariosController extends Controller
 
         $hijos = $auth->getChildRoles($usuario->txt_auth_item);
         ksort($hijos);
-        $roles = AuthItem::find()->where(['in', 'name', array_keys($hijos)])->orderBy("name")->all();
+        $roles = AuthItem::find()->where(['in', 'name', array_keys($hijos)])->orderBy("description")->all();
 
         $supervisores = EntUsuarios::find()->where(['txt_auth_item'=>Constantes::USUARIO_SUPERVISOR])->orderBy("txt_username, txt_apellido_paterno")->all();
 
@@ -110,7 +112,7 @@ class UsuariosController extends Controller
 
             if ($user = $model->signup()) {
 
-                return $this->redirect(['index']);
+                return $this->redirect(['update', 'id'=>$user->id_usuario]);
             }
         
         // return $this->redirect(['view', 'id' => $model->id_usuario]);
@@ -221,6 +223,8 @@ class UsuariosController extends Controller
 
     public function actionImportarData(){
 
+
+        return $this->redirect(['site/construccion']);
         if (Yii::$app->request->isPost) {
             $file = UploadedFile::getInstanceByName('file-import');
 
@@ -238,4 +242,37 @@ class UsuariosController extends Controller
 
         return $this->render("importar-data");
     }
+
+    public function actionAsignarUsuario(){
+
+        if($_POST['supervisor'] && $_POST['call']){
+            $supervisor = $_POST['supervisor'];
+            $call = $_POST['call'];
+
+            $asignacion = EntGruposTrabajo::find()->where(['id_usuario'=>$supervisor, 'id_usuario_asignado'=>$call])->one();
+
+            if(!$asignacion){
+                $asignacion = new EntGruposTrabajo();
+                $asignacion->id_usuario = $supervisor;
+                $asignacion->id_usuario_asignado = $call;
+                $asignacion->save();
+            }
+        }
+    }
+
+    public function actionRemoverUsuario(){
+
+        if($_POST['supervisor'] && $_POST['call']){
+            $supervisor = $_POST['supervisor'];
+            $call = $_POST['call'];
+
+            $asignacion = EntGruposTrabajo::find()->where(['id_usuario'=>$supervisor, 'id_usuario_asignado'=>$call])->one();
+
+            if($asignacion){
+                
+                $asignacion->delete();
+            }
+        }
+    }
+
 }

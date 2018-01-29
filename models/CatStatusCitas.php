@@ -64,11 +64,11 @@ class CatStatusCitas extends \yii\db\ActiveRecord
         } else if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR) {
 
 
-            $misUsuarios = $usuario->idUsuarios;
+            $misUsuarios = $usuario->entGruposTrabajos;
             $usuarioAsignado = [];
             $usuarioAsignado[] = $usuario->id_usuario;
             foreach ($misUsuarios as $miUsuario) {
-                $usuarioAsignado[] = $miUsuario->id_usuario;
+                $usuarioAsignado[] = $miUsuario->id_usuario_asignado;
             }
 
             return $this->hasMany(EntCitas::className(), ['id_status' => 'id_statu_cita'])

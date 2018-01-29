@@ -42,23 +42,3 @@ $this->params['breadcrumbs'][] = [
         ]) ?>
     </div>
 </div>
-
-<?php
-$this->registerJs(
-  '
-  var claseOcultar = "hidden-xl-down";
-  $("#entusuarios-txt_auth_item").on("change", function(){
-    var val = $(this).val();
-    var contenedor = $(".asignar-supervisor-contenedor");
-    if(val=="'.Constantes::USUARIO_CALL_CENTER.'"){
-      contenedor.removeClass(claseOcultar);
-    }else{
-      contenedor.addClass(claseOcultar);
-    }
-
-  });
-  ',
-  View::POS_END,
-  'tipo-usuario'
-);
-?>

@@ -77,13 +77,14 @@ class EntCitasSearch extends EntCitas
 
         if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR){
 
-            $misUsuarios = $usuario->idUsuarios;
+            $misUsuarios = $usuario->entGruposTrabajos;
+            
             $usuarioAsignado = [];
             $usuarioAsignado[] = $usuario->id_usuario;
             foreach($misUsuarios as $miUsuario){
-                $usuarioAsignado[] = $miUsuario->id_usuario;
+                $usuarioAsignado[] = $miUsuario->id_usuario_asignado;
             }
-            
+
             $query->andFilterWhere(['in','id_usuario', $usuarioAsignado]);
         }
 

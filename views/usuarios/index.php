@@ -7,6 +7,8 @@ use app\modules\ModUsuarios\models\EntUsuarios;
 use kop\y2sp\ScrollPager;
 use app\components\LinkSorterExtends;
 use yii\helpers\Url;
+use sjaakp\alphapager\AlphaPager;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UsuariosSearch */
@@ -50,6 +52,8 @@ $this->registerJsFile(
         <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
       </div>
     </form> -->
+    
+    <?=$this->render("_search", ['model'=>$searchModel])?>
       
         <?php
         $sort = "txt_username";
@@ -112,7 +116,6 @@ $this->registerJsFile(
           ]
             
         ]);?>
-         
     
   </div>
 </div>

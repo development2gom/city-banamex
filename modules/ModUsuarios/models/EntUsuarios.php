@@ -11,6 +11,7 @@ use kartik\password\StrengthValidator;
 use yii\web\UploadedFile;
 use app\models\AuthItem;
 use app\models\Constantes;
+use app\models\EntGruposTrabajo;
 
 /**
  * This is the model class for table "ent_usuarios".
@@ -56,15 +57,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	 */
 	public function rules() {
 		return [ 
-				[
-					['id_usuario_asignado'], 'required',
-					'when' => function ($model) {
-						return $model->txt_auth_item==Constantes::USUARIO_CALL_CENTER;
-					}, 'whenClient' => "function (attribute, value) {
-						
-						return $('#entusuarios-txt_auth_item').val()=='".Constantes::USUARIO_CALL_CENTER."';
-					}"
-				],
+				
 				[
 					['repeatPassword', 'password'], 'required', 'on'=>'update',
 					'when' => function ($model) {
@@ -233,7 +226,6 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				'fch_creacion' => 'Fecha creación',
 				'fch_actualizacion' => 'Fch Actualizacion',
 				'id_status' => 'Id Status',
-				'id_usuario_asignado' =>'Supervisor a asignar',
 				'password'=>'Contraseña',
 				'repeatPassword'=>'Repetir contraseña'
 		];
@@ -462,7 +454,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 		$user->txt_apellido_materno = $this->txt_apellido_materno;
 		$user->txt_email = $this->txt_email;
 		$user->txt_auth_item = $this->txt_auth_item;
-		$user->id_usuario_asignado = $this->id_usuario_asignado;
+		
 		
 		if($user->image){
 			$user->txt_imagen = $user->txt_token.".".$user->image->extension;
@@ -638,9 +630,25 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	/**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdUsuarioAsignado()
+    public function getEntGruposTrabajos()
     {
-        return $this->hasOne(EntUsuarios::className(), ['id_usuario' => 'id_usuario_asignado']);
+        return $this->hasMany(EntGruposTrabajo::className(), ['id_usuario' => 'id_usuario']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEntGruposTrabajos0()
+    {
+        return $this->hasMany(EntGruposTrabajo::className(), ['id_usuario_asignado' => 'id_usuario']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdUsuarioAsignados()
+    {
+        return $this->hasMany(EntUsuarios::className(), ['id_usuario' => 'id_usuario_asignado'])->viaTable('ent_grupos_trabajo', ['id_usuario' => 'id_usuario']);
     }
 
     /**
@@ -648,6 +656,6 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getIdUsuarios()
     {
-        return $this->hasMany(EntUsuarios::className(), ['id_usuario_asignado' => 'id_usuario']);
+        return $this->hasMany(EntUsuarios::className(), ['id_usuario' => 'id_usuario'])->viaTable('ent_grupos_trabajo', ['id_usuario_asignado' => 'id_usuario']);
     }
 }

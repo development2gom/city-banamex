@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\modules\ModUsuarios\models\EntUsuarios;
 
 /**
  * This is the model class for table "ent_grupos_trabajo".
@@ -31,8 +32,8 @@ class EntGruposTrabajo extends \yii\db\ActiveRecord
         return [
             [['id_usuario', 'id_usuario_asignado'], 'required'],
             [['id_usuario', 'id_usuario_asignado'], 'integer'],
-            [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => ModUsuariosEntUsuarios::className(), 'targetAttribute' => ['id_usuario' => 'id_usuario']],
-            [['id_usuario_asignado'], 'exist', 'skipOnError' => true, 'targetClass' => ModUsuariosEntUsuarios::className(), 'targetAttribute' => ['id_usuario_asignado' => 'id_usuario']],
+            [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => EntUsuarios::className(), 'targetAttribute' => ['id_usuario' => 'id_usuario']],
+            [['id_usuario_asignado'], 'exist', 'skipOnError' => true, 'targetClass' => EntUsuarios::className(), 'targetAttribute' => ['id_usuario_asignado' => 'id_usuario']],
         ];
     }
 
@@ -52,7 +53,7 @@ class EntGruposTrabajo extends \yii\db\ActiveRecord
      */
     public function getIdUsuario()
     {
-        return $this->hasOne(ModUsuariosEntUsuarios::className(), ['id_usuario' => 'id_usuario']);
+        return $this->hasOne(EntUsuarios::className(), ['id_usuario' => 'id_usuario']);
     }
 
     /**
@@ -60,6 +61,6 @@ class EntGruposTrabajo extends \yii\db\ActiveRecord
      */
     public function getIdUsuarioAsignado()
     {
-        return $this->hasOne(ModUsuariosEntUsuarios::className(), ['id_usuario' => 'id_usuario_asignado']);
+        return $this->hasOne(EntUsuarios::className(), ['id_usuario' => 'id_usuario_asignado']);
     }
 }

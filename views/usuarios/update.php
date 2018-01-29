@@ -3,10 +3,13 @@
 use yii\helpers\Html;
 use yii\web\View;
 use app\models\Constantes;
+use app\modules\ModUsuarios\models\EntUsuarios;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\models\EntUsuarios */
+
+$usuario = EntUsuarios::getUsuarioLogueado();
 
 $this->title = 'Usuario '.$model->nombreCompleto;
 $this->params['breadcrumbs'][] = [
@@ -42,6 +45,12 @@ $this->params['breadcrumbs'][] = [
         ]) ?>
     </div>
 </div>
+
+<?php
+if($model->txt_auth_item == Constantes::USUARIO_SUPERVISOR){
+echo $this->render("_view-usuarios-asignados", ['model'=>$model]);
+}
+?>
 
 <?php
 $this->registerJs(

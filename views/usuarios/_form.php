@@ -60,21 +60,6 @@ use yii\helpers\ArrayHelper;
                 </div>    
             </div>
 
-            <div class="row hidden-xl-down asignar-supervisor-contenedor">
-                <div class="col-md-6">
-                    <?= $form->field($model, 'id_usuario_asignado')
-                            ->widget(Select2::classname(), [
-                                'data' => ArrayHelper::map($supervisores, 'id_usuario', 'nombreCompleto'),
-                                'language' => 'es',
-                                'options' => ['placeholder' => 'Seleccionar supervisor'],
-                                'pluginOptions' => [
-                                    'allowClear' => true
-                                ],
-                            ])->label(false);
-                    ?>        
-                </div>
-            </div>
-
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group text-center">
