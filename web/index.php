@@ -16,3 +16,4 @@ $config = require(__DIR__ . '/../config/web.php');
 #call-center@bright-star.com
 #call-center2@bright-star.com
 #supervisor-telcel@bright-star.com
+#administrador-telcel@bright-star.com

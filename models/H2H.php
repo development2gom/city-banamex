@@ -72,7 +72,7 @@ class H2H
     public function getParamsCrear()
     {
         $parametros = [
-            'No. Servicio' => $this->numServicio,
+            'NoServicio' => $this->numServicio,
             'Observaciones' => $this->observaciones,
             'Observacionescontenido' => $this->observacionesContenido,
             'Nombre' => $this->nombre,
