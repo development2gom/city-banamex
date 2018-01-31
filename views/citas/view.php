@@ -120,7 +120,7 @@ $this->registerJsFile(
 
 
 <?php
-if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)){
+if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
     $this->registerJs(
     '
     $(document).ready(function(){

@@ -2,7 +2,8 @@
 
 use yii\helpers\Url;
 use app\models\Constantes;
-
+use app\modules\ModUsuarios\models\EntUsuarios;
+$usuario = EntUsuarios::getUsuarioLogueado();
 ?>
 <div class="site-menubar site-menubar-light">
   <div class="site-menubar-body">
@@ -57,7 +58,7 @@ use app\models\Constantes;
           </li>
           
           <?php
-          if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL) || \Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_CC)){?>
+          if($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL || $usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_CC){?>
           <li class="dropdown site-menu-item has-sub">
             <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
               <i class="site-menu-icon pe-users" aria-hidden="true"></i>

@@ -112,9 +112,9 @@ class CitasController extends Controller
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
 
-            if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL) ){
+            if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) ){
                 $model->statusAprobacionDependiendoUsuario();
-                if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)){      
+                if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)){      
                     $model->generarNumeroEnvio();
                 } 
                 if($model->save()){
@@ -300,8 +300,10 @@ class CitasController extends Controller
     }
 
     public function actionTestApi(){
+        $apiEnvio = new H2H();
         $cita = EntCitas::find()->one();
-        echo $cita->generarNumeroEnvio();
+        $respuestaApi =  $apiEnvio->crearEnvio($cita);
+        echo $respuestaApi;
     }
 
     public function actionConsultar(){

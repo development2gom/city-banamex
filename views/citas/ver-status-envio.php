@@ -34,8 +34,8 @@ $this->params['breadcrumbs'][] = [
                     <p><?=$respuestaApi->Fecha?></p>
                 </div>
                 <div class="col-md-3">
-                    <h5>Clave evento</h5>
-                    <p><?=$respuestaApi->ClaveEvento?></p>
+                    <h5>Imagen</h5>
+                    <p><?=$respuestaApi->Image?></p>
                 </div>
                 <div class="col-md-3">
                     <h5>Evento</h5>

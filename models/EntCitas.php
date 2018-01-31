@@ -179,7 +179,11 @@ class EntCitas extends \yii\db\ActiveRecord
 
         if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR_TELCEL) {
 
-            $message = "Cita autorizada por supervisor telcel";
+            if ($new) {
+                $message = "Cita capturada y autorizada por supervisor telcel";
+            } else {
+                $message = "Cita autorizada por supervisor telcel";
+            }
             if ($cancel) {
                 $message = "Cita rechazada por supervisor telcel";
             }
@@ -188,7 +192,13 @@ class EntCitas extends \yii\db\ActiveRecord
         }
 
         if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL) {
-            $message = "Cita autorizada administrador telcel";
+            
+
+            if ($new) {
+                $message = "Cita capturada y autorizada por administrador telcel";
+            } else {
+                $message = "Cita autorizada por administrador telcel";
+            }
             if ($cancel) {
                 $message = "Cita rechazada por administrador telcel";
             }
@@ -551,17 +561,24 @@ class EntCitas extends \yii\db\ActiveRecord
     public function getBotonesSupervisor()
     {
         $usuario = EntUsuarios::getUsuarioLogueado();
-        if ((\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)) && Constantes::STATUS_CREADA == $this->id_status) {
+        if (($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR) && Constantes::STATUS_CREADA == $this->id_status) {
             $botones = $this->btnAprobarSupervisor . $this->btnCancelar;
             $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
             return $contenedor;
         }
 
-        if ((\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL))
+        if (($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL)
             && (Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR == $this->id_status || Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC == $this->id_status)) {
             $botones = $this->btnAprobarSupervisor . $this->btnCancelar;
             $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
             return $contenedor;
+        }
+
+        if (($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)
+            && (Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL == $this->id_status)) {
+            $botones = $this->btnAprobarSupervisor . $this->btnCancelar;
+            $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
+           return $contenedor;
         }
 
 

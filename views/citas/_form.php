@@ -150,9 +150,7 @@ $equipo = $model->idEquipo;
                     <?= $form->field($model, 'txt_numero_telefonico_nuevo')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
                 </div>
             </div>
-            <?php 
-             if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL) ){
-            ?>
+            
             <div class="row">
                 <div class="col-md-3">
                     <?= $form->field($model, 'txt_imei')->textInput(['maxlength' => true]) ?>
@@ -205,10 +203,6 @@ $equipo = $model->idEquipo;
                 </div>
             </div>
 
-           
-            <?php
-                }
-            ?>
         </div>
     </div>
     
