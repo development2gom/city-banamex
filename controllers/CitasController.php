@@ -19,6 +19,8 @@ use app\models\Constantes;
 use app\models\EntHistorialCambiosCitas;
 use yii\data\ActiveDataProvider;
 use app\components\AccessControlExtend;
+use app\models\H2H;
+use app\models\EntEnvios;
 
 /**
  * CitasController implements the CRUD actions for EntCitas model.
@@ -112,9 +114,12 @@ class CitasController extends Controller
 
             if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL) ){
                 $model->statusAprobacionDependiendoUsuario();
+                if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)){      
+                    $model->generarNumeroEnvio();
+                } 
                 if($model->save()){
                     $model->guardarHistorialDependiendoUsuario();
-                    $model->generarNumeroEnvio();
+                      
                     return $this->redirect(['index']);
                 } 
             }
@@ -292,6 +297,25 @@ class CitasController extends Controller
 
         return $respuesta;
 
+    }
+
+    public function actionTestApi(){
+        $cita = EntCitas::find()->one();
+        echo $cita->generarNumeroEnvio();
+    }
+
+    public function actionConsultar(){
+        $cita = new EntCitas();
+        echo $cita->consultarEnvio("SSYR30011800003");
+    }
+
+    public function actionVerStatusEnvio($token=null){
+
+        $cita = new EntCitas();
+        $envio = EntEnvios::find()->where(['txt_token'=>$token])->one();
+        $respuestaApi = json_decode($cita->consultarEnvio($envio->txt_tracking));
+
+        return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi]);
     }
     
 }

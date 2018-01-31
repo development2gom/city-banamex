@@ -14,6 +14,7 @@ use app\models\Constantes;
 use app\components\AccessControlExtend;
 use yii\web\UploadedFile;
 use app\models\EntGruposTrabajo;
+use app\models\EntCitas;
 
 /**
  * UsuariosController implements the CRUD actions for EntUsuarios model.
@@ -219,29 +220,72 @@ class UsuariosController extends Controller
         }
     }
 
+    
+
    
 
     public function actionImportarData(){
 
-
+        $errores = [];
         return $this->redirect(['site/construccion']);
         if (Yii::$app->request->isPost) {
             $file = UploadedFile::getInstanceByName('file-import');
-
+            
             if ($file) {                
                
                 try{
                     $inputFileType = \PHPExcel_IOFactory::identify($file->tempName);
                     $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
-                    $objPHPExcel = $objReader->load($file);
+                    $objPHPExcel = $objReader->load($file->tempName);
                 }catch(\Exception $e){
-
+                    echo $e;
+                    exit;
                 }
+
+                $sheet = $objPHPExcel->getSheet(0);
+                $highestRow = $sheet->getHighestRow();
+                $highestColumn = $sheet->getHighestColumn();
+
+                //  Loop through each row of the worksheet in turn
+                for ($row = 2; $row <= $highestRow; $row++){ 
+                    //  Read a row of data into an array
+                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row,
+                                                    NULL,
+                                                    TRUE,
+                                                    FALSE);
+                    $usuario = new EntUsuarios(["scenario"=>"registerInput"]);                                
+                    foreach($rowData as $data){
+                       
+                         $usuario->txt_username = $data[0];
+                         $usuario->txt_apellido_paterno = $data[1];
+                         $usuario->txt_email = $data[2];
+                         $usuario->password = $data[3];
+                         $usuario->repeatPassword = $data[3];
+                         $usuario->setTipoUsuarioExcel($data[4]);
+                    }
+                    $usuario->signup();
+
+                    if($usuario->errors){
+                        echo "Problema en la fila ".$row.":<br>";
+                        foreach($usuario->errors as $key=>$errores){
+                            foreach($errores as $error){
+                                if($key!="repeatPassword"){
+                                    echo EntUsuarios::label()[$key]." ".$error."<br>";
+                                }
+                            }
+
+                        }
+                    }
+
+                    //  Insert row data array into your database of choice here
+                }
+
             }
         }
 
-        return $this->render("importar-data");
+        return $this->render("importar-data", ['errores'=>$errores]);
     }
+
 
     public function actionAsignarUsuario(){
 

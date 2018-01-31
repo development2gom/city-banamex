@@ -109,6 +109,18 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 						'on' => ['registerInput', 'update'],
 						'message'=>'Campo requerido'
 				],
+
+				[ 
+					[ 
+							'txt_username',
+							'txt_apellido_paterno',
+							'txt_email',
+							'txt_auth_item',
+							'password' 
+					],
+					'trim',
+					
+			],
 				// [ 
 				// 		[ 
 				// 				'password'
@@ -227,7 +239,8 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				'fch_actualizacion' => 'Fch Actualizacion',
 				'id_status' => 'Id Status',
 				'password'=>'Contraseña',
-				'repeatPassword'=>'Repetir contraseña'
+				'repeatPassword'=>'Repetir contraseña',
+				'txt_auth_item'=>'Tipo de usuario'
 		];
 	}
 	
@@ -657,5 +670,22 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
     public function getIdUsuarios()
     {
         return $this->hasMany(EntUsuarios::className(), ['id_usuario' => 'id_usuario'])->viaTable('ent_grupos_trabajo', ['id_usuario_asignado' => 'id_usuario']);
-    }
+	}
+	
+	public function setTipoUsuarioExcel($tipoExcel){
+		switch ($tipoExcel) {
+			case Constantes::USUARIO_EXCEL_ADMINISTRADOR:
+				$this->txt_auth_item = Constantes::USUARIO_ADMINISTRADOR_CC;
+				break;
+			case Constantes::USUARIO_EXCEL_CALL_CENTER:
+				$this->txt_auth_item = Constantes::USUARIO_CALL_CENTER;
+			break;
+			case Constantes::USUARIO_EXCEL_SUPERVISOR:
+				$this->txt_auth_item = Constantes::USUARIO_SUPERVISOR;
+			break;
+			default:
+				# code...
+				break;
+		}
+	}
 }

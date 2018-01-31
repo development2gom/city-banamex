@@ -68,121 +68,144 @@ class EntCitas extends \yii\db\ActiveRecord
     public $btnAprobarAdministradorTelcel = "<a href='#'  class='btn btn-success js-aprobar-a-telcel'>Aprobar</a>";
 
 
-    public function getConsecutivo(){
+    public function getConsecutivo()
+    {
         $consecutivo = count(EntCitas::find()->where(new Expression('date_format(fch_creacion, "%Y-%m-%d")=date_format(NOW(), "%Y-%m-%d")'))->all());
         $consecutivo++;
-        $identificador = Constantes::IDENTIFICADOR_CLIENTE.Calendario::getYearLastDigit().Calendario::getMonthNumber().Calendario::getDayNumber()."-".$consecutivo;
+        $identificador = Constantes::IDENTIFICADOR_CLIENTE . Calendario::getYearLastDigit() . Calendario::getMonthNumber() . Calendario::getDayNumber() . "-" . $consecutivo;
         $this->txt_identificador_cliente = $identificador;
-        
+
     }
 
-    public function statusAprobacionDependiendoUsuario(){
+    public function statusAprobacionDependiendoUsuario()
+    {
         $usuario = EntUsuarios::getUsuarioLogueado();
-        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR) {
             $this->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR;
         }
 
-        if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_CC) {
             $this->id_status = Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC;
         }
 
-        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR_TELCEL) {
             $this->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL;
         }
 
-        if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL) {
             $this->id_status = Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL;
         }
 
     }
 
-    public function statusCancelarDependiendoUsuario(){
+    public function statusCancelarDependiendoUsuario()
+    {
         $usuario = EntUsuarios::getUsuarioLogueado();
-        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR) {
             $this->id_status = Constantes::STATUS_CANCELADA_SUPERVISOR_CC;
         }
 
-        if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_CC) {
             $this->id_status = Constantes::STATUS_CANCELADA_ADMINISTRADOR_CC;
         }
 
-        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR_TELCEL) {
             $this->id_status = Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL;
         }
 
-        if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL) {
             $this->id_status = Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL;
         }
 
     }
 
-    public function generarNumeroEnvio(){
-        // Generar # de envio
+    public function generarNumeroEnvio()
+    {
+        $apiEnvio = new H2H();
+        $respuestaApi =  json_decode($apiEnvio->crearEnvio($this));
+        $tracking = $respuestaApi->NoTracking;
+        $envio = new EntEnvios();
+        $envio->id_cita = $this->id_cita;
+        $envio->txt_token = Utils::generateToken("env_");
+        $envio->txt_tracking = $tracking;
+        
+        if($envio->save()){
+            $this->id_envio = $envio->id_envio;
+        }
+
+        
     }
 
-    public function guardarHistorialDependiendoUsuario($new=false ,$cancel=false){
+    public function consultarEnvio($tracking)
+    {
+        $api = new H2H();
+        return $api->consultarEnvio($tracking);
+    }
+
+    public function guardarHistorialDependiendoUsuario($new = false, $cancel = false)
+    {
         $usuario = EntUsuarios::getUsuarioLogueado();
 
-        if($usuario->txt_auth_item==Constantes::USUARIO_CALL_CENTER){
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita creada");    
-        }   
+        if ($usuario->txt_auth_item == Constantes::USUARIO_CALL_CENTER) {
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita creada");
+        }
 
-        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR){
-            if($new){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR) {
+            if ($new) {
                 $message = "Cita creada y autorizada por supervisor cc";
-            }else{
+            } else {
                 $message = "Cita autorizada por supervisor cc";
             }
 
-            if($cancel){
-                $message = "Cita cancelada por supervisor cc";
-            }   
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);    
+            if ($cancel) {
+                $message = "Cita rechazada por supervisor cc";
+            }
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
         }
-        
-        if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC){
 
-            if($new){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_CC) {
+
+            if ($new) {
                 $message = "Cita creada y autorizada por administrador cc";
-            }else{
+            } else {
                 $message = "Cita autorizada por administrador cc";
             }
 
-            if($cancel){
-                $message = "Cita cancelada por administrador cc";
+            if ($cancel) {
+                $message = "Cita rechazada por administrador cc";
             }
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);    
+            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
         }
 
-        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR_TELCEL) {
 
             $message = "Cita autorizada por supervisor telcel";
-            if($cancel){
-                $message = "Cita cancelada por supervisor telcel";
+            if ($cancel) {
+                $message = "Cita rechazada por supervisor telcel";
             }
 
             EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
         }
 
-        if($usuario->txt_auth_item== Constantes::USUARIO_ADMINISTRADOR_TELCEL){
+        if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL) {
             $message = "Cita autorizada administrador telcel";
-            if($cancel){
-                $message = "Cita cancelada por administrador telcel";
+            if ($cancel) {
+                $message = "Cita rechazada por administrador telcel";
             }
             EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
         }
-        
+
     }
 
-    public function iniciarModelo( $idArea = null, $numServicios = null, $tipoEntrega = null)
+    public function iniciarModelo($idArea = null, $numServicios = null, $tipoEntrega = null)
     {
         $usuario = EntUsuarios::getUsuarioLogueado();
-        if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
+        if (\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)) {
             $this->id_status = Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR;
-        }else{
+        } else {
             $this->id_status = Constantes::STATUS_CREADA;
         }
-        
+
         $this->id_area = $idArea;
         $this->num_dias_servicio = $numServicios;
         $this->id_tipo_entrega = $tipoEntrega;
@@ -220,24 +243,24 @@ class EntCitas extends \yii\db\ActiveRecord
         return 'ent_citas';
     }
 
-     public function validateTel($attribute, $params, $validator)
-     {
+    public function validateTel($attribute, $params, $validator)
+    {
 
         $telefonoDisponible = EntCitas::find()
-            ->where(['txt_telefono'=>$this->txt_telefono])
+            ->where(['txt_telefono' => $this->txt_telefono])
             ->andWhere(['in', 'id_status', [
                 Constantes::STATUS_CREADA,
                 Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
                 Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR
-                ]])
+            ]])
             ->all();
 
-            if($telefonoDisponible){
-                $this->addError($attribute, 'El número teléfonico ya se encuentra en una cita activa');
-            }
-         
-         
-     }
+        if ($telefonoDisponible) {
+            $this->addError($attribute, 'El número teléfonico ya se encuentra en una cita activa');
+        }
+
+
+    }
 
     /**
      * @inheritdoc
@@ -246,35 +269,36 @@ class EntCitas extends \yii\db\ActiveRecord
     {
         return [
             [
-                ['b_documentos'], 'required', 'on'=>['autorizar', 'autorizar-update'],
+                ['b_documentos'], 'required', 'on' => ['autorizar', 'autorizar-update'],
                 'when' => function ($model) {
-                    return $model->id_equipo==Constantes::SIN_EQUIPO;
+                    return $model->id_equipo == Constantes::SIN_EQUIPO;
                 }, 'whenClient' => "function (attribute, value) {
                     
-                    return $('#entcitas-id_equipo').val()=='".Constantes::SIN_EQUIPO."';
+                    return $('#entcitas-id_equipo').val()=='" . Constantes::SIN_EQUIPO . "';
                 }"
             ],
-           
+
             [
-                ["txt_telefono"], 'validateTel', 'on'=>['autorizar','create-call-center']
+                ["txt_telefono"], 'validateTel', 'on' => ['autorizar', 'create-call-center']
             ],
             [
                 [
-                    'id_tipo_tramite', 
-                    'id_equipo', 
-                    'id_area', 
-                    'id_tipo_entrega', 
-                    'id_usuario', 
-                    'id_status', 
-                    'id_envio', 
-                    'id_tipo_cliente', 
-                    'id_tipo_identificacion', 
+                    'id_tipo_tramite',
+                    'id_equipo',
+                    'id_area',
+                    'id_tipo_entrega',
+                    'id_usuario',
+                    'id_status',
+                    'id_envio',
+                    'id_tipo_cliente',
+                    'id_tipo_identificacion',
                     'id_horario',
                     'b_documentos',
                     'b_promocionales',
                     'b_sim'
-                ], 
-                'integer'],
+                ],
+                'integer'
+            ],
             [[
                 'id_usuario', 'id_status', 'txt_telefono', 'txt_email', 'txt_nombre', 'txt_apellido_paterno', 'txt_folio_identificacion',
                 'txt_email',
@@ -289,7 +313,7 @@ class EntCitas extends \yii\db\ActiveRecord
                 'txt_numero_referencia',
                 'txt_token', 'id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status', 'id_tipo_cliente', 'id_tipo_identificacion', 'id_horario'
             ], 'required'],
-            [['id_tipo_cancelacion'], 'exist', 'skipOnError' => true, 'targetClass' => CatTiposCancelacion::className(), 'targetAttribute' => ['id_tipo_cancelacion' => 'id_tipo_cancelacion']], 
+            [['id_tipo_cancelacion'], 'exist', 'skipOnError' => true, 'targetClass' => CatTiposCancelacion::className(), 'targetAttribute' => ['id_tipo_cancelacion' => 'id_tipo_cancelacion']],
             [['id_tipo_cancelacion'], 'required', 'on' => 'cancelar'],
             [['txt_telefono', 'txt_numero_referencia'], 'string', 'max' => 10, 'min' => 10, 'tooLong' => 'El campo no debe superar 10 dígitos', 'tooShort' => 'El campo debe ser mínimo de 10 digítos'],
             [['txt_email'], 'email'],
@@ -362,12 +386,12 @@ class EntCitas extends \yii\db\ActiveRecord
             'fch_cita' => 'Fecha de la cita',
             'fch_creacion' => 'Fecha creación',
             'txt_tpv' => 'TPV',
-            'b_documentos'=>'Solo documentos',
-            'b_promocionales'=>'Con promocionales',
-            'b_sim'=>'Con sim',
-            'txt_identificador_cliente'=>'Consecutivo',
-            'id_tipo_cancelacion'=>"",
-            'txt_promocional'=>"Promocionales"
+            'b_documentos' => 'Solo documentos',
+            'b_promocionales' => 'Con promocionales',
+            'b_sim' => 'Con sim',
+            'txt_identificador_cliente' => 'Consecutivo',
+            'id_tipo_cancelacion' => "",
+            'txt_promocional' => "Promocionales"
         ];
     }
 
@@ -486,35 +510,35 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public static function getColorStatus($idStatus)
     {
-        
+
         switch ($idStatus) {
             case Constantes::STATUS_CREADA:
                 $statusColor = Constantes::COLOR_STATUS_CREADA;
                 break;
-            case Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR :
+            case Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR:
                 $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR;
                 break;
-            case Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC :
+            case Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC:
                 $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR;
-            break;    
-            case Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL :
+                break;
+            case Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL:
                 $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL;
                 break;
-            case Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL :
+            case Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL:
                 $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL;
-            break;
+                break;
             case Constantes::STATUS_CANCELADA_SUPERVISOR_CC:
                 $statusColor = Constantes::COLOR_STATUS_CANCELADA;
-            break;
+                break;
             case Constantes::STATUS_CANCELADA_ADMINISTRADOR_CC:
                 $statusColor = Constantes::COLOR_STATUS_CANCELADA;
-            break;
+                break;
             case Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL:
                 $statusColor = Constantes::COLOR_STATUS_CANCELADA;
-            break;
+                break;
             case Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL:
                 $statusColor = Constantes::COLOR_STATUS_CANCELADA;
-            break;
+                break;
 
             default:
                 # code...
@@ -533,8 +557,8 @@ class EntCitas extends \yii\db\ActiveRecord
             return $contenedor;
         }
 
-        if ((\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)) 
-        && (Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR == $this->id_status || Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC== $this->id_status)) {
+        if ((\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL))
+            && (Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR == $this->id_status || Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC == $this->id_status)) {
             $botones = $this->btnAprobarSupervisor . $this->btnCancelar;
             $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
             return $contenedor;
@@ -546,7 +570,7 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public function getBotonGuardar()
     {
-        if($this->isNewRecord){
+        if ($this->isNewRecord) {
             return Html::submitButton("<span class='ladda-label'>" . ($this->isNewRecord ? 'Generar cita' : 'Actualizar cita') . "</span>", ['class' => ($this->isNewRecord ? 'btn btn-success' : 'btn btn-primary ') . "  float-right ladda-button", "data-style" => "zoom-in"]);
         }
         return "";
@@ -582,12 +606,19 @@ class EntCitas extends \yii\db\ActiveRecord
     }
 
     /** 
-    * @return \yii\db\ActiveQuery 
-    */ 
-   public function getIdTipoCancelacion() 
-   { 
-       return $this->hasOne(CatTiposCancelacion::className(), ['id_tipo_cancelacion' => 'id_tipo_cancelacion']); 
-   } 
+     * @return \yii\db\ActiveQuery 
+     */
+    public function getIdTipoCancelacion()
+    {
+        return $this->hasOne(CatTiposCancelacion::className(), ['id_tipo_cancelacion' => 'id_tipo_cancelacion']);
+    }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEntEnvios()
+    {
+        return $this->hasOne(EntEnvios::className(), ['id_cita' => 'id_cita']);
+    }
 
 }

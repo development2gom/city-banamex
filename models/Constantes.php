@@ -39,4 +39,9 @@ class Constantes{
     // tipos de errors
     const CALL_CENTER = "call-center";
     const TELCEL = "telcel";
+
+    // tipos de usuarios excel
+    const USUARIO_EXCEL_ADMINISTRADOR = "Administrador";
+    const USUARIO_EXCEL_SUPERVISOR = "Supervisor";
+    const USUARIO_EXCEL_CALL_CENTER = "Usuario call center";
 }

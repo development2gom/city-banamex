@@ -138,7 +138,8 @@ $this->registerJsFile(
         ],
         [
             'attribute'=>'id_envio',
-            'value'=>'idEnvio.txt_token'
+            
+            'value'=>'idEnvio.txt_tracking'
         ],
 
         
@@ -208,7 +209,20 @@ $this->registerJsFile(
                     ],
                     [
                         'attribute'=>'id_envio',
-                        'value'=>'idEnvio.txt_token'
+                        'value'=>'idEnvio.txt_tracking',
+                        'format'=>'raw',
+                        'value'=>function($data){
+
+                            if($data->idEnvio){
+                                return Html::a(
+                                    $data->idEnvio->txt_tracking,
+                                    Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]));
+                            }
+
+                            return null;
+
+                            
+                        }
                     ],
                     
                 ],
