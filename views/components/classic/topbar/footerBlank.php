@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 
 ?>
-<footer class="page-copyright page-copyright-inverse">
+<!-- <footer class="page-copyright page-copyright-inverse">
     <p class="developer-link">Sistema desarrollado por </p>
     <a class="developer-link" href="https://www.2geeksonemonkey.com"> 2 Geeks one Monkey</a>
     <p>© <?=date('Y')?>. Todos los derechos reservados.</p>
@@ -12,4 +12,4 @@ use yii\helpers\Url;
         <img class="developer-logo" src="<?=Url::base()?>/webAssets/images/monkey-logo.png" alt="We develop successfull apps">
         </a>
     </div>
-</footer>
+</footer> -->
