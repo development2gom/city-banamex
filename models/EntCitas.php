@@ -152,7 +152,7 @@ class EntCitas extends \yii\db\ActiveRecord
 
         if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR) {
             if ($new) {
-                $message = "Cita creada y autorizada por supervisor cc";
+                $message = "Cita capturada y autorizada por supervisor cc";
             } else {
                 $message = "Cita autorizada por supervisor cc";
             }
@@ -166,7 +166,7 @@ class EntCitas extends \yii\db\ActiveRecord
         if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_CC) {
 
             if ($new) {
-                $message = "Cita creada y autorizada por administrador cc";
+                $message = "Cita capturada y autorizada por administrador cc";
             } else {
                 $message = "Cita autorizada por administrador cc";
             }

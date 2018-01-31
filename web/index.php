@@ -10,3 +10,9 @@ require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 $config = require(__DIR__ . '/../config/web.php');
 
 (new yii\web\Application($config))->run();
+
+#supervisor-call-center-grupo2@bright-star.com
+#supervisor11@bright-star.com
+#call-center@bright-star.com
+#call-center2@bright-star.com
+#supervisor-telcel@bright-star.com
