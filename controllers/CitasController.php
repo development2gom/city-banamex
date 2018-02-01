@@ -93,7 +93,6 @@ class CitasController extends Controller
      */
     public function actionView($token)
     {
-
         $areaDefault = CatAreas::findOne(1); 
         $idArea = $areaDefault->id_area;
         $numServicios = $areaDefault->txt_dias_servicio;
