@@ -72,29 +72,19 @@ class H2H
     public function getParamsCrear()
     {
         $parametros = [
-            'NoServicio' => $this->numServicio,
-            'Observaciones' => $this->observaciones,
-            'Observacionescontenido' => $this->observacionesContenido,
             'Nombre' => $this->nombre,
-            'E-Mail' => $this->email,
             'CP' => $this->cp,
-            'Calle' => $this->calle,
-            'No. Interior' => $this->numInterior,
-            'No. Exterior' => $this->numExterior,
+            'CalleNumero' => $this->calle,
             'Estado' => $this->estado,
             'Municipio' => $this->municipio,
             'Colonia' => $this->colonia,
-            'Dirección' => $this->direccion,
             'Teléfono' => $this->telefonoRef,
             'Contenido' => $this->contenido,
-            'Empaque' => $this->empaque,
             'Cantidad' => $this->cantidad,
             'Valor' => $this->valor,
-            'Peso' => $this->peso,
-            'Altura' => $this->altura,
-            'Ancho' => $this->ancho,
-            'Largo' => $this->largo,
-
+            'NoServicio' => $this->numServicio,
+            'Observacionescontenido' => $this->observacionesContenido,
+            
         ];
 
         return $parametros;
