@@ -93,6 +93,7 @@ class CitasController extends Controller
      */
     public function actionView($token)
     {
+
         $areaDefault = CatAreas::findOne(1); 
         $idArea = $areaDefault->id_area;
         $numServicios = $areaDefault->txt_dias_servicio;
@@ -111,16 +112,25 @@ class CitasController extends Controller
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
 
-            if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) ){
-                $model->statusAprobacionDependiendoUsuario();
-                if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)){      
-                    $model->generarNumeroEnvio();
-                } 
+           
+            if($model->isEdicion){
                 if($model->save()){
-                    $model->guardarHistorialDependiendoUsuario();
-                      
+                    $model->guardarHistorialUpdate();
                     return $this->redirect(['index']);
-                } 
+                }
+
+            }else{
+                if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) ){
+                    $model->statusAprobacionDependiendoUsuario();
+                    if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)){      
+                        $model->generarNumeroEnvio();
+                    } 
+                    if($model->save()){
+                        $model->guardarHistorialDependiendoUsuario();
+                        
+                        return $this->redirect(['index']);
+                    } 
+                }
             }
 
         } 

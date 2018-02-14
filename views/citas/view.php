@@ -120,12 +120,49 @@ $this->registerJsFile(
 
 
 <?php
+if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)){
+    $this->registerJs(
+        '
+
+        $(document).ready(function(){
+    
+            $(".js-actualizar").on("click", function(e){
+                e.preventDefault();
+               $("#entcitas-isedicion").val(1);
+                swal({
+                    title: "¿Estas seguro de actualizar esta cita?",
+                    text: "Se guardaran los campos modificados",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-warning",
+                    confirmButtonText: "Sí, editar cita",
+                    cancelButtonText: "No, revisaré una vez más",
+                    closeOnConfirm: true,
+                    //closeOnCancel: false
+                },
+                function() {
+                    
+                    $("#form-cita").submit();
+                    return false;
+                });
+            });
+        });
+        
+        ',
+        View::POS_END,
+        'actualizar-cita'
+        );
+    
+       
+}
+
 if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
     $this->registerJs(
     '
     $(document).ready(function(){
 
         $("#form-cita").on("afterValidate", function(e, messages, errorAttributes){
+            
             if(errorAttributes.length > 0){
                 swal({
                     title: "Datos no válidos",
@@ -144,6 +181,7 @@ if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
 
         $(".js-aprobar").on("click", function(e){
             e.preventDefault();
+            $("#entcitas-isedicion").val(0);
             swal({
                 title: "¿Estas seguro de aprobar esta cita?",
                 text: "Al autorizar se guardaran los campos modificados",

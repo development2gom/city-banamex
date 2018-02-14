@@ -63,9 +63,11 @@ use yii\db\Expression;
 class EntCitas extends \yii\db\ActiveRecord
 {
     public $btnAprobarSupervisor = "<a href='#'  class='btn btn-success js-aprobar'>Aprobar</a>";
+    public $btnEditar = "<a href='#'  class='btn btn-primary js-actualizar'>Actualizar</a>";
     public $btnCancelar = "<a href='#'  class='btn btn-danger js-cancelar'>Cancelar</a>";
     public $btnAprobarSupervisorTelcel = "<a href='#'  class='btn btn-success js-aprobar-s-telcel'>Aprobar</a>";
     public $btnAprobarAdministradorTelcel = "<a href='#'  class='btn btn-success js-aprobar-a-telcel'>Aprobar</a>";
+    public $isEdicion = "0";
 
 
     public function getConsecutivo()
@@ -140,6 +142,12 @@ class EntCitas extends \yii\db\ActiveRecord
     {
         $api = new H2H();
         return $api->consultarEnvio($tracking);
+    }
+
+    public function guardarHistorialUpdate(){
+        $usuario = EntUsuarios::getUsuarioLogueado();
+
+        EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita editada por ". $usuario->txtAuthItem->description);
     }
 
     public function guardarHistorialDependiendoUsuario($new = false, $cancel = false)
@@ -332,7 +340,7 @@ class EntCitas extends \yii\db\ActiveRecord
             [['txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_folio_identificacion'], 'string', 'max' => 200],
             [['txt_numero_telefonico_nuevo'], 'string', 'max' => 10],
             [['txt_email', 'txt_colonia', 'txt_municipio'], 'string', 'max' => 100],
-            [['num_dias_servicio'], 'string', 'max' => 50],
+            [['num_dias_servicio', 'isEdicion'], 'string', 'max' => 50],
             [['txt_token', 'txt_identificador_cliente'], 'string', 'max' => 60],
             [['txt_iccid', 'txt_imei', 'txt_calle_numero'], 'string', 'max' => 150],
             [['txt_codigo_postal'], 'string', 'max' => 5],
@@ -401,6 +409,7 @@ class EntCitas extends \yii\db\ActiveRecord
             'b_sim' => 'Con sim',
             'txt_identificador_cliente' => 'Consecutivo',
             'id_tipo_cancelacion' => "",
+            'isEdicion'=>"Edicion",
             'txt_promocional' => "Promocionales"
         ];
     }
@@ -560,23 +569,40 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public function getBotonesSupervisor()
     {
+        $botones = '';
         $usuario = EntUsuarios::getUsuarioLogueado();
         if (($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR) && Constantes::STATUS_CREADA == $this->id_status) {
-            $botones = $this->btnAprobarSupervisor . $this->btnCancelar;
+
+            $botones .= $this->btnAprobarSupervisor . $this->btnCancelar;
             $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
             return $contenedor;
         }
 
-        if (($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL)
-            && (Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR == $this->id_status || Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC == $this->id_status)) {
-            $botones = $this->btnAprobarSupervisor . $this->btnCancelar;
+        if (($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL)) {
+
+            if((Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR == $this->id_status || Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC == $this->id_status)){
+                $botones .= $this->btnAprobarSupervisor;
+            }
+
+            if(Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL || Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL){
+                $botones .= $this->btnEditar;
+            }else{
+                $botones .= $this->btnEditar . $this->btnCancelar;
+            }
+            
             $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
             return $contenedor;
         }
 
-        if (($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)
-            && (Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL == $this->id_status)) {
-            $botones = $this->btnAprobarSupervisor . $this->btnCancelar;
+        if (($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)) {
+            if((Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL == $this->id_status)){
+                $botones .= $this->btnAprobarSupervisor;
+            }
+            if(Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL || Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL){
+                $botones .= $this->btnEditar;
+            }else{
+                $botones .= $this->btnEditar . $this->btnCancelar;
+            }
             $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
            return $contenedor;
         }
@@ -636,6 +662,10 @@ class EntCitas extends \yii\db\ActiveRecord
     public function getEntEnvios()
     {
         return $this->hasOne(EntEnvios::className(), ['id_cita' => 'id_cita']);
+    }
+
+    public function getNombreCompleto(){
+        return $this->txt_nombre." ".$this->txt_apellido_paterno;
     }
 
 }

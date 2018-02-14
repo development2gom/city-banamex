@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = [
                 </div>
                 <div class="col-md-3">
                     <h5>Imagen</h5>
-                    <p><?=$respuestaApi->Image?></p>
+                    <p><img src="<?=$respuestaApi->Image?>" /></p>
                 </div>
                 <div class="col-md-3">
                     <h5>Evento</h5>
@@ -43,113 +43,29 @@ $this->params['breadcrumbs'][] = [
                 </div>
                 <div class="col-md-3">
                     <h5>Posición</h5>
-                    <p><?=$respuestaApi->Position?></p>
+                    <?php 
+                        if($respuestaApi->Position){
+                            
+                            $coordenadas = explode("|" , $respuestaApi->Position);
+
+                            $latitud = $coordenadas[1];
+                            $longitud = $coordenadas[0];
+                            echo '<img style="width:100%" src="https://maps.googleapis.com/maps/api/staticmap?center='.$latitud.','.$longitud.'&markers=color:redC%7C'.$latitud.','.$longitud.'&zoom=19&size=600x400"/>';
+                        }
+                        
+                    ?>
+                    
+                    
                 </div>
         </div>
-    </div>
-</div>
 
-<div class="panel">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            Visita 1
-        </h3>
-    </div>
-    <div class="panel-body">
         <div class="row">
             <div class="col-md-3">
-                <h5>Fecha 1</h5>
-                <p>28-Ene-2018 13:45</p>
+                <?=$respuestaApi->Motivo?>
             </div>
             <div class="col-md-3">
-                <h5>Nota 1</h5>
-                <p>comentarios de la visita</p>
+                <?=$respuestaApi->TrackingLik?>
             </div>
-            <div class="col-md-3">
-                <h5>Excepcion 1</h5>
-                <p>Cliente ausente</p>
-            </div>
-            <div class="col-md-3">
-                <h5>Operador</h5>
-                <p>Juan Peréz</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="panel">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            Visita 2
-        </h3>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-3">
-                <h5>Fecha 2</h5>
-                <p>29-Ene-2018 14:45</p>
-            </div>
-            <div class="col-md-3">
-                <h5>Nota 2</h5>
-                <p>Comentarios de la visita</p>
-            </div>
-            <div class="col-md-3">
-                <h5>Excepcion 2</h5>
-                <p>Domicilio incorrecto</p>
-            </div>
-            <div class="col-md-3">
-                <h5>Operador</h5>
-                <p>Juan Peréz</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="panel">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            Visita 3
-        </h3>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-3">
-                <h5>Fecha 2</h5>
-                <p>30-Ene-2018 16:53</p>
-            </div>
-            <div class="col-md-3">
-                <h5>Nota 2</h5>
-                <p>Comentarios de la visita</p>
-            </div>
-            <div class="col-md-3">
-                <h5>Excepcion 3</h5>
-                <p>Devolución</p>
-            </div>
-            <div class="col-md-3">
-                <h5>Operador</h5>
-                <p>Juan Peréz</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="panel">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            Devolución
-        </h3>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-3">
-                <h5>Fecha solicitud devolución</h5>
-                <p>31-Ene-2018</p>
-            </div>
-            <div class="col-md-3">
-                <h5>Motivo de devolución</h5>
-                <p>Devolución</p>
-            </div>
-            
         </div>
     </div>
 </div>

@@ -115,6 +115,14 @@ $this->registerJsFile(
         ],
         'txt_telefono',
         [
+            'attribute'=>'txt_nombre',
+            'format'=>'raw',
+            'value'=>function($data){
+                return $data->nombreCompleto;
+            }
+        ],
+
+        [
             'attribute'=>'id_tipo_tramite',
             'value'=>'idTipoTramite.txt_nombre'
         ],
@@ -185,6 +193,13 @@ $this->registerJsFile(
                         }
                     ],
                     'txt_telefono',
+                    [
+                        'attribute'=>'txt_nombre',
+                        'format'=>'raw',
+                        'value'=>function($data){
+                            return $data->nombreCompleto;
+                        }
+                    ],
                     [
                         'attribute'=>'id_tipo_tramite',
                         'value'=>'idTipoTramite.txt_nombre'

@@ -186,6 +186,8 @@ class H2H
         //close connection
         curl_close($ch);
 
+        #print_r($result);
+        #exit;
         return $result;
     }
 }

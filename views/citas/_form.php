@@ -78,12 +78,13 @@ $equipo = $model->idEquipo;
                 </div>
                 <div class="col-md-3">
                     <?= $form->field($model, 'txt_rfc')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'isEdicion')->hiddenInput(['maxlength' => true])->label(false) ?>
                 </div>
                 <div class="col-md-3">
                     <?= $form->field($model, 'txt_email')->textInput(['maxlength' => true]) ?>
                 </div>
                 <div class="col-md-3">
-                    <?= $form->field($model, 'txt_tpv')->textInput(['maxlength' => true, "class"=>"form-control input-number"]) ?>
+                    <?= $form->field($model, 'txt_tpv')->textInput(['maxlength' => true, "class"=>"form-control input-number-decimal"]) ?>
                 </div>
             </div>
 
