@@ -61,10 +61,12 @@ $this->params['breadcrumbs'][] = [
 
         <div class="row">
             <div class="col-md-3">
+                <h5>Motivo de cancelación</h5>
                 <?=$respuestaApi->Motivo?>
             </div>
             <div class="col-md-3">
-                <?=$respuestaApi->TrackingLik?>
+                <h5>Link cliente</h5>
+                <?=$respuestaApi->TrackingLink?>
             </div>
         </div>
     </div>
