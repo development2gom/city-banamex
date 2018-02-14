@@ -192,6 +192,14 @@ class CitasController extends Controller
             $model->getConsecutivo();
             $model->statusAprobacionDependiendoUsuario();
             if($model->save()){
+
+                if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)){      
+                    $model->generarNumeroEnvio();
+                } 
+                if($model->save()){
+                    
+                } 
+
                 $model->guardarHistorialDependiendoUsuario(true);
                 
                 return $this->redirect(['index']);
