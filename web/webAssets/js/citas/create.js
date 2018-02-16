@@ -80,18 +80,27 @@ function habilitarDeshabilitarCampos(isHabilitado){
 	$("#entcitas-txt_municipio").attr("disabled", isHabilitado);
 }
 
+function colocarCamposDireccionPredeterminados(){
+	colocarCampos(codigoPostal, calleYNumbero, colonia, municipio, estado);
+}
+
 function colocarCamposDireccion(cat){
-	$("#entcitas-txt_estado").val(cat.txt_estado);
-	$("#entcitas-txt_calle_numero").val(cat.txt_calle_numero);
-	$("#entcitas-txt_colonia").val(cat.txt_colonia);
-	$("#entcitas-txt_codigo_postal").val(cat.txt_codigo_postal);
-	$("#entcitas-txt_municipio").val(cat.txt_municipio);
+	if(cat.txt_estado){
+		colocarCampos(cat.txt_estado, cat.txt_calle_numero, cat.txt_colonia, cat.txt_codigo_postal, cat.txt_municipio);
+	}else{
+		colocarCamposDireccionPredeterminados();
+	}
+	
+}
+
+function colocarCampos(cp, cyn, col, m, e){
+	$("#entcitas-txt_estado").val(cp);
+	$("#entcitas-txt_calle_numero").val(cyn);
+	$("#entcitas-txt_colonia").val(col);
+	$("#entcitas-txt_codigo_postal").val(m);
+	$("#entcitas-txt_municipio").val(e);
 }
 
 function limpiarCamposDireccion(){
-	$("#entcitas-txt_estado").val("");
-	$("#entcitas-txt_calle_numero").val("");
-	$("#entcitas-txt_colonia").val("");
-	$("#entcitas-txt_codigo_postal").val("");
-	$("#entcitas-txt_municipio").val("");
+	colocarCampos("","","","","");
 }

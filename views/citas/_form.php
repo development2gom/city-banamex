@@ -234,8 +234,9 @@ $cat = $model->idCat;
                     //$equipo = empty($model->id_equipo) ? '' : CatEquipos::findOne($model->id_equipo)->txt_nombre;
                     // render your widget
                     echo $form->field($model, 'id_cat')->widget(Select2::classname(), [
-                        //'initValueText' => $cityDesc,
+                       
                         'options' => ['placeholder' => 'Selecciona cat'],
+                        
                         'pluginOptions' => [
                             
                             'allowClear' => true,
@@ -249,6 +250,7 @@ $cat = $model->idCat;
                                 'cache' => true
                             ],
                             'escapeMarkup' => new JsExpression('function (markup) { 
+                                
                                 if(!markup){
                                     return "Selecciona cat";
                                 }
@@ -256,19 +258,23 @@ $cat = $model->idCat;
                             'templateResult' => new JsExpression('formatRepoCat'),
                             'templateSelection' => new JsExpression('function (equipo) { 
                                 console.log(equipo);
-                                if(equipo.txt_estado){
+                                if(equipo.id){
                                     habilitarCamposDireccion();
                                     colocarCamposDireccion(equipo);
                                 }else{
+                                    colocarCamposDireccionPredeterminados();
                                     deshabilitarCamposDireccion();
                                     limpiarCamposDireccion();
                                 }
 
                                 if(equipo.txt_nombre){
                                     return equipo.txt_nombre; 
+                                }else if(equipo.text && !equipo.id){
+                                    return equipo.text;
                                 }else{
                                     return "'.$valCat.'"
-                                } }'),
+                                } 
+                            }'),
                         ],
                     ])->label(false);
                     ?>
@@ -475,7 +481,19 @@ $cat = $model->idCat;
 
     <?php ActiveForm::end(); ?>
 
-
+<?php
+$this->registerJs(
+  '
+    var codigoPostal = "'.$model->txt_codigo_postal.'";
+    var calleYNumbero = "'.$model->txt_calle_numero.'";
+    var colonia = "'.$model->txt_colonia.'";
+    var municipio = "'.$model->txt_municipio.'";
+    var estado = "'.$model->txt_estado.'";
+  ',
+  View::POS_BEGIN,
+  'variables'
+);
+?>
     <?php
 $this->registerJs(
   '
