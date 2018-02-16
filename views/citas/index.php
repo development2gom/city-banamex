@@ -16,7 +16,9 @@ use app\models\Constantes;
 
 $this->title = 'Citas';
 $this->params['classBody'] = "site-navbar-small site-menubar-hide";
-$this->params['headerActions'] = '<a class="btn btn-success ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
+if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){
+    $this->params['headerActions'] = '<a class="btn btn-success ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
+}
 $this->params['breadcrumbs'][] = [
     'label' => '<i class="icon wb-calendar"></i>Citas',
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
@@ -42,7 +44,7 @@ $this->registerJsFile(
 <div class="row">
     
     <?php
-    if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){?>
+    if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)){?>
     <div class="col-md-3">
         <div class="list-group bg-blue-grey-100">
             <?php
@@ -72,7 +74,7 @@ $this->registerJsFile(
     ?>
 
     
-    <div class="col-md-<?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)?"9":"12"?>">
+    <div class="col-md-<?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)?"9":"12"?>">
         <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true" role="tablist">
             <div class="panel">
                 <div class="panel-heading" id="exampleHeadingDefaultOne" role="tab">
@@ -102,6 +104,7 @@ $this->registerJsFile(
     <?php
 
     $gridColumns =  [
+        'txt_identificador_cliente',
         [
             'attribute' => 'id_status',
             'format'=>'raw',
@@ -112,6 +115,14 @@ $this->registerJsFile(
         ],
         'txt_telefono',
         [
+            'attribute'=>'txt_nombre',
+            'format'=>'raw',
+            'value'=>function($data){
+                return $data->nombreCompleto;
+            }
+        ],
+
+        [
             'attribute'=>'id_tipo_tramite',
             'value'=>'idTipoTramite.txt_nombre'
         ],
@@ -120,7 +131,7 @@ $this->registerJsFile(
             'format'=>'raw',
             'value'=>function($data){
 
-                return Calendario::getDateComplete($data->fch_creacion);
+                return Calendario::getDateCompleteHour($data->fch_creacion);
             }
         ],
         [
@@ -135,7 +146,8 @@ $this->registerJsFile(
         ],
         [
             'attribute'=>'id_envio',
-            'value'=>'idEnvio.txt_token'
+            
+            'value'=>'idEnvio.txt_tracking'
         ],
 
         
@@ -163,6 +175,7 @@ $this->registerJsFile(
         <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'columns' =>[
+                    'txt_identificador_cliente',
                     [
                         'attribute' => 'id_status',
                         'format'=>'raw',
@@ -181,6 +194,13 @@ $this->registerJsFile(
                     ],
                     'txt_telefono',
                     [
+                        'attribute'=>'txt_nombre',
+                        'format'=>'raw',
+                        'value'=>function($data){
+                            return $data->nombreCompleto;
+                        }
+                    ],
+                    [
                         'attribute'=>'id_tipo_tramite',
                         'value'=>'idTipoTramite.txt_nombre'
                     ],
@@ -189,7 +209,7 @@ $this->registerJsFile(
                         'format'=>'raw',
                         'value'=>function($data){
             
-                            return Calendario::getDateComplete($data->fch_creacion);
+                            return Calendario::getDateCompleteHour($data->fch_creacion);
                         }
                     ],
                     [
@@ -204,7 +224,20 @@ $this->registerJsFile(
                     ],
                     [
                         'attribute'=>'id_envio',
-                        'value'=>'idEnvio.txt_token'
+                        'value'=>'idEnvio.txt_tracking',
+                        'format'=>'raw',
+                        'value'=>function($data){
+
+                            if($data->idEnvio){
+                                return Html::a(
+                                    $data->idEnvio->txt_tracking,
+                                    Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]));
+                            }
+
+                            return null;
+
+                            
+                        }
                     ],
                     
                 ],

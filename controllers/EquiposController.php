@@ -128,8 +128,6 @@ class EquiposController extends Controller
         $criterios['txt_nombre'] = $q;
         $searchModel = new CatEquiposSearch();
 
-        
-
         if ($page > 1) {
             $page--;
         }

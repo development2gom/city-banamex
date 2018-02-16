@@ -62,6 +62,21 @@ class Calendario
 
     }
 
+    public static function getMonthNumber($string=null)
+    {
+        // Inicializamos la fecha y hora actual
+
+        $tiempo = time();
+        if($string){
+            $tiempo = strtotime($string);
+        }
+        $fecha = date('m', $tiempo);
+       
+
+        return $fecha;
+
+    }
+
     public static function getYearLastDigit($string=null)
     {
 
@@ -74,7 +89,7 @@ class Calendario
         return $fecha;
     }
 
-    public static function getDateComplete($string){
+    public static function getDateCompleteHour($string){
         $nombreDia = self::getDayName($string);
         $dia = self::getDayNumber($string);
         $mes = self::getMonthName($string);
@@ -82,6 +97,16 @@ class Calendario
         $hora = self::getHoursMinutes($string);
 
         return $nombreDia." ".$dia."-".$mes."-".$anio." ".$hora;
+    }
+
+    public static function getDateComplete($string){
+        $nombreDia = self::getDayName($string);
+        $dia = self::getDayNumber($string);
+        $mes = self::getMonthName($string);
+        $anio = self::getYearLastDigit($string);
+        $hora = self::getHoursMinutes($string);
+
+        return $nombreDia." ".$dia."-".$mes."-".$anio;
     }
 
     public static function getHoursMinutes($string=null){

@@ -8,16 +8,20 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use kartik\depdrop\DepDrop;
+use app\models\Constantes;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\EntCitas */
 /* @var $form yii\widgets\ActiveForm */
 
 $equipo = $model->idEquipo;
+$cat = $model->idCat;
 ?>
 
     <?php $form = ActiveForm::begin([
         'errorCssClass'=>"has-danger",
+        'id'=>'form-cita',
         'fieldConfig' => [
             "labelOptions" => [
                 "class" => "form-control-label"
@@ -33,7 +37,19 @@ $equipo = $model->idEquipo;
         <div class="panel-body pt-20">
             <div class="row">
                 <div class="col-md-3">
-                    <?= $form->field($model, 'txt_telefono')->textInput(['maxlength' => true, 'class'=>'form-control input-number' ]) ?>
+                    <?php 
+                    if($model->isNewRecord){
+                        echo $form->field($model, 'txt_telefono')->textInput(['maxlength' => true, 'class'=>'form-control input-number' ]); 
+                    }else{
+                    ?>
+                    <div class="form-group">
+                        <label class="form-control-label" for="telefono">Télefono</label>
+                        <?=Html::textInput("telefono", $model->txt_telefono, ["class"=>"form-control", 'disabled'=>true])?>
+                        <div class="help-block"></div>
+                    </div>
+                    <?php
+                    }    
+                    ?>
                 </div>
                 <div class="col-md-3">
                     <?= $form->field($model, 'txt_nombre')->textInput(['maxlength' => true]) ?>
@@ -63,12 +79,13 @@ $equipo = $model->idEquipo;
                 </div>
                 <div class="col-md-3">
                     <?= $form->field($model, 'txt_rfc')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'isEdicion')->hiddenInput(['maxlength' => true])->label(false) ?>
                 </div>
                 <div class="col-md-3">
                     <?= $form->field($model, 'txt_email')->textInput(['maxlength' => true]) ?>
                 </div>
                 <div class="col-md-3">
-                    <?= $form->field($model, 'txt_tpv')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'txt_tpv')->textInput(['maxlength' => true, "class"=>"form-control input-number-decimal"]) ?>
                 </div>
             </div>
 
@@ -118,7 +135,9 @@ $equipo = $model->idEquipo;
                                 'processResults' => new JsExpression($resultsJs),
                                 'cache' => true
                             ],
-                            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                            'escapeMarkup' => new JsExpression('function (markup) { if(!markup){
+                                return "Selecciona equipo";
+                            }return markup; }'),
                             'templateResult' => new JsExpression('formatRepoEquipo'),
                             'templateSelection' => new JsExpression('function (equipo) { 
                                 if(equipo.txt_nombre){
@@ -135,6 +154,59 @@ $equipo = $model->idEquipo;
                     <?= $form->field($model, 'txt_numero_telefonico_nuevo')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
                 </div>
             </div>
+            
+            <div class="row">
+                <div class="col-md-3">
+                    <?= $form->field($model, 'txt_imei')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="col-md-3">
+                    <?= $form->field($model, 'txt_iccid')->textInput(['maxlength' => true]) ?>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col-md-3">
+                    
+                    <?= $form->field($model, 'b_documentos', [
+                            'template'=>"{input}{label}{error}",
+                            'options' => [
+                                'class' => 'checkbox-custom checkbox-primary',
+                                
+                                ]
+                            ])->checkbox([], false) ?>
+                </div>
+                <div class="col-md-3">
+                    
+                    <?= $form->field($model, 'b_promocionales', [
+                            'template'=>"{input}{label}{error}",
+                            'options' => [
+                                'class' => 'checkbox-custom checkbox-primary',
+                                
+                                ]
+                            ])->checkbox([], false)  ?>
+                </div>
+                
+                <div class="col-md-3">
+                    
+                    <?= $form->field($model, 'b_sim', [
+                            'template'=>"{input}{label}{error}",
+                            'options' => [
+                                'class' => 'checkbox-custom checkbox-primary',
+                                
+                                ]
+                            ])->checkbox([], false) ?>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                
+                </div>
+                <div class="col-md-3 contenedor-promocionales">
+                    <?= $form->field($model, 'txt_promocional')->textInput(['maxlength' => true]) ?>
+                </div>
+            </div>
+
         </div>
     </div>
     
@@ -145,6 +217,68 @@ $equipo = $model->idEquipo;
             </h5>
         </div>
         <div class="panel-body pt-20">
+            <div class="row">
+                <div class="col-md-3">
+                    <?= $form->field($model, 'b_entrega_cat', [
+                            'template'=>"{input}{label}{error}",
+                            'options' => [
+                                'class' => 'checkbox-custom checkbox-primary',
+                                
+                                ]
+                            ])->checkbox([], false) ?>
+                </div>
+                <div class="col-md-6 contenedor-cat">
+                    <?php
+                    $url = Url::to(['cats/buscar-cat']);
+                    $valCat = empty($model->id_cat) ? '' : $cat->txt_nombre;
+                    //$equipo = empty($model->id_equipo) ? '' : CatEquipos::findOne($model->id_equipo)->txt_nombre;
+                    // render your widget
+                    echo $form->field($model, 'id_cat')->widget(Select2::classname(), [
+                        'options' => ['placeholder' => 'Selecciona cat'],
+                        
+                        'pluginOptions' => [
+                            
+                            'allowClear' => true,
+                            'minimumInputLength' => 1,
+                            'ajax' => [
+                                'url' => $url,
+                                'dataType' => 'json',
+                                'delay' => 250,
+                                'data' => new JsExpression('function(params) { return {q:params.term, page: params.page}; }'),
+                                'processResults' => new JsExpression($resultsJs),
+                                'cache' => true
+                            ],
+                            'escapeMarkup' => new JsExpression('function (markup) { 
+                                
+                                if(!markup){
+                                    return "Selecciona cat";
+                                }
+                                return markup; }'),
+                            'templateResult' => new JsExpression('formatRepoCat'),
+                            'templateSelection' => new JsExpression('function (equipo) { 
+                                console.log(equipo);
+                                if(equipo.id){
+                                    habilitarCamposDireccion();
+                                    colocarCamposDireccion(equipo);
+                                }else{
+                                    colocarCamposDireccionPredeterminados();
+                                    deshabilitarCamposDireccion();
+                                    limpiarCamposDireccion();
+                                }
+
+                                if(equipo.txt_nombre){
+                                    return equipo.txt_nombre; 
+                                }else if(equipo.text && !equipo.id){
+                                    return equipo.text;
+                                }else{
+                                    return "'.$valCat.'"
+                                } 
+                            }'),
+                        ],
+                    ])->label(false);
+                    ?>
+                </div>
+            </div>
             <div class="row">
                 <!-- <div class="col-md-3">
                     <div class="form-group">
@@ -193,9 +327,6 @@ $equipo = $model->idEquipo;
                     <?= $form->field($model, 'txt_calle_numero')->textInput(['maxlength' => true]) ?>
                 </div>
                 
-                    
-
-               
             </div>
 
             <div class="row">
@@ -348,3 +479,108 @@ $equipo = $model->idEquipo;
     </div>
 
     <?php ActiveForm::end(); ?>
+
+<?php
+$this->registerJs(
+  '
+    var codigoPostal = "'.$model->txt_codigo_postal.'";
+    var calleYNumbero = "'.$model->txt_calle_numero.'";
+    var colonia = "'.$model->txt_colonia.'";
+    var municipio = "'.$model->txt_municipio.'";
+    var estado = "'.$model->txt_estado.'";
+  ',
+  View::POS_BEGIN,
+  'variables'
+);
+?>
+    <?php
+$this->registerJs(
+  '
+
+  $("#entcitas-txt_telefono").on("change", function(){
+    var elemento = $(this);
+    var data = elemento.val();
+    if(elemento.val().length==10){
+        $.ajax({
+            url: baseUrl+"citas/validar-telefono?tel="+data,
+            success:function(res){
+
+                if(res.status=="error"){
+                    swal({
+                        title: "Datos no válido",
+                        text: "El número teléfonico " + res.tel + " ya se encuentra en una cita activa",
+                        type: "warning",
+                        showCancelButton: false,
+                        confirmButtonClass: "btn-warning",
+                        confirmButtonText: "Ok",
+                        cancelButtonText: "No, revisaré una vez más",
+                        closeOnConfirm: true,
+                        //closeOnCancel: false
+                    });
+                    elemento.val("");
+                    elemento.trigger("change");
+                }    
+            }
+        });
+    }
+
+  });
+
+  var claseOcultar = "hidden-xl-down";
+  checkStatus();
+  checkPromocionales();
+  checkIsCat();
+  
+function checkStatus(){
+    var val = $("#entcitas-id_equipo").val();
+    
+    if(val=="'.Constantes::SIN_EQUIPO.'"){
+        $("#entcitas-b_documentos").prop("checked", true);
+        $("#entcitas-b_documentos").attr("disabled", true);
+    }else{
+        $("#entcitas-b_documentos").prop("checked", false);
+        $("#entcitas-b_documentos").attr("disabled", false);
+    }
+}
+
+
+function checkPromocionales(){
+    if($("#entcitas-b_promocionales").prop("checked")){
+        $(".contenedor-promocionales").show();
+    }else{
+        $(".contenedor-promocionales").hide();
+    }
+
+}
+
+function checkIsCat(){
+    if($("#entcitas-b_entrega_cat").prop("checked")){
+        $(".contenedor-cat").show();
+    }else{
+        $("#entcitas-id_cat").select2("val", "");
+        $(".contenedor-cat").hide();
+        colocarCamposDireccionPredeterminados();
+        deshabilitarCamposDireccion();
+        limpiarCamposDireccion();
+    }
+}
+
+
+$("#entcitas-b_entrega_cat").on("change", function(){
+   
+    checkIsCat();
+});
+
+$("#entcitas-b_promocionales").on("change", function(){
+    checkPromocionales();
+});
+  
+  $("#entcitas-id_equipo").on("change", function(){
+    checkStatus();
+
+  });
+  ',
+  View::POS_READY,
+  'tipo-usuario'
+);
+?>

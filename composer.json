@@ -22,7 +22,9 @@
         "kop/yii2-scroll-pager": "dev-master",
         "kartik-v/yii2-export": "*",
         "kartik-v/yii2-widget-datepicker": "@dev",
-        "kartik-v/yii2-widget-depdrop": "@dev"
+        "kartik-v/yii2-widget-depdrop": "@dev",
+        "phpoffice/phpspreadsheet": "^1.0",
+        "sjaakp/yii2-alphapager": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

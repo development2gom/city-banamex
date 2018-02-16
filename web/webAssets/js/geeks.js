@@ -42,9 +42,32 @@ $(document).ready(function () {
     });
 
     $(".input-number").keypress(function (e) {
+
         if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
             return false;
         }
+    });
+
+    $(".input-number-decimal").keypress(function (e) {
+    
+        if(String.fromCharCode(event.which)=="."){
+            var str = $(this).val();
+            var n = str.indexOf(".");
+
+            if(str.length==0 || n==0){
+                $(this).val("0.");
+                return false;
+            }
+
+            if(n>0){
+                return false;
+            }
+
+        }else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+           
+            return false;
+        }
+
     });
 
 

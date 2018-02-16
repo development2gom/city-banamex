@@ -13,6 +13,7 @@ $this->params['breadcrumbs'][] = [
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
     'encode' => false
 ];
+
 $this->params['breadcrumbs'][] = [
     'label' => '<i class="icon wb-plus"></i> '.$this->title,
     'template'=>'<li class="breadcrumb-item">{link}</li>', 

@@ -95,6 +95,8 @@ class ManagerController extends Controller {
 			
 			// return $this->redirect(['view', 'id' => $model->id_usuario]);
 		}
+
+		print_r($model->errors);
 		return $this->render ( 'signUp', [ 
 				'model' => $model 
 		] );

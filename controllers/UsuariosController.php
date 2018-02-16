@@ -10,6 +10,11 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\modules\ModUsuarios\models\Utils;
 use app\models\AuthItem;
+use app\models\Constantes;
+use app\components\AccessControlExtend;
+use yii\web\UploadedFile;
+use app\models\EntGruposTrabajo;
+use app\models\EntCitas;
 
 /**
  * UsuariosController implements the CRUD actions for EntUsuarios model.
@@ -23,12 +28,19 @@ class UsuariosController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControlExtend::className(),
+                'only' => ['index', 'create', 'update', 'view'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'create', 'update', 'view'],
+                    'allow' => true,
+                        'roles' => [Constantes::USUARIO_SUPERVISOR, Constantes::USUARIO_SUPERVISOR_TELCEL],
+                    ],
+                    
+                  
                 ],
-            ],
+            ]
         ];
     }
 
@@ -38,12 +50,13 @@ class UsuariosController extends Controller
      */
     public function actionIndex()
     {
-        $usuario = EntUsuarios::getIdentity();
+        $usuario = EntUsuarios::getUsuarioLogueado();
 
         $auth = Yii::$app->authManager;
 
         $hijos = $auth->getChildRoles($usuario->txt_auth_item);
         ksort($hijos);
+       
         $roles = AuthItem::find()->where(['in', 'name', array_keys($hijos)])->orderBy("name")->all();
 
         $searchModel = new UsuariosSearch();
@@ -64,6 +77,7 @@ class UsuariosController extends Controller
      */
     public function actionView($id)
     {
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -82,7 +96,9 @@ class UsuariosController extends Controller
 
         $hijos = $auth->getChildRoles($usuario->txt_auth_item);
         ksort($hijos);
-        $roles = AuthItem::find()->where(['in', 'name', array_keys($hijos)])->orderBy("name")->all();
+        $roles = AuthItem::find()->where(['in', 'name', array_keys($hijos)])->orderBy("description")->all();
+
+        $supervisores = EntUsuarios::find()->where(['txt_auth_item'=>Constantes::USUARIO_SUPERVISOR])->orderBy("txt_username, txt_apellido_paterno")->all();
 
         $model = new EntUsuarios([
             'scenario' => 'registerInput'
@@ -97,37 +113,15 @@ class UsuariosController extends Controller
 
             if ($user = $model->signup()) {
 
-                if (Yii::$app->params['modUsuarios']['mandarCorreoActivacion']) {
-
-                    $activacion = new EntUsuariosActivacion();
-                    $activacion->saveUsuarioActivacion($user->id_usuario);
-                
-                // Enviar correo de activación
-                    $utils = new Utils();
-                // Parametros para el email
-                    $parametrosEmail['url'] = Yii::$app->urlManager->createAbsoluteUrl([
-                        'activar-cuenta/' . $activacion->txt_token
-                    ]);
-                    $parametrosEmail['user'] = $user->getNombreCompleto();
-                
-                // Envio de correo electronico
-                    $utils->sendEmailActivacion($user->txt_email, $parametrosEmail);
-                    $this->redirect([
-                        'login'
-                    ]);
-                } else {
-
-                    if (Yii::$app->getUser()->login($user)) {
-                        return $this->goHome();
-                    }
-                }
+                return $this->redirect(['update', 'id'=>$user->id_usuario]);
             }
         
         // return $this->redirect(['view', 'id' => $model->id_usuario]);
         }
         return $this->render('create', [
             'model' => $model,
-            'roles'=>$roles
+            'roles'=>$roles,
+            'supervisores'=>$supervisores
         ]);
     }
 
@@ -139,15 +133,62 @@ class UsuariosController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $usuario = EntUsuarios::getIdentity();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_usuario]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        $auth = Yii::$app->authManager;
+
+        $hijos = $auth->getChildRoles($usuario->txt_auth_item);
+        ksort($hijos);
+        $roles = AuthItem::find()->where(['in', 'name', array_keys($hijos)])->orderBy("name")->all();
+
+        $supervisores = EntUsuarios::find()->where(['txt_auth_item'=>Constantes::USUARIO_SUPERVISOR])->orderBy("txt_username, txt_apellido_paterno")->all();
+
+        $model = $this->findModel($id);
+        $rol = $model->txt_auth_item;
+        $model->scenario = "update";
+
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
         }
+
+        if ($model->load(Yii::$app->request->post())){
+            if(isset($_POST["EntUsuarios"]['password'])){
+                $model->setPassword($_POST["EntUsuarios"]['password']);
+                $model->generateAuthKey();
+            }
+            if($model->save()){
+
+                $manager = Yii::$app->authManager;
+                $item = $manager->getRole($rol);
+                $item = $item ? : $manager->getPermission($rol);
+                $manager->revoke($item,$model->id_usuario);
+
+                $authorRole = $manager->getRole($model->txt_auth_item);
+                $manager->assign($authorRole, $model->id_usuario);
+                
+                
+                return $this->redirect(['index']);
+            }
+        }
+        
+        
+        return $this->render('update', [
+            'model' => $model,
+            'roles'=>$roles,
+            'supervisores'=>$supervisores
+        ]);
+        
+    }
+
+    public function actionTestRemover(){
+        $manager = Yii::$app->authManager;
+        $item = $manager->getRole(Constantes::USUARIO_ADMINISTRADOR_TELCEL);
+        $item = $item ? : $manager->getPermission(Constantes::USUARIO_ADMINISTRADOR_TELCEL);
+        $manager->revoke($item,194);
+
+        $authorRole = $manager->getRole(Constantes::USUARIO_SUPERVISOR_TELCEL);
+        $manager->assign($authorRole, 194);
     }
 
     /**
@@ -178,4 +219,104 @@ class UsuariosController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    
+
+   
+
+    public function actionImportarData(){
+
+        $errores = [];
+        return $this->redirect(['site/construccion']);
+        if (Yii::$app->request->isPost) {
+            $file = UploadedFile::getInstanceByName('file-import');
+            
+            if ($file) {                
+               
+                try{
+                    $inputFileType = \PHPExcel_IOFactory::identify($file->tempName);
+                    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+                    $objPHPExcel = $objReader->load($file->tempName);
+                }catch(\Exception $e){
+                    echo $e;
+                    exit;
+                }
+
+                $sheet = $objPHPExcel->getSheet(0);
+                $highestRow = $sheet->getHighestRow();
+                $highestColumn = $sheet->getHighestColumn();
+
+                //  Loop through each row of the worksheet in turn
+                for ($row = 2; $row <= $highestRow; $row++){ 
+                    //  Read a row of data into an array
+                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row,
+                                                    NULL,
+                                                    TRUE,
+                                                    FALSE);
+                    $usuario = new EntUsuarios(["scenario"=>"registerInput"]);                                
+                    foreach($rowData as $data){
+                       
+                         $usuario->txt_username = $data[0];
+                         $usuario->txt_apellido_paterno = $data[1];
+                         $usuario->txt_email = $data[2];
+                         $usuario->password = $data[3];
+                         $usuario->repeatPassword = $data[3];
+                         $usuario->setTipoUsuarioExcel($data[4]);
+                    }
+                    $usuario->signup();
+
+                    if($usuario->errors){
+                        echo "Problema en la fila ".$row.":<br>";
+                        foreach($usuario->errors as $key=>$errores){
+                            foreach($errores as $error){
+                                if($key!="repeatPassword"){
+                                    echo EntUsuarios::label()[$key]." ".$error."<br>";
+                                }
+                            }
+
+                        }
+                    }
+
+                    //  Insert row data array into your database of choice here
+                }
+
+            }
+        }
+
+        return $this->render("importar-data", ['errores'=>$errores]);
+    }
+
+
+    public function actionAsignarUsuario(){
+
+        if($_POST['supervisor'] && $_POST['call']){
+            $supervisor = $_POST['supervisor'];
+            $call = $_POST['call'];
+
+            $asignacion = EntGruposTrabajo::find()->where(['id_usuario'=>$supervisor, 'id_usuario_asignado'=>$call])->one();
+
+            if(!$asignacion){
+                $asignacion = new EntGruposTrabajo();
+                $asignacion->id_usuario = $supervisor;
+                $asignacion->id_usuario_asignado = $call;
+                $asignacion->save();
+            }
+        }
+    }
+
+    public function actionRemoverUsuario(){
+
+        if($_POST['supervisor'] && $_POST['call']){
+            $supervisor = $_POST['supervisor'];
+            $call = $_POST['call'];
+
+            $asignacion = EntGruposTrabajo::find()->where(['id_usuario'=>$supervisor, 'id_usuario_asignado'=>$call])->one();
+
+            if($asignacion){
+                
+                $asignacion->delete();
+            }
+        }
+    }
+
 }

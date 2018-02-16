@@ -4,12 +4,13 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use app\models\Calendario;
 use app\models\EntCitas;
-
-
+use yii\bootstrap\ActiveForm;
+use app\models\Constantes;
+use yii\web\View;
 /* @var $this yii\web\View */
 /* @var $model app\models\EntCitas */
 
-$this->title = 'Ver cita '.'<span class="badge badge-'.EntCitas::getColorStatus($model->id_status   ).'">'.$model->idStatus->txt_nombre.'</span>';
+$this->title = 'Cita '.$model->txt_identificador_cliente.' <span class="badge badge-'.EntCitas::getColorStatus($model->id_status   ).'">'.$model->idStatus->txt_nombre.'</span>';
 $this->params['breadcrumbs'][] = [
     'label' => '<i class="icon wb-calendar"></i> Citas', 
     'url' => ['index'],
@@ -17,7 +18,7 @@ $this->params['breadcrumbs'][] = [
     'encode' => false
 ];
 $this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon wb-eye"></i> Ver cita',
+    'label' => '<i class="icon wb-eye"></i> Cita '.$model->txt_identificador_cliente,
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
     'encode' => false];
 
@@ -61,6 +62,8 @@ $this->registerJsFile(
             'areas'=>$areas,
             'areaDefault'=>$areaDefault
         ]) ?>
+
+        <?=$model->getBotonesSupervisor()?>
     </div>
 </div>
 
@@ -91,7 +94,7 @@ $this->registerJsFile(
                         'label' => 'Fecha de modificación',
                         'value'=>function($data){
             
-                            return Calendario::getDateComplete($data->fch_modificacion);
+                            return Calendario::getDateCompleteHour($data->fch_modificacion);
                         }
                     ],
                     
@@ -114,3 +117,112 @@ $this->registerJsFile(
             ]) ?>
     </div>
 </div>
+
+
+<?php
+if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)){
+    $this->registerJs(
+        '
+
+        $(document).ready(function(){
+    
+            $(".js-actualizar").on("click", function(e){
+                e.preventDefault();
+               $("#entcitas-isedicion").val(1);
+                swal({
+                    title: "¿Estas seguro de actualizar esta cita?",
+                    text: "Se guardaran los campos modificados",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-warning",
+                    confirmButtonText: "Sí, editar cita",
+                    cancelButtonText: "No, revisaré una vez más",
+                    closeOnConfirm: true,
+                    //closeOnCancel: false
+                },
+                function() {
+                    
+                    $("#form-cita").submit();
+                    return false;
+                });
+            });
+        });
+        
+        ',
+        View::POS_END,
+        'actualizar-cita'
+        );
+    
+       
+}
+
+if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
+    $this->registerJs(
+    '
+    $(document).ready(function(){
+
+        $("#form-cita").on("afterValidate", function(e, messages, errorAttributes){
+            
+            if(errorAttributes.length > 0){
+                swal({
+                    title: "Datos no válidos",
+                    text: "Hay datos no válidos en la cita",
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonClass: "btn-warning",
+                    confirmButtonText: "Revisar datos",
+                    cancelButtonText: "No, revisaré una vez más",
+                    closeOnConfirm: true,
+                    //closeOnCancel: false
+                });
+                return false;
+            }
+        });
+
+        $(".js-aprobar").on("click", function(e){
+            e.preventDefault();
+            $("#entcitas-isedicion").val(0);
+            swal({
+                title: "¿Estas seguro de aprobar esta cita?",
+                text: "Al autorizar se guardaran los campos modificados",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-warning",
+                confirmButtonText: "Sí, aprobar cita",
+                cancelButtonText: "No, revisaré una vez más",
+                closeOnConfirm: true,
+                //closeOnCancel: false
+            },
+            function() {
+                
+                $("#form-cita").submit();
+                return false;
+            });
+                        
+            
+            
+        });
+    });
+    
+    ',
+    View::POS_END,
+    'aprobar-cita'
+    );
+
+    $this->registerJs(
+        '
+        $(".js-cancelar").on("click", function(e){
+            e.preventDefault();
+            $("#cita-cancelacion-modal").modal("show");
+    
+        })
+        ',
+        View::POS_END,
+        'cancelar-cita'
+        );
+
+    
+
+echo $this->render("_modal-cancelacion", ['model'=>$model]);
+}
+?>

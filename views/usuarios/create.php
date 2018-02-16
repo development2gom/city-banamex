@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\View;
+use app\models\Constantes;
 
 
 /* @var $this yii\web\View */
@@ -35,7 +37,8 @@ $this->params['breadcrumbs'][] = [
     <div class="panel-body">
         <?= $this->render('_form', [
             'model' => $model,
-            'roles'=>$roles
+            'roles'=>$roles,
+            'supervisores'=>$supervisores
         ]) ?>
     </div>
 </div>

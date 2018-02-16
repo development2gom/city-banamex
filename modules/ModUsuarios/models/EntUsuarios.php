@@ -10,6 +10,8 @@ use app\modules\ModUsuarios\models\Utils;
 use kartik\password\StrengthValidator;
 use yii\web\UploadedFile;
 use app\models\AuthItem;
+use app\models\Constantes;
+use app\models\EntGruposTrabajo;
 
 /**
  * This is the model class for table "ent_usuarios".
@@ -55,6 +57,26 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	 */
 	public function rules() {
 		return [ 
+				
+				[
+					['repeatPassword', 'password'], 'required', 'on'=>'update',
+					'when' => function ($model) {
+						return $model->password || $model->repeatPassword;
+					}, 'whenClient' => "function (attribute, value) {
+						
+						return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
+					}"
+				],
+
+				[
+					['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'update',
+					'when' => function ($model) {
+						return $model->password || $model->repeatPassword;
+					}, 'whenClient' => "function (attribute, value) {
+						
+						return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
+					}"
+				],
 				[ 
 						'password',
 						'compare',
@@ -84,9 +106,21 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 								'txt_auth_item' 
 						],
 						'required',
-						'on' => 'registerInput',
+						'on' => ['registerInput', 'update'],
 						'message'=>'Campo requerido'
 				],
+
+				[ 
+					[ 
+							'txt_username',
+							'txt_apellido_paterno',
+							'txt_email',
+							'txt_auth_item',
+							'password' 
+					],
+					'trim',
+					
+			],
 				// [ 
 				// 		[ 
 				// 				'password'
@@ -203,7 +237,10 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				'txt_email' => 'Correo electrónico',
 				'fch_creacion' => 'Fecha creación',
 				'fch_actualizacion' => 'Fch Actualizacion',
-				'id_status' => 'Id Status' 
+				'id_status' => 'Id Status',
+				'password'=>'Contraseña',
+				'repeatPassword'=>'Repetir contraseña',
+				'txt_auth_item'=>'Tipo de usuario'
 		];
 	}
 	
@@ -413,6 +450,8 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	 */
 	public function signup($isFacebook=false) {
 		
+		
+
 		if (! $this->validate ()) {
 			return null;
 		}
@@ -427,6 +466,9 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 		$user->txt_apellido_paterno = $this->txt_apellido_paterno;
 		$user->txt_apellido_materno = $this->txt_apellido_materno;
 		$user->txt_email = $this->txt_email;
+		$user->txt_auth_item = $this->txt_auth_item;
+		
+		
 		if($user->image){
 			$user->txt_imagen = $user->txt_token.".".$user->image->extension;
 			if(!$user->upload()){
@@ -443,8 +485,18 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 		} else {
 			$user->id_status = self::STATUS_ACTIVED;
 		}
+
+		if($user->save()){
+			$usuario =$user;
+         	$auth = \Yii::$app->authManager;
+         	$authorRole = $auth->getRole($this->txt_auth_item);
+			$auth->assign($authorRole, $usuario->getId());
+			return $user;
+		}else{
+			return null;
+		}
 		
-		return $user->save () ? $user : null;
+		
 	}
 
 
@@ -591,6 +643,22 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	/**
      * @return \yii\db\ActiveQuery
      */
+    public function getEntGruposTrabajos()
+    {
+        return $this->hasMany(EntGruposTrabajo::className(), ['id_usuario' => 'id_usuario']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEntGruposTrabajos0()
+    {
+        return $this->hasMany(EntGruposTrabajo::className(), ['id_usuario_asignado' => 'id_usuario']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getIdUsuarioAsignados()
     {
         return $this->hasMany(EntUsuarios::className(), ['id_usuario' => 'id_usuario_asignado'])->viaTable('ent_grupos_trabajo', ['id_usuario' => 'id_usuario']);
@@ -602,5 +670,22 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
     public function getIdUsuarios()
     {
         return $this->hasMany(EntUsuarios::className(), ['id_usuario' => 'id_usuario'])->viaTable('ent_grupos_trabajo', ['id_usuario_asignado' => 'id_usuario']);
-    }
+	}
+	
+	public function setTipoUsuarioExcel($tipoExcel){
+		switch ($tipoExcel) {
+			case Constantes::USUARIO_EXCEL_ADMINISTRADOR:
+				$this->txt_auth_item = Constantes::USUARIO_ADMINISTRADOR_CC;
+				break;
+			case Constantes::USUARIO_EXCEL_CALL_CENTER:
+				$this->txt_auth_item = Constantes::USUARIO_CALL_CENTER;
+			break;
+			case Constantes::USUARIO_EXCEL_SUPERVISOR:
+				$this->txt_auth_item = Constantes::USUARIO_SUPERVISOR;
+			break;
+			default:
+				# code...
+				break;
+		}
+	}
 }

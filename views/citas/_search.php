@@ -22,7 +22,7 @@ use kartik\date\DatePicker;
     ]); ?>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
              <?= $form->field($model, 'id_status')
                                 ->widget(Select2::classname(), [
                                     'data' => ArrayHelper::map(CatStatusCitas::find("b_habilitado=1")->orderBy("txt_nombre")->all(), 'id_statu_cita', 'txt_nombre'),
@@ -35,11 +35,11 @@ use kartik\date\DatePicker;
                 ?> 
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?php  echo $form->field($model, 'txt_telefono')->textInput(['maxlength' => true, 'class'=>'form-control input-number']); ?>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?php  echo $form->field($model, 'fch_cita')->widget(DatePicker::classname(), [
                     'pickerButton'=>false,
                     'removeButton'=>false,
@@ -49,6 +49,10 @@ use kartik\date\DatePicker;
                         'format' => 'dd-mm-yyyy'
                     ]]);
             ?>
+        </div>
+
+        <div class="col-md-3">
+            <?php  echo $form->field($model, 'txt_identificador_cliente')->textInput(['maxlength' => true, 'class'=>'form-control']); ?>
         </div>
     </div>
 
