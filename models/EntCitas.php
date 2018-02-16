@@ -48,7 +48,8 @@ use yii\db\Expression;
  * @property string $txt_motivo_cancelacion_rechazo
  * @property string $fch_cita
  * @property string $fch_creacion
- *
+ * @property string $b_entrega_cat
+ * 
  * @property CatAreas $idArea
  * @property CatEquipos $idEquipo
  * @property CatHorarios $idHorario
@@ -136,6 +137,17 @@ class EntCitas extends \yii\db\ActiveRecord
         }
 
         
+    }
+    
+    public function setAddresCat(){
+        if($this->b_entrega_cat && $this->id_cat){
+            $cat = $this->idCat;
+            $this->txt_estado = $cat->txt_estado;
+            $this->txt_calle_numero = $cat->txt_calle_numero;
+            $this->txt_colonia = $cat->txt_colonia;
+            $this->txt_codigo_postal = $cat->txt_codigo_postal;
+            $this->txt_municipio = $cat->txt_municipio;
+        }
     }
 
     public function consultarEnvio($tracking)
@@ -295,6 +307,15 @@ class EntCitas extends \yii\db\ActiveRecord
                     return $('#entcitas-id_equipo').val()=='" . Constantes::SIN_EQUIPO . "';
                 }"
             ],
+            [
+                ['id_cat'], 'required', 
+                'when' => function ($model) {
+                    return $model->b_entrega_cat == 1;
+                }, 'whenClient' => "function (attribute, value) {
+                    
+                    return $('#entcitas-b_entrega_cat').val()==1;
+                }"
+            ],
 
             [
                 ["txt_telefono"], 'validateTel', 'on' => ['autorizar', 'create-call-center']
@@ -313,7 +334,9 @@ class EntCitas extends \yii\db\ActiveRecord
                     'id_horario',
                     'b_documentos',
                     'b_promocionales',
-                    'b_sim'
+                    'b_sim',
+                    'b_entrega_cat',
+                    'id_cat'
                 ],
                 'integer'
             ],
@@ -397,7 +420,7 @@ class EntCitas extends \yii\db\ActiveRecord
             'txt_calle_numero' => 'Calle y número',
             'txt_colonia' => 'Colonia',
             'txt_codigo_postal' => 'Codigo postal',
-            'txt_municipio' => 'Municipio',
+            'txt_municipio' => 'Municipio / Delegación',
             'txt_entre_calles' => 'Entre calles',
             'txt_observaciones_punto_referencia' => 'Puntos de referencia',
             'txt_motivo_cancelacion_rechazo' => 'Motivo cancelación o rechazo',
@@ -410,7 +433,9 @@ class EntCitas extends \yii\db\ActiveRecord
             'txt_identificador_cliente' => 'Consecutivo',
             'id_tipo_cancelacion' => "",
             'isEdicion'=>"Edicion",
-            'txt_promocional' => "Promocionales"
+            'txt_promocional' => "Promocionales",
+            'b_entrega_cat'=> "Entrega en CAT",
+            'id_cat'=>"CAT"
         ];
     }
 
@@ -654,6 +679,14 @@ class EntCitas extends \yii\db\ActiveRecord
     public function getIdTipoCancelacion()
     {
         return $this->hasOne(CatTiposCancelacion::className(), ['id_tipo_cancelacion' => 'id_tipo_cancelacion']);
+    }
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */
+    public function getIdCat()
+    {
+        return $this->hasOne(CatCats::className(), ['id_cat' => 'id_cat']);
     }
 
     /**

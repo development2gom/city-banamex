@@ -16,6 +16,7 @@ use yii\web\View;
 /* @var $form yii\widgets\ActiveForm */
 
 $equipo = $model->idEquipo;
+$cat = $model->idCat;
 ?>
 
     <?php $form = ActiveForm::begin([
@@ -134,7 +135,9 @@ $equipo = $model->idEquipo;
                                 'processResults' => new JsExpression($resultsJs),
                                 'cache' => true
                             ],
-                            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                            'escapeMarkup' => new JsExpression('function (markup) { if(!markup){
+                                return "Selecciona equipo";
+                            }return markup; }'),
                             'templateResult' => new JsExpression('formatRepoEquipo'),
                             'templateSelection' => new JsExpression('function (equipo) { 
                                 if(equipo.txt_nombre){
@@ -214,6 +217,63 @@ $equipo = $model->idEquipo;
             </h5>
         </div>
         <div class="panel-body pt-20">
+            <div class="row">
+                <div class="col-md-3">
+                    <?= $form->field($model, 'b_entrega_cat', [
+                            'template'=>"{input}{label}{error}",
+                            'options' => [
+                                'class' => 'checkbox-custom checkbox-primary',
+                                
+                                ]
+                            ])->checkbox([], false) ?>
+                </div>
+                <div class="col-md-6 contenedor-cat">
+                    <?php
+                    $url = Url::to(['cats/buscar-cat']);
+                    $valCat = empty($model->id_cat) ? '' : $cat->txt_nombre;
+                    //$equipo = empty($model->id_equipo) ? '' : CatEquipos::findOne($model->id_equipo)->txt_nombre;
+                    // render your widget
+                    echo $form->field($model, 'id_cat')->widget(Select2::classname(), [
+                        //'initValueText' => $cityDesc,
+                        'options' => ['placeholder' => 'Selecciona cat'],
+                        'pluginOptions' => [
+                            
+                            'allowClear' => true,
+                            'minimumInputLength' => 1,
+                            'ajax' => [
+                                'url' => $url,
+                                'dataType' => 'json',
+                                'delay' => 250,
+                                'data' => new JsExpression('function(params) { return {q:params.term, page: params.page}; }'),
+                                'processResults' => new JsExpression($resultsJs),
+                                'cache' => true
+                            ],
+                            'escapeMarkup' => new JsExpression('function (markup) { 
+                                if(!markup){
+                                    return "Selecciona cat";
+                                }
+                                return markup; }'),
+                            'templateResult' => new JsExpression('formatRepoCat'),
+                            'templateSelection' => new JsExpression('function (equipo) { 
+                                console.log(equipo);
+                                if(equipo.txt_estado){
+                                    habilitarCamposDireccion();
+                                    colocarCamposDireccion(equipo);
+                                }else{
+                                    deshabilitarCamposDireccion();
+                                    limpiarCamposDireccion();
+                                }
+
+                                if(equipo.txt_nombre){
+                                    return equipo.txt_nombre; 
+                                }else{
+                                    return "'.$valCat.'"
+                                } }'),
+                        ],
+                    ])->label(false);
+                    ?>
+                </div>
+            </div>
             <div class="row">
                 <!-- <div class="col-md-3">
                     <div class="form-group">
@@ -452,7 +512,8 @@ $this->registerJs(
   var claseOcultar = "hidden-xl-down";
   checkStatus();
   checkPromocionales();
-
+  checkIsCat();
+  
 function checkStatus(){
     var val = $("#entcitas-id_equipo").val();
     
@@ -475,6 +536,21 @@ function checkPromocionales(){
 
 }
 
+function checkIsCat(){
+    if($("#entcitas-b_entrega_cat").prop("checked")){
+        $(".contenedor-cat").show();
+    }else{
+        $("#entcitas-id_cat").select2("val", "");
+        $(".contenedor-cat").hide();
+    }
+}
+
+
+$("#entcitas-b_entrega_cat").on("change", function(){
+   
+    checkIsCat();
+});
+
 $("#entcitas-b_promocionales").on("change", function(){
     checkPromocionales();
 });
@@ -484,7 +560,7 @@ $("#entcitas-b_promocionales").on("change", function(){
 
   });
   ',
-  View::POS_END,
+  View::POS_READY,
   'tipo-usuario'
 );
 ?>

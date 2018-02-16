@@ -63,3 +63,35 @@ function calculaRFC() {
 	// rfc += "-" + homclave;
 	inputRFC.val(rfc);
 }
+
+function deshabilitarCamposDireccion(){
+	habilitarDeshabilitarCampos(false);
+}
+
+function habilitarCamposDireccion(){
+	habilitarDeshabilitarCampos(true);
+}
+
+function habilitarDeshabilitarCampos(isHabilitado){
+	$("#entcitas-txt_estado").attr("disabled", isHabilitado);
+	$("#entcitas-txt_calle_numero").attr("disabled", isHabilitado);
+	$("#entcitas-txt_colonia").attr("disabled", isHabilitado);
+	$("#entcitas-txt_codigo_postal").attr("disabled", isHabilitado);
+	$("#entcitas-txt_municipio").attr("disabled", isHabilitado);
+}
+
+function colocarCamposDireccion(cat){
+	$("#entcitas-txt_estado").val(cat.txt_estado);
+	$("#entcitas-txt_calle_numero").val(cat.txt_calle_numero);
+	$("#entcitas-txt_colonia").val(cat.txt_colonia);
+	$("#entcitas-txt_codigo_postal").val(cat.txt_codigo_postal);
+	$("#entcitas-txt_municipio").val(cat.txt_municipio);
+}
+
+function limpiarCamposDireccion(){
+	$("#entcitas-txt_estado").val("");
+	$("#entcitas-txt_calle_numero").val("");
+	$("#entcitas-txt_colonia").val("");
+	$("#entcitas-txt_codigo_postal").val("");
+	$("#entcitas-txt_municipio").val("");
+}
