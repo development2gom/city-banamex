@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\CatEquipos;
-use app\models\CatEquiposSearch;
+use app\models\CatCats;
+use app\models\CatCatsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * EquiposController implements the CRUD actions for CatEquipos model.
+ * CatsController implements the CRUD actions for CatCats model.
  */
-class EquiposController extends Controller
+class CatsController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class EquiposController extends Controller
     }
 
     /**
-     * Lists all CatEquipos models.
+     * Lists all CatCats models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CatEquiposSearch();
+        $searchModel = new CatCatsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,8 +45,8 @@ class EquiposController extends Controller
     }
 
     /**
-     * Displays a single CatEquipos model.
-     * @param string $id
+     * Displays a single CatCats model.
+     * @param integer $id
      * @return mixed
      */
     public function actionView($id)
@@ -57,16 +57,16 @@ class EquiposController extends Controller
     }
 
     /**
-     * Creates a new CatEquipos model.
+     * Creates a new CatCats model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new CatEquipos();
+        $model = new CatCats();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_equipo]);
+            return $this->redirect(['view', 'id' => $model->id_cat]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -75,9 +75,9 @@ class EquiposController extends Controller
     }
 
     /**
-     * Updates an existing CatEquipos model.
+     * Updates an existing CatCats model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
@@ -85,7 +85,7 @@ class EquiposController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_equipo]);
+            return $this->redirect(['view', 'id' => $model->id_cat]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -94,9 +94,9 @@ class EquiposController extends Controller
     }
 
     /**
-     * Deletes an existing CatEquipos model.
+     * Deletes an existing CatCats model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionDelete($id)
@@ -107,31 +107,34 @@ class EquiposController extends Controller
     }
 
     /**
-     * Finds the CatEquipos model based on its primary key value.
+     * Finds the CatCats model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return CatEquipos the loaded model
+     * @param integer $id
+     * @return CatCats the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = CatEquipos::findOne($id)) !== null) {
+        if (($model = CatCats::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 
-    public function actionBuscarEquipo($equipo = null, $q = null, $page = 0)
+
+    public function actionBuscarCat($equipo = null, $q = null, $page = 0)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $criterios['txt_nombre'] = $q;
-        $searchModel = new CatEquiposSearch();
+        $searchModel = new CatCatsSearch();
+
+        
 
         if ($page > 1) {
             $page--;
         }
-        $dataProvider = $searchModel->searchEquipo($criterios, $page);
+        $dataProvider = $searchModel->searchCat($criterios, $page);
         $response['results'] = null;
         $response['total_count'] = $dataProvider->getTotalCount();
 
@@ -144,8 +147,14 @@ class EquiposController extends Controller
            
 
             $response['results'][] = [
-                'id' => $model->id_equipo, 
-                "txt_nombre" => $model->txt_nombre];    
+                'id' => $model->id_cat, 
+                "txt_nombre" => $model->txt_nombre,
+                "txt_estado"=>$model->txt_estado,
+                "txt_calle_numero"=>$model->txt_calle_numero,
+                "txt_colonia"=>$model->txt_colonia,
+                "txt_codigo_postal"=>$model->txt_codigo_postal,
+                "txt_municipio"=>$model->txt_municipio
+            ];   
                
         }        
 

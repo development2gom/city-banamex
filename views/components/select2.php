@@ -45,6 +45,24 @@ var formatRepo = function (repo) {
 };
 
 var formatRepoEquipo = function (repo) {
+    console.log(repo);
+    if (repo.loading) {
+        return repo.text;
+    }
+
+    var markup =
+        '<div class="row">' + 
+            '<div class="col-md-12">' +
+                '<b style="margin-left:5px">' + repo.txt_nombre + '</b>' + 
+            '</div>' +
+            
+        '</div>';
+    
+    return '<div style="overflow:hidden;">' + markup + '</div>';
+};
+
+
+var formatRepoCat = function (repo) {
     
     if (repo.loading) {
         return repo.text;

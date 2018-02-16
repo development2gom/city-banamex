@@ -111,7 +111,7 @@ class CitasController extends Controller
             
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
-
+            $model->setAddresCat();
            
             if($model->isEdicion){
                 if($model->save()){
@@ -191,6 +191,7 @@ class CitasController extends Controller
             $model->fch_creacion = Utils::getFechaActual();
             $model->getConsecutivo();
             $model->statusAprobacionDependiendoUsuario();
+            $model->setAddresCat();
             if($model->save()){
 
                 if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)){      
