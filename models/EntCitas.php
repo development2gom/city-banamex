@@ -594,46 +594,11 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public function getBotonesSupervisor()
     {
-        $botones = '';
-        $usuario = EntUsuarios::getUsuarioLogueado();
-        if (($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR) && Constantes::STATUS_CREADA == $this->id_status) {
+        $botones = new BotonesCitas();
 
-            $botones .= $this->btnAprobarSupervisor . $this->btnCancelar;
-            $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
-            return $contenedor;
-        }
-
-        if (($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL)) {
-
-            if((Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR == $this->id_status || Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC == $this->id_status)){
-                $botones .= $this->btnAprobarSupervisor;
-            }
-
-            if(Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL || Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL){
-                $botones .= $this->btnEditar;
-            }else{
-                $botones .= $this->btnEditar . $this->btnCancelar;
-            }
-            
-            $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
-            return $contenedor;
-        }
-
-        if (($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)) {
-            if((Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL == $this->id_status)){
-                $botones .= $this->btnAprobarSupervisor;
-            }
-            if(Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL || Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL){
-                $botones .= $this->btnEditar;
-            }else{
-                $botones .= $this->btnEditar . $this->btnCancelar;
-            }
-            $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones . "</div>";
-           return $contenedor;
-        }
-
-
-        return "";
+        
+        $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones->getBotones($this) . "</div>";
+           
     }
 
     public function getBotonGuardar()

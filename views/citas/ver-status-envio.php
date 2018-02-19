@@ -64,6 +64,7 @@ $this->params['breadcrumbs'][] = [
                 <h5>Motivo de cancelación</h5>
                 <?php
                 if($respuestaApi->ClaveMotivo>0){
+                    
                     echo "<p>".$respuestaApi->Motivo."</p>";
                 }
                 ?>

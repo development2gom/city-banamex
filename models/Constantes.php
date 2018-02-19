@@ -44,4 +44,9 @@ class Constantes{
     const USUARIO_EXCEL_ADMINISTRADOR = "Administrador";
     const USUARIO_EXCEL_SUPERVISOR = "Supervisor";
     const USUARIO_EXCEL_CALL_CENTER = "Usuario call center";
+
+    // botones acciones de cita
+    const BTN_APROBAR = 2;
+    const BTN_EDITAR = 3;
+    const BTN_RECHAZAR = 4;
 }
