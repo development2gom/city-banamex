@@ -81,26 +81,28 @@ function habilitarDeshabilitarCampos(isHabilitado){
 }
 
 function colocarCamposDireccionPredeterminados(){
-	colocarCampos(codigoPostal, calleYNumbero, colonia, municipio, estado);
+	colocarCampos(codigoPostal, calleYNumbero, colonia, municipio, estado, entreCalles, pReferencias);
 }
 
 function colocarCamposDireccion(cat){
 	if(cat.txt_estado){
-		colocarCampos(cat.txt_estado, cat.txt_calle_numero, cat.txt_colonia, cat.txt_codigo_postal, cat.txt_municipio);
+		colocarCampos(cat.txt_estado, cat.txt_calle_numero, cat.txt_colonia, cat.txt_codigo_postal, cat.txt_municipio, "", "");
 	}else{
 		colocarCamposDireccionPredeterminados();
 	}
 	
 }
 
-function colocarCampos(cp, cyn, col, m, e){
+function colocarCampos(cp, cyn, col, m, e, ec, pr){
 	$("#entcitas-txt_estado").val(cp);
 	$("#entcitas-txt_calle_numero").val(cyn);
 	$("#entcitas-txt_colonia").val(col);
 	$("#entcitas-txt_codigo_postal").val(m);
 	$("#entcitas-txt_municipio").val(e);
+	$("#entcitas-txt_entre_calles").val(ec);
+	$("#entcitas-txt_observaciones_punto_referencia").val(pr);
 }
 
 function limpiarCamposDireccion(){
-	colocarCampos("","","","","");
+	colocarCampos("","","","","", "", "");
 }

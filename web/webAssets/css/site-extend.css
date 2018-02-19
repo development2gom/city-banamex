@@ -77,4 +77,21 @@
     z-index: 999999;
 }
 
+/* Toasts*/
+
+[aria-live='polite'] > div {
+    position: relative;
+    overflow: hidden;
+    width: 300px;
+    margin: 0 0 6px;
+    padding: 50px 60px !important;
+    pointer-events: auto;
+    opacity: .95;
+    color: #a3afb7;
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: .215rem;
+    background-repeat: no-repeat;
+    background-position: 15px center;
+}
+
 

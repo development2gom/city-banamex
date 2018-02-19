@@ -15,6 +15,24 @@ use yii\web\View;
 /* @var $model app\models\EntCitas */
 /* @var $form yii\widgets\ActiveForm */
 
+$this->registerCssFile(
+    '@web/webAssets/templates/classic/global/vendor/toastr/toastr.css',
+    ['depends' => [\app\assets\AppAsset::className()]]
+);
+$this->registerCssFile(
+    '@web/webAssets/templates/classic/topbar/assets/examples/css/advanced/toastr.css',
+    ['depends' => [\app\assets\AppAsset::className()]]
+);
+
+$this->registerJsFile(
+    '@web/webAssets/templates/classic/global/vendor/toastr/toastr.js',
+    ['depends' => [\app\assets\AppAsset::className()]]
+);
+$this->registerJsFile(
+    '@web/webAssets/templates/classic/global/js/Plugin/toastr.js',
+    ['depends' => [\app\assets\AppAsset::className()]]
+);
+
 $equipo = $model->idEquipo;
 $cat = $model->idCat;
 ?>
@@ -343,7 +361,7 @@ $cat = $model->idCat;
                 
             </div>
 
-            <div class="row">
+            <div class="row js-puntos-referencias">
                 <div class="col-md-6">
                     <?= $form->field($model, 'txt_entre_calles')->textInput(['maxlength' => true]) ?>
                 </div>
@@ -488,6 +506,8 @@ $this->registerJs(
     var colonia = "'.$model->txt_colonia.'";
     var municipio = "'.$model->txt_municipio.'";
     var estado = "'.$model->txt_estado.'";
+    var entreCalles = "'.$model->txt_entre_calles.'";
+    var pReferencias = "'.$model->txt_observaciones_punto_referencia.'";
   ',
   View::POS_BEGIN,
   'variables'
@@ -556,9 +576,11 @@ function checkPromocionales(){
 function checkIsCat(){
     if($("#entcitas-b_entrega_cat").prop("checked")){
         $(".contenedor-cat").show();
+        $(".js-puntos-referencias").hide();
     }else{
         $("#entcitas-id_cat").select2("val", "");
         $(".contenedor-cat").hide();
+        $(".js-puntos-referencias").show();
         colocarCamposDireccionPredeterminados();
         deshabilitarCamposDireccion();
         limpiarCamposDireccion();
@@ -579,6 +601,27 @@ $("#entcitas-b_promocionales").on("change", function(){
     checkStatus();
 
   });
+
+  $("#form-cita").on("afterValidate", function (e, attr, messages) {
+    if(messages.length>0){
+        toastr.options = {
+            "closeButton": true,
+            
+            "positionClass": "toast-top-full-width",
+            "preventDuplicates": true,
+            
+            "showDuration": "3000",
+            "hideDuration": "10000",
+            "timeOut": "5000",
+            "extendedTimeOut": "10000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+          }
+        toastr.warning("La cita tiene datos incorrectos. Por favor revisar")
+    }
+});
   ',
   View::POS_READY,
   'tipo-usuario'
