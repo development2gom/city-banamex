@@ -313,7 +313,7 @@ class EntCitas extends \yii\db\ActiveRecord
                     return $model->b_entrega_cat == 1;
                 }, 'whenClient' => "function (attribute, value) {
                     
-                    return $('#entcitas-b_entrega_cat').val()==1;
+                    return $('#entcitas-b_entrega_cat').prop('checked');
                 }"
             ],
 
