@@ -8,8 +8,8 @@ class BotonesCitas
 {
 
     public $btnAutorizar =  "<a href='#'  class='btn btn-success js-aprobar'>Aprobar</a>";
-    public $btnCancelar = "<a href='#'  class='btn btn-primary js-actualizar'>Actualizar</a>";
-    public $btnActualizar = "<a href='#'  class='btn btn-danger js-cancelar'>Cancelar</a>";
+    public $btnActualizar = "<a href='#'  class='btn btn-primary js-actualizar'>Actualizar</a>";
+    public $btnCancelar = "<a href='#'  class='btn btn-danger js-cancelar'>Cancelar</a>";
 
     /**
      * Obtiene los botones Actulizar, editar y cancelar
