@@ -93,14 +93,14 @@ function colocarCamposDireccion(cat){
 	
 }
 
-function colocarCampos(cp, cyn, col, m, e, ec, pr){
-	$("#entcitas-txt_estado").val(cp);
-	$("#entcitas-txt_calle_numero").val(cyn);
-	$("#entcitas-txt_colonia").val(col);
-	$("#entcitas-txt_codigo_postal").val(m);
-	$("#entcitas-txt_municipio").val(e);
-	$("#entcitas-txt_entre_calles").val(ec);
-	$("#entcitas-txt_observaciones_punto_referencia").val(pr);
+function colocarCampos(estadoP, calleYNumeroP, coloniaP, cPP, municipioP, entreCallesP, observacionesP){
+	$("#entcitas-txt_estado").val(estadoP);
+	$("#entcitas-txt_calle_numero").val(calleYNumeroP);
+	$("#entcitas-txt_colonia").val(coloniaP);
+	$("#entcitas-txt_codigo_postal").val(cPP);
+	$("#entcitas-txt_municipio").val(municipioP);
+	$("#entcitas-txt_entre_calles").val(entreCallesP);
+	$("#entcitas-txt_observaciones_punto_referencia").val(observacionesP);
 }
 
 function limpiarCamposDireccion(){

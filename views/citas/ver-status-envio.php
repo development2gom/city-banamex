@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = [
             </div>
             <div class="col-md-3">
                 <h5>Link cliente</h5>
-                <p><?=$respuestaApi->TrackingLink?></p>
+                <p><a href="<?=$respuestaApi->TrackingLink?>" target="_blank">Link</a></p>
             </div>
         </div>
     </div>

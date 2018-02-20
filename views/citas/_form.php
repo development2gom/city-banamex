@@ -577,6 +577,7 @@ function checkIsCat(){
     if($("#entcitas-b_entrega_cat").prop("checked")){
         $(".contenedor-cat").show();
         $(".js-puntos-referencias").hide();
+        habilitarCamposDireccion();
     }else{
         $("#entcitas-id_cat").select2("val", "");
         $(".contenedor-cat").hide();

@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 <div class="ent-usuarios-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['update'],
+        'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
