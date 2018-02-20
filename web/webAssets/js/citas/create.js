@@ -81,7 +81,7 @@ function habilitarDeshabilitarCampos(isHabilitado){
 }
 
 function colocarCamposDireccionPredeterminados(){
-	colocarCampos(codigoPostal, calleYNumbero, colonia, municipio, estado, entreCalles, pReferencias);
+	colocarCampos(estado, calleYNumbero, colonia, codigoPostal,municipio,  entreCalles, pReferencias);
 }
 
 function colocarCamposDireccion(cat){
