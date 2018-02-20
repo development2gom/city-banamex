@@ -35,16 +35,13 @@ use yii\helpers\ArrayHelper;
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <?= $form->field($model, 'txt_auth_item')
-                        ->widget(Select2::classname(), [
-                            'data' => ArrayHelper::map($roles, 'name', 'description'),
-                            'language' => 'es',
-                            'options' => ['placeholder' => 'Seleccionar tipo de'],
-                            'pluginOptions' => [
-                                'allowClear' => true
-                            ],
-                        ])->label(false);
+
+                 <?= $form->field($model, 'txt_auth_item')
+                        ->dropDownList(
+                            ArrayHelper::map($roles, 'name', 'description')
+                         )->label(false);
                     ?> 
+                   
                 </div>    
                 <div class="col-md-6">
                     <?= $form->field($model, 'txt_email')->textInput(['maxlength' => true, 'placeholder' => 'Email'])->label(false) ?>
