@@ -58,7 +58,7 @@ $usuario = EntUsuarios::getUsuarioLogueado();
           </li>
           
           <?php
-          if($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL || $usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_CC){?>
+          if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL) || $usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_CC){?>
           <li class="dropdown site-menu-item has-sub">
             <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
               <i class="site-menu-icon pe-users" aria-hidden="true"></i>

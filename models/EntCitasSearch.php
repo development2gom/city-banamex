@@ -88,18 +88,22 @@ class EntCitasSearch extends EntCitas
             $query->andFilterWhere(['in','id_usuario', $usuarioAsignado]);
         }
 
-        if(($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL) || ($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)){
-            
-            $query->andFilterWhere(['in', 'id_status', [
-                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR, 
-                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
-                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL, 
-                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
-                Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
-                Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL ]]);
-        }else{
-            $query->andFilterWhere(['id_status' => $this->id_status]);
-        }
+        
+
+            if(($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL) || ($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)){
+                
+                $query->andFilterWhere(['in', 'id_status', [
+                    Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR, 
+                    Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
+                    Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL, 
+                    Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
+                    Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
+                    Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL ]]);
+            }else{
+                $query->andFilterWhere(['id_status' => $this->id_status]);
+            }
+
+        
        
 
         if (!$this->validate()) {
