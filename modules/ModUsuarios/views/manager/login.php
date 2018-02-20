@@ -16,7 +16,7 @@ $this->params['classBody'] = "page-login-v3 layout-full";
 <div class="panel">
 	<div class="panel-body">
 		<div class="brand">
-			<img class="brand-img mb-40" src="<?=Url::base()?>/webAssets/images/logo.png" alt="...">
+			<!-- <img class="brand-img mb-40" src="" alt="..."> -->
 		</div>
 
 
@@ -47,7 +47,7 @@ $this->params['classBody'] = "page-login-v3 layout-full";
 			<a class="float-right" href="forgot-password.html">¿Olvidaste tu contraseña?</a>
 		</div>
 
-		<?= Html::submitButton('<span class="ladda-label">Ingresar</span>', ["data-style"=>"zoom-in", 'class' => 'btn btn-primary btn-block btn-lg mt-40 ladda-button', 'name' => 'login-button'])
+		<?= Html::submitButton('<span class="ladda-label">Ingresar</span>', ["data-style"=>"zoom-in", 'class' => 'btn btn-primary btn-block btn-lg btn-login ladda-button', 'name' => 'login-button'])
 		?>
 
 		<?php ActiveForm::end(); ?>

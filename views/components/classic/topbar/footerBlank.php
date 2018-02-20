@@ -3,13 +3,11 @@
 use yii\helpers\Url;
 
 ?>
-<!-- <footer class="page-copyright page-copyright-inverse">
-    <p class="developer-link">Sistema desarrollado por </p>
-    <a class="developer-link" href="https://www.2geeksonemonkey.com"> 2 Geeks one Monkey</a>
-    <p>© <?=date('Y')?>. Todos los derechos reservados.</p>
-    <div class="social">
-        <a class="btn btn-icon btn-pure" href="https://www.2geeksonemonkey.com">
-        <img class="developer-logo" src="<?=Url::base()?>/webAssets/images/monkey-logo.png" alt="We develop successfull apps">
-        </a>
+<div class="login-footer">
+      <div class="login-footer-copyright">
+        <p>© Brightstar 2018 </p>
+      </div>
+      <div class="login-footer-author">
+        <img src="<?=Url::base()?>/webAssets/images/2gom.png" alt="">
+      </div>
     </div>
-</footer> -->
