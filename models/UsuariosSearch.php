@@ -102,7 +102,7 @@ class UsuariosSearch extends EntUsuarios
             'alphaAttribute' => 'txt_username',
             'alphaDefault'=>'all',
             'pagination' => [
-                'pageSize' => 1,
+                'pageSize' => 30,
                 
             ],
             'sort' => [
@@ -129,6 +129,7 @@ class UsuariosSearch extends EntUsuarios
             'id_status' => $this->id_status,
         ]);
 
+        
         $query->andFilterWhere(['in','txt_auth_item', $this->txt_auth_item])
             ->andFilterWhere(['like', 'txt_token', $this->txt_token])
             ->andFilterWhere(['like', 'txt_imagen', $this->txt_imagen])

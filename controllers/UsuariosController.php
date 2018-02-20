@@ -55,10 +55,13 @@ class UsuariosController extends Controller
         $auth = Yii::$app->authManager;
 
         $hijos = $auth->getChildRoles($usuario->txt_auth_item);
+
+      
         ksort($hijos);
        
         $roles = AuthItem::find()->where(['in', 'name', array_keys($hijos)])->orderBy("name")->all();
 
+        
         $searchModel = new UsuariosSearch();
         $searchModel->txt_auth_item = array_keys($hijos);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -113,7 +116,7 @@ class UsuariosController extends Controller
 
             if ($user = $model->signup()) {
 
-                return $this->redirect(['update', 'id'=>$user->id_usuario]);
+                return $this->redirect(['index']);
             }
         
         // return $this->redirect(['view', 'id' => $model->id_usuario]);
