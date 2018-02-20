@@ -95,3 +95,9 @@
 }
 
 
+::-webkit-contacts-auto-fill-button, ::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+}

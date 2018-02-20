@@ -25,6 +25,11 @@ AppAsset::register($this);
 
   <?=$this->render("//components/classic/topbar/body", ['content'=>$content])?>
 
+  <div style="position:absolute;height:0px; overflow:hidden; ">
+  Username <input type="text" name="fake_safari_username" >
+  Password <input type="password" name="fake_safari_password">
+</div>
+
   <?=$this->render("//components/classic/topbar/footer")?>
 
   <?php $this->endBody();?>

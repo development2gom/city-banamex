@@ -23,7 +23,7 @@ use yii\helpers\ArrayHelper;
                     //'enableAjaxValidation' => true,
             'enableClientValidation' => true,
         ]); ?>
-
+<div style="position:absolute;height:0px; overflow:hidden; "> Username <input type="text" name="fake_safari_username" > Password <input type="password" name="fake_safari_password"> </div>
             <?= $form->field($model, 'image')->fileInput(["class" => "hidden-xxl-down"])->label(false) ?> 
             <div class="row">
                 <div class="col-md-6">
@@ -35,13 +35,18 @@ use yii\helpers\ArrayHelper;
             </div>
             <div class="row">
                 <div class="col-md-6">
-
-                 <?= $form->field($model, 'txt_auth_item')
-                        ->dropDownList(
-                            ArrayHelper::map($roles, 'name', 'description')
-                         )->label(false);
+                
+                    <?= $form->field($model, 'txt_auth_item')
+                        ->widget(Select2::classname(), [
+                            'data' => ArrayHelper::map($roles, 'name', 'description'),
+                            'language' => 'es',
+                            'options' => ['placeholder' => 'Seleccionar tipo de usuario'],
+                            'pluginOptions' => [
+                                'allowClear' => true
+                            ],
+                        ])->label(false);
                     ?> 
-                   
+                    
                 </div>    
                 <div class="col-md-6">
                     <?= $form->field($model, 'txt_email')->textInput(['maxlength' => true, 'placeholder' => 'Email'])->label(false) ?>
