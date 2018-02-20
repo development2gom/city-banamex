@@ -39,7 +39,7 @@ use yii\helpers\ArrayHelper;
                         ->widget(Select2::classname(), [
                             'data' => ArrayHelper::map($roles, 'name', 'description'),
                             'language' => 'es',
-                            'options' => ['placeholder' => 'Seleccionar tipo de usuario'],
+                            'options' => ['placeholder' => 'Seleccionar tipo de'],
                             'pluginOptions' => [
                                 'allowClear' => true
                             ],
