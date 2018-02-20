@@ -581,9 +581,10 @@ function checkIsCat(){
         $("#entcitas-id_cat").select2("val", "");
         $(".contenedor-cat").hide();
         $(".js-puntos-referencias").show();
-        colocarCamposDireccionPredeterminados();
+        
         deshabilitarCamposDireccion();
         limpiarCamposDireccion();
+        colocarCamposDireccionPredeterminados();
     }
 }
 
