@@ -110,7 +110,9 @@ class CitasController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
-            $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
+            
+             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
+            
             $model->setAddresCat();
            
             if($model->isEdicion){
