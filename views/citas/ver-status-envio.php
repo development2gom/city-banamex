@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = [
                 </div>
                 <div class="col-md-3">
                     <h5>Imagen</h5>
-                    <p><img src="<?=$respuestaApi->Image?>" /></p>
+                    <p><img style="width:100%" src="<?=$respuestaApi->Image?>" /></p>
                 </div>
                 <div class="col-md-3">
                     <h5>Evento</h5>
@@ -54,7 +54,6 @@ $this->params['breadcrumbs'][] = [
                         }
                         
                     ?>
-                    
                     
                 </div>
         </div>

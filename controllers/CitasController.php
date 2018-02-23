@@ -337,5 +337,4 @@ class CitasController extends Controller
 
         return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi]);
     }
-    
 }
