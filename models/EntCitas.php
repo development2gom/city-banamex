@@ -358,7 +358,7 @@ class EntCitas extends \yii\db\ActiveRecord
             [['id_tipo_cancelacion'], 'required', 'on' => 'cancelar'],
             [['txt_telefono', 'txt_numero_referencia'], 'string', 'max' => 10, 'min' => 10, 'tooLong' => 'El campo no debe superar 10 dígitos', 'tooShort' => 'El campo debe ser mínimo de 10 digítos'],
             [['txt_email'], 'email'],
-            [['txt_tpv', 'trim']],
+            [['txt_tpv'], 'trim'],
             [['fch_nacimiento', 'fch_cita', 'fch_creacion'], 'safe'],
             [['txt_telefono', 'txt_rfc', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3', 'txt_estado'], 'string', 'max' => 20],
             [['txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_folio_identificacion'], 'string', 'max' => 200],
