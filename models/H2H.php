@@ -83,7 +83,7 @@ class H2H
             'Cantidad' => $this->cantidad,
             'Valor' => $this->valor,
             'NoServicio' => $this->numServicio,
-            'Observacionescontenido' => $this->observacionesContenido,
+            'ObservacionesContenido' => $this->observacionesContenido,
             'EMail'=>$this->email
             
         ];
