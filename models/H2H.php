@@ -78,12 +78,13 @@ class H2H
             'Estado' => $this->estado,
             'Municipio' => $this->municipio,
             'Colonia' => $this->colonia,
-            'Teléfono' => $this->telefonoRef,
+            'Telefonos' => $this->telefonoRef,
             'Contenido' => $this->contenido,
             'Cantidad' => $this->cantidad,
             'Valor' => $this->valor,
             'NoServicio' => $this->numServicio,
             'Observacionescontenido' => $this->observacionesContenido,
+            'EMail'=>$this->email
             
         ];
 
