@@ -13,11 +13,13 @@ AppAsset::register($this);
 <html class="no-js css-menubar" lang="<?= Yii::$app->language ?>">
 <!-- Etiqueta head -->
 <?=$this->render("//components/head")?>
-<body class="animsition <?=isset($this->params['classBody'])?$this->params['classBody']:''?>">
+<body class="animsition body-bgkd <?=isset($this->params['classBody'])?$this->params['classBody']:''?>">
   <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
   <?php $this->beginBody();?>
+
+  <!-- <div class="body-bgkd-mask"></div> -->
   
   <?=$this->render("//components/classic/topbar/nav-bar")?>
 

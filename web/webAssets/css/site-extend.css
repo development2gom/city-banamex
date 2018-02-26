@@ -3000,6 +3000,11 @@
 
 	-----------------------------------------------------------------------------
 	*/
+/*  Load Overlay
+	@mixin ====================================== */
+.loader-overlay {
+  background-color: #1B2322; }
+
 /*  A
 	@mixin ====================================== */
 a {
@@ -3039,22 +3044,31 @@ a {
 .page-login-v3 form .form-material label {
   color: #a3afb7; }
 
+.form-material .form-control:-webkit-autofill ~ .floating-label {
+  top: -1.3rem; }
+
+.form-material .form-control ~ .floating-label {
+  padding: 0 10px; }
+
 /* Active */
 .form-material .form-control.focus ~ .floating-label,
 .form-material .form-control:focus ~ .floating-label {
-  color: #62a8ea; }
+  color: #62a8ea;
+  top: -1.3rem; }
 
 /* Error */
 .form-material.form-group.has-danger .form-control.focus ~ .floating-label,
 .form-material.form-group.has-danger .form-control:focus ~ .floating-label,
 .form-material.form-group.has-danger .form-control:not(.empty) ~ .floating-label {
-  color: #f96868; }
+  color: #f96868;
+  top: -1.3rem; }
 
 /* Succes */
 .form-material.form-group.has-success .form-control.focus ~ .floating-label,
 .form-material.form-group.has-success .form-control:focus ~ .floating-label,
 .form-material.form-group.has-success .form-control:not(.empty) ~ .floating-label {
-  color: #62a8ea; }
+  color: #62a8ea;
+  top: -1.3rem; }
 
 /*  Input
 	@mixin ====================================== */
@@ -3073,15 +3087,17 @@ a {
   background-image: url("https://drscdn.500px.org/photo/230473379/q%3D80_m%3D2000/v2?webp=true&sig=8098ec687c2dacf53ba17515209dca4cf6ee1ad91d7e0aae23a217db2089824c"); }
 
 /* Login */
-.login {
-  background-color: red; }
-  .login .brand .brand-img {
-    height: 100px;
-    margin-bottom: 20px; }
-  .login form .form-group .help-block.help-block-error {
-    color: #f96868;
-    font-size: .9rem;
-    text-align: left; }
+.login .brand .brand-img {
+  height: 100px;
+  margin-bottom: 20px; }
+
+.login form .form-group .help-block.help-block-error {
+  color: #f96868;
+  font-size: .9rem;
+  text-align: left; }
+
+.form-material .form-control {
+  padding: 0 10px; }
 
 /*  Header
 	@mixin ====================================== */
@@ -3122,6 +3138,11 @@ a {
   max-width: 80%;
   width: 200px; }
 
+/*  Usuarios
+	@mixin ====================================== */
+.page-bg-trans {
+  background-color: transparent; }
+
 /*!
 	-----------------------------------------------------------------------------
 
@@ -3146,7 +3167,8 @@ a {
     background-image: -o-linear-gradient(top, #62a8ea 0%, #3583ca 100%);
     background-image: url("../images/login-screen.jpg"); }
   .page-login-v3 .page-login-v3-mask {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
+    background-color: transparent;
     bottom: 0;
     height: 100%;
     left: 0;
@@ -3177,13 +3199,15 @@ a {
       font-size: .95rem; }
       .page-login .panel .panel-body p .login-link-white {
         color: #FFF;
-        font-size: .95rem; }
+        font-size: .95rem;
+        font-weight: 100;
+        margin-left: 4px; }
 
 .login-header {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: rgba(184, 14, 41, 0.5);
+  background-color: rgba(184, 14, 41, 0.7);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -3201,7 +3225,7 @@ a {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    height: 19px; }
+    height: 30px; }
 
 .login-footer {
   -webkit-box-align: center;
@@ -3271,124 +3295,110 @@ a {
 	-----------------------------------------------------------------------------
 
 	2.0 - Usuarios
-			# Listado
-			# Crear
-			# Actualizar
+			# Body
+			# Header
+			# Page
+			# Footer
 
 	-----------------------------------------------------------------------------
 	*/
-.ryg-body {
+/*  Body
+	@mixin ====================================== */
+.body-bgkd {
+  background-color: #1B2322;
+  background-attachment: fixed;
   background-image: url("../images/login-screen.jpg");
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
   z-index: 1; }
-  .ryg-body .ryg-body-mask {
+  .body-bgkd .body-bkgd-mask {
     background-color: rgba(0, 0, 0, 0.78);
     bottom: 0;
     height: 100%;
     left: 0;
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     width: 100%; }
 
-.ryg-page {
-  background-color: transparent; }
-  .ryg-page .page-header .breadcrumb {
-    -ms-flex-line-pack: center;
-        align-content: center;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: start;
-        -ms-flex-pack: start;
-            justify-content: flex-start;
-    width: calc(100% - 200px); }
-    .ryg-page .page-header .breadcrumb .breadcrumb-title {
-      color: #B3E6E2;
-      font-size: 1rem;
-      font-weight: 300;
-      line-height: 2;
-      margin: 0;
-      min-width: 152px; }
-    .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form {
-      -ms-flex-line-pack: center;
-          align-content: center;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-pack: start;
-          -ms-flex-pack: start;
-              justify-content: flex-start; }
-      .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-input,
-      .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-select {
-        background-color: #2B3736;
-        border: none;
-        color: #B3E6E2;
-        font-size: 1rem;
-        font-weight: 300;
-        margin-left: 20px; }
-        .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-input::-webkit-input-placeholder,
-        .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-select::-webkit-input-placeholder {
-          color: rgba(179, 230, 226, 0.6);
-          font-size: 1rem;
-          font-weight: 300; }
-        .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-input:-moz-placeholder,
-        .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-select:-moz-placeholder {
-          color: rgba(179, 230, 226, 0.6);
-          font-size: 1rem;
-          font-weight: 300; }
-        .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-input::-moz-placeholder,
-        .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-select::-moz-placeholder {
-          color: rgba(179, 230, 226, 0.6);
-          font-size: 1rem;
-          font-weight: 300; }
-        .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-input:-ms-input-placeholder,
-        .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-select:-ms-input-placeholder {
-          color: rgba(179, 230, 226, 0.6);
-          font-size: 1rem;
-          font-weight: 300; }
-        .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-input:focus,
-        .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-select:focus {
-          outline: none; }
-      .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-select {
-        border-radius: 30px;
-        padding: 6px 20px; }
-      .ryg-page .page-header .breadcrumb .breadcrumb-search .breadcrumb-search-form .breadcrumb-search-form-input {
-        border-radius: 3px;
-        padding: 6px 16px;
-        width: 13%; }
-  .ryg-page .page-content .panel {
-    background-color: transparent; }
-    .ryg-page .page-content .panel .list-group-item {
-      background-color: transparent; }
+/*  Header
+	@mixin ====================================== */
+.site-navbar {
+  background-color: #151515;
+  border-color: #151515;
+  min-height: 3rem; }
+  .site-navbar .navbar-header .navbar-brand {
+    height: auto;
+    min-height: 3rem;
+    padding: 1.25rem 1.5715rem; }
+    .site-navbar .navbar-header .navbar-brand .navbar-brand-logo {
+      height: 30px; }
+  .site-navbar .navbar-container .nav .nav-item .nav-link .nav-link-span {
+    display: inline-block;
+    color: #FFF;
+    padding-right: 8px; }
 
-.ryg-footer {
+.site-menubar.site-menubar-light {
+  background-color: #232529;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  top: 4.125rem; }
+  .site-menubar.site-menubar-light .site-menu li a {
+    color: #FFF; }
+  .site-menubar.site-menubar-light .site-menu li .dropdown-menu {
+    background-color: #232529;
+    border-color: #232529; }
+    .site-menubar.site-menubar-light .site-menu li .dropdown-menu ul li i,
+    .site-menubar.site-menubar-light .site-menu li .dropdown-menu ul li span {
+      color: #FFF; }
+
+.navbar-nav .nav-link.navbar-avatar,
+.navbar-nav .nav-link.navbar-avatar,
+.navbar-toolbar .nav-link.navbar-avatar,
+.navbar-toolbar .nav-link.navbar-avatar {
+  padding-bottom: 1rem;
+  padding-top: 1rem; }
+
+/*  Page
+	@mixin ====================================== */
+.page {
+  position: relative;
+  z-index: 2; }
+  .page .page-content {
+    padding: 30px 30px 80px;
+    position: relative;
+    z-index: 3; }
+    .page .page-content .panel-gral {
+      background-color: rgba(42, 3, 9, 0.4);
+      border-radius: 4px; }
+
+/*  Footer
+	@mixin ====================================== */
+.site-footer {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: rgba(27, 35, 34, 0.5);
-  border: 1px solid transparent;
+  background-color: rgba(21, 21, 21, 0.5);
+  border-top: none;
   bottom: 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  height: auto;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   left: 0;
   padding: 8px 24px;
   position: fixed;
   right: 0;
   width: 100%;
   z-index: 2; }
-  .ryg-footer:after {
+  .site-footer:after {
     display: none; }
   @media (min-width: 601px) and (max-width: 800px) {
-    .ryg-footer {
+    .site-footer {
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
           -ms-flex-direction: column;
@@ -3397,7 +3407,7 @@ a {
           -ms-flex-pack: center;
               justify-content: center; } }
   @media screen and (max-width: 600px) {
-    .ryg-footer {
+    .site-footer {
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
           -ms-flex-direction: column;
@@ -3406,7 +3416,7 @@ a {
           -ms-flex-pack: center;
               justify-content: center; } }
   @media screen and (max-width: 480px) {
-    .ryg-footer {
+    .site-footer {
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
           -ms-flex-direction: column;
@@ -3415,7 +3425,7 @@ a {
           -ms-flex-pack: center;
               justify-content: center; } }
   @media screen and (max-width: 320px) {
-    .ryg-footer {
+    .site-footer {
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
           -ms-flex-direction: column;
@@ -3423,34 +3433,288 @@ a {
       -webkit-box-pack: center;
           -ms-flex-pack: center;
               justify-content: center; } }
-  .ryg-footer .login-footer-copyright p {
+  .site-footer .site-footer-copyright p {
     color: #AAB1AB;
     font-size: .9rem;
     margin-bottom: 0; }
-  .ryg-footer .login-footer-author img {
+  .site-footer .site-footer-author {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    height: 26px; }
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+    .site-footer .site-footer-author img {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+      .site-footer .site-footer-author img.logo-h2h {
+        height: 24px; }
+      .site-footer .site-footer-author img.logo-mls {
+        height: 26px; }
+      .site-footer .site-footer-author img:last-child {
+        margin-left: 3vw; }
 
-/*  Listado
+/*!
+	-----------------------------------------------------------------------------
+
+	2.0 - Usuarios
+			# Listado
+			# Crear
+
+	-----------------------------------------------------------------------------
+	*/
+/*  Page Listado
 	@mixin ====================================== */
-.ryg-header {
-  background-color: #1B2322;
-  border-color: #1B2322; }
-  .ryg-header .navbar-header .navbar-brand .navbar-brand-logo {
-    height: 19px; }
-  .ryg-header .navbar-container .nav .nav-item .nav-link .user-name {
-    display: inline-block;
-    color: #E5E264;
-    padding-right: 8px; }
+.page .page-header {
+  position: relative;
+  z-index: 3; }
 
-.site-menubar.site-menubar-light,
-.ryg-menubar {
-  background-color: #2B3736; }
-  .site-menubar.site-menubar-light .site-menu li a,
-  .ryg-menubar .site-menu li a {
-    color: #7B9E9B; }
+.page .page-content {
+  position: relative;
+  z-index: 3; }
+  .page .page-content .panel-citas .panel-body {
+    padding: 0; }
+    .page .page-content .panel-citas .panel-body .list-group-item {
+      background-color: transparent; }
+    .page .page-content .panel-citas .panel-body .panel-search {
+      -ms-flex-line-pack: center;
+          align-content: center;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: start;
+          -ms-flex-pack: start;
+              justify-content: flex-start;
+      padding: 20px;
+      width: 100%; }
+      .page .page-content .panel-citas .panel-body .panel-search .panel-search-title {
+        color: #FFF;
+        font-size: 1rem;
+        font-weight: 300;
+        line-height: 2.4;
+        margin: 0;
+        min-width: 152px; }
+      .page .page-content .panel-citas .panel-body .panel-search .panel-search-int {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex; }
+        .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form {
+          -ms-flex-line-pack: center;
+              align-content: center;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-pack: start;
+              -ms-flex-pack: start;
+                  justify-content: flex-start;
+          margin-bottom: 0; }
+          .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input,
+          .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select {
+            background-color: #151515;
+            border: none;
+            color: #FFF;
+            font-size: 1rem;
+            font-weight: 300;
+            margin-left: 20px; }
+            .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input::-webkit-input-placeholder,
+            .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select::-webkit-input-placeholder {
+              color: rgba(255, 255, 255, 0.6);
+              font-size: 1rem;
+              font-weight: 300; }
+            .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input:-moz-placeholder,
+            .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select:-moz-placeholder {
+              color: rgba(255, 255, 255, 0.6);
+              font-size: 1rem;
+              font-weight: 300; }
+            .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input::-moz-placeholder,
+            .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select::-moz-placeholder {
+              color: rgba(255, 255, 255, 0.6);
+              font-size: 1rem;
+              font-weight: 300; }
+            .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input:-ms-input-placeholder,
+            .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select:-ms-input-placeholder {
+              color: rgba(255, 255, 255, 0.6);
+              font-size: 1rem;
+              font-weight: 300; }
+            .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input:focus,
+            .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select:focus {
+              outline: none; }
+          .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select {
+            border-radius: 30px;
+            padding: 6px 20px; }
+          .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input {
+            border-radius: 3px;
+            padding: 6px 16px;
+            width: 13%; }
+        .page .page-content .panel-citas .panel-body .panel-search .panel-search-int .btn-add {
+          background-color: #3BDBC3;
+          border-color: #3BDBC3;
+          color: #151515; }
+    .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-head,
+    .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row {
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap; }
+      .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-head .panel-listado-col,
+      .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        font-size: 1rem; }
+        .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-head .panel-listado-col.w-x,
+        .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col.w-x {
+          width: 5%; }
+        .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-head .panel-listado-col.w-s,
+        .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col.w-s {
+          width: 10%; }
+        .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-head .panel-listado-col.w-m,
+        .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col.w-m {
+          width: 17%; }
+    .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-head {
+      padding: 8px 0; }
+      .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-head .panel-listado-col {
+        color: #FFF;
+        font-size: .8rem;
+        font-weight: 100;
+        text-transform: uppercase; }
+    .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row {
+      border-top: 1px solid #15584E;
+      padding: 16px 0; }
+      .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row:last-child {
+        border-bottom: 1px solid #15584E; }
+      .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row:hover {
+        background-color: rgba(21, 21, 21, 0.8); }
+      .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col {
+        color: #FFF;
+        font-weight: 300; }
+        .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-img,
+        .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction {
+          display: block;
+          border-radius: 50%; }
+        .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-img {
+          background-color: #2A0309;
+          height: 32px;
+          margin-right: .8rem;
+          width: 32px; }
+          .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-img:last-child {
+            margin-right: 0; }
+        .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction {
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          height: 24px;
+          -webkit-box-pack: center;
+              -ms-flex-pack: center;
+                  justify-content: center;
+          margin-right: .8rem;
+          text-decoration: none;
+          width: 24px; }
+          .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction:last-child {
+            margin-right: 0; }
+          .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction i {
+            color: #FFF;
+            font-size: .85rem; }
+          .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction.acction-edit {
+            background-color: #3BDBC3; }
+          .page .page-content .panel-citas .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction.acction-delete {
+            background-color: #B80E29; }
+
+/*  Page Crear
+	@mixin ====================================== */
+.panel-citas {
+  background-color: green;
+  padding: 40px 32px 60px; }
+  .panel-citas form .citas-cont {
+    padding-bottom: 64px; }
+    .panel-citas form .citas-cont .panel-title {
+      color: #FFF;
+      font-weight: 300;
+      padding: 0;
+      text-transform: uppercase; }
+    .panel-citas form .citas-cont hr {
+      height: 1px;
+      margin: 1rem 0 2rem;
+      opacity: .4;
+      width: 100%; }
+    .panel-citas form .citas-cont .form-group .control-label {
+      padding-left: 1rem; }
+    .panel-citas form .citas-cont .form-group input[type="email"],
+    .panel-citas form .citas-cont .form-group input[type="password"],
+    .panel-citas form .citas-cont .form-group input[type="text"],
+    .panel-citas form .citas-cont .form-group select,
+    .panel-citas form .citas-cont .form-group textarea,
+    .panel-citas form .citas-cont .form-group .form-control {
+      background-color: #2D2D2D;
+      border-color: #2D2D2D;
+      font-weight: 300; }
+      .panel-citas form .citas-cont .form-group input[type="email"]:active, .panel-citas form .citas-cont .form-group input[type="email"]:focus, .panel-citas form .citas-cont .form-group input[type="email"]:hover,
+      .panel-citas form .citas-cont .form-group input[type="password"]:active,
+      .panel-citas form .citas-cont .form-group input[type="password"]:focus,
+      .panel-citas form .citas-cont .form-group input[type="password"]:hover,
+      .panel-citas form .citas-cont .form-group input[type="text"]:active,
+      .panel-citas form .citas-cont .form-group input[type="text"]:focus,
+      .panel-citas form .citas-cont .form-group input[type="text"]:hover,
+      .panel-citas form .citas-cont .form-group select:active,
+      .panel-citas form .citas-cont .form-group select:focus,
+      .panel-citas form .citas-cont .form-group select:hover,
+      .panel-citas form .citas-cont .form-group textarea:active,
+      .panel-citas form .citas-cont .form-group textarea:focus,
+      .panel-citas form .citas-cont .form-group textarea:hover,
+      .panel-citas form .citas-cont .form-group .form-control:active,
+      .panel-citas form .citas-cont .form-group .form-control:focus,
+      .panel-citas form .citas-cont .form-group .form-control:hover {
+        border-color: #2D2D2D;
+        -webkit-box-shadow: none;
+                box-shadow: none;
+        outline: none; }
+    .panel-citas form .citas-cont .form-group textarea {
+      resize: none; }
+    .panel-citas form .citas-cont .form-group .select2,
+    .panel-citas form .citas-cont .form-group .select2-container--krajee {
+      position: relative; }
+      .panel-citas form .citas-cont .form-group .select2 .select2-selection,
+      .panel-citas form .citas-cont .form-group .select2-container--krajee .select2-selection {
+        background-color: #2D2D2D;
+        border-color: #2D2D2D;
+        color: #FFF;
+        font-weight: 300;
+        position: relative; }
+        .panel-citas form .citas-cont .form-group .select2 .select2-selection .select2-selection__rendered,
+        .panel-citas form .citas-cont .form-group .select2-container--krajee .select2-selection .select2-selection__rendered {
+          position: relative; }
+          .panel-citas form .citas-cont .form-group .select2 .select2-selection .select2-selection__rendered .select2-selection__clear,
+          .panel-citas form .citas-cont .form-group .select2-container--krajee .select2-selection .select2-selection__rendered .select2-selection__clear {
+            color: #FFF;
+            right: .2rem;
+            top: -.4rem; }
+      .panel-citas form .citas-cont .form-group .select2 .select2-selection--single .select2-selection__arrow,
+      .panel-citas form .citas-cont .form-group .select2-container--krajee .select2-selection--single .select2-selection__arrow {
+        border-left-color: #2D2D2D; }
+    .panel-citas form .citas-cont .form-group .select2-container--krajee.select2-container--open .select2-selection,
+    .panel-citas form .citas-cont .form-group .select2-container--krajee .select2-selection:focus {
+      -webkit-box-shadow: none;
+              box-shadow: none; }
+    .panel-citas form .citas-cont .form-group .help-block {
+      color: #f96868;
+      font-size: .85rem;
+      margin-top: .3rem;
+      padding-left: 1rem; }
+    .panel-citas form .citas-cont .form-group .btn-form-save {
+      background-color: #3BDBC3;
+      border-color: #3BDBC3;
+      color: #151515; }
 
 /*!
 	-----------------------------------------------------------------------------
@@ -3464,25 +3728,508 @@ a {
 	*/
 /*  Listado
 	@mixin ====================================== */
-/*  Crear
-	@mixin ====================================== */
-.usuarios-create .user-file {
-  cursor: pointer;
-  display: block;
-  height: 200px;
-  margin: 0 auto;
-  max-width: 80%;
-  width: 200px; }
+.page .page-header {
+  position: relative;
+  z-index: 3; }
 
-/*  Actualizar
+.page .page-content {
+  position: relative;
+  z-index: 3; }
+  .page .page-content .panel-usuarios .panel-body {
+    padding: 0; }
+    .page .page-content .panel-usuarios .panel-body .list-group-item {
+      background-color: transparent; }
+    .page .page-content .panel-usuarios .panel-body .panel-search {
+      -ms-flex-line-pack: center;
+          align-content: center;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      padding: 20px;
+      width: 100%; }
+      .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-title {
+        color: #B3E6E2;
+        font-size: 1rem;
+        font-weight: 300;
+        line-height: 2.4;
+        margin: 0;
+        min-width: 152px; }
+      .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex; }
+        .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form {
+          -ms-flex-line-pack: center;
+              align-content: center;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-pack: start;
+              -ms-flex-pack: start;
+                  justify-content: flex-start;
+          margin-bottom: 0; }
+          .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input,
+          .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select {
+            background-color: #151515;
+            border: none;
+            color: #B3E6E2;
+            font-size: 1rem;
+            font-weight: 300;
+            margin-right: 20px; }
+            .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input::-webkit-input-placeholder,
+            .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select::-webkit-input-placeholder {
+              color: rgba(255, 255, 255, 0.6);
+              font-size: 1rem;
+              font-weight: 300; }
+            .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input:-moz-placeholder,
+            .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select:-moz-placeholder {
+              color: rgba(255, 255, 255, 0.6);
+              font-size: 1rem;
+              font-weight: 300; }
+            .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input::-moz-placeholder,
+            .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select::-moz-placeholder {
+              color: rgba(255, 255, 255, 0.6);
+              font-size: 1rem;
+              font-weight: 300; }
+            .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input:-ms-input-placeholder,
+            .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select:-ms-input-placeholder {
+              color: rgba(255, 255, 255, 0.6);
+              font-size: 1rem;
+              font-weight: 300; }
+            .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input:focus,
+            .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select:focus {
+              outline: none; }
+          .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-select {
+            border-radius: 3px;
+            padding: 6px 20px; }
+          .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .panel-search-form .panel-search-form-input {
+            border-radius: 30px;
+            max-width: 90%;
+            padding: 6px 16px;
+            width: 240px; }
+        .page .page-content .panel-usuarios .panel-body .panel-search .panel-search-int .btn-add {
+          background-color: #3BDBC3;
+          border-color: #3BDBC3;
+          color: #151515; }
+    .page .page-content .panel-usuarios .panel-body .panel-listado {
+      padding: 0 20px; }
+      .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-head,
+      .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row {
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap; }
+        .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-head .panel-listado-col,
+        .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          font-size: 1rem; }
+          .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-head .panel-listado-col.w-x,
+          .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col.w-x {
+            width: 5%; }
+          .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-head .panel-listado-col.w-m,
+          .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col.w-m {
+            width: 16.25%; }
+          .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-head .panel-listado-col.w-l,
+          .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col.w-l {
+            width: 30%; }
+      .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-head {
+        padding: 8px 0; }
+        .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-head .panel-listado-col {
+          color: #FFF;
+          font-size: .8rem;
+          font-weight: 100;
+          text-transform: uppercase; }
+      .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row {
+        border-top: 1px solid #15584E;
+        padding: 16px 0; }
+        .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row:last-child {
+          border-bottom: 1px solid #15584E; }
+        .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row:hover {
+          background-color: rgba(35, 37, 41, 0.8); }
+        .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col {
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center;
+          color: #FFF;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          font-weight: 300;
+          -webkit-box-pack: start;
+              -ms-flex-pack: start;
+                  justify-content: flex-start; }
+          .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-img,
+          .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction {
+            display: block;
+            border-radius: 50%; }
+          .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-img {
+            background-color: #232529;
+            height: 32px;
+            margin-right: 1rem;
+            width: 32px; }
+            .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-img:last-child {
+              margin-right: 0; }
+          .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction {
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            height: 24px;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            margin-right: 3vw;
+            width: 24px; }
+            .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction:last-child {
+              margin-right: 0; }
+            .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction i {
+              color: #1B2322;
+              font-size: .85rem; }
+            .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction.acction-edit {
+              background-color: #3BDBC3; }
+            .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .panel-listado-acction.acction-delete {
+              background-color: #15584E; }
+          .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group {
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+            -webkit-box-pack: start;
+                -ms-flex-pack: start;
+                    justify-content: flex-start;
+            width: 90%; }
+            .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group label {
+              background-color: transpatent;
+              border-color: #3BDBC3;
+              width: 50%; }
+              .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group label.btn-active.active {
+                background-color: #3BDBC3;
+                border-color: #3BDBC3;
+                color: #232529; }
+              .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group label.btn-active.active, .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group label.btn-active:active, .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group label.btn-active:focus, .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group label.btn-active:hover {
+                background-color: #3BDBC3;
+                border-color: #3BDBC3;
+                color: #232529; }
+              .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group label.btn-inactive.active {
+                background-color: #f96868;
+                border-color: #f96868;
+                color: #FFF; }
+              .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group label.btn-inactive.active, .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group label.btn-inactive:active, .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group label.btn-inactive:focus, .page .page-content .panel-usuarios .panel-body .panel-listado .panel-listado-row .panel-listado-col .btn-group label.btn-inactive:hover {
+                background-color: #f96868;
+                border-color: #f96868;
+                color: #FFF; }
+
+/*  Crear - Editar
 	@mixin ====================================== */
-.usuarios-actualizar .user-file {
-  cursor: pointer;
-  display: block;
-  height: 200px;
-  margin: 0 auto;
-  max-width: 80%;
-  width: 200px; }
+.page .page-content .panel-usuarios-create,
+.page .page-content .panel-usuarios-editar {
+  background-color: transparent; }
+  .page .page-content .panel-usuarios-create .panel-body,
+  .page .page-content .panel-usuarios-editar .panel-body {
+    padding: 10vh 0;
+    max-width: 70%;
+    width: 70%;
+    margin: 0 auto; }
+    .page .page-content .panel-usuarios-create .panel-body .user-file,
+    .page .page-content .panel-usuarios-editar .panel-body .user-file {
+      -ms-flex-line-pack: center;
+          align-content: center;
+      height: 100%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      text-align: center; }
+      .page .page-content .panel-usuarios-create .panel-body .user-file .user-file-a,
+      .page .page-content .panel-usuarios-editar .panel-body .user-file .user-file-a {
+        border-radius: 36px;
+        cursor: pointer;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        height: 74px;
+        margin: 0 auto;
+        max-width: 80%;
+        overflow: hidden;
+        width: 143px; }
+        .page .page-content .panel-usuarios-create .panel-body .user-file .user-file-a img,
+        .page .page-content .panel-usuarios-editar .panel-body .user-file .user-file-a img {
+          margin-top: -25%;
+          max-width: 100%; }
+    .page .page-content .panel-usuarios-create .panel-body form .btn-usuarios-add,
+    .page .page-content .panel-usuarios-editar .panel-body form .btn-usuarios-add {
+      background-color: #3BDBC3;
+      border-color: #3BDBC3;
+      color: #151515;
+      width: 100%; }
+    .page .page-content .panel-usuarios-create .panel-body form .form-group,
+    .page .page-content .panel-usuarios-editar .panel-body form .form-group {
+      position: relative; }
+      .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"],
+      .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"],
+      .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"],
+      .page .page-content .panel-usuarios-create .panel-body form .form-group select,
+      .page .page-content .panel-usuarios-create .panel-body form .form-group textarea,
+      .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control,
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"],
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"],
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"],
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group select,
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea,
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control {
+        background-color: #2D2D2D;
+        border-color: #2D2D2D;
+        font-weight: 300; }
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"]:active, .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"]:focus, .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"]:hover,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"]:active,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"]:focus,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"]:hover,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"]:active,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"]:focus,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"]:hover,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group select:active,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group select:focus,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group select:hover,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group textarea:active,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group textarea:focus,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group textarea:hover,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control:active,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control:focus,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control:hover,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"]:active,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"]:focus,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"]:hover,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"]:active,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"]:focus,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"]:hover,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"]:active,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"]:focus,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"]:hover,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group select:active,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group select:focus,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group select:hover,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea:active,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea:focus,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea:hover,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control:active,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control:focus,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control:hover {
+          border-color: #2D2D2D;
+          -webkit-box-shadow: none;
+                  box-shadow: none;
+          outline: none; }
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"]:disabled, .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"].form-input-usuario,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"]:disabled,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"].form-input-usuario,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"]:disabled,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"].form-input-usuario,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group select:disabled,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group select.form-input-usuario,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group textarea:disabled,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group textarea.form-input-usuario,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control:disabled,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control.form-input-usuario,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"]:disabled,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"].form-input-usuario,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"]:disabled,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"].form-input-usuario,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"]:disabled,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"].form-input-usuario,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group select:disabled,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group select.form-input-usuario,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea:disabled,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea.form-input-usuario,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control:disabled,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control.form-input-usuario {
+          background-color: rgba(72, 81, 88, 0.9);
+          border-color: rgba(72, 81, 88, 0.9);
+          color: rgba(255, 255, 255, 0.7);
+          font-weight: 400; }
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"]:disabled::-webkit-input-placeholder, .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"].form-input-usuario::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"]:disabled::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"].form-input-usuario::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"]:disabled::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"].form-input-usuario::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group select:disabled::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group select.form-input-usuario::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group textarea:disabled::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group textarea.form-input-usuario::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control:disabled::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control.form-input-usuario::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"]:disabled::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"].form-input-usuario::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"]:disabled::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"].form-input-usuario::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"]:disabled::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"].form-input-usuario::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group select:disabled::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group select.form-input-usuario::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea:disabled::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea.form-input-usuario::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control:disabled::-webkit-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control.form-input-usuario::-webkit-input-placeholder {
+            color: rgba(255, 255, 255, 0.7); }
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"]:disabled:-moz-placeholder, .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"].form-input-usuario:-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"]:disabled:-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"].form-input-usuario:-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"]:disabled:-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"].form-input-usuario:-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group select:disabled:-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group select.form-input-usuario:-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group textarea:disabled:-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group textarea.form-input-usuario:-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control:disabled:-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control.form-input-usuario:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"]:disabled:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"].form-input-usuario:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"]:disabled:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"].form-input-usuario:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"]:disabled:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"].form-input-usuario:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group select:disabled:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group select.form-input-usuario:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea:disabled:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea.form-input-usuario:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control:disabled:-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control.form-input-usuario:-moz-placeholder {
+            color: rgba(255, 255, 255, 0.7); }
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"]:disabled::-moz-placeholder, .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"].form-input-usuario::-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"]:disabled::-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"].form-input-usuario::-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"]:disabled::-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"].form-input-usuario::-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group select:disabled::-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group select.form-input-usuario::-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group textarea:disabled::-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group textarea.form-input-usuario::-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control:disabled::-moz-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control.form-input-usuario::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"]:disabled::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"].form-input-usuario::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"]:disabled::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"].form-input-usuario::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"]:disabled::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"].form-input-usuario::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group select:disabled::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group select.form-input-usuario::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea:disabled::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea.form-input-usuario::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control:disabled::-moz-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control.form-input-usuario::-moz-placeholder {
+            color: rgba(255, 255, 255, 0.7); }
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"]:disabled:-ms-input-placeholder, .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="email"].form-input-usuario:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"]:disabled:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="password"].form-input-usuario:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"]:disabled:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group input[type="text"].form-input-usuario:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group select:disabled:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group select.form-input-usuario:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group textarea:disabled:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group textarea.form-input-usuario:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control:disabled:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group .form-control.form-input-usuario:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"]:disabled:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="email"].form-input-usuario:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"]:disabled:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="password"].form-input-usuario:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"]:disabled:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group input[type="text"].form-input-usuario:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group select:disabled:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group select.form-input-usuario:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea:disabled:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group textarea.form-input-usuario:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control:disabled:-ms-input-placeholder,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-control.form-input-usuario:-ms-input-placeholder {
+            color: rgba(255, 255, 255, 0.7); }
+      .page .page-content .panel-usuarios-create .panel-body form .form-group .form-pass-info,
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-pass-info {
+        -ms-flex-line-pack: center;
+            align-content: center;
+        background-color: transparent;
+        border: 1px solid #f96868;
+        border-radius: 3px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        height: 18px;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        position: absolute;
+        right: -30px;
+        top: 10px;
+        width: 18px; }
+        .page .page-content .panel-usuarios-create .panel-body form .form-group .form-pass-info i,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group .form-pass-info i {
+          color: #f96868;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          font-size: .9rem;
+          line-height: 1.2; }
+      .page .page-content .panel-usuarios-create .panel-body form .form-group .select2,
+      .page .page-content .panel-usuarios-create .panel-body form .form-group .select2-container--krajee,
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2,
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2-container--krajee {
+        position: relative; }
+        .page .page-content .panel-usuarios-create .panel-body form .form-group .select2 .select2-selection,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group .select2-container--krajee .select2-selection,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2 .select2-selection,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2-container--krajee .select2-selection {
+          background-color: #2D2D2D;
+          border-color: #2D2D2D;
+          color: #FFF;
+          font-weight: 300;
+          position: relative; }
+          .page .page-content .panel-usuarios-create .panel-body form .form-group .select2 .select2-selection .select2-selection__rendered,
+          .page .page-content .panel-usuarios-create .panel-body form .form-group .select2-container--krajee .select2-selection .select2-selection__rendered,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2 .select2-selection .select2-selection__rendered,
+          .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2-container--krajee .select2-selection .select2-selection__rendered {
+            position: relative; }
+            .page .page-content .panel-usuarios-create .panel-body form .form-group .select2 .select2-selection .select2-selection__rendered .select2-selection__clear,
+            .page .page-content .panel-usuarios-create .panel-body form .form-group .select2-container--krajee .select2-selection .select2-selection__rendered .select2-selection__clear,
+            .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2 .select2-selection .select2-selection__rendered .select2-selection__clear,
+            .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2-container--krajee .select2-selection .select2-selection__rendered .select2-selection__clear {
+              color: #FFF;
+              right: .2rem;
+              top: -.4rem; }
+        .page .page-content .panel-usuarios-create .panel-body form .form-group .select2 .select2-selection--single .select2-selection__arrow,
+        .page .page-content .panel-usuarios-create .panel-body form .form-group .select2-container--krajee .select2-selection--single .select2-selection__arrow,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2 .select2-selection--single .select2-selection__arrow,
+        .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2-container--krajee .select2-selection--single .select2-selection__arrow {
+          border-left-color: #2D2D2D; }
+      .page .page-content .panel-usuarios-create .panel-body form .form-group .select2-container--krajee.select2-container--open .select2-selection,
+      .page .page-content .panel-usuarios-create .panel-body form .form-group .select2-container--krajee .select2-selection:focus,
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2-container--krajee.select2-container--open .select2-selection,
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group .select2-container--krajee .select2-selection:focus {
+        -webkit-box-shadow: none;
+                box-shadow: none; }
+      .page .page-content .panel-usuarios-create .panel-body form .form-group .help-block,
+      .page .page-content .panel-usuarios-editar .panel-body form .form-group .help-block {
+        color: #f96868;
+        font-size: .85rem;
+        margin-top: .3rem;
+        padding-left: 1rem; }
 
 /*!
 	-----------------------------------------------------------------------------
@@ -3496,3 +4243,4 @@ a {
 	*/
 /*  Listado
 	@mixin ====================================== */
+/*# sourceMappingURL=site-extend.css.map */

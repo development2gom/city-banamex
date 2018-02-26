@@ -14,32 +14,97 @@ use app\models\Constantes;
 /* @var $searchModel app\modules\ModUsuarios\models\EntUsuariosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Citas';
-$this->params['classBody'] = "site-navbar-small site-menubar-hide";
-if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){
-    $this->params['headerActions'] = '<a class="btn btn-success ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
-}
-$this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon wb-calendar"></i>Citas',
-    'template'=>'<li class="breadcrumb-item">{link}</li>', 
-    'encode' => false];
+// $this->title = 'Citas';
+// $this->params['classBody'] = "site-navbar-small site-menubar-hide";
+// if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){
+//     // $this->params['headerActions'] = '<a class="btn btn-success ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
+// }
+// $this->params['breadcrumbs'][] = [
+//     'label' => '<i class="icon wb-calendar"></i>Citas',
+//     'template'=>'<li class="breadcrumb-item">{link}</li>', 
+//     'encode' => false];
 
-$this->registerCssFile(
-    '@web/webAssets/css/citas/index.css',
-    ['depends' => [\app\assets\AppAsset::className()]]
-);
+// $this->registerCssFile(
+//     '@web/webAssets/css/citas/index.css',
+//     ['depends' => [\app\assets\AppAsset::className()]]
+// );
 
-$this->registerJsFile(
-    '@web/webAssets/js/citas/index.js',
-    ['depends' => [\app\assets\AppAsset::className()]]
-);
-?>
+// $this->registerJsFile(
+//     '@web/webAssets/js/citas/index.js',
+//     ['depends' => [\app\assets\AppAsset::className()]]
+// );
+// ?>
 
 
 <?php Pjax::begin(['id' => 'citas', 'timeout'=>'0', 'linkSelector'=>'table thead a, a.list-group-item']) ?>
 
 
 
+
+<div class="panel panel-gral panel-citas">
+    <div class="panel-body">
+
+        <div class="panel-search">
+            <h3 class="panel-search-title">Citas</h3>
+            <div class="panel-search-int">
+                <form class="panel-search-form">
+                <input type="text" class="panel-search-form-select" placeholder="Buscar por nombre">
+                <input type="text" class="panel-search-form-input ml-35" placeholder="Cliente">
+                <input type="text" class="panel-search-form-input" placeholder="Estado">
+                <input type="text" class="panel-search-form-input" placeholder="Status">
+                <input type="text" class="panel-search-form-input" placeholder="Tipo">
+                </form>
+
+                <a class="btn btn-success ladda-button btn-add" href="<?=Url::base()?>/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>
+            </div>
+            
+        </div>
+            
+        <div class="panel-listado">
+            <div class="panel-listado-head">
+                <div class="panel-listado-col w-x"></div>
+                <div class="panel-listado-col w-m">Nombre</div>
+                <div class="panel-listado-col w-m">Última actualización</div>
+                <div class="panel-listado-col w-m">Fecha de asignación</div>
+                <div class="panel-listado-col w-m">Arrendedor</div>
+                <div class="panel-listado-col w-m">Responsables</div>
+                <div class="panel-listado-col w-s">Acciones</div>
+            </div>
+
+            <div class="panel-listado-row">
+                <div class="panel-listado-col w-x"><span class="panel-listado-iden"></span></div>
+                <div class="panel-listado-col w-m">Central Camionera</div>
+                <div class="panel-listado-col w-m">Hoy</div>
+                <div class="panel-listado-col w-m">13 - Ago -2018</div>
+                <div class="panel-listado-col w-m">Carpet contractors</div>
+                <div class="panel-listado-col w-m"><img class="panel-listado-img" src="<?= Url::base()?>/webAssets/images/site/user.png" alt=""></div>
+                <div class="panel-listado-col w-s"><a class="panel-listado-acction acction-edit" href=""><i class="icon wb-plus"></i></a><a class="panel-listado-acction acction-delete" href=""><i class="icon wb-plus"></i></a></div>
+            </div>
+
+            <div class="panel-listado-row">
+                <div class="panel-listado-col w-x"><span class="panel-listado-iden"></span></div>
+                <div class="panel-listado-col w-m">Central Camionera</div>
+                <div class="panel-listado-col w-m">Hoy</div>
+                <div class="panel-listado-col w-m">13 - Ago -2018</div>
+                <div class="panel-listado-col w-m">Carpet contractors</div>
+                <div class="panel-listado-col w-m"><img class="panel-listado-img" src="<?= Url::base()?>/webAssets/images/site/user.png" alt=""></div>
+                <div class="panel-listado-col w-s"><a class="panel-listado-acction acction-edit" href=""><i class="icon wb-plus"></i></a><a class="panel-listado-acction acction-delete" href=""><i class="icon wb-plus"></i></a></div>
+            </div>
+
+            <div class="panel-listado-row">
+                <div class="panel-listado-col w-x"><span class="panel-listado-iden x2"></span></div>
+                <div class="panel-listado-col w-m">Central Camionera</div>
+                <div class="panel-listado-col w-m">Hoy</div>
+                <div class="panel-listado-col w-m">13 - Ago -2018</div>
+                <div class="panel-listado-col w-m">Carpet contractors</div>
+                <div class="panel-listado-col w-m"><img class="panel-listado-img" src="<?= Url::base()?>/webAssets/images/site/user.png" alt=""></div>
+                <div class="panel-listado-col w-s"><a class="panel-listado-acction acction-edit" href=""><i class="icon wb-plus"></i></a><a class="panel-listado-acction acction-delete" href=""><i class="icon wb-plus"></i></a></div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 
 <div class="row">
     
