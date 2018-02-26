@@ -47,7 +47,7 @@ class H2H
 
     public function setDataCrearEnvio($cita){
         $this->numServicio = $cita->txt_identificador_cliente;
-        $this->observaciones = $cita->txt_observaciones_punto_referencia;
+        $this->observaciones = $cita->txt_entre_calles." ".$cita->txt_observaciones_punto_referencia;
         $this->observacionesContenido = $cita->txt_promocional;
         $this->nombre = $cita->txt_nombre." ".$cita->txt_apellido_paterno." ".$cita->txt_apellido_materno;
         $this->email = $cita->txt_email;
@@ -62,7 +62,7 @@ class H2H
         $this->telefonoRef = $cita->txt_numero_referencia."|".$cita->txt_numero_referencia_2."|".$cita->txt_numero_referencia_2;
         $this->contenido = $cita->idEquipo->txt_nombre;
         $this->empaque = "";
-        $this->valor = $cita->txt_tpv;
+        $this->valor = $cita->txt_tpv?$cita->txt_tpv:0;
     }
 
     public function setDataConsultarEnvio($tracking){
@@ -84,7 +84,8 @@ class H2H
             'Valor' => $this->valor,
             'NoServicio' => $this->numServicio,
             'ObservacionesContenido' => $this->observacionesContenido,
-            'EMail'=>$this->email
+            'EMail'=>$this->email,
+            'Referencias'=>$this->observaciones,
             
         ];
 
@@ -113,6 +114,10 @@ class H2H
                                                                     
         $data_string = json_encode($fields); 
 
+        // echo $data_string;
+
+        // exit;
+
         //url-ify the data for the POST
         //$field_string = http_build_query($fields);
 
@@ -134,7 +139,8 @@ class H2H
         
         $info = curl_getinfo($ch);
 
-        #print_r($info);
+        // print_r($result);
+        // exit;
         //close connection
         curl_close($ch);
 
