@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = [
     <div class="panel-body">
         <?php
         if(isset($historico->History)){
-            usort($historico->History, function($a, $b) { return $b->Fecha - $a->Fecha; });
+            usort($historico->History, function($a, $b) { return strtotime($b->Fecha) - strtotime($a->Fecha); });
            foreach($historico->History as $historial){
         ?>
 
