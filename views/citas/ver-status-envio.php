@@ -81,3 +81,60 @@ $this->params['breadcrumbs'][] = [
         </div>
     </div>
 </div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Historial
+        </h3>
+    </div>
+    <div class="panel-body">
+        <?php
+        if(isset($historico->History)){
+           foreach($historico->History as $historial){
+        ?>
+
+        <div class="row">
+            <div class="col-md-3">
+                <h5>
+                    Fecha    
+                </h5>
+                <p>
+                    <?=Calendario::getDateComplete($historial->Fecha)?>  
+                </p>
+            </div>
+            <div class="col-md-3">
+                <h5>
+                    Evento    
+                </h5>
+                <?=$historial->Evento?>
+            </div>
+            <div class="col-md-3">
+                <h5>
+                    Comentario
+                </h5>
+                <?=$historial->Comentario?>
+            </div>
+            <div class="col-md-3">
+                <h5>
+                    Firma
+                </h5>
+                <?=$historial->Firma?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <h5>
+                    Motivo
+                </h5>
+                <p><?=$historial->Motivo?></p>
+            </div>
+        </div>
+
+        <?php
+            }
+        }
+        ?>
+    </div>
+</div>

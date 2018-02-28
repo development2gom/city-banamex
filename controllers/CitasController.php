@@ -339,7 +339,7 @@ class CitasController extends Controller
         $historico = json_decode($cita->consultarHistorico($envio->txt_tracking));
 
        
-        return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi]);
+        return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi, "historico"=>$historico]);
     }
 
     
