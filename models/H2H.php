@@ -115,7 +115,7 @@ class H2H
         $parametros = $this->getParamsConsultar();
         $fields = [
             "Code" => 'u7Ig3QwPM+0mPESDkcZQ2zjyLHIbiMBdoRiVY0YMbGs=',
-            "Action" => self::ACTION_CONSULTAR_HISTORICO,
+            "Action" => self::ACTION_CREAR,
             "Parameters" => $parametros
         ];
                                                                     
@@ -146,8 +146,8 @@ class H2H
         
         $info = curl_getinfo($ch);
 
-        // print_r($result);
-        // exit;
+        //  print_r($result);
+        //  exit;
         //close connection
         curl_close($ch);
 
