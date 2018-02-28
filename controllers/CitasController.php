@@ -342,5 +342,16 @@ class CitasController extends Controller
         return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi, "historico"=>$historico]);
     }
 
+
+    public function actionTestApiImage(){
+
+        $cita = new EntCitas();
+        $respuestaApi = json_decode($cita->consultarEnvio("SSYBS14021800001"));
+
+        print_r($respuestaApi);
+        exit;
+        
+    }
+
     
 }

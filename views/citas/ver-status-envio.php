@@ -78,6 +78,15 @@ $this->params['breadcrumbs'][] = [
                 <h5>Link cliente</h5>
                 <p><a href="<?=$respuestaApi->TrackingLink?>" target="_blank">Link</a></p>
             </div>
+            <div class="col-md-3">
+                <?php
+                if(isset($respuestaApi->ImagesLinks)){
+                    foreach($respuestaApi->ImagesLinks as $images){
+                        echo "<img src='".$images->Link."' style='width:100%' />";
+                    }
+                }    
+                ?>
+            </div>
         </div>
     </div>
 </div>
