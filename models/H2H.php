@@ -7,6 +7,7 @@ class H2H
     const URL_API = "https://h2hls.azurewebsites.net/System/Brightstar";
     const ACTION_CREAR = "Evt0001";
     const ACTION_CONSULTAR = "Evt0002";
+    const ACTION_CONSULTAR_HISTORICO = "Evt0003";
 
     public $numServicio;
     public $observaciones;
@@ -45,6 +46,12 @@ class H2H
         return $this->consultarEnvioCall();
     }
 
+    public function consultarHistorico($tracking){
+        $this->setDataConsultarEnvio($tracking);
+
+        return $this->consultaHistoricoCall();
+    }
+
     public function setDataCrearEnvio($cita){
         $this->numServicio = $cita->txt_identificador_cliente;
         $this->observaciones = $cita->txt_entre_calles." ".$cita->txt_observaciones_punto_referencia;
@@ -59,7 +66,7 @@ class H2H
         $this->municipio = $cita->txt_municipio;
         $this->colonia = $cita->txt_colonia;
         $this->direccion = "";
-        $this->telefonoRef = $cita->txt_numero_referencia."|".$cita->txt_numero_referencia_2."|".$cita->txt_numero_referencia_3;
+        $this->telefonoRef = $cita->txt_telefono."|".$cita->txt_numero_referencia."|".$cita->txt_numero_referencia_2."|".$cita->txt_numero_referencia_3;
         $this->contenido = $cita->idEquipo->txt_nombre;
         $this->empaque = "";
         $this->valor = $cita->txt_tpv?$cita->txt_tpv:0;
@@ -105,10 +112,10 @@ class H2H
     public function crearEnvioCall()
     {
 
-        $parametros = $this->getParamsCrear();
+        $parametros = $this->getParamsConsultar();
         $fields = [
             "Code" => 'u7Ig3QwPM+0mPESDkcZQ2zjyLHIbiMBdoRiVY0YMbGs=',
-            "Action" => self::ACTION_CREAR,
+            "Action" => self::ACTION_CONSULTAR_HISTORICO,
             "Parameters" => $parametros
         ];
                                                                     
@@ -179,6 +186,48 @@ class H2H
         
         $info = curl_getinfo($ch);
 
+        #print_r($info);
+        //close connection
+        curl_close($ch);
+
+        #print_r($result);
+        #exit;
+        return $result;
+    }
+
+    public function consultaHistoricoCall(){
+
+        $parametros = $this->getParamsConsultar();
+       
+        $fields = [
+            "Code" => 'G8C0z4oYaHlTiVE8km3+a7xSnAKQA5iwsJQvVim2Sz4=',
+            "Action" => self::ACTION_CONSULTAR_HISTORICO,
+            "Parameters" => $parametros
+        ];
+                                                                    
+        $data_string = json_encode($fields); 
+
+        //url-ify the data for the POST
+        //$field_string = http_build_query($fields);
+
+        //open connection
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, self::URL_API);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+        curl_setopt($ch, CURLOPT_HTTPHEADER,[                                                                          
+            'Content-Type: application/json',                                                                                
+            //'Content-Length: ' . strlen($data_string))                                                                       
+        ]); 
+
+        //execute post
+        $result = curl_exec($ch);
+        
+        $info = curl_getinfo($ch);
+       
         #print_r($info);
         //close connection
         curl_close($ch);

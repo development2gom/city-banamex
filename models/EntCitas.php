@@ -156,6 +156,11 @@ class EntCitas extends \yii\db\ActiveRecord
         return $api->consultarEnvio($tracking);
     }
 
+    public function consultarHistorico($tracking){
+        $api = new H2H();
+        return $api->consultarHistorico($tracking);
+    }
+
     public function guardarHistorialUpdate(){
         $usuario = EntUsuarios::getUsuarioLogueado();
 
