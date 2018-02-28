@@ -440,8 +440,8 @@ class EntCitas extends \yii\db\ActiveRecord
             'id_tipo_cancelacion' => "",
             'isEdicion'=>"Edicion",
             'txt_promocional' => "Promocionales",
-            'b_entrega_cat'=> "Entrega en CAT",
-            'id_cat'=>"CAT"
+            'b_entrega_cat'=> "Entrega en CAC",
+            'id_cat'=>"CAC"
         ];
     }
 
