@@ -112,7 +112,7 @@ class H2H
     public function crearEnvioCall()
     {
 
-        $parametros = $this->getParamsConsultar();
+        $parametros = $this->getParamsCrear();
         $fields = [
             "Code" => 'u7Ig3QwPM+0mPESDkcZQ2zjyLHIbiMBdoRiVY0YMbGs=',
             "Action" => self::ACTION_CREAR,

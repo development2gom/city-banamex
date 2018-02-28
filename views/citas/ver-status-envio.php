@@ -1,4 +1,6 @@
 <?php
+
+use app\models\Calendario;
 $this->title = 'Estatus del envio: '.$envio->txt_tracking;
 $this->params['classBody'] = "site-navbar-small site-menubar-hide";
 
@@ -31,7 +33,7 @@ $this->params['breadcrumbs'][] = [
         <div class="row">
                 <div class="col-md-3">
                     <h5>Fecha api</h5>
-                    <p><?=$respuestaApi->Fecha?></p>
+                    <p><?=Calendario::getDateComplete($respuestaApi->Fecha)?></p>
                 </div>
                 <div class="col-md-3">
                     <h5>Imagen</h5>
@@ -51,7 +53,7 @@ $this->params['breadcrumbs'][] = [
                             $latitud = $coordenadas[1];
                             $longitud = $coordenadas[0];
                             
-                            echo '<img style="width:100%" src="http://staticmap.openstreetmap.de/staticmap.php?center='.$latitud.','.$longitud.'&zoom=19&size=500x350"/>';
+                            echo '<img style="width:100%" src="http://staticmap.openstreetmap.de/staticmap.php?center='.$latitud.','.$longitud.'&markers=C%7C'.$latitud.','.$longitud.'&zoom=19&size=500x350"/>';
                         }else{
                             echo "Sin posición";
                         }
