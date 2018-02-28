@@ -79,6 +79,7 @@ $this->params['breadcrumbs'][] = [
                 <p><a href="<?=$respuestaApi->TrackingLink?>" target="_blank">Link</a></p>
             </div>
             <div class="col-md-3">
+                <h5>Imagenes</h5>
                 <?php
                 if(isset($respuestaApi->ImagesLinks)){
                     foreach($respuestaApi->ImagesLinks as $images){
