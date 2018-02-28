@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = [
     <div class="panel-body">
         <div class="row">
                 <div class="col-md-3">
-                    <h5>Fecha api</h5>
+                    <h5>Fecha</h5>
                     <p><?=Calendario::getDateComplete($respuestaApi->Fecha)?></p>
                 </div>
                 <div class="col-md-3">
