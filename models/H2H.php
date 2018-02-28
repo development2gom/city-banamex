@@ -59,7 +59,7 @@ class H2H
         $this->municipio = $cita->txt_municipio;
         $this->colonia = $cita->txt_colonia;
         $this->direccion = "";
-        $this->telefonoRef = $cita->txt_numero_referencia."|".$cita->txt_numero_referencia_2."|".$cita->txt_numero_referencia_2;
+        $this->telefonoRef = $cita->txt_numero_referencia."|".$cita->txt_numero_referencia_2."|".$cita->txt_numero_referencia_3;
         $this->contenido = $cita->idEquipo->txt_nombre;
         $this->empaque = "";
         $this->valor = $cita->txt_tpv?$cita->txt_tpv:0;
