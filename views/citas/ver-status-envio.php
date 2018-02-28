@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = [
                             $latitud = $coordenadas[1];
                             $longitud = $coordenadas[0];
                             
-                            echo '<img style="width:100%" src="http://staticmap.openstreetmap.de/staticmap.php?center='.$latitud.','.$longitud.'&markers=C%7C'.$latitud.','.$longitud.'&zoom=19&size=500x350"/>';
+                            echo '<img style="width:100%" src="http://staticmap.openstreetmap.de/staticmap.php?center='.$latitud.','.$longitud.'&zoom=19&size=500x350"/>';
                         }else{
                             echo "Sin posición";
                         }
