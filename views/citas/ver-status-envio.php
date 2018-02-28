@@ -119,7 +119,7 @@ $this->params['breadcrumbs'][] = [
                 <h5>
                     Firma
                 </h5>
-                <?=$historial->Firma?>
+                <img style="width:100%" src="<?=$historial->Firma?>">
             </div>
         </div>
 
