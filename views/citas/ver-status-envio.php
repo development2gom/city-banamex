@@ -110,7 +110,7 @@ $this->params['breadcrumbs'][] = [
                     Fecha    
                 </h5>
                 <p>
-                    <?=Calendario::getDateComplete($historial->Fecha)?>  
+                    <?=Calendario::getDateCompleteHour($historial->Fecha)?>  
                 </p>
             </div>
             <div class="col-md-3">
