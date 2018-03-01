@@ -34,20 +34,44 @@
 					justify-content: flex-start
 					padding: 20px
 					width: 100%
+					+respond-to(tl)
+						flex-wrap: wrap
+					+respond-to(sm)
+						flex-wrap: wrap
+					+respond-to(tp)
+						padding: 20px 0
 					.panel-search-title
 						color: $white
-						font-size: 1rem
+						font-size: 1.2rem
 						font-weight: $light
 						line-height: 2.4
 						margin: 0
 						min-width: 152px
+						+respond-to(tl)
+							width: 100%
+						+respond-to(sm)
+							width: 100%
 					.panel-search-int
 						display: flex
+						+respond-to(tl)
+							width: 100%
+						+respond-to(sm)
+							flex-wrap: wrap
+							width: 100%
 						.panel-search-form
 							align-content: center
 							display: flex
 							justify-content: flex-start
 							margin-bottom: 0
+							+respond-to(md)
+								flex-wrap: wrap
+								width: 70%
+							+respond-to(tl)
+								flex-wrap: wrap
+								width: 70%
+							+respond-to(sm)
+								flex-wrap: wrap
+								width: 100%
 							.panel-search-form-input,
 							.panel-search-form-select
 								background-color: $mls-black
@@ -60,6 +84,18 @@
 									color: rgba($white,.6)
 									font-size: 1rem
 									font-weight: $light
+								+respond-to(md)
+									margin-bottom: 16px
+									margin-left: 10px
+								+respond-to(tl)
+									margin-bottom: 16px
+									margin-left: 7px
+								+respond-to(sm)
+									margin-bottom: 16px
+									margin-left: 5px
+								+respond-to(tp)
+									margin-bottom: 16px
+									margin-left: 0
 								&:focus
 									outline: none
 
@@ -70,13 +106,48 @@
 								+border-radius(3px)
 								padding: 6px 16px
 								width: 13%
+								+respond-to(md)
+									width: 28%
+								+respond-to(tl)
+									width: 28%
+								+respond-to(sm)
+									width: 30%
+								+respond-to(tp)
+									width: 100%
+									
+								&:first-child
+									margin-right: 30px
+									+respond-to(md)
+										margin-right: 20px
+									+respond-to(tl)
+										margin-right: 10px
+									+respond-to(sm)
+										margin-right: 10px
+									+respond-to(tp)
+										margin-right: 0
 					
 						.btn-add
+							align-items: center
 							background-color: $mls-aqua
 							border-color: $mls-aqua
 							color: $mls-black
+							display: flex
+							justify-content: center
+							white-space: pre-wrap
+							word-wrap: break-word
+							overflow-wrap: break-word
+							+respond-to(md)
+								height: 36px
+								width: 30%
+							+respond-to(tl)
+								height: 36px
+								width: 30%
+							+respond-to(sm)
+								width: 100%
 
 				.panel-listado
+					display: flex
+					flex-direction: column
 					// background-color: #ddd
 					
 					.panel-listado-head,
@@ -85,14 +156,10 @@
 						display: flex
 						flex-wrap: wrap
 						.panel-listado-col
-							display: flex
+							display: flexs
 							font-size: 1rem
-							&.w-x
-								width: 5%
-							&.w-s
-								width: 10%
-							&.w-m
-								width: 17%
+							+respond-to(sm)
+								margin-bottom: 16px
 
 					.panel-listado-head
 						padding: 8px 0
@@ -111,6 +178,7 @@
 							background-color: rgba($mls-black, .8)
 						.panel-listado-col
 							color: $white
+							display: flex
 							font-weight: $light
 							.panel-listado-img,
 							.panel-listado-acction

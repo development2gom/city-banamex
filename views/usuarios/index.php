@@ -42,105 +42,82 @@ $this->registerJsFile(
 
 ?>
 
+
 <!-- Panel -->
-<div class="panel panel-gral panel-usuarios">
+<div class="panel panel-gral panel-list-user-table">
   <div class="panel-body">
 
     <div class="panel-search">
-      <h3 class="panel-search-title"><?= Html::encode($this->title) ?></h3>
+      <h3 class="panel-search-title">Usuarios</h3>
       <div class="panel-search-int">
-          <form class="panel-search-form">
-            <input type="text" class="panel-search-form-input" placeholder="Buscar por nombre o correo">
+        <form class="panel-search-form">
+          <input type="text" class="panel-search-form-input" placeholder="Buscar por nombre o correo">
           <input type="text" class="panel-search-form-select" placeholder="Tipo">
-          </form>
-          <a class="btn btn-success btn-add" href="<?= Url::base()?>/usuarios/create"><i class="icon wb-plus"></i> Agregar usuario</a>
+        </form>
+        <a class="btn btn-success btn-add" href="<?= Url::base()?>/usuarios/create"><i class="icon wb-plus"></i> Agregar usuario</a>
       </div>
         
     </div>
 
-    <div class="panel-listado">
-      <div class="panel-listado-head">
-          <div class="panel-listado-col w-m">Nombre</div>
-          <div class="panel-listado-col w-m">Tipo de usuario</div>
-          <div class="panel-listado-col w-l">Cliente</div>
-          <div class="panel-listado-col w-m">Último acceso</div>
-          <div class="panel-listado-col w-m">Estatus</div>
-          <div class="panel-listado-col w-x">Editar</div>
-      </div>
-
-      <div class="panel-listado-row">
-        <div class="panel-listado-col w-m"><img class="panel-listado-img" src="<?=EntUsuarios::getUsuarioLogueado()->imageProfile?>" alt=""> <span>Paulina Rivas</span></div>
-        <div class="panel-listado-col w-m">Ejecutivo Call-Center</div>
-        <div class="panel-listado-col w-l">Konecta</div>
-        <div class="panel-listado-col w-m">18 - Feb - 2017</div>
-        <div class="panel-listado-col w-m">
-          <div class="btn-group" data-toggle="buttons" role="group">
-            <label class="btn btn-outline btn-active active">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Tipo de usuario</th>
+          <th>Cliente</th>
+          <th>Último acceso</th>
+          <th>Estatus</th>
+          <th>Editar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="flex">
+            <img class="panel-listado-img" src="<?=EntUsuarios::getUsuarioLogueado()->imageProfile?>" alt=""> <span>Paulina Rivas</span>
+          </td>
+          <td>Ejecutivo Call-Center</td>
+          <td>Konecta</td>
+          <td>18 - Feb - 2017</td>
+          <td>
+            <div class="btn-group" data-toggle="buttons" role="group">
+              <label class="btn btn-active active">
               <input type="radio" name="options" autocomplete="off" value="male" checked />
               Activo
-            </label>
-            <label class="btn btn-outline btn-inactive ">
+              </label>
+              <label class="btn btn-inactive">
               <input type="radio" name="options" autocomplete="off" value="female" />
               Inactivo
-            </label>
-          </div>
-        </div>
-        <div class="panel-listado-col w-x"><button type="button" class="btn btn-outline btn-success btn-sm"><i class="icon wb-plus"></i></button></div>
-      </div>
-
-      <div class="panel-listado-row">
-        <div class="panel-listado-col w-m"><img class="panel-listado-img" src="<?=EntUsuarios::getUsuarioLogueado()->imageProfile?>" alt=""> <span>Paulina Rivas</span></div>
-        <div class="panel-listado-col w-m">Ejecutivo Call-Center</div>
-        <div class="panel-listado-col w-l">Konecta</div>
-        <div class="panel-listado-col w-m">18 - Feb - 2017</div>
-        <div class="panel-listado-col w-m">
-          <div class="btn-group" data-toggle="buttons" role="group">
-            <label class="btn btn-outline btn-active">
-              <input type="radio" name="options" autocomplete="off" value="male"/>
-              Activo
-            </label>
-            <label class="btn btn-outline btn-inactive active">
-              <input type="radio" name="options" autocomplete="off" value="female" checked />
-              Inactivo
-            </label>
-          </div>
-        </div>
-        <div class="panel-listado-col w-x"><button type="button" class="btn btn-outline btn-success btn-sm"><i class="icon wb-plus"></i></button></div>
-      </div>
-
-      <div class="panel-listado-row">
-        <div class="panel-listado-col w-m"><img class="panel-listado-img" src="<?=EntUsuarios::getUsuarioLogueado()->imageProfile?>" alt=""> <span>Paulina Rivas</span></div>
-        <div class="panel-listado-col w-m">Ejecutivo Call-Center</div>
-        <div class="panel-listado-col w-l">Konecta</div>
-        <div class="panel-listado-col w-m">18 - Feb - 2017</div>
-        <div class="panel-listado-col w-m">
-          <div class="btn-group" data-toggle="buttons" role="group">
-            <label class="btn btn-outline btn-active active">
+              </label>
+            </div>
+          </td>
+          <td><button type="button" class="btn btn-outline btn-success btn-sm"><i class="icon wb-plus"></i></button></td>
+        </tr>
+        <tr>
+          <td class="flex">
+            <img class="panel-listado-img" src="<?=EntUsuarios::getUsuarioLogueado()->imageProfile?>" alt=""> <span>Paulina Rivas</span>
+          </td>
+          <td>Ejecutivo Call-Center</td>
+          <td>Konecta</td>
+          <td>18 - Feb - 2017</td>
+          <td>
+            <div class="btn-group" data-toggle="buttons" role="group">
+              <label class="btn btn-active">
               <input type="radio" name="options" autocomplete="off" value="male" checked />
               Activo
-            </label>
-          </div>
-        </div>
-        <div class="panel-listado-col w-x"><button type="button" class="btn btn-outline btn-success btn-sm"><i class="icon wb-plus"></i></button></div>
-      </div>
-
-      <div class="panel-listado-row">
-        <div class="panel-listado-col w-m"><img class="panel-listado-img" src="<?=EntUsuarios::getUsuarioLogueado()->imageProfile?>" alt=""> <span>Paulina Rivas</span></div>
-        <div class="panel-listado-col w-m">Ejecutivo Call-Center</div>
-        <div class="panel-listado-col w-l">Konecta</div>
-        <div class="panel-listado-col w-m">18 - Feb - 2017</div>
-        <div class="panel-listado-col w-m">
-          <div class="btn-group" data-toggle="buttons" role="group">
-            <label class="btn btn-outline btn-inactive active">
-              <input type="radio" name="options" autocomplete="off" value="male" checked />
+              </label>
+              <label class="btn btn-inactive active">
+              <input type="radio" name="options" autocomplete="off" value="female" />
               Inactivo
-            </label>
-          </div>
-        </div>
-        <div class="panel-listado-col w-x"><button type="button" class="btn btn-outline btn-success btn-sm"><i class="icon wb-plus"></i></button></div>
-      </div>
-    
-    </div>
+              </label>
+            </div>
+          </td>
+          <td><button type="button" class="btn btn-outline btn-success btn-sm"><i class="icon wb-plus"></i></button></td>
+        </tr>
+      </tbody>
+    </table>    
+  </div>
+</div>
+<!-- End Panel -->
 
     <!-- <form class="page-search-form" role="search">
       <div class="input-search input-search-dark">
@@ -150,6 +127,22 @@ $this->registerJsFile(
       </div>
     </form> -->
     
+<!-- Panel -->
+<div class="panel panel-gral panel-list-user-table">
+
+
+    <div class="panel-search">
+      <h3 class="panel-search-title">Usuarios</h3>
+      <div class="panel-search-int">
+        <form class="panel-search-form">
+          <input type="text" class="panel-search-form-input" placeholder="Buscar por nombre o correo">
+          <input type="text" class="panel-search-form-select" placeholder="Tipo">
+        </form>
+        <a class="btn btn-success btn-add" href="<?= Url::base()?>/usuarios/create"><i class="icon wb-plus"></i> Agregar usuario</a>
+      </div>
+        
+    </div>
+
     <?=$this->render("_search", ['model'=>$searchModel])?>
       
         <?php
@@ -164,11 +157,11 @@ $this->registerJsFile(
         }
         #exit;
         $atributoActivado = EntUsuarios::label()[$sort];
-        $sorter ='<div class="dropdown">
-                    Ordenar por: <a class="dropdown-toggle inline-block" data-toggle="dropdown"
-                    href="#" aria-expanded="false">'.$atributoActivado.'</a>
-                    {sorter}
-                  </div>';
+        // $sorter ='<div class="dropdown">
+        //             Ordenar por: <a class="dropdown-toggle inline-block" data-toggle="dropdown"
+        //             href="#" aria-expanded="false">'.$atributoActivado.'</a>
+        //             {sorter}
+        //           </div>';
         echo ListView::widget([
             'dataProvider' => $dataProvider,
             'itemView' => '_item',
@@ -176,7 +169,8 @@ $this->registerJsFile(
               'tag'=>"li",
               'class'=>"list-group-item"
             ],
-            'layout'=>$sorter.'<ul class="list-group">{items}</ul>{pager}',
+            // 'layout'=>$sorter.'<ul class="list-group">{items}</ul>{pager}',
+            'layout'=>'<ul class="list-group">{items}</ul>{pager}',
             'sorter'=>[
               'class'=>LinkSorterExtends::className(),
               'attributes'=>[
@@ -213,7 +207,6 @@ $this->registerJsFile(
           ]
             
         ]);?>
-    
-  </div>
+
 </div>
 <!-- End Panel -->

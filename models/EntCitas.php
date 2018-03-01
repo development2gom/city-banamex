@@ -397,7 +397,7 @@ class EntCitas extends \yii\db\ActiveRecord
             'id_tipo_entrega' => 'Tipo de entrega',
             'id_usuario' => 'Usuario',
             'id_status' => 'Estatus de la cita',
-            'id_envio' => 'Identificador del envio',
+            'id_envio' => 'Id. del envío',
             'id_tipo_cliente' => 'Tipo de cliente',
             'id_tipo_identificacion' => 'Tipo de identificación',
             'id_horario' => 'Horario',

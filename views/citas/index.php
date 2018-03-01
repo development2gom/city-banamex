@@ -39,132 +39,62 @@ use app\models\Constantes;
 <?php Pjax::begin(['id' => 'citas', 'timeout'=>'0', 'linkSelector'=>'table thead a, a.list-group-item']) ?>
 
 
-
-
-<div class="panel panel-gral panel-citas">
-    <div class="panel-body">
-
-        <div class="panel-search">
-            <h3 class="panel-search-title">Citas</h3>
-            <div class="panel-search-int">
-                <form class="panel-search-form">
-                <input type="text" class="panel-search-form-select" placeholder="Buscar por nombre">
-                <input type="text" class="panel-search-form-input ml-35" placeholder="Cliente">
-                <input type="text" class="panel-search-form-input" placeholder="Estado">
-                <input type="text" class="panel-search-form-input" placeholder="Status">
-                <input type="text" class="panel-search-form-input" placeholder="Tipo">
-                </form>
-
-                <a class="btn btn-success ladda-button btn-add" href="<?=Url::base()?>/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>
-            </div>
-            
-        </div>
-            
-        <div class="panel-listado">
-            <div class="panel-listado-head">
-                <div class="panel-listado-col w-x"></div>
-                <div class="panel-listado-col w-m">Nombre</div>
-                <div class="panel-listado-col w-m">Última actualización</div>
-                <div class="panel-listado-col w-m">Fecha de asignación</div>
-                <div class="panel-listado-col w-m">Arrendedor</div>
-                <div class="panel-listado-col w-m">Responsables</div>
-                <div class="panel-listado-col w-s">Acciones</div>
-            </div>
-
-            <div class="panel-listado-row">
-                <div class="panel-listado-col w-x"><span class="panel-listado-iden"></span></div>
-                <div class="panel-listado-col w-m">Central Camionera</div>
-                <div class="panel-listado-col w-m">Hoy</div>
-                <div class="panel-listado-col w-m">13 - Ago -2018</div>
-                <div class="panel-listado-col w-m">Carpet contractors</div>
-                <div class="panel-listado-col w-m"><img class="panel-listado-img" src="<?= Url::base()?>/webAssets/images/site/user.png" alt=""></div>
-                <div class="panel-listado-col w-s"><a class="panel-listado-acction acction-edit" href=""><i class="icon wb-plus"></i></a><a class="panel-listado-acction acction-delete" href=""><i class="icon wb-plus"></i></a></div>
-            </div>
-
-            <div class="panel-listado-row">
-                <div class="panel-listado-col w-x"><span class="panel-listado-iden"></span></div>
-                <div class="panel-listado-col w-m">Central Camionera</div>
-                <div class="panel-listado-col w-m">Hoy</div>
-                <div class="panel-listado-col w-m">13 - Ago -2018</div>
-                <div class="panel-listado-col w-m">Carpet contractors</div>
-                <div class="panel-listado-col w-m"><img class="panel-listado-img" src="<?= Url::base()?>/webAssets/images/site/user.png" alt=""></div>
-                <div class="panel-listado-col w-s"><a class="panel-listado-acction acction-edit" href=""><i class="icon wb-plus"></i></a><a class="panel-listado-acction acction-delete" href=""><i class="icon wb-plus"></i></a></div>
-            </div>
-
-            <div class="panel-listado-row">
-                <div class="panel-listado-col w-x"><span class="panel-listado-iden x2"></span></div>
-                <div class="panel-listado-col w-m">Central Camionera</div>
-                <div class="panel-listado-col w-m">Hoy</div>
-                <div class="panel-listado-col w-m">13 - Ago -2018</div>
-                <div class="panel-listado-col w-m">Carpet contractors</div>
-                <div class="panel-listado-col w-m"><img class="panel-listado-img" src="<?= Url::base()?>/webAssets/images/site/user.png" alt=""></div>
-                <div class="panel-listado-col w-s"><a class="panel-listado-acction acction-edit" href=""><i class="icon wb-plus"></i></a><a class="panel-listado-acction acction-delete" href=""><i class="icon wb-plus"></i></a></div>
-            </div>
-
-        </div>
-
-    </div>
-</div>
-
 <div class="row">
     
     <?php
     if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)){?>
-    <div class="col-md-3">
-        <div class="list-group bg-blue-grey-100">
+    <div class="col-md-12">
+        <div class="list-group list-group-full">
             <?php
             foreach($status as $statu){
                 $statusColor = EntCitas::getColorStatus($statu->id_statu_cita);
             ?>
 
-            <a class="list-group-item blue-grey-500" href="<?=Url::base()?>/citas/index?EntCitasSearch[id_status]=<?=$statu->id_statu_cita?>">
+            <!-- <a class="list-group-item" href="<?=Url::base()?>/citas/index?EntCitasSearch[id_status]=<?=$statu->id_statu_cita?>">
                 <i class="icon wb-calendar" aria-hidden="true"></i>  
                 <span class="float-right badge badge-<?=$statusColor?> badge-pill text-white">
                     <?=count($statu->entCitas)?>
                 </span>
+                <?=$statu->txt_nombre?>
+            </a> -->
+
+            <a class="list-group-item" href="<?=Url::base()?>/citas/index?EntCitasSearch[id_status]=<?=$statu->id_statu_cita?>">
+                <span class="badge badge-pill badge-<?=$statusColor?>"><?=count($statu->entCitas)?></span>
                 <?=$statu->txt_nombre?>
             </a>
             
             <?php
                 }
             ?>
-            <a class="list-group-item blue-grey-500" href="<?=Url::base()?>/citas/index">
-                Mostrar todas
-            </a>
+            <div class="list-group-item-lg">
+                <a class="list-group-item-more" href="<?=Url::base()?>/citas/index">
+                    Mostrar todas
+                </a>
+            </div>
            
         </div>
     </div>    
     <?php
     }
     ?>
-
     
-    <div class="col-md-<?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)?"9":"12"?>">
-        <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true" role="tablist">
-            <div class="panel">
-                <div class="panel-heading" id="exampleHeadingDefaultOne" role="tab">
+    <div class="col-md-12 <?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)?"9":"12"?>">
+        <!-- <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true" role="tablist"> -->
+            <!-- <div class="panel"> -->
+                <!-- <div class="panel-heading" id="exampleHeadingDefaultOne" role="tab">
                     <a class="panel-title  js-collapse" data-toggle="collapse" href="#exampleCollapseDefaultOne" data-parent="#exampleAccordionDefault" aria-expanded="true" aria-controls="exampleCollapseDefaultOne">
                         Buscar cita
                     </a>
-                </div>
+                </div> -->
                 <div class="panel-collapse collapse in show" id="exampleCollapseDefaultOne" aria-labelledby="exampleHeadingDefaultOne" role="tabpanel" aria-expanded="true">
-                    <div class="panel-body">
-                        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-                    </div>
+                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
                 </div>
-            </div>
-        </div>
+            <!-- </div> -->
+        <!-- </div> -->
     </div>
     
 </div>
 
- <!-- Panel -->
- <div class="panel" id="panel">
- 
-    <div class="js-ms-loading text-center">
-            <h3>Cargando información</h3>
-    </div>
-    <div class="panel-body">
 
     <?php
 
@@ -237,7 +167,12 @@ use app\models\Constantes;
     ]);
 
     ?>  
+    <div class="panel-table">
         <?= GridView::widget([
+                // 'tableOptions' => [
+                //     "class" => "table"
+                // ],
+                'pjax'=>true,
                 'dataProvider' => $dataProvider,
                 'columns' =>[
                     'txt_identificador_cliente',
@@ -252,7 +187,7 @@ use app\models\Constantes;
                                 $data->idStatus->txt_nombre,
                                 Url::to(['citas/view', 'token' => $data->txt_token]), 
                                 [
-                                    'class'=>'btn badge badge-'.$statusColor.'',
+                                    'class'=>'btn badge '.$statusColor.'',
                                 ]
                             );
                         }
@@ -274,7 +209,7 @@ use app\models\Constantes;
                         'format'=>'raw',
                         'value'=>function($data){
             
-                            return Calendario::getDateCompleteHour($data->fch_creacion);
+                            return Calendario::getDateSimple($data->fch_creacion);
                         }
                     ],
                     [
@@ -284,7 +219,7 @@ use app\models\Constantes;
                             if(!$data->fch_cita){
                                 return "(no definido)";
                             }
-                            return Calendario::getDateComplete($data->fch_cita);
+                            return Calendario::getDateSimple($data->fch_cita);
                         }
                     ],
                     [
@@ -296,10 +231,14 @@ use app\models\Constantes;
                             if($data->idEnvio){
                                 return Html::a(
                                     $data->idEnvio->txt_tracking,
-                                    Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]));
+                                    Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]),
+                                    [
+                                        'class'=>'id-send'
+                                    ]
+                                );
                             }
 
-                            return null;
+                            return "<span class='id-send-error'>---</span>";
 
                             
                         }
@@ -307,9 +246,10 @@ use app\models\Constantes;
                     
                 ],
                 'panelTemplate' => "{panelHeading}\n{items}\n{summary}\n{pager}",
-                "panelHeadingTemplate"=>"<div class='float-right'>{export}</div>",
+                "panelHeadingTemplate"=>"{export}",
                 'responsive'=>true,
-                'hover'=>true,
+                'striped'=>false,
+                'hover'=>false,
                 'bordered'=>false,
                 'panel' => [
                     'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-globe"></i> Countries</h3>',
@@ -325,18 +265,20 @@ use app\models\Constantes;
                     'label' => 'Exportar',
                     'fontAwesome' => true,
                     'showConfirmAlert'=>false,
-                   
                     'itemsAfter'=> [
                         '<li role="presentation" class="divider"></li>',
                         '<li class="dropdown-header">Export todos los datos</li>',
                         $fullExportMenu
+                    ],
+                    'options'=>[
+                        'class' => 'btn btn-exportar',
                     ]
                 ],
                 'exportConfig'=>[
                     GridView::CSV => [
                         'label' => Yii::t('kvgrid', 'CSV'),
                         'icon' =>'file-code-o', 
-                        'iconOptions' => ['class' => 'text-primary'],
+                        'iconOptions' => false,
                         'showHeader' => true,
                         'showPageSummary' => true,
                         'showFooter' => true,
@@ -348,17 +290,26 @@ use app\models\Constantes;
                         'config' => [
                             'colDelimiter' => ",",
                             'rowDelimiter' => "\r\n",
-                        ]
+                        ],
                     ],
                 ],
+                'pager'=>[
+                    'linkOptions' => [
+                        'class' => 'page-link'
+                    ],
+                    'pageCssClass'=>'page-item',
+                    'prevPageCssClass' => 'page-item',
+                    'nextPageCssClass' => 'page-item',
+                    'firstPageCssClass' => 'page-item',
+                    'lastPageCssClass' => 'page-item',
+                    
+                ]
             ]) ?>
- 
-    </div>
+
    
 
     
 </div>    
-<!-- End Panel -->
 
 
 <?php Pjax::end() ?>
