@@ -336,7 +336,26 @@ class CitasController extends Controller
         $cita = new EntCitas();
         $envio = EntEnvios::find()->where(['txt_token'=>$token])->one();
         $respuestaApi = json_decode($cita->consultarEnvio($envio->txt_tracking));
+        $historico = json_decode($cita->consultarHistorico($envio->txt_tracking));
 
-        return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi]);
+       
+        return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi, "historico"=>$historico]);
     }
+
+
+    public function actionTestApiImage(){
+        $tracking = "SSYBS28021800007";
+        $cita = new EntCitas();
+        $respuestaApi = json_decode($cita->consultarEnvio($tracking));
+        $historico = json_decode($cita->consultarHistorico($tracking));
+
+
+        //print_r($respuestaApi);
+
+        print_r($historico);
+        exit;
+        
+    }
+
+    
 }

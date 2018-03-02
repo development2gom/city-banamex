@@ -1,4 +1,6 @@
 <?php
+
+use app\models\Calendario;
 $this->title = 'Estatus del envio: '.$envio->txt_tracking;
 $this->params['classBody'] = "site-navbar-small site-menubar-hide";
 
@@ -30,8 +32,8 @@ $this->params['breadcrumbs'][] = [
     <div class="panel-body">
         <div class="row">
                 <div class="col-md-3">
-                    <h5>Fecha api</h5>
-                    <p><?=$respuestaApi->Fecha?></p>
+                    <h5>Fecha</h5>
+                    <p><?=Calendario::getDateComplete($respuestaApi->Fecha)?></p>
                 </div>
                 <div class="col-md-3">
                     <h5>Imagen</h5>
@@ -50,7 +52,10 @@ $this->params['breadcrumbs'][] = [
 
                             $latitud = $coordenadas[1];
                             $longitud = $coordenadas[0];
-                            echo '<img style="width:100%" src="https://maps.googleapis.com/maps/api/staticmap?center='.$latitud.','.$longitud.'&markers=color:redC%7C'.$latitud.','.$longitud.'&zoom=19&size=600x400"/>';
+                            
+                            echo '<img style="width:100%" src="http://staticmap.openstreetmap.de/staticmap.php?center='.$latitud.','.$longitud.'&zoom=19&size=500x350"/>';
+                        }else{
+                            echo "Sin posición";
                         }
                         
                     ?>
@@ -73,6 +78,74 @@ $this->params['breadcrumbs'][] = [
                 <h5>Link cliente</h5>
                 <p><a href="<?=$respuestaApi->TrackingLink?>" target="_blank">Link</a></p>
             </div>
+            <div class="col-md-3">
+                <h5>Imagenes</h5>
+                <?php
+                if(isset($respuestaApi->ImagesLinks)){
+                    foreach($respuestaApi->ImagesLinks as $images){
+                        echo "<img src='".$images->Link."' style='width:100%' />";
+                    }
+                }    
+                ?>
+            </div>
         </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Historial
+        </h3>
+    </div>
+    <div class="panel-body">
+        <?php
+        if(isset($historico->History)){
+            usort($historico->History, function($a, $b) { return strtotime($b->Fecha) - strtotime($a->Fecha); });
+           foreach($historico->History as $historial){
+        ?>
+
+        <div class="row">
+            <div class="col-md-3">
+                <h5>
+                    Fecha    
+                </h5>
+                <p>
+                    <?=Calendario::getDateCompleteHour($historial->Fecha)?>  
+                </p>
+            </div>
+            <div class="col-md-3">
+                <h5>
+                    Evento    
+                </h5>
+                <?=$historial->Evento?>
+            </div>
+            <div class="col-md-3">
+                <h5>
+                    Comentario
+                </h5>
+                <?=$historial->Comentario?>
+            </div>
+            <div class="col-md-3">
+                <h5>
+                    Firma
+                </h5>
+                <img style="width:100%" src="<?=$historial->Firma?>">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <h5>
+                    Motivo
+                </h5>
+                <p><?=$historial->Motivo?></p>
+            </div>
+        </div>
+
+        <?php
+            }
+        }
+        ?>
     </div>
 </div>

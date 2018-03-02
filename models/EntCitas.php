@@ -156,6 +156,11 @@ class EntCitas extends \yii\db\ActiveRecord
         return $api->consultarEnvio($tracking);
     }
 
+    public function consultarHistorico($tracking){
+        $api = new H2H();
+        return $api->consultarHistorico($tracking);
+    }
+
     public function guardarHistorialUpdate(){
         $usuario = EntUsuarios::getUsuarioLogueado();
 
@@ -360,7 +365,8 @@ class EntCitas extends \yii\db\ActiveRecord
             [['txt_email'], 'email'],
             [['txt_tpv'], 'trim'],
             [['fch_nacimiento', 'fch_cita', 'fch_creacion'], 'safe'],
-            [['txt_telefono', 'txt_rfc', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3', 'txt_estado'], 'string', 'max' => 20],
+            [[ 'txt_rfc',  'txt_estado'], 'string', 'max' => 20],
+            [['txt_telefono', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3'], 'string', 'max' => 10],
             [['txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_folio_identificacion'], 'string', 'max' => 200],
             [['txt_numero_telefonico_nuevo'], 'string', 'max' => 10],
             [['txt_email', 'txt_colonia', 'txt_municipio'], 'string', 'max' => 100],
@@ -435,8 +441,8 @@ class EntCitas extends \yii\db\ActiveRecord
             'id_tipo_cancelacion' => "",
             'isEdicion'=>"Edicion",
             'txt_promocional' => "Promocionales",
-            'b_entrega_cat'=> "Entrega en CAT",
-            'id_cat'=>"CAT"
+            'b_entrega_cat'=> "Entrega en CAC",
+            'id_cat'=>"CAC"
         ];
     }
 

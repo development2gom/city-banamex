@@ -14,11 +14,11 @@ use app\models\Constantes;
 /* @var $searchModel app\modules\ModUsuarios\models\EntUsuariosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-// $this->title = 'Citas';
-// $this->params['classBody'] = "site-navbar-small site-menubar-hide";
-// if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){
-//     // $this->params['headerActions'] = '<a class="btn btn-success ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
-// }
+ $this->title = 'Citas';
+ $this->params['classBody'] = "site-navbar-small site-menubar-hide";
+ if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){
+      $this->params['headerActions'] = '<a class="btn btn-add ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
+ }
 // $this->params['breadcrumbs'][] = [
 //     'label' => '<i class="icon wb-calendar"></i>Citas',
 //     'template'=>'<li class="breadcrumb-item">{link}</li>', 

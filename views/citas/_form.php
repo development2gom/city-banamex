@@ -305,19 +305,9 @@ $cat = $model->idCat;
                     require(__DIR__ . '/../components/select2.php');
                     $url = Url::to(['codigos-postales/buscar-codigo']);
                     // render your widget
-                    echo Select2::widget( [
-                        'name'=>"codigo-postal",
-                        'options' => ['placeholder' => 'Buscar codigo postal'],
-                        'pluginEvents'=>[
-                            "select2:select" => "function(e) { 
-                                var codigoPostal = e.params.data.id;
-                                $('#entcitas-txt_codigo_postal').val(codigoPostal);
-                                buscarDatosLocalizacion(codigoPostal);
-                            }",
-                            "select2:unselect" => "function() { 
-                                $('#entcitas-txt_codigo_postal').val('');
-                                }"
-                        ],
+                    echo $form->field($model, 'id_cat')->widget(Select2::classname(), [
+                        'options' => ['placeholder' => 'Selecciona cac'],
+                        
                         'pluginOptions' => [
                             'allowClear' => true,
                             'minimumInputLength' => 3,
