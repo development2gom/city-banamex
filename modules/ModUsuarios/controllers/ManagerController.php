@@ -210,7 +210,7 @@ class ManagerController extends Controller {
 
 		if ($model->load ( Yii::$app->request->post () ) && $model->login ()) {
 			
-			return $this->goBack ();
+			return $this->goHome ();
 		}
 		return $this->render ( 'login', [ 
 				'model' => $model 
