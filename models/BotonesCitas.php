@@ -7,9 +7,9 @@ use app\modules\ModUsuarios\models\EntUsuarios;
 class BotonesCitas
 {
 
-    public $btnAutorizar =  "<a href='#'  class='btn btn-success btn-form-save js-aprobar'>Aprobar</a>";
-    public $btnActualizar = "<a href='#'  class='btn btn-primary btn-form-save js-actualizar'>Actualizar</a>";
-    public $btnCancelar = "<a href='#'  class='btn btn-danger btn-form-save js-cancelar'>Cancelar</a>";
+    public $btnAutorizar =  "<a href='#'  class='btn btn-success btn-form-save js-aprobar  mb-0'>Aprobar</a>";
+    public $btnActualizar = "<a href='#'  class='btn btn-primary btn-form-save js-actualizar  mb-0'>Actualizar</a>";
+    public $btnCancelar = "<a href='#'  class='btn btn-danger btn-form-save js-cancelar  mb-0'>Cancelar</a>";
 
     /**
      * Obtiene los botones Actulizar, editar y cancelar

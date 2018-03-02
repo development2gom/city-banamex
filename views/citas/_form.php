@@ -297,45 +297,7 @@ $cat = $model->idCat;
                 ?>
             </div>
         </div>
-        <div class="row">
-            <!-- <div class="col-md-3">
-                <div class="form-group">
-                    <label class="form-control-label" for="entcitas-txt_codigo_postal">Buscar código postal</label>
-                    <?php
-                    require(__DIR__ . '/../components/select2.php');
-                    $url = Url::to(['codigos-postales/buscar-codigo']);
-                    // render your widget
-                    echo $form->field($model, 'id_cat')->widget(Select2::classname(), [
-                        'options' => ['placeholder' => 'Selecciona cac'],
-                        
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                            'minimumInputLength' => 3,
-                            'ajax' => [
-                                'url' => $url,
-                                'dataType' => 'json',
-                                'delay' => 250,
-                                'data' => new JsExpression('function(params) { return {q:params.term, page: params.page}; }'),
-                                'processResults' => new JsExpression($resultsJs),
-                                'cache' => true
-                            ],
-                            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-                            'templateResult' => new JsExpression('function(equipo) { return equipo.txt_nombre; }'),
-                            'templateSelection' => new JsExpression('function (equipo) {return equipo.txt_nombre; }'),
-                        ],
-                    ]);
-                ?>
-                </div>
-                
-            </div> -->
-            <div class="col-md-3">
-                <?= $form->field($model, 'txt_codigo_postal')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
-            </div>
-            <div class="col-md-6">
-                <?= $form->field($model, 'txt_calle_numero')->textInput(['maxlength' => true]) ?>
-            </div>
-            
-        </div>
+        
 
         <div class="row">
             <div class="col-md-4">
@@ -391,7 +353,7 @@ $cat = $model->idCat;
         </div>
     </div>
 
-    <div class="citas-cont">
+    <div class="citas-cont pb-20">
         <div class="row">
             <div class="col-md-12">
                 <h5 class="panel-title">Datos de la cita</h5>
@@ -481,12 +443,17 @@ $cat = $model->idCat;
         </div>
     </div>
 
+    <?php
+    if($model->isNewRecord){
+    ?>
     <div class="citas-cont">
         <div class="form-group">
             <?= $model->getBotonGuardar() ?>
         </div>
     </div>
-
+    <?php
+    }
+    ?>
     <?php ActiveForm::end(); ?>
 
 <?php
