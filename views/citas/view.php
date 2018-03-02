@@ -10,17 +10,17 @@ use yii\web\View;
 /* @var $this yii\web\View */
 /* @var $model app\models\EntCitas */
 
-$this->title = 'Cita '.$model->txt_identificador_cliente.' <span class="badge '.EntCitas::getColorStatus($model->id_status   ).'">'.$model->idStatus->txt_nombre.'</span>';
-// $this->params['breadcrumbs'][] = [
-//     'label' => '<i class="icon wb-calendar"></i> Citas', 
-//     'url' => ['index'],
-//     'template'=>'<li class="breadcrumb-item">{link}</li>', 
-//     'encode' => false
-// ];
-// $this->params['breadcrumbs'][] = [
-//     'label' => '<i class="icon wb-eye"></i> Cita '.$model->txt_identificador_cliente,
-//     'template'=>'<li class="breadcrumb-item">{link}</li>', 
-//     'encode' => false];
+$this->title = $model->txt_identificador_cliente.' <span class="badge '.EntCitas::getColorStatus($model->id_status   ).'">'.$model->idStatus->txt_nombre.'</span>';
+$this->params['breadcrumbs'][] = [
+    'label' => '<i class="icon wb-calendar"></i> Citas', 
+    'url' => ['index'],
+    'template'=>'<li class="breadcrumb-item">{link}</li>', 
+    'encode' => false
+];
+$this->params['breadcrumbs'][] = [
+    'label' => '<i class="icon wb-eye"></i> '.$model->txt_identificador_cliente,
+    'template'=>'<li class="breadcrumb-item">{link}</li>', 
+    'encode' => false];
 
 $this->registerCssFile(
     '@web/webAssets/templates/classic/global/vendor/bootstrap-sweetalert/sweetalert.css',
@@ -49,71 +49,77 @@ $this->registerJsFile(
 );
 ?>
 <input class="token-cita" type="hidden" data-token="<?=$model->txt_token?>"/>
-<div class="panel-citas panel-gral   pb-30">
-        <?=$model->getBotonesSupervisor()?>
-        
-        <?= $this->render('_form', [
-            'model' => $model,
-            'tiposTramites'=>$tiposTramites,
-            'tiposClientes'=>$tiposClientes,
-            'tiposIdentificaciones'=>$tiposIdentificaciones,
-            'areas'=>$areas,
-            'areaDefault'=>$areaDefault
-        ]) ?>
 
+<div class="panel-citas-view">
+
+    <div class="panel-citas-btns mb-20">
+        <?=$model->getBotonesSupervisor()?>
+    </div>
+
+    <?= $this->render('_form', [
+        'model' => $model,
+        'tiposTramites'=>$tiposTramites,
+        'tiposClientes'=>$tiposClientes,
+        'tiposIdentificaciones'=>$tiposIdentificaciones,
+        'areas'=>$areas,
+        'areaDefault'=>$areaDefault
+    ]) ?>
+    
+    <div class="panel-citas-btns">
         <?=$model->getBotonesSupervisor()?>  
+    </div>
+
 </div>
 
-<div class="panel panel-gral  pb-0 mb-0">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            Historial de cambios
-        </h3>
+<div class="panel-citas-view">
+    <div class="citas-cont">
+        <h5 class="panel-title">Historial de cambios</h5>
+        <hr>
     </div>
-    <div class="panel-body panel-table">
+    <div class="citas-cont panel-table">
        
-            <?= GridView::widget([
-                        'dataProvider' => $historial,
-                        'columns' =>[
-                            [
-                                'attribute' => 'id_usuario',
-                                'value'=>'idUsuario.txtAuthItem.description',
-                                'label' => 'Tipo de usuario',
-                            ],
-                            [
-                                'attribute'=>'id_usuario',
-                                'value'=>'idUsuario.nombreCompleto',
-                                'label' => 'Nombre usuario',
-                            ],
-                        'txt_modificacion',
-                        [
-                                'attribute'=>'fch_modificacion',
-                                'format'=>'raw',
-                                'label' => 'Fecha de modificación',
-                                'value'=>function($data){
-                    
-                                    return Calendario::getDateCompleteHour($data->fch_modificacion);
-                                }
-                            ],
-                            
-                        ],
-                        'pjax'=>true,
-                        //'pjaxSettings'=>,
-                        'panelTemplate' => "{items}\n{summary}\n{pager}",
-                        //"panelHeadingTemplate"=>"<div class='pull-right'>{export}</div>",
-                        'responsive'=>true,
-                        'hover'=>true,
-                        'bordered'=>false,
-                        'striped'=>false,
-                        'panel' => [
-                            'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-globe"></i> Countries</h3>',
-                            'type'=>'success',
-                            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Create Country', ['create'], ['class' => 'btn btn-success']),
-                            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
-                            'footer'=>false
-                        ],
-                    
-                    ]) ?>
+        <?= GridView::widget([
+            'dataProvider' => $historial,
+            'columns' =>[
+                [
+                    'attribute' => 'id_usuario',
+                    'value'=>'idUsuario.txtAuthItem.description',
+                    'label' => 'Tipo de usuario',
+                ],
+                [
+                    'attribute'=>'id_usuario',
+                    'value'=>'idUsuario.nombreCompleto',
+                    'label' => 'Nombre usuario',
+                ],
+            'txt_modificacion',
+            [
+                    'attribute'=>'fch_modificacion',
+                    'format'=>'raw',
+                    'label' => 'Fecha de modificación',
+                    'value'=>function($data){
+        
+                        return Calendario::getDateCompleteHour($data->fch_modificacion);
+                    }
+                ],
+                
+            ],
+            'pjax'=>true,
+            //'pjaxSettings'=>,
+            'panelTemplate' => "{items}\n{summary}\n{pager}",
+            //"panelHeadingTemplate"=>"<div class='pull-right'>{export}</div>",
+            'responsive'=>true,
+            'hover'=>true,
+            'bordered'=>false,
+            'striped'=>false,
+            'panel' => [
+                'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-globe"></i> Countries</h3>',
+                'type'=>'success',
+                'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Create Country', ['create'], ['class' => 'btn btn-success']),
+                'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
+                'footer'=>false
+            ],
+        
+        ]) ?>
                 
     </div>
 </div>

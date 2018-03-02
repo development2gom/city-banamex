@@ -3494,6 +3494,14 @@ a {
     color: #FFF;
     font-size: 1.95rem;
     font-weight: 300; }
+    .page .page-header .page-title .badge {
+      color: #FFF;
+      font-size: .8rem;
+      font-weight: 300;
+      margin-left: 8px;
+      margin-top: -4px;
+      text-transform: uppercase;
+      vertical-align: middle; }
   .page .page-header .breadcrumb li a {
     color: #FFF;
     text-decoration: none; }
@@ -3668,6 +3676,10 @@ a {
     background-color: rgba(42, 3, 9, 0.4);
     border-radius: 4px;
     padding: 32px; }
+    .page .page-content .panel-table .kv-loader-overlay {
+      background-color: rgba(59, 219, 195, 0.35); }
+      .page .page-content .panel-table .kv-loader-overlay .kv-loader {
+        border-radius: 50%; }
     .page .page-content .panel-table .panel-heading {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -3814,90 +3826,196 @@ a {
             border-color: rgba(59, 219, 195, 0.65);
             color: rgba(255, 255, 255, 0.85); }
 
-/*  Page Crear
+/*  Page View
 	@mixin ====================================== */
-.panel-citas {
-  background-color: green;
-  padding: 40px 32px 60px; }
-  .panel-citas form .citas-cont {
-    padding-bottom: 64px; }
-    .panel-citas form .citas-cont .panel-title {
+.panel-citas-view,
+.panel-citas-create {
+  background-color: rgba(42, 3, 9, 0.4);
+  margin-bottom: 32px;
+  padding: 32px; }
+  .panel-citas-view .panel-heading .panel-title,
+  .panel-citas-create .panel-heading .panel-title {
+    padding: 0; }
+  .panel-citas-view .panel-citas-btns,
+  .panel-citas-create .panel-citas-btns {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+    .panel-citas-view .panel-citas-btns .btn,
+    .panel-citas-create .panel-citas-btns .btn {
+      margin-left: 12px; }
+      .panel-citas-view .panel-citas-btns .btn.btn-form-actualizar,
+      .panel-citas-create .panel-citas-btns .btn.btn-form-actualizar {
+        background-color: #3BDBC3;
+        border: 1px solid rgba #3BDBC3;
+        border-color: #3BDBC3;
+        color: #151515; }
+        .panel-citas-view .panel-citas-btns .btn.btn-form-actualizar:active, .panel-citas-view .panel-citas-btns .btn.btn-form-actualizar:focus, .panel-citas-view .panel-citas-btns .btn.btn-form-actualizar:hover,
+        .panel-citas-create .panel-citas-btns .btn.btn-form-actualizar:active,
+        .panel-citas-create .panel-citas-btns .btn.btn-form-actualizar:focus,
+        .panel-citas-create .panel-citas-btns .btn.btn-form-actualizar:hover {
+          background-color: rgba(59, 219, 195, 0.25);
+          color: #FFF; }
+      .panel-citas-view .panel-citas-btns .btn.btn-form-aprobar,
+      .panel-citas-create .panel-citas-btns .btn.btn-form-aprobar {
+        background-color: transparent;
+        border: 1px solid #FFF;
+        color: #FFF; }
+        .panel-citas-view .panel-citas-btns .btn.btn-form-aprobar:active, .panel-citas-view .panel-citas-btns .btn.btn-form-aprobar:focus, .panel-citas-view .panel-citas-btns .btn.btn-form-aprobar:hover,
+        .panel-citas-create .panel-citas-btns .btn.btn-form-aprobar:active,
+        .panel-citas-create .panel-citas-btns .btn.btn-form-aprobar:focus,
+        .panel-citas-create .panel-citas-btns .btn.btn-form-aprobar:hover {
+          background-color: rgba(255, 255, 255, 0.25); }
+      .panel-citas-view .panel-citas-btns .btn.btn-form-cancelar,
+      .panel-citas-create .panel-citas-btns .btn.btn-form-cancelar {
+        background-color: transparent;
+        border: 1px solid #3BDBC3;
+        color: #FFF; }
+        .panel-citas-view .panel-citas-btns .btn.btn-form-cancelar:active, .panel-citas-view .panel-citas-btns .btn.btn-form-cancelar:focus, .panel-citas-view .panel-citas-btns .btn.btn-form-cancelar:hover,
+        .panel-citas-create .panel-citas-btns .btn.btn-form-cancelar:active,
+        .panel-citas-create .panel-citas-btns .btn.btn-form-cancelar:focus,
+        .panel-citas-create .panel-citas-btns .btn.btn-form-cancelar:hover {
+          background-color: rgba(59, 219, 195, 0.25); }
+  .panel-citas-view .citas-cont,
+  .panel-citas-create .citas-cont {
+    padding-bottom: 32px; }
+    .panel-citas-view .citas-cont.panel-table,
+    .panel-citas-create .citas-cont.panel-table {
+      background-color: transparent;
+      border-radius: 0;
+      padding: 0; }
+    .panel-citas-view .citas-cont .panel-title,
+    .panel-citas-create .citas-cont .panel-title {
       color: #FFF;
       font-weight: 300;
       padding: 0;
       text-transform: uppercase; }
-    .panel-citas form .citas-cont hr {
+    .panel-citas-view .citas-cont hr,
+    .panel-citas-create .citas-cont hr {
       height: 1px;
       margin: 1rem 0 2rem;
       opacity: .4;
       width: 100%; }
-    .panel-citas form .citas-cont .form-group .control-label {
+    .panel-citas-view .citas-cont .form-group .control-label,
+    .panel-citas-create .citas-cont .form-group .control-label {
       padding-left: 1rem; }
-    .panel-citas form .citas-cont .form-group input[type="email"],
-    .panel-citas form .citas-cont .form-group input[type="password"],
-    .panel-citas form .citas-cont .form-group input[type="text"],
-    .panel-citas form .citas-cont .form-group select,
-    .panel-citas form .citas-cont .form-group textarea,
-    .panel-citas form .citas-cont .form-group .form-control {
+    .panel-citas-view .citas-cont .form-group input[type="email"],
+    .panel-citas-view .citas-cont .form-group input[type="password"],
+    .panel-citas-view .citas-cont .form-group input[type="text"],
+    .panel-citas-view .citas-cont .form-group select,
+    .panel-citas-view .citas-cont .form-group textarea,
+    .panel-citas-view .citas-cont .form-group .form-control,
+    .panel-citas-create .citas-cont .form-group input[type="email"],
+    .panel-citas-create .citas-cont .form-group input[type="password"],
+    .panel-citas-create .citas-cont .form-group input[type="text"],
+    .panel-citas-create .citas-cont .form-group select,
+    .panel-citas-create .citas-cont .form-group textarea,
+    .panel-citas-create .citas-cont .form-group .form-control {
       background-color: #2D2D2D;
       border-color: #2D2D2D;
       font-weight: 300; }
-      .panel-citas form .citas-cont .form-group input[type="email"]:active, .panel-citas form .citas-cont .form-group input[type="email"]:focus, .panel-citas form .citas-cont .form-group input[type="email"]:hover,
-      .panel-citas form .citas-cont .form-group input[type="password"]:active,
-      .panel-citas form .citas-cont .form-group input[type="password"]:focus,
-      .panel-citas form .citas-cont .form-group input[type="password"]:hover,
-      .panel-citas form .citas-cont .form-group input[type="text"]:active,
-      .panel-citas form .citas-cont .form-group input[type="text"]:focus,
-      .panel-citas form .citas-cont .form-group input[type="text"]:hover,
-      .panel-citas form .citas-cont .form-group select:active,
-      .panel-citas form .citas-cont .form-group select:focus,
-      .panel-citas form .citas-cont .form-group select:hover,
-      .panel-citas form .citas-cont .form-group textarea:active,
-      .panel-citas form .citas-cont .form-group textarea:focus,
-      .panel-citas form .citas-cont .form-group textarea:hover,
-      .panel-citas form .citas-cont .form-group .form-control:active,
-      .panel-citas form .citas-cont .form-group .form-control:focus,
-      .panel-citas form .citas-cont .form-group .form-control:hover {
+      .panel-citas-view .citas-cont .form-group input[type="email"]:active, .panel-citas-view .citas-cont .form-group input[type="email"]:focus, .panel-citas-view .citas-cont .form-group input[type="email"]:hover,
+      .panel-citas-view .citas-cont .form-group input[type="password"]:active,
+      .panel-citas-view .citas-cont .form-group input[type="password"]:focus,
+      .panel-citas-view .citas-cont .form-group input[type="password"]:hover,
+      .panel-citas-view .citas-cont .form-group input[type="text"]:active,
+      .panel-citas-view .citas-cont .form-group input[type="text"]:focus,
+      .panel-citas-view .citas-cont .form-group input[type="text"]:hover,
+      .panel-citas-view .citas-cont .form-group select:active,
+      .panel-citas-view .citas-cont .form-group select:focus,
+      .panel-citas-view .citas-cont .form-group select:hover,
+      .panel-citas-view .citas-cont .form-group textarea:active,
+      .panel-citas-view .citas-cont .form-group textarea:focus,
+      .panel-citas-view .citas-cont .form-group textarea:hover,
+      .panel-citas-view .citas-cont .form-group .form-control:active,
+      .panel-citas-view .citas-cont .form-group .form-control:focus,
+      .panel-citas-view .citas-cont .form-group .form-control:hover,
+      .panel-citas-create .citas-cont .form-group input[type="email"]:active,
+      .panel-citas-create .citas-cont .form-group input[type="email"]:focus,
+      .panel-citas-create .citas-cont .form-group input[type="email"]:hover,
+      .panel-citas-create .citas-cont .form-group input[type="password"]:active,
+      .panel-citas-create .citas-cont .form-group input[type="password"]:focus,
+      .panel-citas-create .citas-cont .form-group input[type="password"]:hover,
+      .panel-citas-create .citas-cont .form-group input[type="text"]:active,
+      .panel-citas-create .citas-cont .form-group input[type="text"]:focus,
+      .panel-citas-create .citas-cont .form-group input[type="text"]:hover,
+      .panel-citas-create .citas-cont .form-group select:active,
+      .panel-citas-create .citas-cont .form-group select:focus,
+      .panel-citas-create .citas-cont .form-group select:hover,
+      .panel-citas-create .citas-cont .form-group textarea:active,
+      .panel-citas-create .citas-cont .form-group textarea:focus,
+      .panel-citas-create .citas-cont .form-group textarea:hover,
+      .panel-citas-create .citas-cont .form-group .form-control:active,
+      .panel-citas-create .citas-cont .form-group .form-control:focus,
+      .panel-citas-create .citas-cont .form-group .form-control:hover {
         border-color: #2D2D2D;
         -webkit-box-shadow: none;
                 box-shadow: none;
         outline: none; }
-    .panel-citas form .citas-cont .form-group textarea {
+    .panel-citas-view .citas-cont .form-group textarea,
+    .panel-citas-create .citas-cont .form-group textarea {
       resize: none; }
-    .panel-citas form .citas-cont .form-group .select2,
-    .panel-citas form .citas-cont .form-group .select2-container--krajee {
+    .panel-citas-view .citas-cont .form-group .select2,
+    .panel-citas-view .citas-cont .form-group .select2-container--krajee,
+    .panel-citas-create .citas-cont .form-group .select2,
+    .panel-citas-create .citas-cont .form-group .select2-container--krajee {
       position: relative; }
-      .panel-citas form .citas-cont .form-group .select2 .select2-selection,
-      .panel-citas form .citas-cont .form-group .select2-container--krajee .select2-selection {
+      .panel-citas-view .citas-cont .form-group .select2 .select2-selection,
+      .panel-citas-view .citas-cont .form-group .select2-container--krajee .select2-selection,
+      .panel-citas-create .citas-cont .form-group .select2 .select2-selection,
+      .panel-citas-create .citas-cont .form-group .select2-container--krajee .select2-selection {
         background-color: #2D2D2D;
         border-color: #2D2D2D;
         color: #FFF;
         font-weight: 300;
         position: relative; }
-        .panel-citas form .citas-cont .form-group .select2 .select2-selection .select2-selection__rendered,
-        .panel-citas form .citas-cont .form-group .select2-container--krajee .select2-selection .select2-selection__rendered {
+        .panel-citas-view .citas-cont .form-group .select2 .select2-selection .select2-selection__rendered,
+        .panel-citas-view .citas-cont .form-group .select2-container--krajee .select2-selection .select2-selection__rendered,
+        .panel-citas-create .citas-cont .form-group .select2 .select2-selection .select2-selection__rendered,
+        .panel-citas-create .citas-cont .form-group .select2-container--krajee .select2-selection .select2-selection__rendered {
           position: relative; }
-          .panel-citas form .citas-cont .form-group .select2 .select2-selection .select2-selection__rendered .select2-selection__clear,
-          .panel-citas form .citas-cont .form-group .select2-container--krajee .select2-selection .select2-selection__rendered .select2-selection__clear {
+          .panel-citas-view .citas-cont .form-group .select2 .select2-selection .select2-selection__rendered .select2-selection__clear,
+          .panel-citas-view .citas-cont .form-group .select2-container--krajee .select2-selection .select2-selection__rendered .select2-selection__clear,
+          .panel-citas-create .citas-cont .form-group .select2 .select2-selection .select2-selection__rendered .select2-selection__clear,
+          .panel-citas-create .citas-cont .form-group .select2-container--krajee .select2-selection .select2-selection__rendered .select2-selection__clear {
             color: #FFF;
             right: .2rem;
             top: -.4rem; }
-      .panel-citas form .citas-cont .form-group .select2 .select2-selection--single .select2-selection__arrow,
-      .panel-citas form .citas-cont .form-group .select2-container--krajee .select2-selection--single .select2-selection__arrow {
+      .panel-citas-view .citas-cont .form-group .select2 .select2-selection--single .select2-selection__arrow,
+      .panel-citas-view .citas-cont .form-group .select2-container--krajee .select2-selection--single .select2-selection__arrow,
+      .panel-citas-create .citas-cont .form-group .select2 .select2-selection--single .select2-selection__arrow,
+      .panel-citas-create .citas-cont .form-group .select2-container--krajee .select2-selection--single .select2-selection__arrow {
         border-left-color: #2D2D2D; }
-    .panel-citas form .citas-cont .form-group .select2-container--krajee.select2-container--open .select2-selection,
-    .panel-citas form .citas-cont .form-group .select2-container--krajee .select2-selection:focus {
+    .panel-citas-view .citas-cont .form-group .select2-container--krajee.select2-container--open .select2-selection,
+    .panel-citas-view .citas-cont .form-group .select2-container--krajee .select2-selection:focus,
+    .panel-citas-create .citas-cont .form-group .select2-container--krajee.select2-container--open .select2-selection,
+    .panel-citas-create .citas-cont .form-group .select2-container--krajee .select2-selection:focus {
       -webkit-box-shadow: none;
               box-shadow: none; }
-    .panel-citas form .citas-cont .form-group .help-block {
+    .panel-citas-view .citas-cont .form-group .help-block,
+    .panel-citas-create .citas-cont .form-group .help-block {
       color: #f96868;
       font-size: .85rem;
       margin-top: .3rem;
       padding-left: 1rem; }
-    .panel-citas form .citas-cont .form-group .btn-form-save {
+    .panel-citas-view .citas-cont .form-group .btn-form-save,
+    .panel-citas-create .citas-cont .form-group .btn-form-save {
       background-color: #3BDBC3;
+      border: 1px solid rgba #3BDBC3;
       border-color: #3BDBC3;
       color: #151515; }
+      .panel-citas-view .citas-cont .form-group .btn-form-save:active, .panel-citas-view .citas-cont .form-group .btn-form-save:focus, .panel-citas-view .citas-cont .form-group .btn-form-save:hover,
+      .panel-citas-create .citas-cont .form-group .btn-form-save:active,
+      .panel-citas-create .citas-cont .form-group .btn-form-save:focus,
+      .panel-citas-create .citas-cont .form-group .btn-form-save:hover {
+        background-color: rgba(59, 219, 195, 0.25);
+        color: #FFF; }
 
 /*!
 	-----------------------------------------------------------------------------

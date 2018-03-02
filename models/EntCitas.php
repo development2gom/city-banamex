@@ -604,7 +604,7 @@ class EntCitas extends \yii\db\ActiveRecord
         $botones = new BotonesCitas();
 
         
-        return $contenedor = "<div class='example-buttons text-right'>" . $botones->getBotones($this) . "</div>";
+        return $contenedor = $botones->getBotones($this);
            
     }
 

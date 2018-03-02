@@ -6,18 +6,18 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\EntCitas */
 
-// $this->title = 'Generar cita';
-// $this->params['breadcrumbs'][] = [
-//     'label' => '<i class="icon wb-calendar"></i> Citas', 
-//     'url' => ['index'],
-//     'template'=>'<li class="breadcrumb-item">{link}</li>', 
-//     'encode' => false
-// ];
+$this->title = 'Generar cita';
+$this->params['breadcrumbs'][] = [
+    'label' => '<i class="icon wb-calendar"></i> Citas', 
+    'url' => ['index'],
+    'template'=>'<li class="breadcrumb-item">{link}</li>', 
+    'encode' => false
+];
 
-// $this->params['breadcrumbs'][] = [
-//     'label' => '<i class="icon wb-plus"></i> '.$this->title,
-//     'template'=>'<li class="breadcrumb-item">{link}</li>', 
-//     'encode' => false];
+$this->params['breadcrumbs'][] = [
+    'label' => '<i class="icon wb-plus"></i> '.$this->title,
+    'template'=>'<li class="breadcrumb-item">{link}</li>', 
+    'encode' => false];
 
 
 
@@ -31,7 +31,7 @@ $this->registerJsFile(
 );
 ?>
 
-<div class="panel-citas panel-gral">
+<div class="panel-citas-create">
 
         <?= $this->render('_form', [
             'model' => $model,
