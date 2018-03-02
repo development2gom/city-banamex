@@ -77,7 +77,10 @@ use app\models\Constantes;
     <?php
     }
     ?>
-    
+
+</div>    
+
+<div class="row">
     <div class="col-md-12 <?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)?"9":"12"?>">
         <!-- <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true" role="tablist"> -->
             <!-- <div class="panel"> -->

@@ -3143,6 +3143,23 @@ a {
 .page-bg-trans {
   background-color: transparent; }
 
+/*  Badge - Colors
+	@mixin ====================================== */
+.badge.warning {
+  background-color: #f96868; }
+
+.badge.green-light {
+  background-color: #1eb054; }
+
+.badge.green-medium {
+  background-color: #4eb772; }
+
+.badge.green {
+  background-color: #15584E; }
+
+.badge.danger {
+  background-color: #f96868; }
+
 /*!
 	-----------------------------------------------------------------------------
 
@@ -3471,7 +3488,21 @@ a {
 	@mixin ====================================== */
 .page .page-header {
   position: relative;
+  padding: 30px 36px;
   z-index: 3; }
+  .page .page-header .page-title {
+    color: #FFF;
+    font-size: 1.95rem;
+    font-weight: 300; }
+  .page .page-header .page-header-actions a {
+    background-color: #3BDBC3;
+    border: 1px solid #3BDBC3;
+    color: #151515;
+    margin-right: 12px;
+    padding: .5rem 2.35rem; }
+    .page .page-header .page-header-actions a:active, .page .page-header .page-header-actions a:focus, .page .page-header .page-header-actions a:hover {
+      background-color: rgba(59, 219, 195, 0.25);
+      color: #FFF; }
 
 .page .page-content {
   position: relative;
@@ -3489,7 +3520,9 @@ a {
         flex-wrap: wrap;
     -webkit-box-pack: start;
         -ms-flex-pack: start;
-            justify-content: flex-start; }
+            justify-content: flex-start;
+    margin-bottom: 30px;
+    padding: 20px 30px; }
     .page .page-content .list-group .list-group-item {
       background-color: transparent;
       border: 1px solid rgba(59, 219, 195, 0.35);
@@ -3527,11 +3560,18 @@ a {
       text-align: center;
       width: 100%; }
       .page .page-content .list-group .list-group-item-lg .list-group-item-more {
+        border: 1px solid rgba(59, 219, 195, 0.65);
+        border-radius: 4px;
         color: #FFF;
         display: inline-block;
+        padding: 4px 16px;
         text-decoration: none; }
+        .page .page-content .list-group .list-group-item-lg .list-group-item-more:active, .page .page-content .list-group .list-group-item-lg .list-group-item-more:hover, .page .page-content .list-group .list-group-item-lg .list-group-item-more:focus {
+          background-color: rgba(59, 219, 195, 0.25); }
   .page .page-content .panel-citas-search {
-    background-color: rgba(42, 3, 9, 0.4); }
+    background-color: rgba(42, 3, 9, 0.4);
+    margin-bottom: 30px;
+    padding: 20px 30px; }
     .page .page-content .panel-citas-search form input[type="email"],
     .page .page-content .panel-citas-search form input[type="password"],
     .page .page-content .panel-citas-search form input[type="text"],
@@ -3624,7 +3664,7 @@ a {
   .page .page-content .panel-table {
     background-color: rgba(42, 3, 9, 0.4);
     border-radius: 4px;
-    padding: 40px 32px 60px; }
+    padding: 32px; }
     .page .page-content .panel-table .panel-heading {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -3693,16 +3733,6 @@ a {
             line-height: 1.2;
             padding: 6px 10px 4px;
             text-transform: uppercase; }
-            .page .page-content .panel-table table tbody tr td a.badge.warning, .page .page-content .panel-table table tbody tr td a.id-send.warning {
-              background-color: #f96868; }
-            .page .page-content .panel-table table tbody tr td a.badge.green-light, .page .page-content .panel-table table tbody tr td a.id-send.green-light {
-              background-color: #1eb054; }
-            .page .page-content .panel-table table tbody tr td a.badge.green-medium, .page .page-content .panel-table table tbody tr td a.id-send.green-medium {
-              background-color: #4eb772; }
-            .page .page-content .panel-table table tbody tr td a.badge.green, .page .page-content .panel-table table tbody tr td a.id-send.green {
-              background-color: #15584E; }
-            .page .page-content .panel-table table tbody tr td a.badge.danger, .page .page-content .panel-table table tbody tr td a.id-send.danger {
-              background-color: #f96868; }
           .page .page-content .panel-table table tbody tr td a.id-send {
             font-weight: 100;
             padding: 0; }

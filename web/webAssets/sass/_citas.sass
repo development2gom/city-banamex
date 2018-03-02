@@ -15,7 +15,26 @@
 	
 	.page-header
 		position: relative
+		padding: 30px 36px
 		z-index: 3
+
+		.page-title
+			color: $white
+			font-size: 1.95rem
+			font-weight: $light
+
+		.page-header-actions
+			a
+				background-color: $mls-aqua
+				border: 1px solid $mls-aqua
+				color: $mls-black
+				margin-right: 12px
+				padding: .5rem 2.35rem
+				&:active,
+				&:focus,
+				&:hover
+					background-color: rgba($mls-aqua,.25)
+					color: $white
 
 	.page-content
 		position: relative
@@ -27,6 +46,8 @@
 			flex-direction: row
 			flex-wrap: wrap
 			justify-content: flex-start
+			margin-bottom: 30px
+			padding: 20px 30px
 			.list-group-item
 				background-color: transparent
 				border: 1px solid rgba($mls-aqua,.35)
@@ -68,12 +89,21 @@
 				text-align: center
 				width: 100%
 				.list-group-item-more
+					border: 1px solid rgba($mls-aqua,.65)
+					border-radius: 4px
 					color: $white
 					display: inline-block
+					padding: 4px 16px
 					text-decoration: none
+					&:active,
+					&:hover,
+					&:focus
+						background-color: rgba($mls-aqua,.25)
 
 		.panel-citas-search
 			background-color: rgba(42, 3, 9, 0.4)
+			margin-bottom: 30px
+			padding: 20px 30px
 			form
 				input[type="email"],
 				input[type="password"],
@@ -157,7 +187,7 @@
 		.panel-table
 			background-color: rgba(42, 3, 9, 0.4)
 			border-radius: 4px
-			padding: 40px 32px 60px
+			padding: 32px
 
 			.panel-heading
 				display: flex
@@ -238,16 +268,16 @@
 									padding: 6px 10px 4px
 									text-transform: uppercase
 
-									&.warning
-										background-color: $error
-									&.green-light
-										background-color: $green-light
-									&.green-medium
-										background-color: $green-medium
-									&.green
-										background-color: $mls-green
-									&.danger
-										background-color: $error
+									// &.warning
+									// 	background-color: $error
+									// &.green-light
+									// 	background-color: $green-light
+									// &.green-medium
+									// 	background-color: $green-medium
+									// &.green
+									// 	background-color: $mls-green
+									// &.danger
+									// 	background-color: $error
 
 								&.id-send
 									font-weight: $thin
