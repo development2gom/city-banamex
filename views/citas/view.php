@@ -104,6 +104,7 @@ $this->registerJsFile(
                         'responsive'=>true,
                         'hover'=>true,
                         'bordered'=>false,
+                        'striped'=>false,
                         'panel' => [
                             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-globe"></i> Countries</h3>',
                             'type'=>'success',
