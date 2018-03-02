@@ -19,21 +19,21 @@ use app\models\Constantes;
  if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){
       $this->params['headerActions'] = '<a class="btn btn-success ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
  }
-// $this->params['breadcrumbs'][] = [
-//     'label' => '<i class="icon wb-calendar"></i>Citas',
-//     'template'=>'<li class="breadcrumb-item">{link}</li>', 
-//     'encode' => false];
+$this->params['breadcrumbs'][] = [
+    'label' => '<i class="icon wb-calendar"></i>Citas',
+    'template'=>'<li class="breadcrumb-item">{link}</li>', 
+    'encode' => false];
 
 // $this->registerCssFile(
 //     '@web/webAssets/css/citas/index.css',
 //     ['depends' => [\app\assets\AppAsset::className()]]
 // );
 
-// $this->registerJsFile(
-//     '@web/webAssets/js/citas/index.js',
-//     ['depends' => [\app\assets\AppAsset::className()]]
-// );
-// ?>
+$this->registerJsFile(
+    '@web/webAssets/js/citas/index.js',
+    ['depends' => [\app\assets\AppAsset::className()]]
+);
+?>
 
 
 <?php Pjax::begin(['id' => 'citas', 'timeout'=>'0', 'linkSelector'=>'table thead a, a.list-group-item']) ?>

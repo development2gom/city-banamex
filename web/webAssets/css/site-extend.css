@@ -3494,6 +3494,9 @@ a {
     color: #FFF;
     font-size: 1.95rem;
     font-weight: 300; }
+  .page .page-header .breadcrumb li a {
+    color: #FFF;
+    text-decoration: none; }
   .page .page-header .page-header-actions a {
     background-color: #3BDBC3;
     border: 1px solid #3BDBC3;
