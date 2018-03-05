@@ -80,23 +80,14 @@ $this->registerJsFile(
 
 </div>    
 
-<div class="row">
+
+<!-- <div class="row">
     <div class="col-md-12 <?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)?"9":"12"?>">
-        <!-- <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true" role="tablist"> -->
-            <!-- <div class="panel"> -->
-                <!-- <div class="panel-heading" id="exampleHeadingDefaultOne" role="tab">
-                    <a class="panel-title  js-collapse" data-toggle="collapse" href="#exampleCollapseDefaultOne" data-parent="#exampleAccordionDefault" aria-expanded="true" aria-controls="exampleCollapseDefaultOne">
-                        Buscar cita
-                    </a>
-                </div> -->
-                <div class="panel-collapse collapse in show" id="exampleCollapseDefaultOne" aria-labelledby="exampleHeadingDefaultOne" role="tabpanel" aria-expanded="true">
-                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-                </div>
-            <!-- </div> -->
-        <!-- </div> -->
+        <div class="panel-collapse collapse in show" id="exampleCollapseDefaultOne" aria-labelledby="exampleHeadingDefaultOne" role="tabpanel" aria-expanded="true">
+            <?php # echo $this->render('_search', ['model' => $searchModel]); ?>
+        </div>
     </div>
-    
-</div>
+</div> -->
 
 
     <?php
@@ -175,6 +166,7 @@ $this->registerJsFile(
                 // 'tableOptions' => [
                 //     "class" => "table"
                 // ],
+                'filterModel' => $searchModel,
                 'pjax'=>true,
                 'dataProvider' => $dataProvider,
                 'columns' =>[

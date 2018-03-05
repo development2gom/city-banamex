@@ -303,6 +303,15 @@ $cat = $model->idCat;
         </div>
     </div>
     
+    <div class="row">
+        <div class="col-md-3">
+                <?= $form->field($model, 'txt_codigo_postal')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'txt_calle_numero')->textInput(['maxlength' => true]) ?>
+        </div>
+            
+    </div>
 
     <div class="row">
         <div class="col-md-4">
