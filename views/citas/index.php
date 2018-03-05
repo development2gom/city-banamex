@@ -11,6 +11,7 @@ use app\models\EntCitas;
 use app\models\Constantes;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
+use app\models\CatTiposTramites;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\ModUsuarios\models\EntUsuariosSearch */
@@ -175,6 +176,7 @@ $this->registerJsFile(
                     'txt_identificador_cliente',
                     [
                         'filter'=>ArrayHelper::map($status, 'id_statu_cita', 'txt_nombre'),
+                        
                         'attribute' => 'id_status',
                         'format'=>'raw',
                         'value'=>function($data){
@@ -199,6 +201,7 @@ $this->registerJsFile(
                         }
                     ],
                     [
+                        'filter'=>ArrayHelper::map(CatTiposTramites::find()->all(), 'id_tramite', 'txt_nombre'),
                         'attribute'=>'id_tipo_tramite',
                         'value'=>'idTipoTramite.txt_nombre'
                     ],
