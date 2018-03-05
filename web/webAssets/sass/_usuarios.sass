@@ -1,0 +1,513 @@
+/*!
+	-----------------------------------------------------------------------------
+
+	2.0 - Usuarios
+			# Listado
+			# Crear
+			# Actualizar
+
+	-----------------------------------------------------------------------------
+	*/
+
+// background-color: rgba($mls-bg-red, 0.4)
+// 	margin-bottom: 32px
+// 	padding: 32px
+/*  Listado
+	======================================= */
+.page
+	
+	.page-header
+		position: relative
+		z-index: 3
+
+	.page-content
+		position: relative
+		z-index: 3
+
+		.panel-list-user-table
+			background-color: rgba($mls-bg-red, 0.4)
+
+			.list-group
+				background-color: transparent
+
+			// .page-header
+			.panel-search
+				align-content: center
+				display: flex
+				flex-direction: column
+				justify-content: flex-star
+				padding: 20px
+				width: 100%
+				+respond-to(tl)
+					flex-wrap: wrap
+				+respond-to(sm)
+					flex-wrap: wrap
+				// +respond-to(tp)
+				// 	padding: 20px 0
+				.panel-search-title
+					color: $white
+					font-size: 1.2rem
+					font-weight: $light
+					line-height: 2.4
+					margin: 0
+					min-width: 152px
+					+respond-to(tl)
+						width: 100%
+					+respond-to(sm)
+						width: 100%
+				
+				.panel-search-form
+					// align-content: center
+					// display: flex
+					// justify-content: flex-start
+					margin-bottom: 0
+					+respond-to(md)
+						flex-wrap: wrap
+						width: 70%
+					+respond-to(tl)
+						flex-wrap: wrap
+						width: 70%
+					+respond-to(sm)
+						flex-wrap: wrap
+						width: 100%
+
+					.form-group
+						margin-bottom: 0
+						
+					.form-group-btns
+						align-items: flex-end
+						display: flex
+						justify-content: flex-end
+						height: 100%
+
+						.btn-clear
+							background-color: transparent
+							border-color: $mls-aqua
+							color: $white
+							margin-left: 2%
+							width: 49%
+							&:active,
+							&:hover,
+							&:focus
+								background-color: rgba($mls-aqua,.35)
+
+						.btn-search
+							background-color: $mls-aqua
+							border-color: $mls-aqua
+							color: $mls-grey
+							width: 49%
+							&:active,
+							&:hover,
+							&:focus
+								background-color: rgba($mls-aqua,.35)
+								color: $white
+
+
+					input[type="email"],
+					input[type="text"]
+						background-color: $mls-black
+						border: none
+						color: $mls-aqua
+						font-size: 1rem
+						font-weight: $light
+						margin-right: 20px
+						+placeholder
+							color: rgba($white,.6)
+							font-size: 1rem
+							font-weight: $light
+						+respond-to(md)
+							margin-bottom: 16px
+							margin-left: 0
+							margin-right: 20px
+							width: 100%
+						+respond-to(tl)
+							margin-bottom: 16px
+							margin-left: 0
+							margin-right: 20px
+							width: 100%
+						+respond-to(sm)
+							margin-bottom: 16px
+							margin-left: 5px
+							margin-right: 0
+							width: 100%
+						+respond-to(tp)
+							margin-bottom: 16px
+							margin-right: 0
+							margin-left: 0
+						&:focus
+							outline: none
+
+	
+					.panel-search-form-input
+						+border-radius(30px)
+						max-width: 100%
+						padding: 6px 16px
+						// width: 240px
+						+respond-to(lg)
+							width: 240px
+						
+			
+				.btn-add
+					align-items: center
+					background-color: $mls-aqua
+					border-color: $mls-aqua
+					color: $mls-black
+					display: flex
+					justify-content: center
+					white-space: pre-wrap
+					word-wrap: break-word
+					overflow-wrap: break-word
+					+respond-to(md)
+						height: 36px
+						width: 30%
+					+respond-to(tl)
+						height: 36px
+						width: 30%
+					+respond-to(sm)
+						height: 36px
+						width: 100%
+			
+			//	Lista
+			.list-user-view
+				// background-color: rgba(red,.3)
+
+				.list-user-group
+					border-top: 1px solid $mls-green
+					color: $white
+					font-size: .8rem
+					font-weight: $thin
+					line-height: 3
+					padding: 0 8px
+					vertical-align: middle
+
+					.list-user-group-item
+						background-color: transparent
+						padding: 0
+						.media
+							padding: 16px 0
+
+					&.flex
+						align-items: center
+						display: flex
+						justify-content: flex-start
+					
+					.panel-listado-img,
+					.panel-listado-acction
+						display: block
+						+border-radius(50%)
+
+					.panel-listado-img
+						background-color: $mls-grey
+						height: 32px
+						margin-right: 1rem
+						width: 32px
+						&:last-child
+							margin-right: 0
+
+					.panel-listado-acction
+						align-items: center
+						display: flex
+						height: 24px
+						justify-content: center
+						margin-right: 3vw
+						width: 24px
+						&:last-child
+							margin-right: 0
+						i
+							color: $mls-black
+							font-size: .85rem
+						&.acction-edit
+							background-color: $mls-aqua
+						&.acction-delete
+							background-color: $mls-green
+
+					.btn-group
+						align-items: center
+						display: flex
+						flex-wrap: wrap
+						justify-content: flex-start
+						width: 90%
+						label
+							background-color: transparent
+							border-color: $mls-aqua
+							width: 50%
+							// &:active,
+							// &:focus,
+							// &:hover
+							// 	background-color: rgba($ryg-aqua,.6)
+							// 	border-color: $ryg-aqua
+							// 	color: $white
+							+respond-to(md)
+								width: 100%
+							&.btn-active
+								&.active
+									background-color: $mls-aqua
+									border-color: $mls-aqua
+									color: $mls-grey
+								&.active,
+								&:active,
+								&:focus,
+								&:hover
+									background-color: $mls-aqua
+									border-color: $mls-aqua
+									color: $mls-grey
+									
+							&.btn-inactive
+								&.active
+									background-color: $error
+									border-color: $error
+									color: $white
+								&.active,
+								&:active,
+								&:focus,
+								&:hover
+									background-color: $error
+									border-color: $error
+									color: $white
+
+			.panel-table-int
+				// background-color: green
+				padding: 32px
+				table
+					width: 100%
+					th,
+					td
+						border: none
+					thead
+						tr
+							th
+								color: $mls-grey-secundary
+								font-size: .8rem
+								font-weight: $thin
+								padding: 8px 4px
+								text-transform: uppercase
+								a
+									color: $mls-grey-secundary
+									font-size: .8rem
+									font-weight: $thin
+									padding: 8px 4px
+									text-decoration: none
+									text-transform: uppercase
+					
+					tbody
+						tr
+							&:last-child
+								border-bottom: 1px solid $mls-green
+							&:hover
+								background-color: rgba($mls-black, .8)
+							td
+								border-top: 1px solid $mls-green
+								color: $white
+								font-size: .8rem
+								font-weight: $thin
+								line-height: 3
+								padding: 10px 4px 8px
+								vertical-align: middle
+
+								&.flex
+									align-items: center
+									display: flex
+									justify-content: flex-start
+
+									a
+										align-items: center
+										display: flex
+										justify-content: flex-start
+										text-decoration: none
+										// width: 100%
+										span
+											color: $white
+										&:hover
+											span
+												color: $white
+								
+								.panel-listado-img,
+								.panel-listado-acction
+									display: block
+									+border-radius(50%)
+
+								.panel-listado-img
+									background-color: $mls-grey
+									height: 32px
+									margin-right: 1rem
+									width: 32px
+									&:last-child
+										margin-right: 0
+
+								.panel-listado-acction
+									align-items: center
+									display: flex
+									height: 24px
+									justify-content: center
+									margin-right: 3vw
+									width: 24px
+									&:last-child
+										margin-right: 0
+									i
+										color: $mls-black
+										font-size: .85rem
+									&.acction-edit
+										background-color: $mls-aqua
+									&.acction-delete
+										background-color: $mls-green
+
+								.btn-group
+									align-items: center
+									display: flex
+									flex-wrap: wrap
+									justify-content: flex-start
+									width: 90%
+									label
+										background-color: transparent
+										border-color: $mls-aqua
+										width: 50%
+										// &:active,
+										// &:focus,
+										// &:hover
+										// 	background-color: rgba($ryg-aqua,.6)
+										// 	border-color: $ryg-aqua
+										// 	color: $white
+										+respond-to(md)
+											width: 100%
+										&.btn-active
+											&.active
+												background-color: $mls-aqua
+												border-color: $mls-aqua
+												color: $mls-grey
+											&.active,
+											&:active,
+											&:focus,
+											&:hover
+												background-color: $mls-aqua
+												border-color: $mls-aqua
+												color: $mls-grey
+												
+										&.btn-inactive
+											&.active
+												background-color: $error
+												border-color: $error
+												color: $white
+											&.active,
+											&:active,
+											&:focus,
+											&:hover
+												background-color: $error
+												border-color: $error
+												color: $white
+
+
+/*  Crear - Editar
+	======================================= */			
+.page
+	.page-content
+		.panel-usuarios-create,
+		.panel-usuarios-editar
+			background-color: transparent
+			.panel-body
+				padding: 10vh 0
+				max-width: 70%
+				width: 70%
+				margin: 0 auto
+
+				.user-file
+					align-content: center
+					height: 100%
+					display: flex
+					align-items: center
+					justify-content: center
+					text-align: center
+					.user-file-a
+						+border-radius(36px)
+						cursor: pointer
+						display: flex
+						height: 74px
+						margin: 0 auto 20px
+						max-width: 80%
+						overflow: hidden
+						width: 143px
+						img
+							margin-top: -25%
+							max-width: 100%
+
+				form
+					.btn-usuarios-add
+						background-color: $mls-aqua
+						border-color: $mls-aqua
+						color: $mls-black
+						width: 100%
+
+					.form-group
+						position: relative
+						input[type="email"],
+						input[type="password"],
+						input[type="text"],
+						select,
+						textarea,
+						.form-control
+							background-color: $mls-brown
+							border-color: $mls-brown
+							font-weight: $light
+							&:active,
+							&:focus,
+							&:hover
+								border-color: $mls-brown
+								box-shadow: none
+								outline: none
+
+							&:disabled,
+							&.form-input-usuario
+								background-color: rgba($mls-grey,.9)
+								border-color: rgba($mls-grey,.9)
+								color: rgba($white, .7)
+								font-weight: $regular
+								+placeholder
+									color: rgba($white, .7)
+
+						.form-pass-info
+							align-content: center
+							background-color: transparent
+							border: 1px solid $error
+							border-radius: 3px
+							display: flex
+							height: 18px
+							justify-content: center
+							position: absolute
+							right: -30px
+							top: 10px
+							width: 18px
+							i
+								color: $error
+								display: flex
+								font-size: .9rem
+								line-height: 1.2
+
+						.select2,
+						.select2-container--krajee
+							position: relative
+							.select2-selection
+								background-color: $mls-brown
+								border-color: $mls-brown
+								color: $white
+								font-weight: $light
+								position: relative
+								.select2-selection__rendered
+									position: relative
+									.select2-selection__clear
+										color: $white
+										right: .2rem
+										top: -.4rem
+
+							.select2-selection--single
+								.select2-selection__arrow	
+									border-left-color: $mls-brown
+
+						.select2-container--krajee.select2-container--open .select2-selection,
+						.select2-container--krajee .select2-selection:focus
+							box-shadow: none
+
+						.help-block
+							color: $error
+							font-size: .85rem
+							margin-top: .3rem
+							padding-left: 1rem
+

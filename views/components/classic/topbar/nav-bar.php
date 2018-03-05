@@ -47,9 +47,11 @@ role="navigation">
          
           <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false"
           data-animation="scale-up" role="button">
-            <?php $usuario =  EntUsuarios::getUsuarioLogueado();
-            echo YII_ENV_DEV?$usuario->txt_auth_item:'';
-            ?>
+            <span class="nav-link-span">
+              <?php $usuario =  EntUsuarios::getUsuarioLogueado();
+              echo YII_ENV_DEV?$usuario->txt_auth_item:'';
+              ?>
+            </span>
             <span class="avatar avatar-online">
               <img src="<?=EntUsuarios::getUsuarioLogueado()->imageProfile?>" alt="...">
               <i></i>

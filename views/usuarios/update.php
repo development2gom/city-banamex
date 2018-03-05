@@ -11,18 +11,18 @@ use app\modules\ModUsuarios\models\EntUsuarios;
 
 $usuario = EntUsuarios::getUsuarioLogueado();
 
-$this->title = 'Usuario '.$model->nombreCompleto;
-$this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon pe-users"></i> Usuarios', 
-    'encode' => false,
-    'template'=>'<li class="breadcrumb-item">{link}</li>',
-    'url' => ['index'], 
-  ];
-$this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon wb-plus"></i>'.$this->title, 
-    'encode' => false,
-    'template'=>'<li class="breadcrumb-item">{link}</li>', 
-  ];
+// $this->title = 'Usuario '.$model->nombreCompleto;
+// $this->params['breadcrumbs'][] = [
+//     'label' => '<i class="icon pe-users"></i> Usuarios', 
+//     'encode' => false,
+//     'template'=>'<li class="breadcrumb-item">{link}</li>',
+//     'url' => ['index'], 
+//   ];
+// $this->params['breadcrumbs'][] = [
+//     'label' => '<i class="icon wb-plus"></i>'.$this->title, 
+//     'encode' => false,
+//     'template'=>'<li class="breadcrumb-item">{link}</li>', 
+//   ];
 
   $this->params['classBody'] = "site-navbar-small";  
 
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = [
     ['depends' => [\yii\web\JqueryAsset::className()]]
   );
 ?>
-<div class="panel">
+<div class="panel panel-usuarios-editar">
     <div class="panel-body">
         <?= $this->render('_form', [
             'model' => $model,

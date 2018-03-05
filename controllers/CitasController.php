@@ -35,10 +35,10 @@ class CitasController extends Controller
         return [
             'access' => [
                 'class' => AccessControlExtend::className(),
-                'only' => ['create'],
+                'only' => ['create', 'index', 'view'],
                 'rules' => [
                     [
-                        'actions' => ['create'],
+                        'actions' => ['create', 'index', 'view'],
                     'allow' => true,
                         'roles' => [Constantes::USUARIO_CALL_CENTER],
                     ],

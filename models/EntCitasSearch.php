@@ -48,9 +48,9 @@ class EntCitasSearch extends EntCitas
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            // 'pagination'=>[
-            //     'pageSize' => 1,
-            // ],
+            'pagination'=>[
+                'pageSize' => 1,
+            ],
             'sort' => [
                 'defaultOrder' => [
                     'fch_creacion' => \SORT_DESC
