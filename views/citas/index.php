@@ -305,7 +305,7 @@ $this->registerJsFile(
                     'nextPageCssClass' => 'page-item',
                     'firstPageCssClass' => 'page-item',
                     'lastPageCssClass' => 'page-item',
-                    
+                    'maxButtonCount' => '5',
                 ]
             ]) ?>
 
