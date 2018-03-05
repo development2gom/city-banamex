@@ -152,6 +152,18 @@ class EntCitasSearch extends EntCitas
             ->andFilterWhere(['like', 'fch_cita', $this->fch_cita])
             ->andFilterWhere(['like', 'fch_creacion', $this->fch_creacion]);
 
+            if($this->fch_cita){
+            
+                $this->fch_cita = Utils::changeFormatDate($this->fch_cita);
+                
+            }
+    
+            if($this->fch_creacion){
+                
+                $this->fch_creacion = Utils::changeFormatDate($this->fch_creacion);
+                
+            }
+
         return $dataProvider;
     }
 }

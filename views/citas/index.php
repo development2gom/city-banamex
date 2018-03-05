@@ -206,7 +206,8 @@ $this->registerJsFile(
                     ],
                     [
                         'filter'=>DatePicker::widget([
-                            'name'=>'EntCitasSearch[fch_creacion]',
+                            'model'=>$searchModel,
+                            'attribute'=>'fch_creacion',
                             'pickerButton'=>false,
                             'removeButton'=>false,
                             'type' => DatePicker::TYPE_INPUT,
@@ -224,7 +225,8 @@ $this->registerJsFile(
                     ],
                     [
                         'filter'=>DatePicker::widget([
-                            'name'=>'EntCitasSearch[fch_cita]',
+                            'model'=>$searchModel,
+                            'attribute'=>'fch_cita',
                             'pickerButton'=>false,
                             'removeButton'=>false,
                             'type' => DatePicker::TYPE_INPUT,
