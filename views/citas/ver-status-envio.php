@@ -59,7 +59,9 @@ $this->params['breadcrumbs'][] = [
                             ?>
                             <div class="card card-shadow">
                                 <figure class="card-img-top overlay-hover overlay">
-                                    <img class="overlay-figure overlay-scale" src="http://staticmap.openstreetmap.de/staticmap.php?center=<?=$latitud?>,<?=$longitud?>&zoom=19&size=500x350" alt="...">
+                                <img class="overlay-figure overlay-scale" src="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&zoom=12&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" alt="...">
+                                
+                                  
                                     <!-- <figcaption class="overlay-panel overlay-background overlay-fade overlay-icon">
                                         <a class="icon wb-search" href="../../../global/photos/placeholder.png"></a>
                                     </figcaption> -->
