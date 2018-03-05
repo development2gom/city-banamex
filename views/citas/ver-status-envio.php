@@ -54,12 +54,12 @@ $this->params['breadcrumbs'][] = [
                             
                             $coordenadas = explode("|" , $respuestaApi->Position);
 
-                            $latitud = $coordenadas[1];
-                            $longitud = $coordenadas[0];
+                            $latitud = $coordenadas[0];
+                            $longitud = $coordenadas[1];
                             ?>
                             <div class="card card-shadow">
                                 <figure class="card-img-top overlay-hover overlay">
-                                <img class="overlay-figure overlay-scale" src="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&zoom=12&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" alt="...">
+                                <img class="overlay-figure overlay-scale" src="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&markers=color:red%7Clabel:C%7C<?=$latitud?>,<?=$longitud?>&zoom=19&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" alt="...">
                                 
                                   
                                     <!-- <figcaption class="overlay-panel overlay-background overlay-fade overlay-icon">
