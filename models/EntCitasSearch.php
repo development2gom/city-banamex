@@ -149,7 +149,8 @@ class EntCitasSearch extends EntCitas
             ->andFilterWhere(['like', 'txt_municipio', $this->txt_municipio])
             ->andFilterWhere(['like', 'txt_entre_calles', $this->txt_entre_calles])
             ->andFilterWhere(['like', 'txt_observaciones_punto_referencia', $this->txt_observaciones_punto_referencia])
-            ->andFilterWhere(['like', 'fch_cita', $this->fch_cita]);
+            ->andFilterWhere(['like', 'fch_cita', $this->fch_cita])
+            ->andFilterWhere(['like', 'fch_creacion', $this->fch_creacion]);
 
         return $dataProvider;
     }

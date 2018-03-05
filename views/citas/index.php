@@ -39,7 +39,6 @@ $this->registerJsFile(
 ?>
 
 
-<?php Pjax::begin(['id' => 'citas', 'timeout'=>'0', 'linkSelector'=>'table thead a, a.list-group-item']) ?>
 
 
 <div class="row">
@@ -332,7 +331,5 @@ $this->registerJsFile(
     
 </div>    
 
-
-<?php Pjax::end() ?>
 
    
