@@ -47,7 +47,7 @@ AppAsset::register($this);
   })(document, window, jQuery);
   </script>
 
-  <?=isset($this->params['modal'])?$this->params['modal']:''?>">
+  <?=isset($this->params['modal'])?$this->params['modal']:''?>
 </body>
 </html>
 <?php $this->endPage() ?>
