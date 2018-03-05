@@ -102,7 +102,7 @@ class UsuariosSearch extends EntUsuarios
             'alphaAttribute' => 'txt_username',
             'alphaDefault'=>'all',
             'pagination' => [
-                'pageSize' => 1,
+                'pageSize' => 30,
                 
             ],
             'sort' => [
