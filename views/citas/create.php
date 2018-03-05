@@ -31,8 +31,8 @@ $this->registerJsFile(
 );
 ?>
 
-<div class="panel">
-    <div class="panel-body pt-0">
+<div class="panel-citas-create">
+
         <?= $this->render('_form', [
             'model' => $model,
             'tiposTramites'=>$tiposTramites,
@@ -41,5 +41,4 @@ $this->registerJsFile(
             'areas'=>$areas,
             'areaDefault'=>$areaDefault
         ]) ?>
-    </div>
 </div>

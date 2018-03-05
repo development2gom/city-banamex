@@ -1,0 +1,142 @@
+/*!
+	-----------------------------------------------------------------------------
+
+	2.0 - Usuarios
+			# Body
+			# Header
+			# Page
+			# Footer
+
+	-----------------------------------------------------------------------------
+	*/
+
+
+/*  Body
+	======================================= */
+.body-bgkd
+	background-color: $mls-black
+	background-attachment: fixed
+	background-image: url('../images/login-screen.jpg')
+	background-position: 50%
+	background-repeat: no-repeat
+	background-size: cover
+	position: relative
+	z-index: 1
+	.body-bkgd-mask
+		background-color: rgba($black,.78)
+		bottom: 0
+		height: 100%
+		left: 0
+		position: fixed
+		right: 0
+		top: 0
+		width: 100%
+
+
+/*  Header
+	======================================= */
+.site-navbar
+	background-color: $mls-black
+	border-color: $mls-black
+	min-height: 3rem
+	.navbar-header
+		.navbar-brand
+			height: auto
+			min-height: 3rem
+			padding: 1.25rem 1.5715rem
+			.navbar-brand-logo
+				height: 30px
+	
+	.navbar-container
+		.nav
+			.nav-item
+				.nav-link
+					.nav-link-span
+						display: inline-block
+						color: $white
+						padding-right: 8px
+
+.site-menubar.site-menubar-light
+	background-color: $mls-grey
+	box-shadow: none
+	top: 4.125rem
+	.site-menu
+		li
+			a
+				color: $white
+			.dropdown-menu
+				background-color: $mls-grey
+				border-color: $mls-grey
+				ul
+					li
+						i,
+						span
+							color: $white
+
+.navbar-nav,
+.navbar-toolbar
+	.nav-link.navbar-avatar,
+	.nav-link.navbar-avatar
+		padding-bottom: 1rem
+		padding-top: 1rem
+
+/*  Page
+	======================================= */
+.page
+	position: relative
+	z-index: 2
+	.page-content
+		padding: 30px 30px 80px
+		position: relative
+		z-index: 3
+		.panel-gral
+			background-color: rgba($mls-maroon, .4)
+			border-radius: 4px
+
+
+/*  Footer
+	======================================= */
+.site-footer
+	align-items: center
+	background-color: rgba($mls-black, .5)
+	border-top: none
+	bottom: 0
+	display: flex
+	justify-content: space-between
+	left: 0
+	padding: 8px 24px
+	position: fixed
+	right: 0
+	width: 100%
+	z-index: 2
+	&:after
+		display: none
+	+respond-to(tl)
+		flex-direction: column
+		justify-content: center
+	+respond-to(tp)
+		flex-direction: column
+		justify-content: center
+	+respond-to(sl)
+		flex-direction: column
+		justify-content: center
+	+respond-to(sp)
+		flex-direction: column
+		justify-content: center
+	.site-footer-copyright
+		p
+			color: #AAB1AB
+			font-size: .9rem
+			margin-bottom: 0
+	.site-footer-author
+		align-items: center
+		display: flex
+		justify-content: flex-end
+		img
+			display: flex
+			&.logo-h2h
+				height: 24px
+			&.logo-mls
+				height: 26px
+			&:last-child
+				margin-left: 3vw

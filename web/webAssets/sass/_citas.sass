@@ -1,0 +1,498 @@
+/*!
+	-----------------------------------------------------------------------------
+
+	2.0 - Usuarios
+			# Listado
+			# Crear
+
+	-----------------------------------------------------------------------------
+	*/
+
+
+/*  Page Listado
+	======================================= */
+.page
+	
+	.page-header
+		position: relative
+		padding: 30px 36px
+		z-index: 3
+
+		.page-title
+			color: $white
+			font-size: 1.95rem
+			font-weight: $light
+
+			.badge
+				color: $white
+				font-size: .8rem
+				font-weight: $light
+				margin-left: 8px
+				margin-top: -4px
+				text-transform: uppercase
+				vertical-align: middle
+		
+		.breadcrumb
+			li
+				a
+					color: $white
+					text-decoration: none
+
+		.page-header-actions
+			a
+				background-color: $mls-aqua
+				border: 1px solid $mls-aqua
+				color: $mls-black
+				margin-right: 12px
+				padding: .5rem 2.35rem
+				&:active,
+				&:focus,
+				&:hover
+					background-color: rgba($mls-aqua,.25)
+					color: $white
+
+	.page-content
+		position: relative
+		z-index: 3
+
+		.list-group
+			background-color: rgba($mls-bg-red, 0.4)
+			display: flex
+			flex-direction: row
+			flex-wrap: wrap
+			justify-content: flex-start
+			margin-bottom: 30px
+			padding: 20px 30px
+			.list-group-item
+				background-color: transparent
+				border: 1px solid rgba($mls-aqua,.35)
+				border-radius: 20px
+				color: $white
+				font-size: .8rem
+				font-weight: $light
+				margin-bottom: 8px
+				margin-right: .7%
+				padding: .2rem 1rem
+				text-decoration: none
+				text-transform: uppercase
+				width: 24.33%
+				&:nth-child(4n + 4)
+					margin-right: 0
+				.badge
+					background-color: $mls-grey-secundary
+					margin-right: 10px
+					
+					&.badge-warning
+						background-color: $error
+					&.badge-green-light
+						background-color: $green-light
+					&.badge-green-medium
+						background-color: $green-medium
+					&.badge-green
+						background-color: $mls-green
+					&.badge-danger
+						background-color: $error
+
+				&:hover
+					background-color: rgba($mls-aqua,.25)
+					border-color: rgba($mls-aqua,.65)
+					
+
+			.list-group-item-lg
+				background-color: transparent
+				margin-top: 24px
+				text-align: center
+				width: 100%
+				.list-group-item-more
+					border: 1px solid rgba($mls-aqua,.65)
+					border-radius: 4px
+					color: $white
+					display: inline-block
+					padding: 4px 16px
+					text-decoration: none
+					&:active,
+					&:hover,
+					&:focus
+						background-color: rgba($mls-aqua,.25)
+
+		.panel-citas-search
+			background-color: rgba($mls-bg-red, 0.4)
+			margin-bottom: 30px
+			padding: 20px 30px
+			form
+				input[type="email"],
+				input[type="password"],
+				input[type="text"],
+				select,
+				textarea,
+				.form-control
+					background-color: $mls-brown
+					border-color: $mls-brown
+					font-weight: $light
+					&:active,
+					&:focus,
+					&:hover
+						border-color: $mls-brown
+						box-shadow: none
+						outline: none
+				textarea
+					resize: none
+				
+				.select2,
+				.select2-container--krajee
+					position: relative
+					.select2-selection
+						background-color: $mls-brown
+						border-color: $mls-brown
+						color: $white
+						font-weight: $light
+						position: relative
+						.select2-selection__rendered
+							position: relative
+							.select2-selection__clear
+								color: $white
+								right: .2rem
+								top: -.4rem
+
+					.select2-selection--single
+						.select2-selection__arrow	
+							border-left-color: $mls-brown
+
+				.select2-container--krajee.select2-container--open .select2-selection,
+				.select2-container--krajee .select2-selection:focus
+					box-shadow: none
+
+
+				.help-block
+					color: $error
+					font-size: .85rem
+					margin-top: .3rem
+					padding-left: 1rem
+				
+				.form-group-btns
+					align-items: center
+					display: flex
+					justify-content: center
+					width: 100%
+
+					.btn-form-search,
+					.btn-form-clear
+						border-color: $mls-aqua
+
+					.btn-form-search
+						background-color: $mls-aqua
+						color: $mls-black
+						margin-right: 12px
+						padding: .5rem 2.35rem
+						&:active,
+						&:focus,
+						&:hover
+							background-color: $white
+							border-color: $white
+
+					.btn-form-clear
+						background-color: transparent
+						color: $white
+						padding: .5rem 1.75rem
+						&:active,
+						&:focus,
+						&:hover
+							background-color: rgba($mls-aqua,.35)
+
+		.panel-table
+			background-color: rgba($mls-bg-red, 0.4)
+			border-radius: 4px
+			padding: 32px
+
+			.kv-loader-overlay
+				background-color: rgba($mls-aqua,.35)
+				.kv-loader
+					border-radius: 50%
+
+			.panel-heading
+				display: flex
+				justify-content: flex-end
+				margin-bottom: 30px
+
+				.btn-exportar
+					background-color: $mls-aqua
+					border-color: $mls-aqua
+					color: $mls-black
+					&:active,
+					&:focus,
+					&:hover
+						background-color: rgba($mls-aqua,.25)
+						box-shadow: none
+						color: $white
+
+				.dropdown-menu
+					background-color: $mls-black
+					border-color: $mls-black
+					
+					li
+						color: $white
+						font-weight: $light
+						padding: 0 20px
+						line-height: 38px
+						&:hover
+							background-color: rgba(53,131,202,.05)
+						a
+							color: $white
+							display: block
+							font-weight: $light
+							text-decoration: none
+							i
+								color: $white!important
+								margin-right: 8px
+
+			table
+				margin-bottom: 32px
+				th,
+				td
+					border: none
+				thead
+					tr
+						th
+							a
+								color: $mls-grey-secundary
+								font-size: .8rem
+								font-weight: $thin
+								padding: 8px 4px
+								text-decoration: none
+								text-transform: uppercase
+				
+				tbody
+					tr
+						&:last-child
+							border-bottom: 1px solid $mls-green
+						&:hover
+							background-color: rgba($mls-black, .8)
+						td
+							border-top: 1px solid $mls-green
+							color: $white
+							font-size: .8rem
+							font-weight: $thin
+							line-height: 3
+							padding: 10px 4px 8px
+							vertical-align: middle
+
+							a
+								text-decoration: none
+								&.badge,
+								&.id-send
+									// background-color: $mls-green
+									color: $white
+									font-size: 90%
+									font-weight: $light
+									line-height: 1.2
+									padding: 6px 10px 4px
+									text-transform: uppercase
+
+									// &.warning
+									// 	background-color: $error
+									// &.green-light
+									// 	background-color: $green-light
+									// &.green-medium
+									// 	background-color: $green-medium
+									// &.green
+									// 	background-color: $mls-green
+									// &.danger
+									// 	background-color: $error
+
+								&.id-send
+									font-weight: $thin
+									padding: 0
+
+							.id-send-error
+								color: $white
+								display: block
+								font-size: .75rem
+								text-align: center
+								text-transform: uppercase
+
+			.summary
+				color: $mls-grey-secundary
+				display: flex
+				font-size: .95rem
+				font-weight: $light
+				justify-content: flex-end
+				margin-bottom: 8px
+				padding: 4px 8px
+				b
+					color: $white
+					font-weight: $regular
+					margin: 0 8px
+
+			
+			// .pagination
+			// 	display: flex
+			// 	justify-content: flex-end
+			// 	li
+			// 		display: flex
+			// 		a,
+			// 		span,
+			// 		.page-link
+			// 			align-items: center
+			// 			background-color: transparent
+			// 			border: 1px solid rgba($white,.4)
+			// 			color: $white
+			// 			display: flex
+			// 			font-weight: $regular
+			// 			justify-content: center
+			// 			margin: 0 2px
+			// 			padding: 4px 2px
+			// 			color: $white
+			// 			text-decoration: none
+			// 			width: 40px
+			// 			&:hover
+			// 				background-color: rgba($white,.16)
+			// 				border-color: rgba($white,.16)
+			// 				color: rgba($white,.85)
+			// 		&.prev,
+			// 		&.next
+			// 			a
+			// 				color: $white
+			// 		&.disabled
+			// 			span
+			// 				background-color: rgba($white,.16)
+			// 				border-color: rgba($white,.16)
+			// 				color: rgba($white,.4)
+			// 		&.active
+			// 			a
+			// 				background-color: $mls-aqua
+			// 				border-color: $mls-aqua
+			// 				color: $mls-black
+			// 				&:hover
+			// 					background-color: rgba($mls-aqua,.25)
+			// 					border-color: rgba($mls-aqua,.65)
+			// 					color: rgba($white,.85)
+						
+
+/*  Page View
+	======================================= */
+.panel-citas-view,
+.panel-citas-create
+	background-color: rgba($mls-bg-red, 0.4)
+	margin-bottom: 32px
+	padding: 32px
+	.panel-heading
+		.panel-title
+			padding: 0
+
+	.panel-citas-btns
+		align-items: center
+		display: flex
+		justify-content: flex-end
+		.btn
+			margin-left: 12px
+			&.btn-form-actualizar
+				background-color: $mls-aqua
+				border: 1px solid rgba$mls-aqua
+				border-color: $mls-aqua
+				color: $mls-black
+				&:active,
+				&:focus,
+				&:hover
+					background-color: rgba($mls-aqua,.25)
+					color: $white
+			&.btn-form-aprobar
+				background-color: transparent
+				border: 1px solid $white
+				color: $white
+				&:active,
+				&:focus,
+				&:hover
+					background-color: rgba($white,.25)
+			&.btn-form-cancelar
+				background-color: transparent
+				border: 1px solid $mls-aqua
+				color: $white
+				&:active,
+				&:focus,
+				&:hover
+					background-color: rgba($mls-aqua,.25)
+
+	
+	.citas-cont
+		padding-bottom: 32px
+		&.panel-table
+			background-color: transparent
+			border-radius: 0
+			padding: 0
+
+		.panel-title
+			color: $white
+			font-weight: $light
+			padding: 0
+			text-transform: uppercase
+		hr
+			height: 1px
+			margin: 1rem 0 2rem
+			opacity: .4
+			width: 100%
+		.form-group
+			.control-label
+				padding-left: 1rem
+			
+			input[type="email"],
+			input[type="password"],
+			input[type="text"],
+			select,
+			textarea,
+			.form-control
+				background-color: $mls-brown
+				border-color: $mls-brown
+				font-weight: $light
+				&:active,
+				&:focus,
+				&:hover
+					border-color: $mls-brown
+					box-shadow: none
+					outline: none
+			textarea
+				resize: none
+			
+			.select2,
+			.select2-container--krajee
+				position: relative
+				.select2-selection
+					background-color: $mls-brown
+					border-color: $mls-brown
+					color: $white
+					font-weight: $light
+					position: relative
+					.select2-selection__rendered
+						position: relative
+						.select2-selection__clear
+							color: $white
+							right: .2rem
+							top: -.4rem
+
+				.select2-selection--single
+					.select2-selection__arrow	
+						border-left-color: $mls-brown
+
+			.select2-container--krajee.select2-container--open .select2-selection,
+			.select2-container--krajee .select2-selection:focus
+				box-shadow: none
+
+
+			.help-block
+				color: $error
+				font-size: .85rem
+				margin-top: .3rem
+				padding-left: 1rem
+
+			.btn-form-save
+				background-color: $mls-aqua
+				border: 1px solid rgba$mls-aqua
+				border-color: $mls-aqua
+				color: $mls-black
+				&:active,
+				&:focus,
+				&:hover
+					background-color: rgba($mls-aqua,.25)
+					color: $white
+
+/*  Page Ver Estatus de Envío
+	======================================= */

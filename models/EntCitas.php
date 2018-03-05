@@ -403,7 +403,7 @@ class EntCitas extends \yii\db\ActiveRecord
             'id_tipo_entrega' => 'Tipo de entrega',
             'id_usuario' => 'Usuario',
             'id_status' => 'Estatus de la cita',
-            'id_envio' => 'Identificador del envio',
+            'id_envio' => 'Id. del envío',
             'id_tipo_cliente' => 'Tipo de cliente',
             'id_tipo_identificacion' => 'Tipo de identificación',
             'id_horario' => 'Horario',
@@ -604,14 +604,14 @@ class EntCitas extends \yii\db\ActiveRecord
         $botones = new BotonesCitas();
 
         
-        return $contenedor = "<div class='pt-15 example-buttons text-right'>" . $botones->getBotones($this) . "</div>";
+        return $contenedor = $botones->getBotones($this);
            
     }
 
     public function getBotonGuardar()
     {
         if ($this->isNewRecord) {
-            return Html::submitButton("<span class='ladda-label'>" . ($this->isNewRecord ? 'Generar cita' : 'Actualizar cita') . "</span>", ['class' => ($this->isNewRecord ? 'btn btn-success' : 'btn btn-primary ') . "  float-right ladda-button", "data-style" => "zoom-in"]);
+            return Html::submitButton("<span class='ladda-label'> <i class='site-menu-icon pe-users' aria-hidden='true'></i> " . ($this->isNewRecord ? 'Generar cita' : 'Actualizar cita') . "</span>", ['class' => ($this->isNewRecord ? 'btn btn-success btn-form-save' : 'btn btn-primary ') . "  float-right ladda-button", "data-style" => "zoom-in"]);
         }
         return "";
     }
