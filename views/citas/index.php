@@ -9,6 +9,8 @@ use app\models\Calendario;
 use kartik\export\ExportMenu;
 use app\models\EntCitas;
 use app\models\Constantes;
+use yii\helpers\ArrayHelper;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\ModUsuarios\models\EntUsuariosSearch */
@@ -172,6 +174,7 @@ $this->registerJsFile(
                 'columns' =>[
                     'txt_identificador_cliente',
                     [
+                        'filter'=>ArrayHelper::map($status, 'id_statu_cita', 'txt_nombre'),
                         'attribute' => 'id_status',
                         'format'=>'raw',
                         'value'=>function($data){
@@ -200,6 +203,16 @@ $this->registerJsFile(
                         'value'=>'idTipoTramite.txt_nombre'
                     ],
                     [
+                        'filter'=>DatePicker::widget([
+                            'name'=>'EntCitasSearch[fch_creacion]',
+                            'pickerButton'=>false,
+                            'removeButton'=>false,
+                            'type' => DatePicker::TYPE_INPUT,
+                            'pluginOptions' => [
+                                'autoclose'=>true,
+                                'format' => 'dd-mm-yyyy'
+                            ]
+                        ]),
                         'attribute'=>'fch_creacion',
                         'format'=>'raw',
                         'value'=>function($data){
@@ -208,6 +221,16 @@ $this->registerJsFile(
                         }
                     ],
                     [
+                        'filter'=>DatePicker::widget([
+                            'name'=>'EntCitasSearch[fch_cita]',
+                            'pickerButton'=>false,
+                            'removeButton'=>false,
+                            'type' => DatePicker::TYPE_INPUT,
+                            'pluginOptions' => [
+                                'autoclose'=>true,
+                                'format' => 'dd-mm-yyyy'
+                            ]
+                        ]),
                         'attribute'=>'fch_cita',
                         'format'=>'raw',
                         'value'=>function($data){

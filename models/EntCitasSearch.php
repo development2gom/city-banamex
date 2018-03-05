@@ -71,6 +71,12 @@ class EntCitasSearch extends EntCitas
             
         }
 
+        if($this->fch_creacion){
+            
+            $this->fch_creacion = Utils::changeFormatDateInputShort($this->fch_creacion);
+            
+        }
+
         $usuario = Yii::$app->user->identity;
         if( $usuario->txt_auth_item==Constantes::USUARIO_CALL_CENTER){
             $this->id_usuario = $usuario->id_usuario;
@@ -91,8 +97,9 @@ class EntCitasSearch extends EntCitas
         }
 
         
-
-            if(($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL) || ($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)){
+            if($this->id_status){
+                $query->andFilterWhere(['id_status' => $this->id_status]);
+            }else if(($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL) || ($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)){
                 
                 $query->andFilterWhere(['in', 'id_status', [
                     Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR, 
