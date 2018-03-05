@@ -3242,6 +3242,11 @@ a {
 .datepicker {
   z-index: 1401 !important; }
 
+.filters .form-control {
+  background-color: #2D2D2D;
+  border-color: #2D2D2D;
+  font-weight: 300; }
+
 /*!
 	-----------------------------------------------------------------------------
 
@@ -3466,7 +3471,7 @@ a {
   position: relative;
   z-index: 2; }
   .page .page-content {
-    padding: 30px 30px 80px;
+    padding: 0 30px 80px;
     position: relative;
     z-index: 3; }
     .page .page-content .panel-gral {
@@ -4049,6 +4054,89 @@ a {
 
 /*  Page Ver Estatus de Envío
 	@mixin ====================================== */
+.citas-status-send {
+  margin-bottom: 32px; }
+  .citas-status-send .citas-stat-send-grals,
+  .citas-status-send .citas-stat-send-record {
+    background-color: rgba(42, 3, 9, 0.4);
+    padding: 20px 16px; }
+    .citas-status-send .citas-stat-send-grals h3,
+    .citas-status-send .citas-stat-send-record h3 {
+      color: #FFF;
+      font-size: 1.45rem;
+      font-weight: 300;
+      margin-bottom: 22px;
+      margin-top: 0; }
+  .citas-status-send .citas-stat-send-grals .citas-stat-send-item {
+    margin-bottom: 16px; }
+    .citas-status-send .citas-stat-send-grals .citas-stat-send-item h5,
+    .citas-status-send .citas-stat-send-grals .citas-stat-send-item p {
+      color: #FFF;
+      font-weight: 300;
+      margin: 0; }
+    .citas-status-send .citas-stat-send-grals .citas-stat-send-item h5 {
+      color: #AAAAAA;
+      font-size: .8rem;
+      padding: 6px 0;
+      text-decoration: none;
+      text-transform: uppercase; }
+    .citas-status-send .citas-stat-send-grals .citas-stat-send-item p {
+      font-size: .95rem; }
+  .citas-status-send .citas-stat-send-grals hr {
+    background-color: rgba(255, 255, 255, 0.3);
+    border: none;
+    height: 1px;
+    margin: 24px auto;
+    width: 35%; }
+  .citas-status-send .citas-stat-send-record .citas-stat-send-record-head {
+    position: relative; }
+    .citas-status-send .citas-stat-send-record .citas-stat-send-record-head .badge {
+      background-color: #3BDBC3;
+      border: 1px solid #3BDBC3;
+      border-radius: 10rem;
+      color: #151515;
+      font-weight: 300;
+      padding: 4px 16px 3px;
+      text-transform: uppercase; }
+      .citas-status-send .citas-stat-send-record .citas-stat-send-record-head .badge:hover {
+        background-color: rgba(59, 219, 195, 0.35);
+        color: #FFF; }
+  .citas-status-send .citas-stat-send-record .citas-stat-send-record-panel table {
+    margin-bottom: 20px; }
+    .citas-status-send .citas-stat-send-record .citas-stat-send-record-panel table th,
+    .citas-status-send .citas-stat-send-record .citas-stat-send-record-panel table td {
+      border: none; }
+    .citas-status-send .citas-stat-send-record .citas-stat-send-record-panel table thead tr th {
+      color: #AAAAAA;
+      font-size: .8rem;
+      font-weight: 100;
+      padding: 8px 4px;
+      text-decoration: none;
+      text-transform: uppercase; }
+    .citas-status-send .citas-stat-send-record .citas-stat-send-record-panel table tbody tr:last-child {
+      border-bottom: 1px solid #15584E; }
+    .citas-status-send .citas-stat-send-record .citas-stat-send-record-panel table tbody tr:hover {
+      background-color: rgba(21, 21, 21, 0.8); }
+    .citas-status-send .citas-stat-send-record .citas-stat-send-record-panel table tbody tr td {
+      border-top: 1px solid #15584E;
+      color: #FFF;
+      font-size: .8rem;
+      font-weight: 100;
+      line-height: 3;
+      padding: 10px 4px 8px;
+      vertical-align: middle; }
+      .citas-status-send .citas-stat-send-record .citas-stat-send-record-panel table tbody tr td .badge {
+        background-color: #1eb054;
+        font-size: .85rem;
+        font-weight: 100;
+        padding: 5px 8px 3px;
+        text-transform: uppercase;
+        vertical-align: middle; }
+      .citas-status-send .citas-stat-send-record .citas-stat-send-record-panel table tbody tr td span i {
+        margin-right: 8px; }
+      .citas-status-send .citas-stat-send-record .citas-stat-send-record-panel table tbody tr td .avatar {
+        border-radius: 0; }
+
 /*!
 	-----------------------------------------------------------------------------
 

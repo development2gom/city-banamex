@@ -496,3 +496,102 @@
 
 /*  Page Ver Estatus de Envío
 	======================================= */
+.citas-status-send
+	margin-bottom: 32px
+
+	.citas-stat-send-grals,
+	.citas-stat-send-record
+		background-color: rgba($mls-bg-red, 0.4)
+		padding: 20px 16px
+		h3
+			color: $white
+			font-size: 1.45rem
+			font-weight: $light
+			margin-bottom: 22px
+			margin-top: 0
+
+	.citas-stat-send-grals
+		// background-color: green
+		.citas-stat-send-item
+			// background-color: purple
+			margin-bottom: 16px
+			h5,
+			p
+				color: $white
+				font-weight: $light
+				margin: 0
+			h5
+				color: $mls-grey-secundary
+				font-size: .8rem
+				padding: 6px 0
+				text-decoration: none
+				text-transform: uppercase
+			p
+				font-size: .95rem
+		hr
+			background-color: rgba($white, .3)
+			border: none
+			height: 1px
+			margin: 24px auto
+			width: 35%
+	
+	.citas-stat-send-record
+		// background-color: orange
+
+		.citas-stat-send-record-head
+			position: relative
+
+			.badge
+				background-color: $mls-aqua
+				border: 1px solid $mls-aqua
+				border-radius: 10rem
+				color: $mls-black
+				font-weight: $light
+				padding: 4px 16px 3px
+				text-transform: uppercase
+				&:hover
+					background-color: rgba($mls-aqua,.35)
+					color: $white
+
+		.citas-stat-send-record-panel
+			table
+				margin-bottom: 20px
+				th,
+				td
+					border: none
+				thead
+					tr
+						th
+							color: $mls-grey-secundary
+							font-size: .8rem
+							font-weight: $thin
+							padding: 8px 4px
+							text-decoration: none
+							text-transform: uppercase
+				
+				tbody
+					tr
+						&:last-child
+							border-bottom: 1px solid $mls-green
+						&:hover
+							background-color: rgba($mls-black, .8)
+						td
+							border-top: 1px solid $mls-green
+							color: $white
+							font-size: .8rem
+							font-weight: $thin
+							line-height: 3
+							padding: 10px 4px 8px
+							vertical-align: middle
+							.badge
+								background-color: $green-light
+								font-size: .85rem
+								font-weight: $thin
+								padding: 5px 8px 3px
+								text-transform: uppercase
+								vertical-align: middle
+							span
+								i
+									margin-right: 8px
+							.avatar
+								border-radius: 0
