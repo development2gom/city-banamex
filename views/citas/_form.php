@@ -10,6 +10,7 @@ use yii\web\JsExpression;
 use kartik\depdrop\DepDrop;
 use app\models\Constantes;
 use yii\web\View;
+use app\modules\ModUsuarios\models\Utils;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\EntCitas */
@@ -85,6 +86,8 @@ $cat = $model->idCat;
     <div class="row">
         <div class="col-md-3">
             <?php 
+                $end = date('Y-m-d', strtotime('-12 years'));
+                $end = Utils::changeFormatDate($end);
                 echo $form->field($model, 'fch_nacimiento')->widget(DatePicker::classname(), [
                     'options' => ['placeholder' => '16-12-1990'],
                     'pickerButton'=>false,
@@ -92,7 +95,8 @@ $cat = $model->idCat;
                     'type' => DatePicker::TYPE_INPUT,
                     'pluginOptions' => [
                         'autoclose'=>true,
-                        'format' => 'dd-mm-yyyy'
+                        'format' => 'dd-mm-yyyy',
+                        'endDate'=> $end,
                     ]
                 ]);
             ?>
@@ -384,6 +388,8 @@ $cat = $model->idCat;
         <div class="col-md-3">
             <?php
             $startDate = $model->fch_cita;
+            $end = date('Y-m-d', strtotime('+2 months'));
+            $end = Utils::changeFormatDate($end);
             //$model->fch_cita = null;
             echo $form->field($model, 'fch_cita')->widget(DatePicker::classname(), [
                 //'options' => ['placeholder' => '16/12/1990'],
@@ -395,6 +401,7 @@ $cat = $model->idCat;
                     'format' => 'dd-mm-yyyy',
                     'daysOfWeekDisabled'=> "0",
                     'startDate' => $startDate, //date("d-m-Y")
+                    'endDate'=>$end
                 ]
                 // 'language' => 'es',
                 // 'options'=>['class'=>'form-control'],

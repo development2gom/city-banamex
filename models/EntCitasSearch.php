@@ -13,6 +13,8 @@ use app\modules\ModUsuarios\models\Utils;
  */
 class EntCitasSearch extends EntCitas
 {
+    public $startDate;
+    public $endDate;
     /**
      * @inheritdoc
      */
@@ -20,7 +22,7 @@ class EntCitasSearch extends EntCitas
     {
         return [
             [['id_cita', 'id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status', 'id_envio', 'id_tipo_cliente', 'id_tipo_identificacion', 'id_horario'], 'integer'],
-            [['txt_telefono', 'txt_identificador_cliente','txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_rfc', 'txt_numero_telefonico_nuevo', 'txt_email', 'txt_folio_identificacion', 'fch_nacimiento', 'num_dias_servicio', 'txt_token', 'txt_iccid', 'txt_imei', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3', 'txt_estado', 'txt_calle_numero', 'txt_colonia', 'txt_codigo_postal', 'txt_municipio', 'txt_entre_calles', 'txt_observaciones_punto_referencia', 'txt_motivo_cancelacion_rechazo', 'fch_cita', 'fch_creacion'], 'safe'],
+            [['startDate','endDate','txt_telefono', 'txt_identificador_cliente','txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_rfc', 'txt_numero_telefonico_nuevo', 'txt_email', 'txt_folio_identificacion', 'fch_nacimiento', 'num_dias_servicio', 'txt_token', 'txt_iccid', 'txt_imei', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3', 'txt_estado', 'txt_calle_numero', 'txt_colonia', 'txt_codigo_postal', 'txt_municipio', 'txt_entre_calles', 'txt_observaciones_punto_referencia', 'txt_motivo_cancelacion_rechazo', 'fch_cita', 'fch_creacion'], 'safe'],
         ];
     }
 
@@ -49,7 +51,7 @@ class EntCitasSearch extends EntCitas
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination'=>[
-                'pageSize' => 1,
+                'pageSize' => 30,
             ],
             'sort' => [
                 'defaultOrder' => [

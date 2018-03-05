@@ -15,10 +15,7 @@ $this->params['breadcrumbs'][] = [
     'url'=>['view', 'token'=>$envio->idCita->txt_token],
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
     'encode' => false];
-$this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon wb-eye"></i> '.$this->title,
-    'template'=>'<li class="breadcrumb-item">{link}</li>', 
-    'encode' => false];
+
 
 
 ?>

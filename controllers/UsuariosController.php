@@ -230,7 +230,7 @@ class UsuariosController extends Controller
     public function actionImportarData(){
 
         $errores = [];
-        return $this->redirect(['site/construccion']);
+        
         if (Yii::$app->request->isPost) {
             $file = UploadedFile::getInstanceByName('file-import');
             
