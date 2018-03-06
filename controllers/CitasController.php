@@ -35,10 +35,10 @@ class CitasController extends Controller
         return [
             'access' => [
                 'class' => AccessControlExtend::className(),
-                'only' => ['create'],
+                'only' => ['create', 'index', 'view'],
                 'rules' => [
                     [
-                        'actions' => ['create'],
+                        'actions' => ['create', 'index', 'view'],
                     'allow' => true,
                         'roles' => [Constantes::USUARIO_CALL_CENTER],
                     ],
@@ -110,7 +110,9 @@ class CitasController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
-            $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
+            
+             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
+            
             $model->setAddresCat();
            
             if($model->isEdicion){
@@ -334,8 +336,26 @@ class CitasController extends Controller
         $cita = new EntCitas();
         $envio = EntEnvios::find()->where(['txt_token'=>$token])->one();
         $respuestaApi = json_decode($cita->consultarEnvio($envio->txt_tracking));
+        $historico = json_decode($cita->consultarHistorico($envio->txt_tracking));
 
-        return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi]);
+       
+        return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi, "historico"=>$historico]);
     }
+
+
+    public function actionTestApiImage(){
+        $tracking = "SSYBS28021800007";
+        $cita = new EntCitas();
+        $respuestaApi = json_decode($cita->consultarEnvio($tracking));
+        $historico = json_decode($cita->consultarHistorico($tracking));
+
+
+        //print_r($respuestaApi);
+
+        print_r($historico);
+        exit;
+        
+    }
+
     
 }

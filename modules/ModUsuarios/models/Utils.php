@@ -26,10 +26,11 @@ class Utils {
 	 * @param unknown $string
 	 */
 	public static function changeFormatDateInput($string){
-		$date = \DateTime::createFromFormat('d-m-Y', $string);
-		//$date->add(new \DateInterval('PT1H'));
-		return $date->format('Y-m-d H:i:s');
-		//return date_format ( $date, "Y-m-d H:i:s" );
+
+		$time = strtotime($string);
+
+		return date('Y-m-d H:i:s',$time);
+
 	}
 	
 	/**

@@ -2,7 +2,7 @@
 use yii\widgets\Breadcrumbs;
 ?>
 <!-- Page -->
-<div class="page">
+<div class="page page-bg-trans">
   <div class="page-header">
       <h1 class="page-title"><?=$this->title?></h1>
       <?=Breadcrumbs::widget([

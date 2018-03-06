@@ -99,6 +99,16 @@ class Calendario
         return $nombreDia." ".$dia."-".$mes."-".$anio." ".$hora;
     }
 
+    public static function getDateSimple($string){
+        $nombreDia = self::getDayName($string);
+        $dia = self::getDayNumber($string);
+        $mes = self::getMonthName($string);
+        $anio = self::getYearLastDigit($string);
+        $hora = self::getHoursMinutes($string);
+
+        return $dia."-".$mes."-".$anio;
+    }
+
     public static function getDateComplete($string){
         $nombreDia = self::getDayName($string);
         $dia = self::getDayNumber($string);

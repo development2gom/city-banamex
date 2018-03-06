@@ -12,7 +12,7 @@ use kartik\date\DatePicker;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="ent-citas-search">
+<div class="panel-citas-search">
 
     <?php $form = ActiveForm::begin([
         'id'=>'form-search',
@@ -22,7 +22,7 @@ use kartik\date\DatePicker;
     ]); ?>
 
     <div class="row">
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
              <?= $form->field($model, 'id_status')
                                 ->widget(Select2::classname(), [
                                     'data' => ArrayHelper::map(CatStatusCitas::find("b_habilitado=1")->orderBy("txt_nombre")->all(), 'id_statu_cita', 'txt_nombre'),
@@ -33,13 +33,13 @@ use kartik\date\DatePicker;
                                     ],
                                 ]);
                 ?> 
-        </div>
+        </div> -->
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             <?php  echo $form->field($model, 'txt_telefono')->textInput(['maxlength' => true, 'class'=>'form-control input-number']); ?>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             <?php  echo $form->field($model, 'fch_cita')->widget(DatePicker::classname(), [
                     'pickerButton'=>false,
                     'removeButton'=>false,
@@ -51,7 +51,7 @@ use kartik\date\DatePicker;
             ?>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             <?php  echo $form->field($model, 'txt_identificador_cliente')->textInput(['maxlength' => true, 'class'=>'form-control']); ?>
         </div>
     </div>
@@ -119,9 +119,9 @@ use kartik\date\DatePicker;
 
     <?php // echo $form->field($model, 'fch_hora_cita') ?>
 
-    <div class="form-group">
-    <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary js-search-button', 'name'=>'isOpen', 'value'=>Yii::$app->request->get('isOpen')?'1':'0']) ?>
-    <?= Html::button('Limpiar', ['class' => 'btn btn-default js-limpiar-campos']) ?>
+    <div class="form-group-btns">
+        <?= Html::submitButton('Buscar', ['class' => 'btn btn-form-search js-search-button', 'name'=>'isOpen', 'value'=>Yii::$app->request->get('isOpen')?'1':'0']) ?>
+        <?= Html::button('Limpiar', ['class' => 'btn btn-form-clear js-limpiar-campos']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

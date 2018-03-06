@@ -8,18 +8,23 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="ent-usuarios-search">
+<div class="panel-search">
+
+    <h3 class="panel-search-title">Usuarios</h3>
 
     <?php $form = ActiveForm::begin([
-        'action' => ['update'],
+        'action' => ['index'],
         'method' => 'get',
+        'options' => [
+            'class' => 'panel-search-form'
+        ],
     ]); ?>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?= $form->field($model, 'txt_username') ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <?= $form->field($model, 'txt_apellido_paterno') ?>
         </div>
         <div class="col-md-3">
@@ -28,12 +33,14 @@ use yii\widgets\ActiveForm;
         <div class="col-md-3">
             <?= $form->field($model, 'txt_email') ?>
         </div>
+        <div class="col-md-2">
+            <div class="form-group form-group-btns">
+                <?= Html::submitButton('Buscar', ['class' => 'btn btn-search']) ?>
+                <?= Html::resetButton('Limpiar', ['class' => 'btn btn-clear']) ?>
+            </div>
+        </div>
     </div>
-    
-    <div class="form-group text-center">
-        <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Limpiar', ['class' => 'btn btn-default']) ?>
-    </div>
+
 
     <?php ActiveForm::end(); ?>
 

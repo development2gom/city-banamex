@@ -19,19 +19,20 @@ $this->params['breadcrumbs'][] = [
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
     'encode' => false];
 
+
+
 $this->registerCssFile(
     '@web/webAssets/css/citas/create.css',
     ['depends' => [\app\assets\AppAsset::className()]]
 );
-
 $this->registerJsFile(
     '@web/webAssets/js/citas/create.js',
     ['depends' => [\app\assets\AppAsset::className()]]
 );
 ?>
 
-<div class="panel">
-    <div class="panel-body pt-0">
+<div class="panel-citas-create">
+
         <?= $this->render('_form', [
             'model' => $model,
             'tiposTramites'=>$tiposTramites,
@@ -40,5 +41,4 @@ $this->registerJsFile(
             'areas'=>$areas,
             'areaDefault'=>$areaDefault
         ]) ?>
-    </div>
 </div>

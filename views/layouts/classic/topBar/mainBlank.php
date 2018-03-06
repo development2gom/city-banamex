@@ -20,12 +20,17 @@ AppAssetClassicTopBarBlank::register($this);
     <![endif]-->
   <?php $this->beginBody();?>
   
-
+  <div class="page-login-v3-mask"></div>
   <div class="page vertical-align text-center" data-animsition-in="fade-in" data-animsition-out="fade-out">
-    <div class="page-content vertical-align-middle animation-slide-top animation-duration-1">
-      <?=$content?>
-      <?=$this->render("//components/classic/topbar/footerBlank")?>
+    <div class="login-header">
+      <img src="<?=Url::base()?>/webAssets/images/logo.png" alt="">
     </div>
+    <div class="page-content vertical-align-middle animation-slide-top animation-duration-1 page-login">
+      <?=$content?>
+      
+    </div>
+
+    <?=$this->render("//components/classic/topbar/footerBlank")?>
   </div>  
 
   <?php $this->endBody();?>

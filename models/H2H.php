@@ -7,6 +7,7 @@ class H2H
     const URL_API = "https://h2hls.azurewebsites.net/System/Brightstar";
     const ACTION_CREAR = "Evt0001";
     const ACTION_CONSULTAR = "Evt0002";
+    const ACTION_CONSULTAR_HISTORICO = "Evt0003";
 
     public $numServicio;
     public $observaciones;
@@ -45,9 +46,15 @@ class H2H
         return $this->consultarEnvioCall();
     }
 
+    public function consultarHistorico($tracking){
+        $this->setDataConsultarEnvio($tracking);
+
+        return $this->consultaHistoricoCall();
+    }
+
     public function setDataCrearEnvio($cita){
         $this->numServicio = $cita->txt_identificador_cliente;
-        $this->observaciones = $cita->txt_observaciones_punto_referencia;
+        $this->observaciones = $cita->txt_entre_calles." ".$cita->txt_observaciones_punto_referencia;
         $this->observacionesContenido = $cita->txt_promocional;
         $this->nombre = $cita->txt_nombre." ".$cita->txt_apellido_paterno." ".$cita->txt_apellido_materno;
         $this->email = $cita->txt_email;
@@ -59,10 +66,10 @@ class H2H
         $this->municipio = $cita->txt_municipio;
         $this->colonia = $cita->txt_colonia;
         $this->direccion = "";
-        $this->telefonoRef = $cita->txt_numero_referencia."|".$cita->txt_numero_referencia_2."|".$cita->txt_numero_referencia_2;
+        $this->telefonoRef = $cita->txt_telefono."|".$cita->txt_numero_referencia."|".$cita->txt_numero_referencia_2."|".$cita->txt_numero_referencia_3;
         $this->contenido = $cita->idEquipo->txt_nombre;
         $this->empaque = "";
-        $this->valor = $cita->txt_tpv;
+        $this->valor = $cita->txt_tpv?$cita->txt_tpv:0;
     }
 
     public function setDataConsultarEnvio($tracking){
@@ -78,12 +85,14 @@ class H2H
             'Estado' => $this->estado,
             'Municipio' => $this->municipio,
             'Colonia' => $this->colonia,
-            'Teléfono' => $this->telefonoRef,
+            'Telefonos' => $this->telefonoRef,
             'Contenido' => $this->contenido,
             'Cantidad' => $this->cantidad,
             'Valor' => $this->valor,
             'NoServicio' => $this->numServicio,
-            'Observacionescontenido' => $this->observacionesContenido,
+            'ObservacionesContenido' => $this->observacionesContenido,
+            'EMail'=>$this->email,
+            'Referencias'=>$this->observaciones,
             
         ];
 
@@ -104,6 +113,7 @@ class H2H
     {
 
         $parametros = $this->getParamsCrear();
+        
         $fields = [
             "Code" => 'u7Ig3QwPM+0mPESDkcZQ2zjyLHIbiMBdoRiVY0YMbGs=',
             "Action" => self::ACTION_CREAR,
@@ -111,6 +121,10 @@ class H2H
         ];
                                                                     
         $data_string = json_encode($fields); 
+
+        // echo $data_string;
+
+        // exit;
 
         //url-ify the data for the POST
         //$field_string = http_build_query($fields);
@@ -133,7 +147,8 @@ class H2H
         
         $info = curl_getinfo($ch);
 
-        #print_r($info);
+        //  print_r($result);
+        //  exit;
         //close connection
         curl_close($ch);
 
@@ -172,6 +187,48 @@ class H2H
         
         $info = curl_getinfo($ch);
 
+        #print_r($info);
+        //close connection
+        curl_close($ch);
+
+        #print_r($result);
+        #exit;
+        return $result;
+    }
+
+    public function consultaHistoricoCall(){
+
+        $parametros = $this->getParamsConsultar();
+       
+        $fields = [
+            "Code" => 'G8C0z4oYaHlTiVE8km3+a7xSnAKQA5iwsJQvVim2Sz4=',
+            "Action" => self::ACTION_CONSULTAR_HISTORICO,
+            "Parameters" => $parametros
+        ];
+                                                                    
+        $data_string = json_encode($fields); 
+
+        //url-ify the data for the POST
+        //$field_string = http_build_query($fields);
+
+        //open connection
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, self::URL_API);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+        curl_setopt($ch, CURLOPT_HTTPHEADER,[                                                                          
+            'Content-Type: application/json',                                                                                
+            //'Content-Length: ' . strlen($data_string))                                                                       
+        ]); 
+
+        //execute post
+        $result = curl_exec($ch);
+        
+        $info = curl_getinfo($ch);
+       
         #print_r($info);
         //close connection
         curl_close($ch);

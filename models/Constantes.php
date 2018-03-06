@@ -21,11 +21,11 @@ class Constantes{
 
     // Colores status
     const COLOR_STATUS_CREADA = "warning";
-    const COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR = " bg-light-green-500";
-    const COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL = " bg-light-green-800";
+    const COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR = "green-light";
+    const COLOR_STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL = "green-medium";
     const COLOR_STATUS_RECHAZADA = "danger";
     const COLOR_STATUS_CANCELADA = "danger";
-    const COLOR_STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL = " bg-green-800";
+    const COLOR_STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL = "green";
 
     // Tiempo que se puede editar una cita
     const TIEMPO_EDICION = 2;
@@ -44,4 +44,9 @@ class Constantes{
     const USUARIO_EXCEL_ADMINISTRADOR = "Administrador";
     const USUARIO_EXCEL_SUPERVISOR = "Supervisor";
     const USUARIO_EXCEL_CALL_CENTER = "Usuario call center";
+
+    // botones acciones de cita
+    const BTN_APROBAR = 2;
+    const BTN_EDITAR = 3;
+    const BTN_RECHAZAR = 4;
 }
