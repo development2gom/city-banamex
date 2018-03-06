@@ -119,6 +119,7 @@ class EntCitasSearch extends EntCitas
 
         
             if($this->id_status){
+                
                 $query->andFilterWhere(['id_status' => $this->id_status]);
             }else if(($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL) || ($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)){
                 
@@ -173,9 +174,9 @@ class EntCitasSearch extends EntCitas
            
 
             // filter by person full name
-            $query->andWhere('txt_nombre LIKE "%' . $this->nombreCompleto . '%" ' .
-            'OR txt_apellido_paterno LIKE "%' . $this->nombreCompleto . '%"'
-        );
+            if($this->nombreCompleto){
+                $query->andFilterWhere('CONCAT(txt_nombre, " ", txt_apellido_paterno) LIKE "%' . $this->nombreCompleto . '%" ');
+            }    
 
             if($this->fch_cita){
             
@@ -189,11 +190,13 @@ class EntCitasSearch extends EntCitas
                 
             }
 
+            if($this->txtTracking ){
+
             // filter by country name
             $query->joinWith(['entEnvios' => function ($q) {
                 $q->where('ent_envios.txt_tracking LIKE "%' . $this->txtTracking . '%"');
             }]);
-
+        }
         return $dataProvider;
     }
 }
