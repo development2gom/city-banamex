@@ -66,6 +66,22 @@ class EntCitasSearch extends EntCitas
             
         ]);
 
+
+        // Important: here is how we set up the sorting
+    // The key is the attribute name on our "TourSearch" instance
+    $dataProvider->sort->attributes['nombreCompleto'] = [
+        
+            'asc' => ['txt_nombre' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
+            'desc' => ['txt_nombre' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC],
+            
+            
+        
+    ];
+
+    $dataProvider->sort->attributes['txtTracking']=[
+        'asc' => ['txt_tracking' => SORT_ASC],
+            'desc' => ['txt_tracking' => SORT_DESC],
+    ];
         /**
      * Setup your sorting attributes
      * Note: This is setup before the $this->load($params) 
@@ -74,23 +90,20 @@ class EntCitasSearch extends EntCitas
     // $dataProvider->setSort([
     //     'attributes' => [
     //         'fch_creacion'=>[
-    //             'default'=>\SORT_DESC
+    //             'default'=>\SORT_DESC,
     //         ],
 
     //         'txt_identificador_cliente',
     //         'id_status',
     //         'txt_telefono',
     //         'id_tipo_tramite',
-    //         'fch_cita',
+    //         'fch_cita'=>[
+    //             'default'=>\SORT_DESC
+    //         ],
     //         'ent_envios.txt_tracking',
 
             
-    //         'nombreCompleto' => [
-    //             'asc' => ['txt_nombre' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
-    //             'desc' => ['txt_nombre' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC],
-    //             'label' => 'Nombre',
-    //             'default' => SORT_ASC
-    //         ],
+            
     //         'txt_telefono',
     //         'txtTracking'
 
