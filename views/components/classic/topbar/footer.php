@@ -7,6 +7,6 @@ use yii\helpers\Url;
   <div class="site-footer-copyright"><p>&copy; Brightstart 2018</p></div>
   <div class="site-footer-author">
     <img class="logo-h2h" src="<?=Url::base()?>/webAssets/images/footer.png" />
-    <img class="logo-mls" src="<?=Url::base()?>/webAssets/images/footer2.png" />
+   
   </div>
 </footer>
