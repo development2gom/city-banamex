@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use app\models\Calendario;
 use app\modules\ModUsuarios\models\EntUsuarios;
 use kop\y2sp\ScrollPager;
@@ -9,6 +8,10 @@ use app\components\LinkSorterExtends;
 use yii\helpers\Url;
 use sjaakp\alphapager\AlphaPager;
 use yii\widgets\Pjax;
+use kartik\grid\GridView;
+use kartik\date\DatePicker;
+use app\models\AuthItem;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UsuariosSearch */
@@ -25,35 +28,17 @@ $this->params['headerActions'] = '<a class="btn btn-success" href="'.Url::base()
 
 $this->params['classBody'] = "site-navbar-small page-user";
 
-$this->registerCssFile(
-  '@web/webAssets/templates/classic/topbar/assets/examples/css/pages/user.css',
+$this->registerJsFile(
+  '@web/webAssets/js/usuarios/index.js',
   ['depends' => [\app\assets\AppAsset::className()]]
 );
 
-$this->registerJsFile(
-  '@web/webAssets/templates/classic/global/js/Plugin/responsive-tabs.js',
-  ['depends' => [\app\assets\AppAsset::className()]]
-);
-
-$this->registerJsFile(
-  '@web/webAssets/templates/classic/global/js/Plugin/tabs.js',
-  ['depends' => [\app\assets\AppAsset::className()]]
-);
 
 ?>
 
-  <!-- <form class="page-search-form" role="search">
-    <div class="input-search input-search-dark">
-      <i class="input-search-icon wb-search" aria-hidden="true"></i>
-      <input type="text" class="form-control" id="inputSearch" name="search" placeholder="Search Users">
-      <button type="button" class="input-search-close icon wb-close" aria-label="Close"></button>
-    </div>
-  </form> -->
     
 <!-- Panel -->
 <div class="panel panel-list-user-table">
-
-    <?=$this->render("_search", ['model'=>$searchModel])?>
       
     <?php
     $sort = "txt_username";
@@ -70,16 +55,22 @@ $this->registerJsFile(
     
    
     <?php
-    $atributoActivado = EntUsuarios::label()[$sort];
-    // $sorter ='<div class="dropdown">
-    //             Ordenar por: <a class="dropdown-toggle inline-block" data-toggle="dropdown"
-    //             href="#" aria-expanded="false">'.$atributoActivado.'</a>
-    //             {sorter}
-    //           </div>';
+    
     echo GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel'=>$searchModel,
         'options' => [
           'class'=>"panel-table-int"
+        ],
+        'responsive'=>true,
+        'striped'=>false,
+        'hover'=>false,
+        'bordered'=>false,
+        'pjax'=>true,
+        'pjaxSettings'=>[
+          'options'=>[
+            'linkSelector'=>"a:not(.no-pjax)"
+          ]
         ],
         'tableOptions' => [
           'class'=>"table table-hover"
@@ -87,24 +78,37 @@ $this->registerJsFile(
         'layout' => '{items}{summary}{pager}',
         'columns' =>[
           [
-            'attribute' => 'txt_username',
+            'attribute' => 'nombreCompleto',
+            
             'format'=>'raw',
             'contentOptions' => [
               'class'=>"flex"
             ],
             'value'=>function($data){
                 
-              return '<a href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'"><img class="panel-listado-img" src="'.$data->imageProfile.'" alt="">
+              return '<a class="no-pjax" href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'"><img class="panel-listado-img" src="'.$data->imageProfile.'" alt="">
               <span>'.$data->nombreCompleto .'</span></a>';
             }
           ],
-          'txtAuthItem.description',
+          [
+            'attribute' => 'roleDescription',
+            'filter'=>ArrayHelper::map($roles, 'name', 'description'),
+          ],
+          
           [
             'attribute' => 'fch_creacion',
+            'filter'=>DatePicker::widget([
+              'model'=>$searchModel,
+              'attribute'=>'fch_creacion',
+              'pickerButton'=>false,
+              'removeButton'=>false,
+              'type' => DatePicker::TYPE_INPUT,
+              'pluginOptions' => [
+                  'autoclose'=>true,
+                  'format' => 'dd-mm-yyyy'
+              ]
+            ]),
             'format'=>'raw',
-            // 'contentOptions' => [
-            //   'class'=>"flex"
-            // ],
             'value'=>function($data){
                 
               return Calendario::getDateSimple($data->fch_creacion);
@@ -112,22 +116,21 @@ $this->registerJsFile(
           ],
           [
             'attribute' => 'id_status',
+            'filter'=>[EntUsuarios::STATUS_ACTIVED=>'Activo', EntUsuarios::STATUS_BLOCKED=>'Inactivo'],
             'format'=>'raw',
-            // 'contentOptions' => [
-            //   'class'=>"flex"
-            // ],
+            
             'value'=>function($data){
 
             $activo = $data->id_status == 2?'active':'';
             $inactivo = $data->id_status == 1||$data->id_status == 3?'active':'';
                 
               return '<div class="btn-group" data-toggle="buttons" role="group">
-              <label class="btn btn-active '.$activo.'">
-              <input data-token="'.$data->txt_token.'" type="radio" name="options" autocomplete="off" value="male" checked />
+              <label class="btn btn-active '.$activo.'"  data-token="'.$data->txt_token.'">
+              <input class="js-activar-usuario" type="radio" name="options" autocomplete="off" value="male" checked />
               Activo
               </label>
-              <label class="btn btn-inactive '.$inactivo.'">
-              <input data-token="'.$data->txt_token.'" type="radio" name="options" autocomplete="off" value="female" />
+              <label class="btn btn-inactive '.$inactivo.'" data-token="'.$data->txt_token.'">
+              <input class="js-bloquear-usuario"  type="radio" name="options" autocomplete="off" value="female" />
               Inactivo
               </label>
               </div>';
@@ -136,12 +139,10 @@ $this->registerJsFile(
           [
             'attribute' => 'Editar',
             'format'=>'raw',
-            // 'contentOptions' => [
-            //   'class'=>"flex"
-            // ],
+           
             'value'=>function($data){
                 
-              return '<a href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'" class="btn btn-outline btn-success btn-sm"><i class="icon wb-plus"></i></a>';
+              return '<a href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'" class="btn btn-outline btn-success btn-sm"><i class="icon wb-edit"></i></a>';
             }
           ]
         ],

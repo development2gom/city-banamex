@@ -240,7 +240,9 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				'id_status' => 'Id Status',
 				'password'=>'Contraseña',
 				'repeatPassword'=>'Repetir contraseña',
-				'txt_auth_item'=>'Tipo de usuario'
+				'txt_auth_item'=>'Tipo de usuario',
+				'nombreCompleto'=>'Nombre',
+				'roleDescription'=>'Tipo de usuario',
 		];
 	}
 	
@@ -670,6 +672,11 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
     public function getIdUsuarios()
     {
         return $this->hasMany(EntUsuarios::className(), ['id_usuario' => 'id_usuario'])->viaTable('ent_grupos_trabajo', ['id_usuario_asignado' => 'id_usuario']);
+	}
+
+	public function getRoleDescription(){
+		
+		return $this->txtAuthItem->description;
 	}
 	
 	public function setTipoUsuarioExcel($tipoExcel){

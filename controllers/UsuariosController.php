@@ -15,6 +15,7 @@ use app\components\AccessControlExtend;
 use yii\web\UploadedFile;
 use app\models\EntGruposTrabajo;
 use app\models\EntCitas;
+use app\models\ResponseServices;
 
 /**
  * UsuariosController implements the CRUD actions for EntUsuarios model.
@@ -30,10 +31,10 @@ class UsuariosController extends Controller
         return [
             'access' => [
                 'class' => AccessControlExtend::className(),
-                'only' => ['index', 'create', 'update', 'view'],
+                'only' => ['index', 'create', 'update', 'view', 'activar-usuario', 'bloquear-usuario'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'create', 'update', 'view'],
+                        'actions' => ['index', 'create', 'update', 'view', 'activar-usuario', 'bloquear-usuario'],
                     'allow' => true,
                         'roles' => [Constantes::USUARIO_SUPERVISOR, Constantes::USUARIO_SUPERVISOR_TELCEL],
                     ],
@@ -69,6 +70,7 @@ class UsuariosController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'roles'=>$roles
             
         ]);
     }
@@ -223,14 +225,45 @@ class UsuariosController extends Controller
         }
     }
 
-    
+    public function actionBloquearUsuario($token=null){
+        $respuesta = new ResponseServices();
 
-   
+        $usuario = $this->findModel(['txt_token'=>$token]);
+
+        $usuario->id_status = EntUsuarios::STATUS_BLOCKED;
+        if($usuario->save()){
+            $respuesta->status = "success";
+            $respuesta->message= "Usuario bloqeado";
+        }else{
+            $respuesta->status = "error";
+            $respuesta->message = "No se pudo bloquear al usuario";
+            $respuesta->result = $usuario->errors;
+        }
+        return $respuesta;
+    }
+
+    public function actionActivarUsuario($token=null){
+        $respuesta = new ResponseServices();
+
+        $usuario = $this->findModel(['txt_token'=>$token]);
+
+        $usuario->id_status = EntUsuarios::STATUS_ACTIVED;
+        if($usuario->save()){
+            $respuesta->status = "success";
+            $respuesta->message= "Usuario activado";
+        }else{
+            $respuesta->status = "error";
+            $respuesta->message = "No se pudo activar al usuario";
+            $respuesta->result = $usuario->errors;
+        }
+
+        return $respuesta;
+    }
 
     public function actionImportarData(){
 
         $errores = [];
-        return $this->redirect(['site/construccion']);
+        
         if (Yii::$app->request->isPost) {
             $file = UploadedFile::getInstanceByName('file-import');
             

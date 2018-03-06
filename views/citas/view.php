@@ -126,7 +126,7 @@ $this->registerJsFile(
 
 
 <?php
-if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)){
+if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
     $this->registerJs(
         '
 
@@ -229,6 +229,6 @@ if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
 
     
 
-echo $this->render("_modal-cancelacion", ['model'=>$model]);
+    $this->params['modal'] =  $this->render("_modal-cancelacion", ['model'=>$model]);
 }
 ?>
