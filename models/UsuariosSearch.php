@@ -37,7 +37,7 @@ class UsuariosSearch extends EntUsuarios
     }
 
     public function searchCallCenter($params){
-        $query = EntUsuarios::find();
+        $query = EntUsuarios::find()->leftJoin("auth_item", "auth_item.name= mod_usuarios_ent_usuarios.txt_auth_item");
 
         // add conditions that should always apply here
 
@@ -105,7 +105,7 @@ class UsuariosSearch extends EntUsuarios
      */
     public function search($params)
     {
-        $query = EntUsuarios::find();
+        $query = EntUsuarios::find()->leftJoin("auth_item", "auth_item.name= mod_usuarios_ent_usuarios.txt_auth_item");
 
         // add conditions that should always apply here
 
@@ -162,15 +162,11 @@ class UsuariosSearch extends EntUsuarios
             ->andFilterWhere(['like', 'txt_password_hash', $this->txt_password_hash])
             ->andFilterWhere(['like', 'txt_password_reset_token', $this->txt_password_reset_token])
             ->andFilterWhere(['like', 'txt_email', $this->txt_email])
-            ->andFilterWhere(['like', 'fch_creacion', $this->fch_creacion]);
-
-            // filter by person full name
-            $query->andWhere('CONCAT(txt_username, " ", txt_apellido_paterno) LIKE "%' . $this->nombreCompleto . '%" ');
-
-            // filter by country name
-            $query->joinWith(['txtAuthItem' => function ($q) {
-                $q->where('auth_item.description LIKE "%' . $this->roleDescription . '%"');
-            }]);
+            ->andFilterWhere(['like', 'fch_creacion', $this->fch_creacion])
+            
+            ->andFilterWhere(['like', 'txt_auth_item', $this->roleDescription])
+            ->andFilterWhere(['like', 'CONCAT(txt_username, " ", txt_apellido_paterno)', $this->nombreCompleto]);
+  
 
         if($this->fch_creacion){
             $this->fch_creacion = Utils::changeFormatDate($this->fch_creacion);
@@ -188,8 +184,7 @@ class UsuariosSearch extends EntUsuarios
      */
     public function searchByType($params)
     {
-        $query = EntUsuarios::find();
-
+        $query = EntUsuarios::find()->leftJoin("auth_item", "auth_item.name= mod_usuarios_ent_usuarios.txt_auth_item");
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([

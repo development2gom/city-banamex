@@ -257,7 +257,7 @@ $this->registerJsFile(
                         'format'=>'raw',
                         'value'=>function($data){
 
-                            if($data->idEnvio){
+                            if($data->id_envio){
                                 return Html::a(
                                     $data->txtTracking,
                                     Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]),

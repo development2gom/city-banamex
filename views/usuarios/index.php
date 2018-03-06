@@ -10,6 +10,8 @@ use sjaakp\alphapager\AlphaPager;
 use yii\widgets\Pjax;
 use kartik\grid\GridView;
 use kartik\date\DatePicker;
+use app\models\AuthItem;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UsuariosSearch */
@@ -88,7 +90,11 @@ $this->registerJsFile(
               <span>'.$data->nombreCompleto .'</span></a>';
             }
           ],
-          'roleDescription',
+          [
+            'attribute' => 'roleDescription',
+            'filter'=>ArrayHelper::map($roles, 'name', 'description'),
+          ],
+          
           [
             'attribute' => 'fch_creacion',
             'filter'=>DatePicker::widget([
@@ -110,7 +116,7 @@ $this->registerJsFile(
           ],
           [
             'attribute' => 'id_status',
-            'filter'=>'',
+            'filter'=>[EntUsuarios::STATUS_ACTIVED=>'Activo', EntUsuarios::STATUS_BLOCKED=>'Inactivo'],
             'format'=>'raw',
             
             'value'=>function($data){
