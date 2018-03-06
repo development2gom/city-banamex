@@ -170,6 +170,12 @@ $this->registerJsFile(
                 // ],
                 'filterModel' => $searchModel,
                 'pjax'=>true,
+                'pjaxSettings'=>[
+                    'options'=>[
+                      'linkSelector'=>"a:not(.no-pjax)",
+                      'id'=>'pjax-usuarios'
+                    ]
+                  ],
                 'dataProvider' => $dataProvider,
                 'columns' =>[
                     'txt_identificador_cliente',
@@ -186,7 +192,7 @@ $this->registerJsFile(
                                 $data->idStatus->txt_nombre,
                                 Url::to(['citas/view', 'token' => $data->txt_token]), 
                                 [
-                                    'class'=>'btn badge '.$statusColor.'',
+                                    'class'=>'btn badge '.$statusColor.' no-pjax',
                                 ]
                             );
                         }
@@ -256,7 +262,7 @@ $this->registerJsFile(
                                     $data->txtTracking,
                                     Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]),
                                     [
-                                        'class'=>'id-send'
+                                        'class'=>'id-send no-pjax'
                                     ]
                                 );
                             }

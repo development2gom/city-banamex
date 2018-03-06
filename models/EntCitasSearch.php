@@ -82,36 +82,7 @@ class EntCitasSearch extends EntCitas
         'asc' => ['txt_tracking' => SORT_ASC],
             'desc' => ['txt_tracking' => SORT_DESC],
     ];
-        /**
-     * Setup your sorting attributes
-     * Note: This is setup before the $this->load($params) 
-     * statement below
-     */
-    // $dataProvider->setSort([
-    //     'attributes' => [
-    //         'fch_creacion'=>[
-    //             'default'=>\SORT_DESC,
-    //         ],
-
-    //         'txt_identificador_cliente',
-    //         'id_status',
-    //         'txt_telefono',
-    //         'id_tipo_tramite',
-    //         'fch_cita'=>[
-    //             'default'=>\SORT_DESC
-    //         ],
-    //         'ent_envios.txt_tracking',
-
-            
-            
-    //         'txt_telefono',
-    //         'txtTracking'
-
-            
-    //     ]
-    // ]);
-
-        
+      
 
         $this->load($params);
 

@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\ModUsuarios\models\EntUsuarios;
+use app\modules\ModUsuarios\models\Utils;
 
 
 /**
@@ -13,6 +14,8 @@ use app\modules\ModUsuarios\models\EntUsuarios;
  */
 class UsuariosSearch extends EntUsuarios
 {
+    public $nombreCompleto;
+    public $roleDescription;
     /**
      * @inheritdoc
      */
@@ -20,7 +23,7 @@ class UsuariosSearch extends EntUsuarios
     {
         return [
             [['id_usuario', 'id_status'], 'integer'],
-            [['txt_auth_item', 'txt_token', 'txt_imagen', 'txt_username', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_auth_key', 'txt_password_hash', 'txt_password_reset_token', 'txt_email', 'fch_creacion', 'fch_actualizacion'], 'safe'],
+            [['roleDescription','roleDescription','nombreCompleto','txt_auth_item', 'txt_token', 'txt_imagen', 'txt_username', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_auth_key', 'txt_password_hash', 'txt_password_reset_token', 'txt_email', 'fch_creacion', 'fch_actualizacion'], 'safe'],
         ];
     }
 
@@ -54,6 +57,13 @@ class UsuariosSearch extends EntUsuarios
             ],
         ]);
 
+        $dataProvider->sort->attributes['nombreCompleto'] = [
+        
+            'asc' => ['txt_username' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
+            'desc' => ['txt_username' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC],
+          
+    ];
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -73,13 +83,15 @@ class UsuariosSearch extends EntUsuarios
 
         $query->andFilterWhere(['like', 'txt_token', $this->txt_token])
             ->andFilterWhere(['like', 'txt_imagen', $this->txt_imagen])
-            ->andFilterWhere(['like', 'txt_username', $this->txt_username])
-            ->andFilterWhere(['like', 'txt_apellido_paterno', $this->txt_apellido_paterno])
-            ->andFilterWhere(['like', 'txt_apellido_materno', $this->txt_apellido_materno])
             ->andFilterWhere(['like', 'txt_auth_key', $this->txt_auth_key])
             ->andFilterWhere(['like', 'txt_password_hash', $this->txt_password_hash])
             ->andFilterWhere(['like', 'txt_password_reset_token', $this->txt_password_reset_token])
             ->andFilterWhere(['like', 'txt_email', $this->txt_email]);
+
+            // filter by person full name
+            $query->andWhere('txt_username LIKE "%' . $this->nombreCompleto . '%" ' .
+            'OR txt_apellido_paterno LIKE "%' . $this->nombreCompleto . '%"'
+        );
 
         return $dataProvider;
     }
@@ -112,6 +124,17 @@ class UsuariosSearch extends EntUsuarios
                 ]
             ],
         ]);
+        $dataProvider->sort->attributes['nombreCompleto'] = [
+        
+            'asc' => ['txt_username' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
+            'desc' => ['txt_username' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC], 
+        ];
+        
+        $dataProvider->sort->attributes['roleDescription'] = [
+        
+            'asc' => ['auth_item.description' => SORT_ASC],
+            'desc' => ['auth_item.description' => SORT_DESC], 
+        ];
 
         $this->load($params);
 
@@ -124,22 +147,34 @@ class UsuariosSearch extends EntUsuarios
         // grid filtering conditions
         $query->andFilterWhere([
             'id_usuario' => $this->id_usuario,
-            'fch_creacion' => $this->fch_creacion,
             'fch_actualizacion' => $this->fch_actualizacion,
             'id_status' => $this->id_status,
         ]);
 
+        if($this->fch_creacion){
+            $this->fch_creacion = Utils::changeFormatDateInputShort($this->fch_creacion);
+        }  
         
         $query->andFilterWhere(['in','txt_auth_item', $this->txt_auth_item])
             ->andFilterWhere(['like', 'txt_token', $this->txt_token])
             ->andFilterWhere(['like', 'txt_imagen', $this->txt_imagen])
-            ->andFilterWhere(['like', 'txt_username', $this->txt_username])
-            ->andFilterWhere(['like', 'txt_apellido_paterno', $this->txt_apellido_paterno])
-            ->andFilterWhere(['like', 'txt_apellido_materno', $this->txt_apellido_materno])
             ->andFilterWhere(['like', 'txt_auth_key', $this->txt_auth_key])
             ->andFilterWhere(['like', 'txt_password_hash', $this->txt_password_hash])
             ->andFilterWhere(['like', 'txt_password_reset_token', $this->txt_password_reset_token])
-            ->andFilterWhere(['like', 'txt_email', $this->txt_email]);
+            ->andFilterWhere(['like', 'txt_email', $this->txt_email])
+            ->andFilterWhere(['like', 'fch_creacion', $this->fch_creacion]);
+
+            // filter by person full name
+            $query->andWhere('CONCAT(txt_username, " ", txt_apellido_paterno) LIKE "%' . $this->nombreCompleto . '%" ');
+
+            // filter by country name
+            $query->joinWith(['txtAuthItem' => function ($q) {
+                $q->where('auth_item.description LIKE "%' . $this->roleDescription . '%"');
+            }]);
+
+        if($this->fch_creacion){
+            $this->fch_creacion = Utils::changeFormatDate($this->fch_creacion);
+        }
 
         return $dataProvider;
     }
@@ -170,6 +205,15 @@ class UsuariosSearch extends EntUsuarios
             ],
         ]);
 
+        $dataProvider->sort->attributes['nombreCompleto'] = [
+        
+            'asc' => ['txt_username' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
+            'desc' => ['txt_username' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC],
+            
+            
+        
+    ];
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -189,13 +233,15 @@ class UsuariosSearch extends EntUsuarios
 
         $query->andFilterWhere(['like', 'txt_token', $this->txt_token])
             ->andFilterWhere(['like', 'txt_imagen', $this->txt_imagen])
-            ->andFilterWhere(['like', 'txt_username', $this->txt_username])
-            ->andFilterWhere(['like', 'txt_apellido_paterno', $this->txt_apellido_paterno])
-            ->andFilterWhere(['like', 'txt_apellido_materno', $this->txt_apellido_materno])
             ->andFilterWhere(['like', 'txt_auth_key', $this->txt_auth_key])
             ->andFilterWhere(['like', 'txt_password_hash', $this->txt_password_hash])
             ->andFilterWhere(['like', 'txt_password_reset_token', $this->txt_password_reset_token])
             ->andFilterWhere(['like', 'txt_email', $this->txt_email]);
+
+            // filter by person full name
+            $query->andWhere('txt_username LIKE "%' . $this->nombreCompleto . '%" ' .
+            'OR txt_apellido_paterno LIKE "%' . $this->nombreCompleto . '%"'
+        );
 
         return $dataProvider;
     }
