@@ -49,7 +49,7 @@ class EntCitasSearch extends EntCitas
      */
     public function search($params)
     {
-        $query = EntCitas::find();
+        $query = EntCitas::find()->leftJoin("ent_envios", "ent_envios.id_envio= ent_citas.id_envio");
 
         // add conditions that should always apply here
 
@@ -169,7 +169,8 @@ class EntCitasSearch extends EntCitas
             ->andFilterWhere(['like', 'txt_entre_calles', $this->txt_entre_calles])
             ->andFilterWhere(['like', 'txt_observaciones_punto_referencia', $this->txt_observaciones_punto_referencia])
             ->andFilterWhere(['like', 'fch_cita', $this->fch_cita])
-            ->andFilterWhere(['like', 'fch_creacion', $this->fch_creacion]);
+            ->andFilterWhere(['like', 'fch_creacion', $this->fch_creacion])
+            ->andFilterWhere(['like', 'ent_envios.txt_tracking', $this->txtTracking]);
 
            
 
@@ -190,15 +191,11 @@ class EntCitasSearch extends EntCitas
                 
             }
 
-           
-            // $query->join("ent_envios")
-
-            // // filter by country name
-              $query->joinWith(['entEnvios' => function ($q) {
-                  if($this->txtTracking){
-                    $q->where('ent_envos.txt_tracking LIKE "%' . $this->txtTracking . '%"');
-                  } 
-              }]);
+            //   $query->joinWith(['entEnvios' => function ($q) {
+            //       if($this->txtTracking){
+            //         $q->where('ent_envios.txt_tracking LIKE "%' . $this->txtTracking . '%"');
+            //       }
+            //   }]);
         
         return $dataProvider;
     }
