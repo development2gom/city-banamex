@@ -37,10 +37,7 @@ use yii\helpers\Url;
         <script src="../../../global/vendor/respond/respond.min.js"></script>
         <![endif]-->
     <!-- Scripts -->
-    <script src="<?= Url::base() ?>/webAssets/templates/classic/global/vendor/breakpoints/breakpoints.js"></script>
-    <script>
-    Breakpoints();
-    </script>
+    
     <script>
         var baseUrl = "<?= Yii::$app->urlManager->createAbsoluteUrl(['']) ?>";
     </script>
