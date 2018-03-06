@@ -4848,6 +4848,199 @@ a {
         margin-top: .3rem;
         padding-left: 1rem; }
 
+/*  Update
+	@mixin ====================================== */
+.page .page-content .panel-usuarios-editar-listado {
+  background-color: rgba(42, 3, 9, 0.4);
+  padding: 20px; }
+  .page .page-content .panel-usuarios-editar-listado .panel-title {
+    color: #3BDBC3;
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 2.4;
+    margin: 0;
+    padding: 0 8px; }
+  .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table,
+  .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table {
+    width: 100%; }
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table th,
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table td,
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table th,
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table td {
+      border: none; }
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table thead tr th,
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table thead tr th {
+      color: #AAAAAA;
+      font-size: .8rem;
+      font-weight: 100;
+      padding: 8px 4px;
+      text-transform: uppercase; }
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table thead tr th a,
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table thead tr th a {
+        color: #AAAAAA;
+        font-size: .8rem;
+        font-weight: 100;
+        padding: 8px 4px;
+        text-decoration: none;
+        text-transform: uppercase; }
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table thead tr td,
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table thead tr td {
+      padding: 8px 2px; }
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table thead tr td select.form-control:not([size]):not([multiple]),
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table thead tr td select.form-control:not([size]):not([multiple]) {
+        height: calc(2.573rem + 0px); }
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr:last-child,
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr:last-child {
+      border-bottom: 1px solid #15584E; }
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr:hover,
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr:hover {
+      background-color: rgba(21, 21, 21, 0.8); }
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td,
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td {
+      border-top: 1px solid #15584E;
+      color: #FFF;
+      font-size: .8rem;
+      font-weight: 100;
+      line-height: 3;
+      padding: 10px 4px 8px;
+      vertical-align: middle; }
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td.flex,
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td.flex {
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: start;
+            -ms-flex-pack: start;
+                justify-content: flex-start; }
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td.flex a,
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td.flex a {
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-pack: start;
+              -ms-flex-pack: start;
+                  justify-content: flex-start;
+          text-decoration: none; }
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td.flex a span,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td.flex a span {
+            color: #FFF; }
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td.flex a:hover span,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td.flex a:hover span {
+            color: #FFF; }
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .panel-listado-img,
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .panel-listado-acction,
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .panel-listado-img,
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .panel-listado-acction {
+        display: block;
+        border-radius: 50%; }
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .panel-listado-img,
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .panel-listado-img {
+        background-color: #232529;
+        height: 32px;
+        margin-right: 1rem;
+        width: 32px; }
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .panel-listado-img:last-child,
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .panel-listado-img:last-child {
+          margin-right: 0; }
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .panel-listado-acction,
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .panel-listado-acction {
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        height: 24px;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        margin-right: 3vw;
+        width: 24px; }
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .panel-listado-acction:last-child,
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .panel-listado-acction:last-child {
+          margin-right: 0; }
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .panel-listado-acction i,
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .panel-listado-acction i {
+          color: #151515;
+          font-size: .85rem; }
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .panel-listado-acction.acction-edit,
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .panel-listado-acction.acction-edit {
+          background-color: #3BDBC3; }
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .panel-listado-acction.acction-delete,
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .panel-listado-acction.acction-delete {
+          background-color: #15584E; }
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group,
+      .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group {
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        -webkit-box-pack: start;
+            -ms-flex-pack: start;
+                justify-content: flex-start;
+        width: 90%; }
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label,
+        .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label {
+          background-color: transparent;
+          border-color: #3BDBC3;
+          width: 50%; }
+          @media (min-width: 801px) and (max-width: 1023px) {
+            .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label,
+            .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label {
+              width: 100%; } }
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label.btn-active.active,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label.btn-active.active {
+            background-color: #3BDBC3;
+            border-color: #3BDBC3;
+            color: #232529; }
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label.btn-active.active, .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label.btn-active:active, .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label.btn-active:focus, .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label.btn-active:hover,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label.btn-active.active,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label.btn-active:active,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label.btn-active:focus,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label.btn-active:hover {
+            background-color: #3BDBC3;
+            border-color: #3BDBC3;
+            color: #232529; }
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label.btn-inactive.active,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label.btn-inactive.active {
+            background-color: #f96868;
+            border-color: #f96868;
+            color: #FFF; }
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label.btn-inactive.active, .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label.btn-inactive:active, .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label.btn-inactive:focus, .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body table tbody tr td .btn-group label.btn-inactive:hover,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label.btn-inactive.active,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label.btn-inactive:active,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label.btn-inactive:focus,
+          .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .table tbody tr td .btn-group label.btn-inactive:hover {
+            background-color: #f96868;
+            border-color: #f96868;
+            color: #FFF; }
+  .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .summary {
+    color: #AAAAAA;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: .95rem;
+    font-weight: 300;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    margin-bottom: 0;
+    padding: 4px 8px 0; }
+    .page .page-content .panel-usuarios-editar-listado .panel-usuarios-editar-listado-body .summary b {
+      color: #FFF;
+      font-weight: 400;
+      margin: 0 8px; }
+
 /*!
 	-----------------------------------------------------------------------------
 
