@@ -79,8 +79,8 @@ class EntCitasSearch extends EntCitas
     ];
 
     $dataProvider->sort->attributes['txtTracking']=[
-        'asc' => ['txt_tracking' => SORT_ASC],
-            'desc' => ['txt_tracking' => SORT_DESC],
+        'asc' => ['ent_envios.txt_tracking' => SORT_ASC],
+            'desc' => ['ent_envios.txt_tracking' => SORT_DESC],
     ];
       
 
@@ -190,13 +190,13 @@ class EntCitasSearch extends EntCitas
                 
             }
 
-            if($this->txtTracking ){
+           
 
             // filter by country name
             $query->joinWith(['entEnvios' => function ($q) {
                 $q->where('ent_envios.txt_tracking LIKE "%' . $this->txtTracking . '%"');
             }]);
-        }
+        
         return $dataProvider;
     }
 }
