@@ -71,30 +71,32 @@ class EntCitasSearch extends EntCitas
      * Note: This is setup before the $this->load($params) 
      * statement below
      */
-    $dataProvider->setSort([
-        'attributes' => [
-            'fch_creacion',
+    // $dataProvider->setSort([
+    //     'attributes' => [
+    //         'fch_creacion'=>[
+    //             'default'=>\SORT_DESC
+    //         ],
 
-            'txt_identificador_cliente',
-            'id_status',
-            'txt_telefono',
-            'id_tipo_tramite',
-            'fch_cita',
-            'ent_envios.txt_tracking',
-
-            
-            'nombreCompleto' => [
-                'asc' => ['txt_nombre' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
-                'desc' => ['txt_nombre' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC],
-                'label' => 'Nombre',
-                'default' => SORT_ASC
-            ],
-            'txt_telefono',
-            'txtTracking'
+    //         'txt_identificador_cliente',
+    //         'id_status',
+    //         'txt_telefono',
+    //         'id_tipo_tramite',
+    //         'fch_cita',
+    //         'ent_envios.txt_tracking',
 
             
-        ]
-    ]);
+    //         'nombreCompleto' => [
+    //             'asc' => ['txt_nombre' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
+    //             'desc' => ['txt_nombre' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC],
+    //             'label' => 'Nombre',
+    //             'default' => SORT_ASC
+    //         ],
+    //         'txt_telefono',
+    //         'txtTracking'
+
+            
+    //     ]
+    // ]);
 
         
 
