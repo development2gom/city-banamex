@@ -112,9 +112,7 @@ $this->registerJsFile(
             'attribute' => 'id_status',
             'filter'=>'',
             'format'=>'raw',
-            // 'contentOptions' => [
-            //   'class'=>"flex"
-            // ],
+            
             'value'=>function($data){
 
             $activo = $data->id_status == 2?'active':'';
@@ -135,12 +133,10 @@ $this->registerJsFile(
           [
             'attribute' => 'Editar',
             'format'=>'raw',
-            // 'contentOptions' => [
-            //   'class'=>"flex"
-            // ],
+           
             'value'=>function($data){
                 
-              return '<a href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'" class="btn btn-outline btn-success btn-sm"><i class="icon wb-plus"></i></a>';
+              return '<a href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'" class="btn btn-outline btn-success btn-sm"><i class="icon wb-edit"></i></a>';
             }
           ]
         ],
