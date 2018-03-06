@@ -175,7 +175,7 @@ class EntCitasSearch extends EntCitas
 
             // filter by person full name
             if($this->nombreCompleto){
-                $query->andFilterWhere('CONCAT(txt_nombre, " ", txt_apellido_paterno) LIKE "%' . $this->nombreCompleto . '%" ');
+                $query->andFilterWhere(['like','CONCAT(txt_nombre, " ", txt_apellido_paterno)',  $this->nombreCompleto]);
             }    
 
             if($this->fch_cita){
@@ -191,11 +191,14 @@ class EntCitasSearch extends EntCitas
             }
 
            
+            // $query->join("ent_envios")
 
-            // filter by country name
-            $query->joinWith(['entEnvios' => function ($q) {
-                $q->where('ent_envios.txt_tracking LIKE "%' . $this->txtTracking . '%"');
-            }]);
+            // // filter by country name
+              $query->joinWith(['entEnvios' => function ($q) {
+                  if($this->txtTracking){
+                    $q->where('ent_envos.txt_tracking LIKE "%' . $this->txtTracking . '%"');
+                  } 
+              }]);
         
         return $dataProvider;
     }
