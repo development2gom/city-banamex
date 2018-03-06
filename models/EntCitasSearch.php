@@ -15,14 +15,17 @@ class EntCitasSearch extends EntCitas
 {
     public $startDate;
     public $endDate;
+    public $nombreCompleto;
+    public $txtTracking;
+    
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id_cita', 'id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status', 'id_envio', 'id_tipo_cliente', 'id_tipo_identificacion', 'id_horario'], 'integer'],
-            [['startDate','endDate','txt_telefono', 'txt_identificador_cliente','txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_rfc', 'txt_numero_telefonico_nuevo', 'txt_email', 'txt_folio_identificacion', 'fch_nacimiento', 'num_dias_servicio', 'txt_token', 'txt_iccid', 'txt_imei', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3', 'txt_estado', 'txt_calle_numero', 'txt_colonia', 'txt_codigo_postal', 'txt_municipio', 'txt_entre_calles', 'txt_observaciones_punto_referencia', 'txt_motivo_cancelacion_rechazo', 'fch_cita', 'fch_creacion'], 'safe'],
+            [['id_cita', 'id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status',  'id_tipo_cliente', 'id_tipo_identificacion', 'id_horario'], 'integer'],
+            [['txtTracking','nombreCompleto','startDate','endDate','txt_telefono', 'txt_identificador_cliente','txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_rfc', 'txt_numero_telefonico_nuevo', 'txt_email', 'txt_folio_identificacion', 'fch_nacimiento', 'num_dias_servicio', 'txt_token', 'txt_iccid', 'txt_imei', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3', 'txt_estado', 'txt_calle_numero', 'txt_colonia', 'txt_codigo_postal', 'txt_municipio', 'txt_entre_calles', 'txt_observaciones_punto_referencia', 'txt_motivo_cancelacion_rechazo', 'fch_cita', 'fch_creacion'], 'safe'],
         ];
     }
 
@@ -34,6 +37,8 @@ class EntCitasSearch extends EntCitas
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
+
+    
 
     /**
      * Creates data provider instance with search query applied
@@ -60,6 +65,36 @@ class EntCitasSearch extends EntCitas
             ],
             
         ]);
+
+        /**
+     * Setup your sorting attributes
+     * Note: This is setup before the $this->load($params) 
+     * statement below
+     */
+    $dataProvider->setSort([
+        'attributes' => [
+            'fch_creacion',
+
+            'txt_identificador_cliente',
+            'id_status',
+            'txt_telefono',
+            'id_tipo_tramite',
+            'fch_cita',
+            'ent_envios.txt_tracking',
+
+            
+            'nombreCompleto' => [
+                'asc' => ['txt_nombre' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
+                'desc' => ['txt_nombre' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC],
+                'label' => 'Nombre',
+                'default' => SORT_ASC
+            ],
+            'txt_telefono',
+            'txtTracking'
+
+            
+        ]
+    ]);
 
         
 
@@ -133,12 +168,9 @@ class EntCitasSearch extends EntCitas
 
         $query->andFilterWhere(['like', 'num_dias_servicio', $this->num_dias_servicio])
             ->andFilterWhere(['like', 'txt_token', $this->txt_token])
-            
-            
             ->andFilterWhere(['like', 'txt_iccid', $this->txt_iccid])
             ->andFilterWhere(['like', 'txt_imei', $this->txt_imei])
             ->andFilterWhere(['like', 'txt_telefono', $this->txt_telefono])
-           
             ->andFilterWhere(['like', 'txt_identificador_cliente', $this->txt_identificador_cliente])
             ->andFilterWhere(['like', 'txt_numero_referencia', $this->txt_numero_referencia])
             ->andFilterWhere(['like', 'txt_numero_referencia_2', $this->txt_numero_referencia_2])
@@ -152,6 +184,13 @@ class EntCitasSearch extends EntCitas
             ->andFilterWhere(['like', 'fch_cita', $this->fch_cita])
             ->andFilterWhere(['like', 'fch_creacion', $this->fch_creacion]);
 
+           
+
+            // filter by person full name
+            $query->andWhere('txt_nombre LIKE "%' . $this->nombreCompleto . '%" ' .
+            'OR txt_apellido_paterno LIKE "%' . $this->nombreCompleto . '%"'
+        );
+
             if($this->fch_cita){
             
                 $this->fch_cita = Utils::changeFormatDate($this->fch_cita);
@@ -163,6 +202,11 @@ class EntCitasSearch extends EntCitas
                 $this->fch_creacion = Utils::changeFormatDate($this->fch_creacion);
                 
             }
+
+            // filter by country name
+            $query->joinWith(['entEnvios' => function ($q) {
+                $q->where('ent_envios.txt_tracking LIKE "%' . $this->txtTracking . '%"');
+            }]);
 
         return $dataProvider;
     }

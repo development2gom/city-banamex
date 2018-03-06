@@ -193,7 +193,8 @@ $this->registerJsFile(
                     ],
                     'txt_telefono',
                     [
-                        'attribute'=>'txt_nombre',
+                        'attribute'=>'nombreCompleto',
+                        //'filter'=>"",
                         'format'=>'raw',
                         'value'=>function($data){
                             return $data->nombreCompleto;
@@ -245,14 +246,14 @@ $this->registerJsFile(
                         }
                     ],
                     [
-                        'attribute'=>'id_envio',
-                        'value'=>'idEnvio.txt_tracking',
+                        'attribute'=>'txtTracking',
+                        'value'=>'txtTracking',
                         'format'=>'raw',
                         'value'=>function($data){
 
                             if($data->idEnvio){
                                 return Html::a(
-                                    $data->idEnvio->txt_tracking,
+                                    $data->txtTracking,
                                     Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]),
                                     [
                                         'class'=>'id-send'

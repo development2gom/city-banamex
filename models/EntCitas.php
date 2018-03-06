@@ -442,7 +442,8 @@ class EntCitas extends \yii\db\ActiveRecord
             'isEdicion'=>"Edicion",
             'txt_promocional' => "Promocionales",
             'b_entrega_cat'=> "Entrega en CAC",
-            'id_cat'=>"CAC"
+            'id_cat'=>"CAC",
+            'txtTracking'=>"Id. envio",
         ];
     }
 
@@ -671,6 +672,11 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public function getNombreCompleto(){
         return $this->txt_nombre." ".$this->txt_apellido_paterno;
+    }
+
+    /* Getter for country name */
+    public function getTxtTracking() {
+        return $this->entEnvios->txt_tracking;
     }
 
 }
