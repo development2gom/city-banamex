@@ -14,7 +14,7 @@ use yii\web\View;
  $dataProvider = $searchModel->searchCallCenter(Yii::$app->request->queryParams);
 ?>
 
-<div class="panel">
+<div class="panel panel-usuarios-editar-listado">
     <div class="panel-heading">
         <h3 class="panel-title">
           Usuarios Asignado
