@@ -49,7 +49,7 @@ class EntCitasSearch extends EntCitas
      */
     public function search($params)
     {
-        $query = EntCitas::find()->leftJoin("ent_envios", "ent_envios.id_envio= ent_citas.id_envio");
+        $query = EntCitas::find()->leftJoin("ent_envios", "ent_envios.id_envio = ent_citas.id_envio");
 
         // add conditions that should always apply here
 
@@ -57,7 +57,10 @@ class EntCitasSearch extends EntCitas
             'query' => $query,
             'pagination'=>[
                 'pageSize' => 30,
+                //'pageSizeLimit'=>[1,10]
+                
             ],
+            
             'sort' => [
                 'defaultOrder' => [
                     'fch_creacion' => \SORT_DESC
@@ -65,7 +68,6 @@ class EntCitasSearch extends EntCitas
             ],
             
         ]);
-
 
         // Important: here is how we set up the sorting
     // The key is the attribute name on our "TourSearch" instance
