@@ -57,7 +57,8 @@ $this->registerJsFile(
                 </span>
                 <?=$statu->txt_nombre?>
             </a> -->
-
+            
+            <!-- Active -->
             <a class="list-group-item" href="<?=Url::base()?>/citas/index?EntCitasSearch[id_status]=<?=$statu->id_statu_cita?>">
                 <span class="badge badge-pill badge-<?=$statusColor?>"><?=count($statu->entCitas)?></span>
                 <?=$statu->txt_nombre?>

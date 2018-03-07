@@ -64,10 +64,12 @@
 			margin-bottom: 30px
 			padding: 20px 30px
 			.list-group-item
-				background-color: transparent
-				border: 1px solid rgba($mls-aqua,.35)
+				align-items: center
+				background-color: rgba($mls-brown,.95)
+				border: 1px solid rgba($mls-grey-secundary,.25)
 				border-radius: 20px
-				color: $white
+				color: rgba($mls-grey-secundary,.45)
+				display: flex
 				font-size: .8rem
 				font-weight: $light
 				margin-bottom: 8px
@@ -79,8 +81,15 @@
 				&:nth-child(4n + 4)
 					margin-right: 0
 				.badge
+					align-items: center
 					background-color: $mls-grey-secundary
-					margin-right: 10px
+					display: flex
+					font-size: .65rem
+					height: 18px
+					justify-content: center
+					line-height: 2
+					// margin-right: 10px
+					width: 18px
 					
 					&.badge-warning
 						background-color: $error
@@ -94,8 +103,13 @@
 						background-color: $error
 
 				&:hover
-					background-color: rgba($mls-aqua,.25)
-					border-color: rgba($mls-aqua,.65)
+					background-color: rgba($mls-brown,.95)
+					border: 1px solid rgba($mls-grey-secundary,.65)
+					color: rgba($white,.55)
+				&.active
+					background-color: rgba($white,.25)
+					border-color: rgba($white,.65)
+					color: $white
 					
 
 			.list-group-item-lg
@@ -260,6 +274,9 @@
 								padding: 8px 4px
 								text-decoration: none
 								text-transform: uppercase
+						td
+							input
+								line-height: 1.2
 				
 				tbody
 					tr
@@ -269,11 +286,12 @@
 							background-color: rgba($mls-black, .8)
 						td
 							border-top: 1px solid $mls-green
-							color: $white
+							color: $mls-grey-secundary
 							font-size: .8rem
 							font-weight: $thin
 							line-height: 3
 							padding: 10px 4px 8px
+							text-align: center
 							vertical-align: middle
 
 							a
@@ -300,11 +318,12 @@
 									// 	background-color: $error
 
 								&.id-send
+									color: $mls-grey-secundary
 									font-weight: $thin
 									padding: 0
 
 							.id-send-error
-								color: $white
+								color: $mls-grey-secundary
 								display: block
 								font-size: .75rem
 								text-align: center
