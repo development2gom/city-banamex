@@ -83,7 +83,6 @@ $this->registerJsFile(
 
 </div>    
 
-
 <!-- <div class="row">
     <div class="col-md-12 <?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)?"9":"12"?>">
         <div class="panel-collapse collapse in show" id="exampleCollapseDefaultOne" aria-labelledby="exampleHeadingDefaultOne" role="tabpanel" aria-expanded="true">
