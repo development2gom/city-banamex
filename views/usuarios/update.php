@@ -48,7 +48,7 @@ $usuario = EntUsuarios::getUsuarioLogueado();
 
 <?php
 if($model->txt_auth_item == Constantes::USUARIO_SUPERVISOR){
-echo $this->render("_view-usuarios-asignados", ['model'=>$model]);
+echo $this->render("_view-usuarios-asignados", ['model'=>$model,'roles'=>$roles]);
 }
 ?>
 

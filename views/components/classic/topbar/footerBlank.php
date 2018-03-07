@@ -8,6 +8,6 @@ use yii\helpers\Url;
         <p>© Brightstar 2018 </p>
       </div>
       <div class="login-footer-author">
-        <img src="<?=Url::base()?>/webAssets/images/2gom.png" alt="">
+        <img  src="<?=Url::base()?>/webAssets/images/footer.png" />
       </div>
     </div>

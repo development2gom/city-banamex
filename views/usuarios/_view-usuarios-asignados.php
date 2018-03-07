@@ -2,90 +2,147 @@
 
 use app\models\UsuariosSearch;
 use app\modules\ModUsuarios\models\EntUsuarios;
-use yii\widgets\ListView;
+use kartik\grid\GridView;
 use app\components\LinkSorterExtends;
 use kop\y2sp\ScrollPager;
 use sjaakp\alphapager\AlphaPager;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
 use yii\web\View;
+use kartik\date\DatePicker;
+use app\models\Calendario;
+use yii\helpers\ArrayHelper;
+use app\models\EntGruposTrabajo;
  $searchModel = new UsuariosSearch();
  
  $dataProvider = $searchModel->searchCallCenter(Yii::$app->request->queryParams);
 ?>
 
-<div class="panel">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-          Usuarios Asignado
-        </h3>
-    </div>
-    <div class="panel-body">
-   
-    <?=$this->render("_search", ['model'=>$searchModel])?>
+<div class="panel panel-usuarios-editar-listado">
+    <h3 class="panel-title">
+      Usuarios Asignado
+    </h3>
 
+   
     <?php
-    $sort = "txt_username";
-    if(isset($_GET['sort'])){
-      $sort = substr($_GET['sort'], 0,1);
-      if($sort=="-"){
-        $sort = substr($_GET['sort'], 1);
-      }else{
-        $sort = $_GET['sort'];
-      }
-    }
-    #exit;
-    $atributoActivado = EntUsuarios::label()[$sort];
-    $sorter ='<div class="dropdown">
-                Ordenar por: <a class="dropdown-toggle inline-block" data-toggle="dropdown"
-                href="#" aria-expanded="false">'.$atributoActivado.'</a>
-                {sorter}
-              </div>';
-    echo ListView::widget([
-        'dataProvider' => $dataProvider,
-        'viewParams' => ['supervisor' => $model],
-        'itemView' => '_itemAsignacion',
-        'itemOptions'=>[
-          'tag'=>"li",
-          'class'=>"list-group-item"
-        ],
-        'layout'=>$sorter.'<ul class="list-group">{items}</ul>{pager}',
-        'sorter'=>[
-          'class'=>LinkSorterExtends::className(),
-          'attributes'=>[
-            'txt_username',
-            'txt_apellido_paterno',
-            'txt_apellido_materno',
-            'txt_email',
-            'fch_creacion',
-            
-          ],
-          'options'=>[
-            'class'=>"dropdown-menu animation-scale-up animation-top-right animation-duration-250",
-            'role'=>"menu"
-          ],
-          'linkOptions'=>[
-            "class"=>"dropdown-item"
-          ]
-        ],
-        'pager' => [
-          'item'=>".list-group-item",
-          'class' => ScrollPager::className(),
-          'triggerText'=>'Cargar más datos',
-          'noneLeftText'=>'No hay datos por cargar',
-          'triggerOffset'=>999999999999999999999999999999999999999,
-          'negativeMargin'=>5000,
-          'enabledExtensions' => [
-              ScrollPager::EXTENSION_TRIGGER,
-              ScrollPager::EXTENSION_SPINNER,
-              ScrollPager::EXTENSION_NONE_LEFT,
-              ScrollPager::EXTENSION_PAGING,
-          ],
-          // ScrollPager::EXTENSION_SPINNER,
-          // ScrollPager::EXTENSION_PAGING,
+   echo GridView::widget([
+    'dataProvider' => $dataProvider,
+    'filterModel'=>$searchModel,
+    'options' => [
+      'class'=>"panel-usuarios-editar-listado-body"
+    ],
+    'responsive'=>true,
+    'striped'=>false,
+    'hover'=>false,
+    'bordered'=>false,
+    'pjax'=>true,
+    'pjaxSettings'=>[
+      'options'=>[
+        'linkSelector'=>"a:not(.no-pjax)"
       ]
+    ],
+    'tableOptions' => [
+      'class'=>"table table-hover"
+    ],
+    'layout' => '{items}{summary}{pager}',
+    'columns' =>[
+      [
+        'attribute' => 'nombreCompleto',
         
-    ]);?>
+        'format'=>'raw',
+        'contentOptions' => [
+          'class'=>"flex"
+        ],
+        'value'=>function($data){
+            
+          return '<a class="no-pjax" href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'"><img class="panel-listado-img" src="'.$data->imageProfile.'" alt="">
+          <span>'.$data->nombreCompleto .'</span></a>';
+        }
+      ],
+      [
+        'attribute' => 'roleDescription',
+        'filter'=>ArrayHelper::map($roles, 'name', 'description'),
+      ],
+      
+      [
+        'attribute' => 'fch_creacion',
+        'filter'=>DatePicker::widget([
+          'model'=>$searchModel,
+          'attribute'=>'fch_creacion',
+          'pickerButton'=>false,
+          'removeButton'=>false,
+          'type' => DatePicker::TYPE_INPUT,
+          'pluginOptions' => [
+              'autoclose'=>true,
+              'format' => 'dd-mm-yyyy'
+          ]
+        ]),
+        'format'=>'raw',
+        'value'=>function($data){
+            
+          return Calendario::getDateSimple($data->fch_creacion);
+        }
+      ],
+      [
+        'label' => 'Asignacion',
+        'filter'=>false,
+        'format'=>'raw',
+        
+        'value'=>function($data) use ($model){
+          
+          $usuarioAsignado = EntGruposTrabajo::find()->where(['id_usuario'=>$model->id_usuario, 'id_usuario_asignado'=>$model->id_usuario])->one();
+        $activo = $data->id_status == 2?'active':'';
+        $inactivo = $data->id_status == 1||$data->id_status == 3?'active':'';
+            
+            if($usuarioAsignado){
+              return '
+              <a data-call="'.$data->id_usuario.'" 
+                  data-supervisor="'.$model->id_usuario.'" href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'" 
+                  class="btn btn-danger btn-sm ladda-button js-remover-asignacion"
+                  data-style="zoom-in">
+                  <span class="ladda-label">
+                      Remover
+                  </span>
+                  
+              </a>
+          ';
+          }else{
+            return '
+              <a data-call="'.$data->id_usuario.'" 
+                  data-supervisor="'.$model->id_usuario.'" href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'" 
+                  class="btn btn-success btn-sm ladda-button js-asignacion"
+                  data-style="zoom-in">
+                  <span>
+                  Asignar
+                  </span>
+              </a>';
+          
+          }
+        }
+      ],
+      [
+        'attribute' => 'Editar',
+        'format'=>'raw',
+       
+        'value'=>function($data){
+            
+          return '<a href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'" class="btn btn-outline btn-success btn-sm"><i class="icon wb-edit"></i></a>';
+        }
+      ]
+    ],
+    'pager'=>[
+      'linkOptions' => [
+          'class' => 'page-link'
+      ],
+      'pageCssClass'=>'page-item',
+      'prevPageCssClass' => 'page-item',
+      'nextPageCssClass' => 'page-item',
+      'firstPageCssClass' => 'page-item',
+      'lastPageCssClass' => 'page-item',
+      'maxButtonCount' => '5',
+    ]
+  
+]);?>
     </div>
 </div>
 

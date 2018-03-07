@@ -9,6 +9,9 @@ use app\models\Calendario;
 use kartik\export\ExportMenu;
 use app\models\EntCitas;
 use app\models\Constantes;
+use yii\helpers\ArrayHelper;
+use kartik\date\DatePicker;
+use app\models\CatTiposTramites;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\ModUsuarios\models\EntUsuariosSearch */
@@ -36,7 +39,6 @@ $this->registerJsFile(
 ?>
 
 
-<?php Pjax::begin(['id' => 'citas', 'timeout'=>'0', 'linkSelector'=>'table thead a, a.list-group-item']) ?>
 
 
 <div class="row">
@@ -169,10 +171,18 @@ $this->registerJsFile(
                 // ],
                 'filterModel' => $searchModel,
                 'pjax'=>true,
+                'pjaxSettings'=>[
+                    'options'=>[
+                      'linkSelector'=>"a:not(.no-pjax)",
+                      'id'=>'pjax-usuarios'
+                    ]
+                  ],
                 'dataProvider' => $dataProvider,
                 'columns' =>[
                     'txt_identificador_cliente',
                     [
+                        'filter'=>ArrayHelper::map($status, 'id_statu_cita', 'txt_nombre'),
+                        
                         'attribute' => 'id_status',
                         'format'=>'raw',
                         'value'=>function($data){
@@ -183,24 +193,37 @@ $this->registerJsFile(
                                 $data->idStatus->txt_nombre,
                                 Url::to(['citas/view', 'token' => $data->txt_token]), 
                                 [
-                                    'class'=>'btn badge '.$statusColor.'',
+                                    'class'=>'btn badge '.$statusColor.' no-pjax',
                                 ]
                             );
                         }
                     ],
                     'txt_telefono',
                     [
-                        'attribute'=>'txt_nombre',
+                        'attribute'=>'nombreCompleto',
+                        //'filter'=>"",
                         'format'=>'raw',
                         'value'=>function($data){
                             return $data->nombreCompleto;
                         }
                     ],
                     [
+                        'filter'=>ArrayHelper::map(CatTiposTramites::find()->all(), 'id_tramite', 'txt_nombre'),
                         'attribute'=>'id_tipo_tramite',
                         'value'=>'idTipoTramite.txt_nombre'
                     ],
                     [
+                        'filter'=>DatePicker::widget([
+                            'model'=>$searchModel,
+                            'attribute'=>'fch_creacion',
+                            'pickerButton'=>false,
+                            'removeButton'=>false,
+                            'type' => DatePicker::TYPE_INPUT,
+                            'pluginOptions' => [
+                                'autoclose'=>true,
+                                'format' => 'dd-mm-yyyy'
+                            ]
+                        ]),
                         'attribute'=>'fch_creacion',
                         'format'=>'raw',
                         'value'=>function($data){
@@ -209,6 +232,17 @@ $this->registerJsFile(
                         }
                     ],
                     [
+                        'filter'=>DatePicker::widget([
+                            'model'=>$searchModel,
+                            'attribute'=>'fch_cita',
+                            'pickerButton'=>false,
+                            'removeButton'=>false,
+                            'type' => DatePicker::TYPE_INPUT,
+                            'pluginOptions' => [
+                                'autoclose'=>true,
+                                'format' => 'dd-mm-yyyy'
+                            ]
+                        ]),
                         'attribute'=>'fch_cita',
                         'format'=>'raw',
                         'value'=>function($data){
@@ -219,17 +253,17 @@ $this->registerJsFile(
                         }
                     ],
                     [
-                        'attribute'=>'id_envio',
-                        'value'=>'idEnvio.txt_tracking',
+                        'attribute'=>'txtTracking',
+                        'value'=>'txtTracking',
                         'format'=>'raw',
                         'value'=>function($data){
 
-                            if($data->idEnvio){
+                            if($data->id_envio){
                                 return Html::a(
-                                    $data->idEnvio->txt_tracking,
+                                    $data->txtTracking,
                                     Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]),
                                     [
-                                        'class'=>'id-send'
+                                        'class'=>'id-send no-pjax'
                                     ]
                                 );
                             }
@@ -307,7 +341,5 @@ $this->registerJsFile(
     
 </div>    
 
-
-<?php Pjax::end() ?>
 
    

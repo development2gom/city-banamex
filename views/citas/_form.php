@@ -257,7 +257,7 @@ $cat = $model->idCat;
             //$equipo = empty($model->id_equipo) ? '' : CatEquipos::findOne($model->id_equipo)->txt_nombre;
             // render your widget
             echo $form->field($model, 'id_cat')->widget(Select2::classname(), [
-                'options' => ['placeholder' => 'Selecciona cat'],
+                'options' => ['placeholder' => 'Selecciona CAC'],
                 
                 'pluginOptions' => [
                     
@@ -274,7 +274,7 @@ $cat = $model->idCat;
                     'escapeMarkup' => new JsExpression('function (markup) { 
                         
                         if(!markup){
-                            return "Selecciona cat";
+                            return "Selecciona CAC";
                         }
                         return markup; }'),
                     'templateResult' => new JsExpression('formatRepoCat'),

@@ -35,7 +35,11 @@ AppAsset::register($this);
   <?=$this->render("//components/classic/topbar/footer")?>
 
   <?php $this->endBody();?>
- 
+
+<script src="<?= Url::base() ?>/webAssets/templates/classic/global/vendor/breakpoints/breakpoints.js"></script>
+    <script>
+    Breakpoints();
+    </script>
 
   <script>
   (function(document, window, $) {
@@ -47,7 +51,7 @@ AppAsset::register($this);
   })(document, window, jQuery);
   </script>
 
-  <?=isset($this->params['modal'])?$this->params['modal']:''?>">
+  <?=isset($this->params['modal'])?$this->params['modal']:''?>
 </body>
 </html>
 <?php $this->endPage() ?>
