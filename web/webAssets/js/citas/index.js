@@ -53,7 +53,7 @@ function clearInput(elemento){
 }
 
 $(".list-group-item-tag").on("click", function(e){
-    e.preventDefault();
+    
     $('.list-group-item-tag').removeClass("active");
     $(this).toggleClass('active');
 });
