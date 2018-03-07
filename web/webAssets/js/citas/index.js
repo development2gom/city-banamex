@@ -54,3 +54,10 @@ function clearInput(elemento){
     input.val("");
     
 }
+
+
+
+$(".list-group-item-tag").on("click", function(e){
+    e.preventDefault();
+    $('.list-group-item-tag').toggleClass('active');
+});

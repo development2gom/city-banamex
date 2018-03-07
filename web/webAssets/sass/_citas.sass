@@ -65,7 +65,8 @@
 			padding: 20px 30px
 			.list-group-item
 				align-items: center
-				background-color: rgba($mls-brown,.95)
+				// background-color: rgba($mls-brown,.95)
+				background-color: rgba($black,.45)
 				border: 1px solid rgba($mls-grey-secundary,.25)
 				border-radius: 20px
 				color: rgba($mls-grey-secundary,.45)
@@ -103,9 +104,12 @@
 						background-color: $error
 
 				&:hover
-					background-color: rgba($mls-brown,.95)
-					border: 1px solid rgba($mls-grey-secundary,.65)
-					color: rgba($white,.55)
+					background-color: rgba($black,.25)
+					border: 1px solid rgba($mls-grey-secundary,.45)
+					color: rgba($white,.45)
+				&:hover,
+				&:focus
+					outline: none
 				&.active
 					background-color: rgba($white,.25)
 					border-color: rgba($white,.65)
