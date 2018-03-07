@@ -1,4 +1,3 @@
-
 $(document).on({
     'click': function(){
         mostrarLoading();
@@ -41,8 +40,6 @@ $(document).on({
 }, "table thead a, a.list-group-item");
 
 
-
-
 function mostrarLoading(){
     $("#panel .panel-body").addClass("fade-out");
     $(".js-ms-loading").addClass("fade-in");
@@ -54,3 +51,9 @@ function clearInput(elemento){
     input.val("");
     
 }
+
+$(".list-group-item-tag").on("click", function(e){
+    e.preventDefault();
+    $('.list-group-item-tag').removeClass("active");
+    $(this).toggleClass('active');
+});

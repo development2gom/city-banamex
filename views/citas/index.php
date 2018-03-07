@@ -59,8 +59,9 @@ $this->registerJsFile(
                 </span>
                 <?=$statu->txt_nombre?>
             </a> -->
-
-            <a class="list-group-item" href="<?=Url::base()?>/citas/index?EntCitasSearch[id_status]=<?=$statu->id_statu_cita?>">
+            
+            <!-- Active -->
+            <a class="list-group-item list-group-item-tag" href="<?=Url::base()?>/citas/index?EntCitasSearch[id_status]=<?=$statu->id_statu_cita?>">
                 <span class="badge badge-pill badge-<?=$statusColor?>"><?=count($statu->entCitas)?></span>
                 <?=$statu->txt_nombre?>
             </a>
@@ -81,7 +82,6 @@ $this->registerJsFile(
     ?>
 
 </div>    
-
 
 <!-- <div class="row">
     <div class="col-md-12 <?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)?"9":"12"?>">

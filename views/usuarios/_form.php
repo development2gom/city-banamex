@@ -28,6 +28,8 @@ use yii\helpers\ArrayHelper;
             <div class="row">
                 <div class="col-md-6">
 
+                    <h4>Datos Generales</h4>
+
                     <?= $form->field($model, 'txt_auth_item')
                         ->widget(Select2::classname(), [
                             'data' => ArrayHelper::map($roles, 'name', 'description'),
@@ -49,6 +51,8 @@ use yii\helpers\ArrayHelper;
                 </div>
 
                 <div class="col-md-6">
+
+                    <h4>Datos de Usuario</h4>
 
                     <div class="form-group">
                         <input type="text" class="form-control form-input-usuario" disabled placeholder="usuario">
