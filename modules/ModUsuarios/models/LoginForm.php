@@ -67,7 +67,7 @@ class LoginForm extends Model {
 						],
 						'trim' 
 				],
-				['username','email', 'message'=>'Debe agregar un email válido'],
+				//['username','email', 'message'=>'Debe agregar un email válido'],
 				
 				// rememberMe must be a boolean value
 				[ 

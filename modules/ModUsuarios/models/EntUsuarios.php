@@ -57,6 +57,34 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	 */
 	public function rules() {
 		return [ 
+				[
+					['id_call_center'], 'required', 
+					'when' => function ($model) {
+						$usuarioCallCenter = Constantes::USUARIO_CALL_CENTER;
+						$usuarioSupervisor = Constantes::USUARIO_SUPERVISOR;
+						$usuarioAdministrador = Constantes::USUARIO_ADMINISTRADOR_CC;
+						$usuarioMaster = Constantes::USUARIO_MASTER_CALL_CENTER;
+						if($model->txt_auth_item==$usuarioCallCenter 
+						|| $model->txt_auth_item == $usuarioSupervisor 
+						|| $model->txt_auth_item==$usuarioAdministrador
+						|| $model->txt_auth_item==$usuarioMaster){
+							return true;
+						}
+						return false;
+					}, 'whenClient' => "function (attribute, value) {
+						
+						var elemento = $('#entusuarios-txt_auth_item');
+						var usuarioCallCenter = '".Constantes::USUARIO_CALL_CENTER."';
+						var usuarioSupervisor = '".Constantes::USUARIO_SUPERVISOR."';
+						var usuarioAdministrador = '".Constantes::USUARIO_ADMINISTRADOR_CC."';
+						var usuarioMaster = '".Constantes::USUARIO_MASTER_CALL_CENTER."';
+						if(elemento.val()==usuarioCallCenter || elemento.val()==usuarioSupervisor || elemento.val()==usuarioAdministrador || elemento.val()==usuarioMaster){
+							return true;
+						}
+
+						return false;
+					}"
+				],
 				
 				[
 					['repeatPassword', 'password'], 'required', 'on'=>'update',
@@ -243,6 +271,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				'txt_auth_item'=>'Tipo de usuario',
 				'nombreCompleto'=>'Nombre',
 				'roleDescription'=>'Tipo de usuario',
+				'id_call_center'=>'Call center'
 		];
 	}
 	
@@ -452,8 +481,6 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	 */
 	public function signup($isFacebook=false) {
 		
-		
-
 		if (! $this->validate ()) {
 			return null;
 		}
@@ -469,6 +496,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 		$user->txt_apellido_materno = $this->txt_apellido_materno;
 		$user->txt_email = $this->txt_email;
 		$user->txt_auth_item = $this->txt_auth_item;
+		$user->id_call_center = $this->id_call_center;
 		
 		
 		if($user->image){

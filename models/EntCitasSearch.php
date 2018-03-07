@@ -70,20 +70,20 @@ class EntCitasSearch extends EntCitas
         ]);
 
         // Important: here is how we set up the sorting
-    // The key is the attribute name on our "TourSearch" instance
-    $dataProvider->sort->attributes['nombreCompleto'] = [
-        
-            'asc' => ['txt_nombre' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
-            'desc' => ['txt_nombre' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC],
+        // The key is the attribute name on our "TourSearch" instance
+        $dataProvider->sort->attributes['nombreCompleto'] = [
             
+                'asc' => ['txt_nombre' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
+                'desc' => ['txt_nombre' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC],
+                
+                
             
-        
-    ];
+        ];
 
-    $dataProvider->sort->attributes['txtTracking']=[
-        'asc' => ['ent_envios.txt_tracking' => SORT_ASC],
-            'desc' => ['ent_envios.txt_tracking' => SORT_DESC],
-    ];
+        $dataProvider->sort->attributes['txtTracking']=[
+            'asc' => ['ent_envios.txt_tracking' => SORT_ASC],
+                'desc' => ['ent_envios.txt_tracking' => SORT_DESC],
+        ];
       
 
         $this->load($params);
@@ -101,24 +101,8 @@ class EntCitasSearch extends EntCitas
         }
 
         $usuario = Yii::$app->user->identity;
-        if( $usuario->txt_auth_item==Constantes::USUARIO_CALL_CENTER){
-            $this->id_usuario = $usuario->id_usuario;
-            $query->andFilterWhere(['id_usuario' => $this->id_usuario]);
-        }
-
-        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR){
-
-            $misUsuarios = $usuario->entGruposTrabajos;
-            
-            $usuarioAsignado = [];
-            $usuarioAsignado[] = $usuario->id_usuario;
-            foreach($misUsuarios as $miUsuario){
-                $usuarioAsignado[] = $miUsuario->id_usuario_asignado;
-            }
-
-            $query->andFilterWhere(['in','id_usuario', $usuarioAsignado]);
-        }
-
+        
+        $query = Permisos::getCitasByRole($query);
         
             if($this->id_status){
                 

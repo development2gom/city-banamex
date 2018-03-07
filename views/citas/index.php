@@ -220,7 +220,8 @@ $this->registerJsFile(
                             'type' => DatePicker::TYPE_INPUT,
                             'pluginOptions' => [
                                 'autoclose'=>true,
-                                'format' => 'dd-mm-yyyy'
+                                'format' => 'dd-mm-yyyy',
+                                "clearBtn"=>true
                             ]
                         ]),
                         'attribute'=>'fch_creacion',
@@ -239,7 +240,8 @@ $this->registerJsFile(
                             'type' => DatePicker::TYPE_INPUT,
                             'pluginOptions' => [
                                 'autoclose'=>true,
-                                'format' => 'dd-mm-yyyy'
+                                'format' => 'dd-mm-yyyy',
+                                "clearBtn"=>true
                             ]
                         ]),
                         'attribute'=>'fch_cita',

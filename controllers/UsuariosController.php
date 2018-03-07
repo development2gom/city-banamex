@@ -16,6 +16,7 @@ use yii\web\UploadedFile;
 use app\models\EntGruposTrabajo;
 use app\models\EntCitas;
 use app\models\ResponseServices;
+use app\models\CatCallsCenters;
 
 /**
  * UsuariosController implements the CRUD actions for EntUsuarios model.
@@ -123,10 +124,13 @@ class UsuariosController extends Controller
         
         // return $this->redirect(['view', 'id' => $model->id_usuario]);
         }
+
+        $callCenters = CatCallsCenters::find()->all();
         return $this->render('create', [
             'model' => $model,
             'roles'=>$roles,
-            'supervisores'=>$supervisores
+            'supervisores'=>$supervisores,
+            'callCenters'=>$callCenters
         ]);
     }
 
@@ -158,7 +162,7 @@ class UsuariosController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post())){
-            if(isset($_POST["EntUsuarios"]['password'])){
+            if($model->password){
                 $model->setPassword($_POST["EntUsuarios"]['password']);
                 $model->generateAuthKey();
             }
@@ -177,11 +181,12 @@ class UsuariosController extends Controller
             }
         }
         
-        
+        $callCenters = CatCallsCenters::find()->all();
         return $this->render('update', [
             'model' => $model,
             'roles'=>$roles,
-            'supervisores'=>$supervisores
+            'supervisores'=>$supervisores,
+            'callCenters'=>$callCenters
         ]);
         
     }
