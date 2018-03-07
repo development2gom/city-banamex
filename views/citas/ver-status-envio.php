@@ -78,7 +78,9 @@ $this->params['breadcrumbs'][] = [
                 <div class="citas-stat-send-item">
                     <h5>Firma</h5>
                     <!-- <p><img class="avatar avatar-lg" src="<?=$respuestaApi->Image?>" /></p> -->
-
+                    <?php
+                    if($respuestaApi->Image){
+                    ?>
                     <div class="card card-shadow">
                         <figure class="card-img-top overlay-hover overlay">
                             <img class="overlay-figure overlay-scale" src="<?=$respuestaApi->Image?>" alt="...">
@@ -87,7 +89,11 @@ $this->params['breadcrumbs'][] = [
                             </figcaption> -->
                         </figure>
                     </div>
-
+                    <?php
+                    }else{
+                       echo "<p>Sin firma</p>";
+                    }
+                    ?>        
                 </div>
                 <div class="citas-stat-send-item">
                     <h5>Evidencias</h5>
