@@ -612,7 +612,7 @@ class EntCitas extends \yii\db\ActiveRecord
     public function getBotonGuardar()
     {
         if ($this->isNewRecord) {
-            return Html::submitButton("<span class='ladda-label'> <i class='site-menu-icon pe-users' aria-hidden='true'></i> " . ($this->isNewRecord ? 'Generar cita' : 'Actualizar cita') . "</span>", ['class' => ($this->isNewRecord ? 'btn btn-success btn-form-save' : 'btn btn-primary ') . "  float-right ladda-button", "data-style" => "zoom-in"]);
+            return Html::submitButton("<span class='ladda-label'> <i class='site-menu-icon pe-headphones' aria-hidden='true'></i> " . ($this->isNewRecord ? 'Generar cita' : 'Actualizar cita') . "</span>", ['class' => ($this->isNewRecord ? 'btn btn-success btn-form-save' : 'btn btn-primary ') . "  float-right ladda-button", "data-style" => "zoom-in"]);
         }
         return "";
     }

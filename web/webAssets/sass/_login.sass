@@ -16,11 +16,15 @@
 	position: relative
 	z-index: 1
 	&:before
+		background-color: $mls-black
 		background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+)
 		background-image: -webkit-gradient(linear, left top, left bottom, from($bg-primary), to(#3583ca))
 		background-image: -webkit-linear-gradient(top, $bg-primary 0%, #3583ca 100%)
 		background-image: -o-linear-gradient(top, $bg-primary 0%, #3583ca 100%)
 		background-image: url('../images/login-screen.jpg')
+		background-position: 50%
+		background-repeat: no-repeat
+		background-size: cover
 	.page-login-v3-mask
 		background-color: rgba($black,.3)
 		background-color: transparent
