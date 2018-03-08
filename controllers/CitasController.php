@@ -346,18 +346,20 @@ class CitasController extends Controller
         $respuestaApi = json_decode($respuestaApi);
         $historico = json_decode($historico);
 
+       
+       
         return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi, "historico"=>$historico]);
     }
 
 
     public function actionTestApiImage(){
-        $tracking = "SSYBS28021800007";
+        $tracking = "SSYBS05031800002";
         $cita = new EntCitas();
         $respuestaApi = json_decode($cita->consultarEnvio($tracking));
         $historico = json_decode($cita->consultarHistorico($tracking));
 
 
-        //print_r($respuestaApi);
+        print_r($respuestaApi);
 
         print_r($historico);
         exit;

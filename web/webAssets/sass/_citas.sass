@@ -33,10 +33,15 @@
 				vertical-align: middle
 		
 		.breadcrumb
+			margin-top: 8px
 			li
+				&:before
+					color: $gray
 				a
-					color: $white
+					color: $gray
 					text-decoration: none
+					font-size: .8rem
+					text-transform: uppercase
 
 		.page-header-actions
 			a
@@ -223,7 +228,7 @@
 			padding: 32px
 
 			.kv-loader-overlay
-				background-color: rgba($mls-aqua,.35)
+				background-color: rgba($black,.8)
 				.kv-loader
 					border-radius: 50%
 
@@ -279,8 +284,9 @@
 								text-decoration: none
 								text-transform: uppercase
 						td
-							input
-								line-height: 1.2
+							input[type="text"],
+							select
+								height: 32px
 				
 				tbody
 					tr
@@ -325,6 +331,8 @@
 									color: $mls-grey-secundary
 									font-weight: $thin
 									padding: 0
+								&.badge
+									width: 213px
 
 							.id-send-error
 								color: $mls-grey-secundary
@@ -442,6 +450,11 @@
 			background-color: transparent
 			border-radius: 0
 			padding: 0
+			table
+				tbody
+					tr
+						td
+							text-align: left
 
 		.panel-title
 			color: $white
@@ -489,7 +502,7 @@
 						.select2-selection__clear
 							color: $white
 							right: .2rem
-							top: -.4rem
+							// top: -.4rem
 
 				.select2-selection--single
 					.select2-selection__arrow	
@@ -523,7 +536,8 @@
 	margin-bottom: 32px
 
 	.citas-stat-send-grals,
-	.citas-stat-send-record
+	.citas-stat-send-record,
+	.citas-stat-send-media
 		background-color: rgba($mls-bg-red, 0.4)
 		padding: 20px 16px
 		h3
@@ -535,6 +549,28 @@
 
 	.citas-stat-send-grals
 		// background-color: green
+		margin-bottom: 32px
+
+		h3
+			align-items: center
+			display: flex
+			justify-content: flex-start
+			span
+				// background-color: red
+			.badge
+				background-color: $mls-aqua
+				border: 1px solid $mls-aqua
+				border-radius: 10rem
+				color: $mls-black
+				font-size: .8rem
+				font-weight: $light
+				margin-left: 24px
+				padding: 4px 16px 3px
+				text-transform: uppercase
+				&:hover
+					background-color: rgba($mls-aqua,.35)
+					color: $white
+
 		.citas-stat-send-item
 			// background-color: purple
 			margin-bottom: 16px
@@ -563,18 +599,6 @@
 
 		.citas-stat-send-record-head
 			position: relative
-
-			.badge
-				background-color: $mls-aqua
-				border: 1px solid $mls-aqua
-				border-radius: 10rem
-				color: $mls-black
-				font-weight: $light
-				padding: 4px 16px 3px
-				text-transform: uppercase
-				&:hover
-					background-color: rgba($mls-aqua,.35)
-					color: $white
 
 		.citas-stat-send-record-panel
 			table
@@ -618,3 +642,16 @@
 									margin-right: 8px
 							.avatar
 								border-radius: 0
+								
+	.citas-stat-send-media
+		
+		.citas-stat-send-item
+			h5
+				margin-bottom: 16px
+				font-weight: $light
+				margin: 0
+				color: $mls-grey-secundary
+				font-size: .8rem
+				padding: 6px 0
+				text-decoration: none
+				text-transform: uppercase
