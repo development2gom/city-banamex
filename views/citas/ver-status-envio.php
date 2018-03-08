@@ -10,11 +10,33 @@ $this->params['breadcrumbs'][] = [
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
     'encode' => false
 ];
-// $this->params['breadcrumbs'][] = [
-//     'label' => '<i class="icon wb-eye"></i> '.$envio->idCita->txt_identificador_cliente,
-//     'url'=>['view', 'token'=>$envio->idCita->txt_token],
-//     'template'=>'<li class="breadcrumb-item">{link}</li>', 
-//     'encode' => false];
+
+$this->registerJsFile(
+    '@web/webAssets/templates/classic/global/vendor/magnific-popup/jquery.magnific-popup.min.js',
+    ['depends' => [\app\assets\AppAsset::className()]]
+  );
+
+  $this->registerJsFile(
+    '@web/webAssets/js/citas/ver-status-envio.js',
+    ['depends' => [\app\assets\AppAsset::className()]]
+  );
+
+  $this->registerCssFile(
+    '@web/webAssets/templates/classic/global/vendor/magnific-popup/magnific-popup.min.css',
+    ['depends' => [\app\assets\AppAsset::className()]]
+  );
+
+
+
+
+
+
+
+ $this->params['breadcrumbs'][] = [
+     'label' => '<i class="icon wb-eye"></i> '.$envio->idCita->txt_identificador_cliente,
+     'url'=>['view', 'token'=>$envio->idCita->txt_token],
+     'template'=>'<li class="breadcrumb-item">{link}</li>', 
+     'encode' => false];
 
 
 
@@ -102,7 +124,12 @@ $this->params['breadcrumbs'][] = [
                                     </td>
                                     <td>
                                         <!-- <img class="avatar avatar-sm" src="http://via.placeholder.com/200x200" data-toggle="tooltip" data-original-title="Crystal Bates" data-container="body" title=""> -->
-                                        <img class="avatar avatar-sm" src="<?=$historial->Firma?>">
+                                        <?php
+                                        if($historial->Firma){
+                                            echo '<a class="magnific" href="'.$historial->Firma.'"><img class="avatar avatar-sm" src="'.$historial->Firma.'"></a>';
+                                        }
+                                        ?>
+                                        
                                     </td>
                                     <td>
                                         <?=$historial->Comentario?>
