@@ -1,6 +1,7 @@
 <?php
 namespace app\models;
 
+use Yii;
 use app\models\Constantes;
 use app\modules\ModUsuarios\models\EntUsuarios;
 
