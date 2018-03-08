@@ -551,6 +551,26 @@
 		// background-color: green
 		margin-bottom: 32px
 
+		h3
+			align-items: center
+			display: flex
+			justify-content: flex-start
+			span
+				// background-color: red
+			.badge
+				background-color: $mls-aqua
+				border: 1px solid $mls-aqua
+				border-radius: 10rem
+				color: $mls-black
+				font-size: .8rem
+				font-weight: $light
+				margin-left: 24px
+				padding: 4px 16px 3px
+				text-transform: uppercase
+				&:hover
+					background-color: rgba($mls-aqua,.35)
+					color: $white
+
 		.citas-stat-send-item
 			// background-color: purple
 			margin-bottom: 16px
@@ -579,18 +599,6 @@
 
 		.citas-stat-send-record-head
 			position: relative
-
-			.badge
-				background-color: $mls-aqua
-				border: 1px solid $mls-aqua
-				border-radius: 10rem
-				color: $mls-black
-				font-weight: $light
-				padding: 4px 16px 3px
-				text-transform: uppercase
-				&:hover
-					background-color: rgba($mls-aqua,.35)
-					color: $white
 
 		.citas-stat-send-record-panel
 			table
@@ -636,4 +644,14 @@
 								border-radius: 0
 								
 	.citas-stat-send-media
-		margin-top: 32px
+		
+		.citas-stat-send-item
+			h5
+				margin-bottom: 16px
+				font-weight: $light
+				margin: 0
+				color: $mls-grey-secundary
+				font-size: .8rem
+				padding: 6px 0
+				text-decoration: none
+				text-transform: uppercase
