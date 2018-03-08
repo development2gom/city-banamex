@@ -46,7 +46,6 @@ $this->params['breadcrumbs'][] = [
                     ?>
                     
                 </div>
-                <hr>
                 <div class="citas-stat-send-item">
                     <h5>Mapa</h5>
                     <?php 
@@ -140,7 +139,7 @@ $this->params['breadcrumbs'][] = [
                             <tr>
                                 <th>Evento</th>
                                 <th>Fecha & Hora</th>
-                                <th>Motivo</th>
+                                <th>Motivo de cancelación<</th>
                                 <th>Evidencia</th>
                                 <th>Firma</th>
                                 <th>Comentarios</th>

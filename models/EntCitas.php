@@ -177,13 +177,13 @@ class EntCitas extends \yii\db\ActiveRecord
 
         if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR) {
             if ($new) {
-                $message = "Cita capturada y autorizada por supervisor cc";
+                $message = "Cita capturada y autorizada por Sup CC";
             } else {
-                $message = "Cita autorizada por supervisor cc";
+                $message = "Cita autorizada por Sup CC";
             }
 
             if ($cancel) {
-                $message = "Cita rechazada por supervisor cc";
+                $message = "Cita rechazada por Sup CC";
             }
             EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
         }
@@ -191,13 +191,13 @@ class EntCitas extends \yii\db\ActiveRecord
         if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_CC) {
 
             if ($new) {
-                $message = "Cita capturada y autorizada por administrador cc";
+                $message = "Cita capturada y autorizada por Admin CC";
             } else {
-                $message = "Cita autorizada por administrador cc";
+                $message = "Cita autorizada por Admin CC";
             }
 
             if ($cancel) {
-                $message = "Cita rechazada por administrador cc";
+                $message = "Cita rechazada por Admin cc";
             }
             EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
         }
@@ -205,12 +205,12 @@ class EntCitas extends \yii\db\ActiveRecord
         if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR_TELCEL) {
 
             if ($new) {
-                $message = "Cita capturada y autorizada por supervisor telcel";
+                $message = "Cita capturada y autorizada por Sup telcel";
             } else {
-                $message = "Cita autorizada por supervisor telcel";
+                $message = "Cita autorizada por Sup telcel";
             }
             if ($cancel) {
-                $message = "Cita rechazada por supervisor telcel";
+                $message = "Cita rechazada por Sup telcel";
             }
 
             EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
@@ -220,12 +220,12 @@ class EntCitas extends \yii\db\ActiveRecord
             
 
             if ($new) {
-                $message = "Cita capturada y autorizada por administrador telcel";
+                $message = "Cita capturada y autorizada por Admin telcel";
             } else {
-                $message = "Cita autorizada por administrador telcel";
+                $message = "Cita autorizada por Admin telcel";
             }
             if ($cancel) {
-                $message = "Cita rechazada por administrador telcel";
+                $message = "Cita rechazada por Admin telcel";
             }
             EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
         }
