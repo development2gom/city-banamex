@@ -228,7 +228,8 @@ $this->registerJsFile(
                             'type' => DatePicker::TYPE_INPUT,
                             'pluginOptions' => [
                                 'autoclose'=>true,
-                                'format' => 'dd-mm-yyyy'
+                                'format' => 'dd-mm-yyyy',
+                                'clearBtn'=>true,
                             ]
                         ]),
                         'attribute'=>'fch_creacion',
@@ -342,11 +343,14 @@ $this->registerJsFile(
                     'maxButtonCount' => '5',
                 ]
             ]) ?>
-
-   
-
-    
 </div>    
 
+
+<style>
+.datepicker{
+    z-index:9999 !important;
+}
+
+</style>
 
    

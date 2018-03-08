@@ -25,6 +25,10 @@ use app\models\ResponseServices;
 use app\models\CatStatusCitasApi;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
+use app\models\Files;
+use app\models\EntEvidenciasCitas;
+use yii\web\UploadedFile;
+use app\models\Calendario;
 
 /**
  * CitasController implements the CRUD actions for EntCitas model.
@@ -39,10 +43,10 @@ class CitasController extends Controller
         return [
             'access' => [
                 'class' => AccessControlExtend::className(),
-                'only' => ['create', 'index', 'view', 'actualizar-envio'],
+                'only' => ['create', 'index', 'view', 'actualizar-envio', 'upload-file'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'index', 'view','actualizar-envio'],
+                        'actions' => ['create', 'index', 'view','actualizar-envio', 'upload-file'],
                     'allow' => true,
                         'roles' => [Constantes::USUARIO_CALL_CENTER],
                     ],
@@ -329,6 +333,7 @@ class CitasController extends Controller
 
         $cita = new EntCitas();
         $envio = EntEnvios::find()->where(['txt_token'=>$token])->one();
+        
         $respuestaApi = json_decode($cita->consultarEnvio($envio->txt_tracking));
         $historico = json_decode($cita->consultarHistorico($envio->txt_tracking));
 
@@ -341,10 +346,12 @@ class CitasController extends Controller
     public function actionTestApiImage(){
         $tracking = "SSYBS05031800002";
         $cita = new EntCitas();
-        $respuestaApi = json_decode($cita->consultarEnvio($tracking));
-        $historico = json_decode($cita->consultarHistorico($tracking));
+        $respuestaApi = ($cita->consultarEnvio($tracking));
+        $historico =($cita->consultarHistorico($tracking));
 
-
+echo $historico;
+echo $respuestaApi;
+exit;
         print_r($respuestaApi);
 
         print_r($historico);
@@ -367,6 +374,7 @@ class CitasController extends Controller
             return $response;
         }
 
+        
         $cita->id_status = $statusApi->id_statu_cita;
         if(!$cita->save()){
             $response->message = "No se pudo guardar la cita";
@@ -389,6 +397,67 @@ class CitasController extends Controller
         $response->result["token"] = $cita->txt_token;
 
         return $response;
+    }
+
+    public function actionUploadFile($token=null){
+        $cita = EntCitas::find()->where(["txt_token"=>$token])->one();
+        $evidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->one();
+
+        if($evidencia){
+            Files::borrarArchivo($evidencia->txt_url);
+        }else{
+            $evidencia = new EntEvidenciasCitas();
+        }
+        
+        $response = new ResponseServices();
+
+        $file = UploadedFile::getInstanceByName("file-upload");
+        //$response->result = $file;
+
+        if(!$file){
+            $response->message = "Archivo nulo";
+            return $response;
+        }
+
+        Files::validarDirectorio("evidencias/".$cita->txt_token);
+        $namefile = uniqid("pdf").".".$file->extension;
+        $path = "evidencias/".$cita->txt_token."/".$namefile;
+        $isSaved = $file->saveAs($path);
+
+        if($isSaved){
+           
+            $evidencia->id_cita = $cita->id_cita;
+            $evidencia->txt_url = $path;
+            $evidencia->txt_nombre_original = $file->name;
+            $evidencia->txt_token = Utils::generateToken("FIL");
+            $evidencia->fch_creacion = Calendario::getFechaActual();
+           
+            if($evidencia->save()){
+                $response->message = "Archivo guardado.";
+                $response->status = "success";
+                $response->result['url'] = Url::base()."/citas/descargar-evidencia?token=".$evidencia->txt_token;
+            }else{
+                $response->message="Ocurrio un problema al guardar en la base de datos.";
+                Files::borrarArchivo($path);
+            }
+            
+            
+        }else{
+            $response->message= "El archivo no se pudo guardar.";
+        }
+
+        return $response;
+    }
+
+    public function actionDescargarEvidencia($token=null){
+        $evidencia = EntEvidenciasCitas::find(["txt_token"=>$token])->one();
+        $cita = $evidencia->idCita;
+        if (file_exists($evidencia->txt_url)) {
+            Yii::$app->response->sendFile($evidencia->txt_url, "Evidencia_".$cita->txt_identificador_cliente.".pdf");
+        }else{
+            echo $evidencia->txt_url;
+        }
+        
     }
 
     
