@@ -8,16 +8,16 @@ use yii\helpers\Html;
 
 $this->title = 'Generar cita';
 $this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon wb-calendar"></i> Citas', 
+    'label' => '<i class="icon pe-headphones"></i> Citas', 
     'url' => ['index'],
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
     'encode' => false
 ];
 
-$this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon wb-plus"></i> '.$this->title,
-    'template'=>'<li class="breadcrumb-item">{link}</li>', 
-    'encode' => false];
+// $this->params['breadcrumbs'][] = [
+//     'label' => '<i class="icon wb-plus"></i> '.$this->title,
+//     'template'=>'<li class="breadcrumb-item">{link}</li>', 
+//     'encode' => false];
 
 
 

@@ -12,15 +12,15 @@ use yii\web\View;
 
 $this->title = $model->txt_identificador_cliente.' <span class="badge '.EntCitas::getColorStatus($model->id_status   ).'">'.$model->idStatus->txt_nombre.'</span>';
 $this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon wb-calendar"></i> Citas', 
+    'label' => '<i class="icon pe-headphones"></i> Citas', 
     'url' => ['index'],
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
     'encode' => false
 ];
-$this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon wb-eye"></i> '.$model->txt_identificador_cliente,
-    'template'=>'<li class="breadcrumb-item">{link}</li>', 
-    'encode' => false];
+// $this->params['breadcrumbs'][] = [
+//     'label' => '<i class="icon wb-eye"></i> '.$model->txt_identificador_cliente,
+//     'template'=>'<li class="breadcrumb-item">{link}</li>', 
+//     'encode' => false];
 
 $this->registerCssFile(
     '@web/webAssets/templates/classic/global/vendor/bootstrap-sweetalert/sweetalert.css',
