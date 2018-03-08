@@ -57,3 +57,22 @@ $(".list-group-item-tag").on("click", function(e){
     $('.list-group-item-tag').removeClass("active");
     $(this).toggleClass('active');
 });
+
+$(document).ready(function(){
+    // The .each() method is unnecessary here:
+    $( ".actualizar-envio" ).each(function() {
+        var elemento = $(this);
+        var envio = elemento.data("envio");
+        $.ajax({
+            url: baseUrl+"citas/actualizar-envio?envio="+envio,
+            success:function(r){
+                if(r.status="success"){
+                    $("#js-cita-envio-"+r.result.token).replaceWith(r.result.a);
+                }
+            },
+            error:function(x, y, z){
+                
+            }   
+        });
+    });
+});

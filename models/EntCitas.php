@@ -593,7 +593,7 @@ class EntCitas extends \yii\db\ActiveRecord
                 break;
 
             default:
-                # code...
+                $statusColor = Constantes::COLOR_STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL;
                 break;
         }
 

@@ -187,12 +187,20 @@ $this->registerJsFile(
                         'value'=>function($data){
                             
                             $statusColor = EntCitas::getColorStatus($data->id_status);
-            
+                            $classActualizar = "actualizar-envio";
+                            $isBuscar = false;
+                            $dataEnvio = '';
+                            if($data->id_envio && ($data->id_status != Constantes::STATUS_ENTREGADO || Constantes::STATUS_CANCELADO)){
+                                $isBuscar = true;
+                                $dataEnvio = $data->txtTracking;
+                            }
                             return Html::a(
                                 $data->idStatus->txt_nombre,
                                 Url::to(['citas/view', 'token' => $data->txt_token]), 
                                 [
-                                    'class'=>'btn badge '.$statusColor.' no-pjax',
+                                    'id'=>"js-cita-envio-".$data->txt_token,
+                                    'data-envio'=>$dataEnvio,
+                                    'class'=>'btn badge '.$statusColor.' no-pjax '.($isBuscar?$classActualizar:''),
                                 ]
                             );
                         }

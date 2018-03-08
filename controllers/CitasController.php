@@ -21,6 +21,10 @@ use yii\data\ActiveDataProvider;
 use app\components\AccessControlExtend;
 use app\models\H2H;
 use app\models\EntEnvios;
+use app\models\ResponseServices;
+use app\models\CatStatusCitasApi;
+use yii\bootstrap\Html;
+use yii\helpers\Url;
 
 /**
  * CitasController implements the CRUD actions for EntCitas model.
@@ -35,10 +39,10 @@ class CitasController extends Controller
         return [
             'access' => [
                 'class' => AccessControlExtend::className(),
-                'only' => ['create', 'index', 'view'],
+                'only' => ['create', 'index', 'view', 'actualizar-envio'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'index', 'view'],
+                        'actions' => ['create', 'index', 'view','actualizar-envio'],
                     'allow' => true,
                         'roles' => [Constantes::USUARIO_CALL_CENTER],
                     ],
@@ -61,19 +65,9 @@ class CitasController extends Controller
      */
     public function actionIndex()
     {
-        if ((\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)) ){
-            $statusCitas = CatStatusCitas::find()->where(['in', 'id_statu_cita', [
-                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR, 
-                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
-                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL, 
-                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
-                Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
-                Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL 
-
-            ]])->all();
-        }else{
-            $statusCitas = CatStatusCitas::find()->where(['b_habilitado'=>1])->all();
-        }
+        
+        $statusCitas = CatStatusCitas::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
+        
         
 
         $searchModel = new EntCitasSearch();
@@ -356,6 +350,45 @@ class CitasController extends Controller
         print_r($historico);
         exit;
         
+    }
+
+    public function actionActualizarEnvio($envio){
+        $response = new ResponseServices();
+        if(!$envioSearch = EntEnvios::find()->where(["txt_tracking"=>$envio])->one()){
+            $response->message = "No se encontro el envio en la base de datos";
+            return $response;
+        }
+        $cita = $envioSearch->idCita;
+
+        $respuestaApi = json_decode($cita->consultarEnvio($envio));
+
+        if(!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api"=>$respuestaApi->ClaveEvento])->one()){
+            $response->message = "No se encontro el status del api en la base de datos";
+            return $response;
+        }
+
+        $cita->id_status = $statusApi->id_statu_cita;
+        if(!$cita->save()){
+            $response->message = "No se pudo guardar la cita";
+            $response->result = $cita->errors;
+            return $response;
+        }
+
+        $response->status = "success";
+        $response->message = "Todo correcto";
+        $statusColor = EntCitas::getColorStatus($cita->id_status);
+        $response->result["a"] = Html::a(
+            $statusApi->txt_nombre,
+            Url::to(['citas/view', 'token' => $cita->txt_token]), 
+            [
+                'id'=>"js-cita-envio-".$cita->txt_token,
+                'data-envio'=>$envio,
+                'class'=>'btn badge '.$statusColor.' no-pjax ',
+            ]
+        );
+        $response->result["token"] = $cita->txt_token;
+
+        return $response;
     }
 
     
