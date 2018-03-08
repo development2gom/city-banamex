@@ -164,7 +164,9 @@ $this->registerJsFile(
 
     ?>  
     <div class="panel-table">
-        <?= GridView::widget([
+        <?php
+        
+        echo GridView::widget([
                 // 'tableOptions' => [
                 //     "class" => "table"
                 // ],
@@ -181,7 +183,10 @@ $this->registerJsFile(
                     'txt_identificador_cliente',
                     [
                         'filter'=>ArrayHelper::map($status, 'id_statu_cita', 'txt_nombre'),
-                        
+                        'filterInputOptions'=>[
+                            'class'=>'form-control',
+                            'prompt'=>"Ver todos"
+                        ],
                         'attribute' => 'id_status',
                         'format'=>'raw',
                         'value'=>function($data){
@@ -216,6 +221,10 @@ $this->registerJsFile(
                     ],
                     [
                         'filter'=>ArrayHelper::map(CatTiposTramites::find()->all(), 'id_tramite', 'txt_nombre'),
+                        'filterInputOptions'=>[
+                            'class'=>'form-control',
+                            'prompt'=>"Ver todos"
+                        ],
                         'attribute'=>'id_tipo_tramite',
                         'value'=>'idTipoTramite.txt_nombre'
                     ],
