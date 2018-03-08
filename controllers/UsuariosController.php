@@ -360,4 +360,14 @@ class UsuariosController extends Controller
         }
     }
 
+    public function actionTest(){
+        $usuario = EntUsuarios::getIdentity();
+
+        $auth = Yii::$app->authManager;
+
+        $hijos = $auth->getChildRoles($usuario->txt_auth_item);
+        ksort($hijos);
+        print_r($hijos);
+    }
+
 }

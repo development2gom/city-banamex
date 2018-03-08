@@ -22,9 +22,15 @@ class BotonesCitas
         
         $botones = "";
 
-        $botones .= $this->getBotonAutorizar($cita->id_status, $usuario);
-        $botones .= $this->getBotonActualizar($cita->id_status,$usuario);
-        $botones .= $this->getBotonCancelar($cita->id_status, $usuario);
+        $auth = Yii::$app->authManager;
+
+        $hijos = $auth->getChildRoles($usuario->txt_auth_item);
+        ksort($hijos);
+        $roles = AuthItem::find()->where(['in', 'name', ])->orderBy("name")->all();
+
+        $botones .= $this->getBotonAutorizar($cita->id_status, array_keys($hijos));
+        $botones .= $this->getBotonActualizar($cita->id_status,array_keys($hijos));
+        $botones .= $this->getBotonCancelar($cita->id_status, array_keys($hijos));
 
         return $botones;
     }

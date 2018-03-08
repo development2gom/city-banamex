@@ -142,66 +142,17 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public function guardarHistorialDependiendoUsuario($new = false, $cancel = false)
     {
-        $usuario = EntUsuarios::getUsuarioLogueado();
-
-        if ($usuario->txt_auth_item == Constantes::USUARIO_CALL_CENTER) {
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita creada");
+        if($new){
+            $message = Permisos::getMessageHistorialGuardar();
+        }else{
+            $message = Permisos::getMessageHistorialAprobar();
         }
 
-        if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR) {
-            if ($new) {
-                $message = "Cita capturada y autorizada por supervisor cc";
-            } else {
-                $message = "Cita autorizada por supervisor cc";
-            }
-
-            if ($cancel) {
-                $message = "Cita rechazada por supervisor cc";
-            }
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
+        if($cancel){
+            $message = Permisos::getMessageHistorialCancelar();
         }
 
-        if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_CC) {
-
-            if ($new) {
-                $message = "Cita capturada y autorizada por administrador cc";
-            } else {
-                $message = "Cita autorizada por administrador cc";
-            }
-
-            if ($cancel) {
-                $message = "Cita rechazada por administrador cc";
-            }
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
-        }
-
-        if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR_TELCEL) {
-
-            if ($new) {
-                $message = "Cita capturada y autorizada por supervisor telcel";
-            } else {
-                $message = "Cita autorizada por supervisor telcel";
-            }
-            if ($cancel) {
-                $message = "Cita rechazada por supervisor telcel";
-            }
-
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
-        }
-
-        if ($usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL) {
-
-
-            if ($new) {
-                $message = "Cita capturada y autorizada por administrador telcel";
-            } else {
-                $message = "Cita autorizada por administrador telcel";
-            }
-            if ($cancel) {
-                $message = "Cita rechazada por administrador telcel";
-            }
-            EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
-        }
+        EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
 
     }
 
