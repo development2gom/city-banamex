@@ -23,7 +23,7 @@ use app\models\CatTiposTramites;
       $this->params['headerActions'] = '<a class="btn btn-success ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
  }
 $this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon wb-calendar"></i>Citas',
+    'label' => '<i class="icon pe-7s-headphones"></i>Citas',
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
     'encode' => false];
 
