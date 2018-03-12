@@ -49,7 +49,7 @@ class EntCitasSearch extends EntCitas
      */
     public function search($params)
     {
-        $query = EntCitas::find()->leftJoin("ent_envios", "ent_envios.id_envio= ent_citas.id_envio");
+        $query = EntCitas::find()->leftJoin("ent_envios", "ent_envios.id_envio = ent_citas.id_envio");
 
         // add conditions that should always apply here
 
@@ -57,7 +57,10 @@ class EntCitasSearch extends EntCitas
             'query' => $query,
             'pagination'=>[
                 'pageSize' => 30,
+                //'pageSizeLimit'=>[1,10]
+                
             ],
+            
             'sort' => [
                 'defaultOrder' => [
                     'fch_creacion' => \SORT_DESC
@@ -65,7 +68,6 @@ class EntCitasSearch extends EntCitas
             ],
             
         ]);
-
 
         // Important: here is how we set up the sorting
     // The key is the attribute name on our "TourSearch" instance
@@ -118,21 +120,21 @@ class EntCitasSearch extends EntCitas
         }
 
         
-            if($this->id_status){
+            //if($this->id_status){
                 
                 $query->andFilterWhere(['id_status' => $this->id_status]);
-            }else if(($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL) || ($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)){
+            // }else if(($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL) || ($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)){
                 
-                $query->andFilterWhere(['in', 'id_status', [
-                    Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR, 
-                    Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
-                    Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL, 
-                    Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
-                    Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
-                    Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL ]]);
-            }else{
-                $query->andFilterWhere(['id_status' => $this->id_status]);
-            }
+            //     $query->andFilterWhere(['in', 'id_status', [
+            //         Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR, 
+            //         Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
+            //         Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL, 
+            //         Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
+            //         Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
+            //         Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL ]]);
+            // }else{
+            //     $query->andFilterWhere(['id_status' => $this->id_status]);
+            // }
 
         
        

@@ -34,7 +34,10 @@ AppAssetClassicTopBarBlank::register($this);
   </div>  
 
   <?php $this->endBody();?>
-
+  <script src="<?= Url::base() ?>/webAssets/templates/classic/global/vendor/breakpoints/breakpoints.js"></script>
+    <script>
+    Breakpoints();
+    </script>
   <script>
   (function(document, window, $) {
     'use strict';

@@ -1,4 +1,3 @@
-
 $(document).on({
     'click': function(){
         mostrarLoading();
@@ -41,8 +40,6 @@ $(document).on({
 }, "table thead a, a.list-group-item");
 
 
-
-
 function mostrarLoading(){
     $("#panel .panel-body").addClass("fade-out");
     $(".js-ms-loading").addClass("fade-in");
@@ -53,4 +50,41 @@ function clearInput(elemento){
     var input = padre.find(".form-control");
     input.val("");
     
+}
+
+$(".list-group-item-tag").on("click", function(e){
+    
+    $('.list-group-item-tag').removeClass("active");
+    $(this).toggleClass('active');
+});
+
+$(document).ready(function(){
+
+    $("#pjax-usuarios").on('pjax:complete', function() {
+        $("#entcitassearch-fch_creacion").kvDatepicker({"clearBtn": true,"autoclose":true,"format":"dd-mm-yyyy","language":"es"});
+        $("#entcitassearch-fch_cita").kvDatepicker({"clearBtn": true,"autoclose":true,"format":"dd-mm-yyyy","language":"es"});
+        actualizarEnvios();
+      })
+
+      actualizarEnvios();
+    
+});
+
+function actualizarEnvios(){
+// The .each() method is unnecessary here:
+$( ".actualizar-envio" ).each(function() {
+    var elemento = $(this);
+    var envio = elemento.data("envio");
+    $.ajax({
+        url: baseUrl+"citas/actualizar-envio?envio="+envio,
+        success:function(r){
+            if(r.status="success"){
+                $("#js-cita-envio-"+r.result.token).replaceWith(r.result.a);
+            }
+        },
+        error:function(x, y, z){
+            
+        }   
+    });
+});
 }

@@ -111,6 +111,7 @@ a
 /* Imagen de fondo */
 .page-login-v3
 	&:before
+		background-color: $mls-black
 		background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+)
 		background-image: -webkit-gradient(linear, left top, left bottom, from($bg-primary), to(#3583ca))
 		background-image: -webkit-linear-gradient(top, $bg-primary 0%, #3583ca 100%)
@@ -264,9 +265,8 @@ a
 		cursor: not-allowed
 		opacity: .4
 
-.modal-content
-	&.select2-container--krajee
-    	z-index: 9999
+.select2-container--krajee
+    z-index: 9999!important
 
 .datepicker
 	z-index: 1401 !important

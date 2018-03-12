@@ -57,7 +57,7 @@ $cat = $model->idCat;
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?php 
             if($model->isNewRecord){
                 echo $form->field($model, 'txt_telefono')->textInput(['maxlength' => true, 'class'=>'form-control input-number' ]); 
@@ -72,19 +72,19 @@ $cat = $model->idCat;
             }    
             ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_nombre')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_apellido_paterno')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_apellido_materno')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?php 
                 $end = date('Y-m-d', strtotime('-12 years'));
                 $end = Utils::changeFormatDate($end);
@@ -101,20 +101,20 @@ $cat = $model->idCat;
                 ]);
             ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_rfc')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'isEdicion')->hiddenInput(['maxlength' => true])->label(false) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_email')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_tpv')->textInput(['maxlength' => true, "class"=>"form-control input-number-decimal"]) ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'id_tipo_tramite')
                             ->widget(Select2::classname(), [
                                 'data' => ArrayHelper::map($tiposTramites, 'id_tramite', 'txt_nombre'),
@@ -126,7 +126,7 @@ $cat = $model->idCat;
                             ]);
             ?>                
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'id_tipo_cliente')
                                 ->widget(Select2::classname(), [
                                     'data' => ArrayHelper::map($tiposClientes, 'id_tipo_cliente', 'txt_nombre'),
@@ -138,7 +138,7 @@ $cat = $model->idCat;
                                 ]);
                 ?>  
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
         <?php
             require(__DIR__ . '/../components/select2.php');
             $url = Url::to(['equipos/buscar-equipo']);
@@ -174,22 +174,22 @@ $cat = $model->idCat;
         
         ?>       
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_numero_telefonico_nuevo')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
         </div>
     </div>
     
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_imei')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_iccid')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
     <div class="row">
         
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             
             <?= $form->field($model, 'b_documentos', [
                     'template'=>"{input}{label}{error}",
@@ -199,7 +199,7 @@ $cat = $model->idCat;
                         ]
                     ])->checkbox([], false) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             
             <?= $form->field($model, 'b_promocionales', [
                     'template'=>"{input}{label}{error}",
@@ -210,7 +210,7 @@ $cat = $model->idCat;
                     ])->checkbox([], false)  ?>
         </div>
         
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             
             <?= $form->field($model, 'b_sim', [
                     'template'=>"{input}{label}{error}",
@@ -223,10 +223,10 @@ $cat = $model->idCat;
     </div>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
         
         </div>
-        <div class="col-md-3 contenedor-promocionales">
+        <div class="col-sm-3 col-md-3 contenedor-promocionales">
             <?= $form->field($model, 'txt_promocional')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
@@ -241,7 +241,7 @@ $cat = $model->idCat;
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'b_entrega_cat', [
                     'template'=>"{input}{label}{error}",
                     'options' => [
@@ -250,7 +250,7 @@ $cat = $model->idCat;
                         ]
                     ])->checkbox([], false) ?>
         </div>
-        <div class="col-md-6 contenedor-cat">
+        <div class="col-sm-6 col-md-6 contenedor-cat">
             <?php
             $url = Url::to(['cats/buscar-cat']);
             $valCat = empty($model->id_cat) ? '' : $cat->txt_nombre;
@@ -304,52 +304,52 @@ $cat = $model->idCat;
     </div>
     
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
                 <?= $form->field($model, 'txt_codigo_postal')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-6 col-md-6">
             <?= $form->field($model, 'txt_calle_numero')->textInput(['maxlength' => true]) ?>
         </div>
             
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-sm-4 col-md-4">
             <?= $form->field($model, 'txt_colonia')->textInput(['maxlength' => true]) ?>
         </div>    
-        <div class="col-md-4">
+        <div class="col-sm-4 col-md-4">
         
             <?= $form->field($model, 'txt_municipio')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-sm-4 col-md-4">
             <?= $form->field($model, 'txt_estado')->textInput(['maxlength' => true]) ?>
         </div>
         
     </div>
 
     <div class="row js-puntos-referencias">
-        <div class="col-md-6">
+        <div class="col-sm-6 col-md-6">
             <?= $form->field($model, 'txt_entre_calles')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-6 col-md-6">
             <?= $form->field($model, 'txt_observaciones_punto_referencia')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_numero_referencia')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_numero_referencia_2')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_numero_referencia_3')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'id_tipo_identificacion')
                                     ->widget(Select2::classname(), [
                                         'data' => ArrayHelper::map($tiposIdentificaciones, 'id_tipo_identificacion', 'txt_nombre'),
@@ -361,7 +361,7 @@ $cat = $model->idCat;
                                     ]);
                 ?>  
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_folio_identificacion')->textInput(['maxlength' => true]) ?>        
         </div>
     </div>
@@ -376,7 +376,7 @@ $cat = $model->idCat;
     </div>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'id_area')
                                         ->widget(Select2::classname(), [
                                             //'value'=>$areaDefault->id_area,
@@ -387,14 +387,14 @@ $cat = $model->idCat;
                                         ]);
                 ?>  
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <div class="form-group">
                 <?=Html::label("Días de servicio", "num_dias_servicio", ["class"=>"form-control-label"])?>
                 <?=Html::textInput("num_dias_servicio", $model->num_dias_servicio, ['class'=>'form-control', 'disabled'=>'disabled', 'id'=>'num_dias_servicio' ])?>
             </div>    
                 <?= $form->field($model, 'num_dias_servicio')->hiddenInput(['maxlength' => true])->label(false) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-3 col-md-3">
             <?php
             $startDate = $model->fch_cita;
             $end = date('Y-m-d', strtotime('+2 months'));
@@ -425,7 +425,7 @@ $cat = $model->idCat;
             ?>
         </div>
         
-        <div class="col-md-3"> 
+        <div class="col-sm-3 col-md-3"> 
             <?php
     
             echo $form->field($model, 'id_horario')->widget(DepDrop::classname(), [

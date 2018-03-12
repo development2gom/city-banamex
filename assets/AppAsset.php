@@ -23,8 +23,8 @@ class AppAsset extends AssetBundle
         'css/site-extend.css'
     ];
     public $js = [
-        'plugins/ladda/spin.js',
-        'plugins/ladda/ladda.js',
+        'plugins/ladda/spin.min.js',
+        'plugins/ladda/ladda.min.js',
         'js/geeks.js'
 
     ];

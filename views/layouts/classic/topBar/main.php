@@ -35,7 +35,11 @@ AppAsset::register($this);
   <?=$this->render("//components/classic/topbar/footer")?>
 
   <?php $this->endBody();?>
- 
+
+<script src="<?= Url::base() ?>/webAssets/templates/classic/global/vendor/breakpoints/breakpoints.js"></script>
+    <script>
+    Breakpoints();
+    </script>
 
   <script>
   (function(document, window, $) {

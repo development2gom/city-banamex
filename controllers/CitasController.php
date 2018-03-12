@@ -21,6 +21,14 @@ use yii\data\ActiveDataProvider;
 use app\components\AccessControlExtend;
 use app\models\H2H;
 use app\models\EntEnvios;
+use app\models\ResponseServices;
+use app\models\CatStatusCitasApi;
+use yii\bootstrap\Html;
+use yii\helpers\Url;
+use app\models\Files;
+use app\models\EntEvidenciasCitas;
+use yii\web\UploadedFile;
+use app\models\Calendario;
 
 /**
  * CitasController implements the CRUD actions for EntCitas model.
@@ -35,10 +43,10 @@ class CitasController extends Controller
         return [
             'access' => [
                 'class' => AccessControlExtend::className(),
-                'only' => ['create', 'index', 'view'],
+                'only' => ['create', 'index', 'view', 'actualizar-envio', 'upload-file'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'index', 'view'],
+                        'actions' => ['create', 'index', 'view','actualizar-envio', 'upload-file'],
                     'allow' => true,
                         'roles' => [Constantes::USUARIO_CALL_CENTER],
                     ],
@@ -61,19 +69,9 @@ class CitasController extends Controller
      */
     public function actionIndex()
     {
-        if ((\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)) ){
-            $statusCitas = CatStatusCitas::find()->where(['in', 'id_statu_cita', [
-                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR, 
-                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
-                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL, 
-                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
-                Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
-                Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL 
-
-            ]])->all();
-        }else{
-            $statusCitas = CatStatusCitas::find()->where(['b_habilitado'=>1])->all();
-        }
+        
+        $statusCitas = CatStatusCitas::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
+        
         
 
         $searchModel = new EntCitasSearch();
@@ -335,25 +333,130 @@ class CitasController extends Controller
 
         $cita = new EntCitas();
         $envio = EntEnvios::find()->where(['txt_token'=>$token])->one();
+        
         $respuestaApi = json_decode($cita->consultarEnvio($envio->txt_tracking));
         $historico = json_decode($cita->consultarHistorico($envio->txt_tracking));
 
+       
        
         return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi, "historico"=>$historico]);
     }
 
 
     public function actionTestApiImage(){
-        $tracking = "SSYBS28021800007";
+        $tracking = "SSYBS05031800002";
         $cita = new EntCitas();
-        $respuestaApi = json_decode($cita->consultarEnvio($tracking));
-        $historico = json_decode($cita->consultarHistorico($tracking));
+        $respuestaApi = ($cita->consultarEnvio($tracking));
+        $historico =($cita->consultarHistorico($tracking));
 
-
-        //print_r($respuestaApi);
+echo $historico;
+echo $respuestaApi;
+exit;
+        print_r($respuestaApi);
 
         print_r($historico);
         exit;
+        
+    }
+
+    public function actionActualizarEnvio($envio){
+        $response = new ResponseServices();
+        if(!$envioSearch = EntEnvios::find()->where(["txt_tracking"=>$envio])->one()){
+            $response->message = "No se encontro el envio en la base de datos";
+            return $response;
+        }
+        $cita = $envioSearch->idCita;
+
+        $respuestaApi = json_decode($cita->consultarEnvio($envio));
+
+        if(!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api"=>$respuestaApi->ClaveEvento])->one()){
+            $response->message = "No se encontro el status del api en la base de datos";
+            return $response;
+        }
+
+        
+        $cita->id_status = $statusApi->id_statu_cita;
+        if(!$cita->save()){
+            $response->message = "No se pudo guardar la cita";
+            $response->result = $cita->errors;
+            return $response;
+        }
+
+        $response->status = "success";
+        $response->message = "Todo correcto";
+        $statusColor = EntCitas::getColorStatus($cita->id_status);
+        $response->result["a"] = Html::a(
+            $statusApi->txt_nombre,
+            Url::to(['citas/view', 'token' => $cita->txt_token]), 
+            [
+                'id'=>"js-cita-envio-".$cita->txt_token,
+                'data-envio'=>$envio,
+                'class'=>'btn badge '.$statusColor.' no-pjax ',
+            ]
+        );
+        $response->result["token"] = $cita->txt_token;
+
+        return $response;
+    }
+
+    public function actionUploadFile($token=null){
+        $cita = EntCitas::find()->where(["txt_token"=>$token])->one();
+        $evidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->one();
+
+        if($evidencia){
+            Files::borrarArchivo($evidencia->txt_url);
+        }else{
+            $evidencia = new EntEvidenciasCitas();
+        }
+        
+        $response = new ResponseServices();
+
+        $file = UploadedFile::getInstanceByName("file-upload");
+        //$response->result = $file;
+
+        if(!$file){
+            $response->message = "Archivo nulo";
+            return $response;
+        }
+
+        Files::validarDirectorio("evidencias/".$cita->txt_token);
+        $namefile = uniqid("pdf").".".$file->extension;
+        $path = "evidencias/".$cita->txt_token."/".$namefile;
+        $isSaved = $file->saveAs($path);
+
+        if($isSaved){
+           
+            $evidencia->id_cita = $cita->id_cita;
+            $evidencia->txt_url = $path;
+            $evidencia->txt_nombre_original = $file->name;
+            $evidencia->txt_token = Utils::generateToken("FIL");
+            $evidencia->fch_creacion = Calendario::getFechaActual();
+           
+            if($evidencia->save()){
+                $response->message = "Archivo guardado.";
+                $response->status = "success";
+                $response->result['url'] = Url::base()."/citas/descargar-evidencia?token=".$evidencia->txt_token;
+            }else{
+                $response->message="Ocurrio un problema al guardar en la base de datos.";
+                Files::borrarArchivo($path);
+            }
+            
+            
+        }else{
+            $response->message= "El archivo no se pudo guardar.";
+        }
+
+        return $response;
+    }
+
+    public function actionDescargarEvidencia($token=null){
+        $evidencia = EntEvidenciasCitas::find(["txt_token"=>$token])->one();
+        $cita = $evidencia->idCita;
+        if (file_exists($evidencia->txt_url)) {
+            Yii::$app->response->sendFile($evidencia->txt_url, "Evidencia_".$cita->txt_identificador_cliente.".pdf");
+        }else{
+            echo $evidencia->txt_url;
+        }
         
     }
 

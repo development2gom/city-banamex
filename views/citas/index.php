@@ -23,7 +23,7 @@ use app\models\CatTiposTramites;
       $this->params['headerActions'] = '<a class="btn btn-success ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
  }
 $this->params['breadcrumbs'][] = [
-    'label' => '<i class="icon wb-calendar"></i>Citas',
+    'label' => '<i class="icon pe-7s-headphones"></i>Citas',
     'template'=>'<li class="breadcrumb-item">{link}</li>', 
     'encode' => false];
 
@@ -59,8 +59,9 @@ $this->registerJsFile(
                 </span>
                 <?=$statu->txt_nombre?>
             </a> -->
-
-            <a class="list-group-item" href="<?=Url::base()?>/citas/index?EntCitasSearch[id_status]=<?=$statu->id_statu_cita?>">
+            
+            <!-- Active -->
+            <a class="list-group-item list-group-item-tag" href="<?=Url::base()?>/citas/index?EntCitasSearch[id_status]=<?=$statu->id_statu_cita?>">
                 <span class="badge badge-pill badge-<?=$statusColor?>"><?=count($statu->entCitas)?></span>
                 <?=$statu->txt_nombre?>
             </a>
@@ -81,7 +82,6 @@ $this->registerJsFile(
     ?>
 
 </div>    
-
 
 <!-- <div class="row">
     <div class="col-md-12 <?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)?"9":"12"?>">
@@ -164,7 +164,9 @@ $this->registerJsFile(
 
     ?>  
     <div class="panel-table">
-        <?= GridView::widget([
+        <?php
+        
+        echo GridView::widget([
                 // 'tableOptions' => [
                 //     "class" => "table"
                 // ],
@@ -181,18 +183,29 @@ $this->registerJsFile(
                     'txt_identificador_cliente',
                     [
                         'filter'=>ArrayHelper::map($status, 'id_statu_cita', 'txt_nombre'),
-                        
+                        'filterInputOptions'=>[
+                            'class'=>'form-control',
+                            'prompt'=>"Ver todos"
+                        ],
                         'attribute' => 'id_status',
                         'format'=>'raw',
                         'value'=>function($data){
                             
                             $statusColor = EntCitas::getColorStatus($data->id_status);
-            
+                            $classActualizar = "actualizar-envio";
+                            $isBuscar = false;
+                            $dataEnvio = '';
+                            if($data->id_envio && ($data->id_status != Constantes::STATUS_ENTREGADO || Constantes::STATUS_CANCELADO)){
+                                $isBuscar = true;
+                                $dataEnvio = $data->txtTracking;
+                            }
                             return Html::a(
                                 $data->idStatus->txt_nombre,
                                 Url::to(['citas/view', 'token' => $data->txt_token]), 
                                 [
-                                    'class'=>'btn badge '.$statusColor.' no-pjax',
+                                    'id'=>"js-cita-envio-".$data->txt_token,
+                                    'data-envio'=>$dataEnvio,
+                                    'class'=>'btn badge '.$statusColor.' no-pjax '.($isBuscar?$classActualizar:''),
                                 ]
                             );
                         }
@@ -208,6 +221,10 @@ $this->registerJsFile(
                     ],
                     [
                         'filter'=>ArrayHelper::map(CatTiposTramites::find()->all(), 'id_tramite', 'txt_nombre'),
+                        'filterInputOptions'=>[
+                            'class'=>'form-control',
+                            'prompt'=>"Ver todos"
+                        ],
                         'attribute'=>'id_tipo_tramite',
                         'value'=>'idTipoTramite.txt_nombre'
                     ],
@@ -220,7 +237,8 @@ $this->registerJsFile(
                             'type' => DatePicker::TYPE_INPUT,
                             'pluginOptions' => [
                                 'autoclose'=>true,
-                                'format' => 'dd-mm-yyyy'
+                                'format' => 'dd-mm-yyyy',
+                                'clearBtn'=>true,
                             ]
                         ]),
                         'attribute'=>'fch_creacion',
@@ -334,11 +352,14 @@ $this->registerJsFile(
                     'maxButtonCount' => '5',
                 ]
             ]) ?>
-
-   
-
-    
 </div>    
 
+
+<style>
+.datepicker{
+    z-index:9999 !important;
+}
+
+</style>
 
    
