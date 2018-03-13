@@ -39,7 +39,7 @@ class BotonesCitas
     
     public function getBotonAutorizar($statusCita, $usuario)
     {
-        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->where(["id_accion"=>Constantes::BTN_APROBAR, "id_status_cita"=>$statusCita])->one();
+        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->andWhere(["id_accion"=>Constantes::BTN_APROBAR, "id_status_cita"=>$statusCita])->one();
 
         if($botonHabilitado){
 
@@ -51,7 +51,7 @@ class BotonesCitas
 
     public function getBotonCancelar($statusCita, $usuario)
     {
-        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->where(["id_accion"=>Constantes::BTN_APROBAR, "id_status_cita"=>$statusCita])->one();
+        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->andWhere(["id_accion"=>Constantes::BTN_APROBAR, "id_status_cita"=>$statusCita])->one();
 
         if($botonHabilitado){
 
@@ -63,7 +63,7 @@ class BotonesCitas
 
     public function getBotonActualizar($statusCita, $usuario)
     {
-        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->where(["id_accion"=>Constantes::BTN_APROBAR, "id_status_cita"=>$statusCita])->one();
+        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->andWhere(["id_accion"=>Constantes::BTN_APROBAR, "id_status_cita"=>$statusCita])->one();
 
         if($botonHabilitado){
 

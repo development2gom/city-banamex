@@ -16,7 +16,7 @@ class Permisos
         switch ($usuario->txt_auth_item) {
             case Constantes::USUARIO_CALL_CENTER:
                 // Usuario solo puede ver sus citas creadas
-                $query->andFilterWhere(['id_usuario' => $usuario->id_usuario]); 
+                $query->andFilterWhere(['id_usuario' => $usuario->id_usuario, 'id_call_center'=>$usuario->id_call_center]); 
                 break;
             case Constantes::USUARIO_SUPERVISOR:
                 // usuario puede ver todo su equipo de trabajo
@@ -28,7 +28,7 @@ class Permisos
                     $usuarioAsignado[] = $miUsuario->id_usuario_asignado;
                 }
 
-                $query->andFilterWhere(['in','id_usuario', $usuarioAsignado]);
+                $query->andFilterWhere(['in','id_usuario', $usuarioAsignado])->andFilterWhere(['id_call_center'=>$usuario->id_call_center]);
                 break;
             case Constantes::USUARIO_ADMINISTRADOR_CC:
                 # code...

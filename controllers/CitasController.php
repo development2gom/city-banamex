@@ -192,6 +192,7 @@ class CitasController extends Controller
             $model->getConsecutivo();
             $model->statusAprobacionDependiendoUsuario();
             $model->setAddresCat();
+            $model->id_call_center = $usuario->id_call_center;
             if($model->save()){
 
                 if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)){      
