@@ -31,6 +31,7 @@ class Permisos
                 $query->andFilterWhere(['in','id_usuario', $usuarioAsignado])->andFilterWhere(['id_call_center'=>$usuario->id_call_center]);
                 break;
             case Constantes::USUARIO_ADMINISTRADOR_CC:
+                $query->andFilterWhere(['id_call_center'=>$usuario->id_call_center]);
                 # code...
                 break;
             case Constantes::USUARIO_SUPERVISOR_TELCEL:
