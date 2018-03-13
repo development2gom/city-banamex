@@ -129,7 +129,11 @@ class Calendario
         return $fecha;
     }
 
-    
+    public static function getFechaActual(){
+        // Inicializamos la fecha y hora actual
+        $fecha = date ( 'Y-m-d H:i:s', time () );
+        return $fecha;
+    }
 
     public static function nombreMes($fecha)
     {

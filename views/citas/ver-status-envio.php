@@ -1,6 +1,10 @@
 <?php
 // use yii\helpers\Url;
 use app\models\Calendario;
+use app\assets\AppAsset;
+use yii\helpers\Html;
+use app\models\EntEvidenciasCitas;
+use yii\helpers\Url;
 $this->title = $envio->txt_tracking;
 $this->params['classBody'] = "site-navbar-small site-menubar-hide";
 
@@ -26,20 +30,31 @@ $this->registerJsFile(
     ['depends' => [\app\assets\AppAsset::className()]]
   );
 
+  $this->registerCssFile(
+    '@web/webAssets/templates/classic/global/vendor/dropify/dropify.css',
+    ['depends' => [AppAsset::className()]]
+  ); 
+
+  $this->registerJsFile(
+    '@web/webAssets/templates/classic/global/vendor/dropify/dropify.min.js',
+    ['depends' => [AppAsset::className()]]
+);
+
+$this->registerJsFile(
+    '@web/webAssets/templates/classic/global/js/Plugin/dropify.js',
+    ['depends' => [AppAsset::className()]]
+);
 
 
-
-
+$cita = $envio->idCita;
+$hasEvidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->one();
 
 
  $this->params['breadcrumbs'][] = [
-     'label' => '<i class="icon wb-eye"></i> '.$envio->idCita->txt_identificador_cliente,
-     'url'=>['view', 'token'=>$envio->idCita->txt_token],
+     'label' => '<i class="icon wb-eye"></i> '.$cita->txt_identificador_cliente,
+     'url'=>['view', 'token'=>$cita->txt_token],
      'template'=>'<li class="breadcrumb-item">{link}</li>', 
      'encode' => false];
-
-
-
 ?>
 
 <div class="citas-status-send">
@@ -215,6 +230,28 @@ $this->registerJsFile(
 
             </div>
 
+            <h4>Subir evidencia <small><a target="_blank" class="float-right js-descargar-evidencia" href="<?=$hasEvidencia?Url::base()."/citas/descargar-evidencia?token=".$hasEvidencia->txt_token:''?>" style="display:<?=$hasEvidencia?'block':'none'?>">Descargar</a></small></h4>
+            <div class="card card-shadow card-dropify">
+                
+                <?= Html::beginForm(['citas/upload-file'], 'post', ['enctype' => 'multipart/form-data','id' => "form-upload-file"]) ?>
+                <?= Html::fileInput("file-upload", "", [
+                        "id"=>"input-image-upload", 
+                        "data-plugin"=>"dropify", 
+                        "data-max-file-size"=>"50M", 
+                        "data-allowed-file-extensions"=>"pdf",
+                        
+                    ])?>
+                    
+                <div class="card-block">
+                  <h4 class="card-title">
+                    <?=Html::submitButton("<span class='ladda-label'>Guardar evidencia</span>", ["class"=>"btn btn-success btn-block ladda-button", "id"=>"btn-upload-file", "data-style"=>"zoom-in"])?>
+                  </h4>
+                </div>
+                <?=Html::endForm()?>
+            </div>
+
+          
+
         </div>
     </div>
     
@@ -355,3 +392,4 @@ $this->registerJsFile(
         ?>
     </div>
 </div>-->
+<input id="token-cita" value="<?=$cita->txt_token?>" type="hidden"/>
