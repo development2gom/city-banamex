@@ -537,7 +537,8 @@
 
 	.citas-stat-send-grals,
 	.citas-stat-send-record,
-	.citas-stat-send-media
+	.citas-stat-send-media,
+	.citas-stat-send-evidencia
 		background-color: rgba($mls-bg-red, 0.4)
 		padding: 20px 16px
 		h3
@@ -567,6 +568,8 @@
 				margin-left: 24px
 				padding: 4px 16px 3px
 				text-transform: uppercase
+				&:active,
+				&:focus,
 				&:hover
 					background-color: rgba($mls-aqua,.35)
 					color: $white
@@ -644,6 +647,7 @@
 								border-radius: 0
 								
 	.citas-stat-send-media
+		margin-bottom: 32px
 		
 		.citas-stat-send-item
 			h5
@@ -655,3 +659,66 @@
 				padding: 6px 0
 				text-decoration: none
 				text-transform: uppercase
+		
+	.citas-stat-send-evidencia
+		h5
+			margin-bottom: 16px
+			font-weight: $light
+			margin: 0
+			color: $mls-grey-secundary
+			font-size: .8rem
+			padding: 6px 0
+			text-decoration: none
+			text-transform: uppercase
+			.badge
+				background-color: $mls-aqua
+				border: 1px solid $mls-aqua
+				border-radius: 10rem
+				color: $mls-black
+				font-size: .85rem
+				font-weight: $light
+				// margin-left: 24px
+				padding: 2px 8px
+				text-transform: uppercase
+				&:active,
+				&:focus,
+				&:hover
+					background-color: rgba($mls-aqua,.35)
+					color: $white
+				i
+					font-weight: $light
+					margin-right: 0
+		
+		.card
+			background-color: transparent
+			margin-top: 32px
+			width: 100%
+			.dropify-wrapper
+				background-color: transparent
+				border: 1px solid rgba($mls-aqua,.45)
+				.dropify-message
+					color: $white
+				.dropify-preview
+					background-color: transparent
+				&:hover
+					background-color: rgba($primary,.1)
+					background-image: linear-gradient(-45deg, rgba($white,.1) 25%, transparent 25%, transparent 50%, rgba($white,.1) 50%, rgba($white,.1) 75%, transparent 75%, transparent)
+				&.has-preview
+					.dropify-message
+						opacity: 0
+
+			.card-block
+				padding: 0
+				h4
+					margin-bottom: 0
+					button
+						background-color: $mls-aqua
+						border-color: $mls-aqua
+						border-radius: 0
+						color: $mls-black
+						font-weight: $regular
+						text-transform: uppercase
+						&:active,
+						&:hover,
+						&:focus
+							background-color: rgba($mls-aqua,.75)
