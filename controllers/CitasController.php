@@ -29,6 +29,8 @@ use app\models\Files;
 use app\models\EntEvidenciasCitas;
 use yii\web\UploadedFile;
 use app\models\Calendario;
+use app\models\CatCallsCenters;
+use app\models\CatEquipos;
 
 /**
  * CitasController implements the CRUD actions for EntCitas model.
@@ -192,7 +194,6 @@ class CitasController extends Controller
             $model->getConsecutivo();
             $model->statusAprobacionDependiendoUsuario();
             $model->setAddresCat();
-            $model->id_call_center = $usuario->id_call_center;
             if($model->save()){
 
                 if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)){      
@@ -334,16 +335,9 @@ class CitasController extends Controller
 
         $cita = new EntCitas();
         $envio = EntEnvios::find()->where(['txt_token'=>$token])->one();
-
-        $respuestaApi = $cita->consultarEnvio($envio->txt_tracking);
-        $historico = $cita->consultarHistorico($envio->txt_tracking);
-
-        $envio->txt_respuesta_api = $respuestaApi;
-        $envio->txt_historial_api = $historico;
-        $envio->save();
-
-        $respuestaApi = json_decode($respuestaApi);
-        $historico = json_decode($historico);
+        
+        $respuestaApi = json_decode($cita->consultarEnvio($envio->txt_tracking));
+        $historico = json_decode($cita->consultarHistorico($envio->txt_tracking));
 
        
        
@@ -469,118 +463,7 @@ exit;
     }
 
 
-    public function actionImportarData(){
 
-        $errores = [];
-        
-        if (Yii::$app->request->isPost) {
-            $file = UploadedFile::getInstanceByName('file-import');
-            
-            if ($file) {
-               
-                try{
-                    $inputFileType = \PHPExcel_IOFactory::identify($file->tempName);
-                    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
-                    $objPHPExcel = $objReader->load($file->tempName);
-
-                }catch(\Exception $e){
-                    echo $e;
-                    exit;
-                }
-
-                $sheet = $objPHPExcel->getSheet(0);
-                $highestRow = $sheet->getHighestRow();
-                $highestColumn = $sheet->getHighestColumn();
-
-                //  Loop through each row of the worksheet in turn
-                for ($row = 3; $row <= $highestRow; $row++){ 
-                    $cita = new EntCitas();
-                    //  Read a row of data into an array
-                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row,
-                                                    NULL,
-                                                    TRUE,
-                                                    FALSE);
-                                            
-                    foreach($rowData as $data){
-                        $cita->id_tipo_tramite;
-                        $cita->id_equipo;
-                        $cita->id_area;
-                        $cita->id_tipo_entrega;
-                        $cita->id_usuario;
-                        $cita->id_status;
-                        $cita->id_tipo_cliente;
-                        $cita->id_tipo_identificacion;
-                        $cita->id_horario;
-                        $cita->id_cat;
-                        $cita->id_call_center;
-                        $cita->txt_telefono;
-                        $cita->txt_nombre;
-                        $cita->txt_apellido_materno;
-                        $cita->txt_apellido_paterno;
-                        $cita->txt_email;
-                        $cita->txt_folio_identificacion;
-                        $cita->fch_nacimiento;
-                        $cita->num_dias_servicio;
-                        $cita->txt_token;
-                        $cita->txt_iccid;
-                        $cita->txt_imei;
-                        $cita->txt_estado;
-                        $cita->txt_calle_numero;
-                        $cita->txt_colonia;
-                        $cita->txt_codigo_postal;
-                        $cita->txt_municipio;
-                        $cita->txt_entre_calles;
-                        $cita->txt_observaciones_punto_referencia;
-                        $cita->txt_identificador_cliente;
-                        $cita->txt_tpv;
-                        $cita->txt_promocional;
-                        $cita->fch_cita;
-                        $cita->fch_creacion;
-                        $cita->b_entrega_cat;
-                        
-                        
-                    }
-                  
-                    $cita->save();
-                   
-                    //  Insert row data array into your database of choice here
-                }
-
-            }
-        }
-
-        return $this->render("importar-data", ['errores'=>$errores]);
-    }
-
-    public function getStatus($texto){
-        switch ($texto) {
-            case 'AUTORIZADO ADMINISTRADOR TELCEL':
-            # code...
-            break;
-            case 'AUTORIZADO SUPERVISOR CALLCENTER':
-            # code...
-            break;
-            case 'AUTORIZADO SUPERVISOR TELCEL':
-            # code...
-            break;
-            case 'CANCELADO ADMINISTRADOR TELCEL':
-            # code...
-            break;
-            case 'CAPTURA':
-            # code...
-            break;
-            case 'RECHAZADO ADMINISTRADOR TELCEL':
-            # code...
-            break;
-            case 'RECHAZADO SUPERVISOR TELCEL':
-            # code...
-            break;    
-            
-            default:
-                
-            break;
-        }
-    }
 
     
 }
