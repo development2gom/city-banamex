@@ -230,38 +230,37 @@ $hasEvidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->
 
             </div>
 
-            <h4>Subir evidencia <small><a target="_blank" class="float-right js-descargar-evidencia" href="<?=$hasEvidencia?Url::base()."/citas/descargar-evidencia?token=".$hasEvidencia->txt_token:''?>" style="display:<?=$hasEvidencia?'block':'none'?>">Descargar</a></small></h4>
-            <div class="card card-shadow card-dropify">
-                
-                <?= Html::beginForm(['citas/upload-file'], 'post', ['enctype' => 'multipart/form-data','id' => "form-upload-file"]) ?>
-                <?= Html::fileInput("file-upload", "", [
-                        "id"=>"input-image-upload", 
-                        "data-plugin"=>"dropify", 
-                        "data-max-file-size"=>"50M", 
-                        "data-allowed-file-extensions"=>"pdf",
-                        
-                    ])?>
+            <div class="citas-stat-send-evidencia">
                     
-                <div class="card-block">
-                  <h4 class="card-title">
-                    <?=Html::submitButton("<span class='ladda-label'>Guardar evidencia</span>", ["class"=>"btn btn-success btn-block ladda-button", "id"=>"btn-upload-file", "data-style"=>"zoom-in"])?>
-                  </h4>
+                <h5>
+                    Subir evidencia
+                    <a class="badge float-right js-descargar-evidencia" style="display:<?=$hasEvidencia?'block':'none'?>" href="<?=$hasEvidencia?Url::base()."/citas/descargar-evidencia?token=".$hasEvidencia->txt_token:''?>" target="_blank"><i class="icon wb-download" aria-hidden="true"></i></a>
+                </h5>
+
+                <div class="card card-dropify">
+                    
+                    <?= Html::beginForm(['citas/upload-file'], 'post', ['enctype' => 'multipart/form-data','id' => "form-upload-file"]) ?>
+                    <?= Html::fileInput("file-upload", "", [
+                            "id"=>"input-image-upload", 
+                            "data-plugin"=>"dropify", 
+                            "data-max-file-size"=>"50M", 
+                            "data-allowed-file-extensions"=>"pdf",
+                            
+                        ])?>
+                        
+                    <div class="card-block">
+                    <h4 class="card-title">
+                        <?=Html::submitButton("<span class='ladda-label'>Guardar evidencia</span>", ["class"=>"btn btn-success btn-block ladda-button", "id"=>"btn-upload-file", "data-style"=>"zoom-in"])?>
+                    </h4>
+                    </div>
+                    <?=Html::endForm()?>
                 </div>
-                <?=Html::endForm()?>
+
             </div>
-
-          
-
+            
         </div>
+
     </div>
-    
-    
-
-    
-
-
-
-    
 
 </div>
 
