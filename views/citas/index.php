@@ -12,6 +12,8 @@ use app\models\Constantes;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use app\models\CatTiposTramites;
+use app\models\EntUsuarios;
+use app\models\Permisos;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\ModUsuarios\models\EntUsuariosSearch */
@@ -36,6 +38,7 @@ $this->registerJsFile(
     '@web/webAssets/js/citas/index.js',
     ['depends' => [\app\assets\AppAsset::className()]]
 );
+
 ?>
 
 
@@ -238,7 +241,7 @@ $this->registerJsFile(
                             'pluginOptions' => [
                                 'autoclose'=>true,
                                 'format' => 'dd-mm-yyyy',
-                                "clearBtn"=>true
+                                'clearBtn'=>true,
                             ]
                         ]),
                         'attribute'=>'fch_creacion',
@@ -257,8 +260,7 @@ $this->registerJsFile(
                             'type' => DatePicker::TYPE_INPUT,
                             'pluginOptions' => [
                                 'autoclose'=>true,
-                                'format' => 'dd-mm-yyyy',
-                                "clearBtn"=>true
+                                'format' => 'dd-mm-yyyy'
                             ]
                         ]),
                         'attribute'=>'fch_cita',
@@ -277,13 +279,17 @@ $this->registerJsFile(
                         'value'=>function($data){
 
                             if($data->id_envio){
-                                return Html::a(
-                                    $data->txtTracking,
-                                    Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]),
-                                    [
-                                        'class'=>'id-send no-pjax'
-                                    ]
-                                );
+                                if(Permisos::canUsuarioVerStatusEnvio()){
+                                    return Html::a(
+                                        $data->txtTracking,
+                                        Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]),
+                                        [
+                                            'class'=>'id-send no-pjax'
+                                        ]
+                                    );
+                                }
+
+                                return "<span class='id-send-error'>".$data->txtTracking."</span>";
                             }
 
                             return "<span class='id-send-error'>---</span>";

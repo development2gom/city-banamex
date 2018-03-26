@@ -55,6 +55,43 @@ class Permisos
         return $query;
     }
 
+    public static function canUsuarioVerStatusEnvio(){
+        $usuario = EntUsuarios::getUsuarioLogueado();
+        $canUser = true;
+        switch ($usuario->txt_auth_item) {
+            case Constantes::USUARIO_CALL_CENTER:
+                $canUser = false;
+                break;
+            case Constantes::USUARIO_SUPERVISOR:
+                $canUser = false;
+                break;
+            case Constantes::USUARIO_ADMINISTRADOR_CC:
+                $canUser = true;
+                break;
+            case Constantes::USUARIO_SUPERVISOR_TELCEL:
+                $canUser = false;
+                break;
+            case Constantes::USUARIO_ADMINISTRADOR_TELCEL:
+                $canUser = true;
+                break;
+            case Constantes::USUARIO_MASTER_BRIGHT_STAR:
+                $canUser = true;
+                break;
+            case Constantes::USUARIO_MASTER_CALL_CENTER:
+                $canUser = true;
+                break;
+            case Constantes::USUARIO_MASTER_TELCEL:
+                $canUser = true;
+                break;
+            default:
+                $canUser = null;
+            break;
+        }
+
+        return $canUser;
+
+    }
+
     public static function getStatusAprobacionDependiendoUsuario(){
         $usuario = EntUsuarios::getUsuarioLogueado();
         switch ($usuario->txt_auth_item) {
