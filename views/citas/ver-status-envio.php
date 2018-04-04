@@ -135,6 +135,14 @@ $hasEvidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->
                                         <?=$historial->Motivo?>
                                     </td>
                                     <td>
+                                        <?php
+                                        if(isset($respuestaApi->ImagesLinks)){
+                                            foreach($respuestaApi->ImagesLinks as $images){
+                                               
+                                            }
+                                        }    
+                                        ?>
+
                                         <!-- <img class="avatar avatar-sm" src="http://via.placeholder.com/200x200" data-toggle="tooltip" data-original-title="Crystal Bates" data-container="body" title=""> -->
                                     </td>
                                     <td>
