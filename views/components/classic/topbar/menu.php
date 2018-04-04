@@ -79,14 +79,14 @@ $usuario = EntUsuarios::getUsuarioLogueado();
                         </a>
                       </li>
                      
-                      <li class="site-menu-item">
+                      <!-- <li class="site-menu-item">
                         <a class="animsition-link" href="<?=Url::base()?>/usuarios/importar-data">
                           <span class="site-menu-title">
                           <i class="site-menu-icon pe-7s-cloud-upload" aria-hidden="true"></i>
                               Importar usuarios
                           </span>
                         </a>
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
                 </div>
