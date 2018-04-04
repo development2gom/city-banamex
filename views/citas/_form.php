@@ -305,7 +305,49 @@ $cat = $model->idCat;
     
     <div class="row">
         <div class="col-sm-3 col-md-3">
-                <?= $form->field($model, 'txt_codigo_postal')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
+            <?php
+            $url = Url::to(['codigos-postales/buscar-codigo']);
+                $valCat = $model->txt_codigo_postal;
+                //$equipo = empty($model->id_equipo) ? '' : CatEquipos::findOne($model->id_equipo)->txt_nombre;
+                // render your widget
+                echo $form->field($model, 'txt_codigo_postal')->widget(Select2::classname(), [
+                    'options' => ['placeholder' => 'Ingresar CP'],
+                    
+                    'pluginOptions' => [
+                        'language' => [
+                            'errorLoading' => new JsExpression("function () { return 'Error al cargar'; }"),
+                            'loadingMore' => new JsExpression("function () { return 'Cargando más resultados...'; }"),
+                            'noResults' => new JsExpression("function () { return 'No existe cobertura para el C.P. ingresado'; }"),
+                            'searching' => new JsExpression("function () { return 'Buscando...'; }"),
+                            'inputTooShort' => new JsExpression(
+                                'function (e) { 
+                                    var t = e.minimum - e.input.length;
+                                    n = "Ingrese " + t + " o más dígitos";
+                                    return n; 
+                                }'),
+                        ],
+                        'allowClear' => true,
+                        'minimumInputLength' => 1,
+                        'ajax' => [
+                            'url' => $url,
+                            'dataType' => 'json',
+                            'delay' => 250,
+                            'data' => new JsExpression('function(params) { return {q:params.term, page: params.page}; }'),
+                            'processResults' => new JsExpression($resultsJs),
+                            'cache' => true
+                        ],
+                        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                        'templateResult' => new JsExpression('function(equipo) { return equipo.txt_nombre; }'),
+                        'templateSelection' => new JsExpression('function (equipo) { 
+                                    if(equipo.txt_nombre){
+                                        return equipo.txt_nombre;
+                                    }else{
+                                        return "'.$model->txt_codigo_postal.'"
+                                    }
+                        }'),
+                    ],
+                ])?>
+              
         </div>
         <div class="col-sm-6 col-md-6">
             <?= $form->field($model, 'txt_calle_numero')->textInput(['maxlength' => true]) ?>
@@ -492,7 +534,7 @@ $this->registerJs(
     <?php
 $this->registerJs(
   '
-
+  
   $("#entcitas-txt_telefono").on("change", function(){
     var elemento = $(this);
     var data = elemento.val();

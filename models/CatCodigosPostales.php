@@ -9,7 +9,8 @@ use Yii;
  *
  * @property string $txt_codigo_postal
  *
- * @property CatColonias[] $catColonias
+ * @property RelMunicipioCodigoPostal[] $relMunicipioCodigoPostals
+ * @property CatMunicipios[] $idMunicipios
  */
 class CatCodigosPostales extends \yii\db\ActiveRecord
 {
@@ -45,8 +46,16 @@ class CatCodigosPostales extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCatColonias()
+    public function getRelMunicipioCodigoPostals()
     {
-        return $this->hasMany(CatColonias::className(), ['txt_codigo_postal' => 'txt_codigo_postal']);
+        return $this->hasMany(RelMunicipioCodigoPostal::className(), ['txt_codigo_postal' => 'txt_codigo_postal']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdMunicipios()
+    {
+        return $this->hasMany(CatMunicipios::className(), ['id_municipio' => 'id_municipio'])->viaTable('rel_municipio_codigo_postal', ['txt_codigo_postal' => 'txt_codigo_postal']);
     }
 }
