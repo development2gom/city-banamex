@@ -13,6 +13,7 @@ use yii\helpers\Json;
 use app\models\EntCitas;
 use app\models\Calendario;
 use app\modules\ModUsuarios\models\Utils;
+use app\models\ResponseServices;
 
 /**
  * HorariosAreasController implements the CRUD actions for EntHorariosAreas model.
@@ -128,6 +129,7 @@ class HorariosAreasController extends Controller
     }
 
     public function actionGetHorariosDisponibilidadByArea($horario = null){
+        $respuesta = new ResponseServices();
         $out = [];
 
         if (isset($_POST['depdrop_all_params']['entcitas-id_area']) &&
