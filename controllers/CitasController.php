@@ -344,7 +344,7 @@ class CitasController extends Controller
 
 
     public function actionTestApiImage(){
-        $tracking = "SSYBS01031800012";
+        $tracking = "SSYBS05041800001";
         $cita = new EntCitas();
         $respuestaApi = ($cita->consultarEnvio($tracking));
         $historico =($cita->consultarHistorico($tracking));
@@ -369,6 +369,12 @@ exit;
 
         $respuestaApi = json_decode($cita->consultarEnvio($envio));
 
+
+        $envioSearch->txt_respuesta_api = $respuestaApi;
+        $envioSearch->save();
+            
+        
+
         if(!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api"=>$respuestaApi->ClaveEvento])->one()){
             $response->message = "No se encontro el status del api en la base de datos";
             return $response;
@@ -391,7 +397,7 @@ exit;
             [
                 'id'=>"js-cita-envio-".$cita->txt_token,
                 'data-envio'=>$envio,
-                'class'=>'btn badge '.$statusColor.' no-pjax ',
+                'class'=>'btn badge '.$statusColor.' no-pjax actualizar-envio',
             ]
         );
         $response->result["token"] = $cita->txt_token;
