@@ -336,7 +336,6 @@ class CitasController extends Controller
         
         $respuestaApi = json_decode($cita->consultarEnvio($envio->txt_tracking));
         $historico = json_decode($cita->consultarHistorico($envio->txt_tracking));
-
        
        
         return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi, "historico"=>$historico]);
@@ -391,7 +390,7 @@ exit;
             [
                 'id'=>"js-cita-envio-".$cita->txt_token,
                 'data-envio'=>$envio,
-                'class'=>'btn badge '.$statusColor.' no-pjax ',
+                'class'=>'btn badge '.$statusColor.' no-pjax actualizar-envio',
             ]
         );
         $response->result["token"] = $cita->txt_token;

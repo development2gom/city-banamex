@@ -111,13 +111,14 @@ $hasEvidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->
                                 <th>Evidencia</th>
                                 <th>Firma</th>
                                 <th>Comentarios</th>
+                                <th>Mapa</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                                 if(isset($historico->History)){
                                     usort($historico->History, function($a, $b) { return strtotime($b->Fecha) - strtotime($a->Fecha); });
-                                    foreach($historico->History as $historial){
+                                    foreach($historico->History as $key=>$historial){
                             ?>
                                 <tr>
                                     <td>
@@ -136,9 +137,13 @@ $hasEvidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->
                                     </td>
                                     <td>
                                         <?php
-                                        if(isset($respuestaApi->ImagesLinks)){
-                                            foreach($respuestaApi->ImagesLinks as $images){
-                                               
+                                        if(isset($historico->Images)){
+                                            if(isset($historico->Images[$key])){
+                                             ?>
+                                             <a class="magnific" href="<?=$historico->Images[$key]->Link?>" >
+                                                <img class="avatar avatar-sm" src="<?=$historico->Images[$key]->Link?>"  data-container="body" title="">
+                                            </a>
+                                             <?php
                                             }
                                         }    
                                         ?>
@@ -156,6 +161,28 @@ $hasEvidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->
                                     </td>
                                     <td>
                                         <?=$historial->Comentario?>
+                                    </td>
+                                    <td>
+                                        <?php 
+                                            if(isset($historial->Geolocation)&&$historial->Geolocation){
+                                                
+                                                $coordenadas = explode("|" , $historial->Geolocation);
+
+                                                $latitud = $coordenadas[0];
+                                                $longitud = $coordenadas[1];
+                                                ?>
+                                                <div class="card card-shadow">
+                                                    <figure class="card-img-top overlay-hover overlay">
+                                                    <a class="magnific" href="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&markers=color:red%7C<?=$latitud?>,<?=$longitud?>&zoom=19&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" ><img  class="overlay-figure overlay-scale" src="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&markers=color:red%7C<?=$latitud?>,<?=$longitud?>&zoom=19&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" alt="...">
+                                                    </a>
+                                                    </figure>
+                                                </div>
+                                            <?php
+                                            }else{
+                                                echo "Sin posición";
+                                            }
+                                            
+                                        ?>
                                     </td>
                                 </tr>
                             <?php
