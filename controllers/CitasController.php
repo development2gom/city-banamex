@@ -336,7 +336,6 @@ class CitasController extends Controller
         
         $respuestaApi = json_decode($cita->consultarEnvio($envio->txt_tracking));
         $historico = json_decode($cita->consultarHistorico($envio->txt_tracking));
-
        
        
         return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi, "historico"=>$historico]);
@@ -344,7 +343,7 @@ class CitasController extends Controller
 
 
     public function actionTestApiImage(){
-        $tracking = "SSYBS05041800001";
+        $tracking = "SSYBS01031800012";
         $cita = new EntCitas();
         $respuestaApi = ($cita->consultarEnvio($tracking));
         $historico =($cita->consultarHistorico($tracking));
@@ -368,12 +367,6 @@ exit;
         $cita = $envioSearch->idCita;
 
         $respuestaApi = json_decode($cita->consultarEnvio($envio));
-
-
-        $envioSearch->txt_respuesta_api = $respuestaApi;
-        $envioSearch->save();
-            
-        
 
         if(!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api"=>$respuestaApi->ClaveEvento])->one()){
             $response->message = "No se encontro el status del api en la base de datos";
