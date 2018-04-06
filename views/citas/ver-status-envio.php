@@ -140,7 +140,9 @@ $hasEvidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->
                                         if(isset($historico->Images)){
                                             if(isset($historico->Images[$key])){
                                              ?>
-                                                <img class="avatar avatar-sm" src="<?=$historico->Images[$key]->Link?>" data-toggle="tooltip" data-original-title="Crystal Bates" data-container="body" title="">
+                                             <a class="magnific" href="<?=$historico->Images[$key]->Link?>" >
+                                                <img class="avatar avatar-sm" src="<?=$historico->Images[$key]->Link?>"  data-container="body" title="">
+                                            </a>
                                              <?php
                                             }
                                         }    
@@ -171,8 +173,8 @@ $hasEvidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->
                                                 ?>
                                                 <div class="card card-shadow">
                                                     <figure class="card-img-top overlay-hover overlay">
-                                                    <img class="overlay-figure overlay-scale" src="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&markers=color:red%7C<?=$latitud?>,<?=$longitud?>&zoom=19&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" alt="...">
-                                                    
+                                                    <a class="magnific" href="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&markers=color:red%7C<?=$latitud?>,<?=$longitud?>&zoom=19&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" ><img  class="overlay-figure overlay-scale" src="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&markers=color:red%7C<?=$latitud?>,<?=$longitud?>&zoom=19&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" alt="...">
+                                                    </a>
                                                     </figure>
                                                 </div>
                                             <?php
