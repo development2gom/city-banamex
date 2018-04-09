@@ -334,16 +334,25 @@ class CitasController extends Controller
         $cita = new EntCitas();
         $envio = EntEnvios::find()->where(['txt_token'=>$token])->one();
         
-        $respuestaApi = json_decode($cita->consultarEnvio($envio->txt_tracking));
-        $historico = json_decode($cita->consultarHistorico($envio->txt_tracking));
+        $envio->txt_respuesta_api = $cita->consultarEnvio($envio->txt_tracking);
+        $respuestaApi = json_decode($envio->txt_respuesta_api);
+        $envio->txt_historial_api = ($cita->consultarHistorico($envio->txt_tracking));
+        $historico = json_decode($envio->txt_historial_api);
        
+
+        if($cita->id_status==Constantes::STATUS_ENTREGADO){
+            $envio->fch_entrega = $respuestaApi->Fecha;
+            $envio->b_cerrado = 1;
+        }
+        
+        $envio->save();
        
         return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi, "historico"=>$historico]);
     }
 
 
     public function actionTestApiImage(){
-        $tracking = "SSYBS01031800012";
+        $tracking = "SSYBS09041800001";
         $cita = new EntCitas();
         $respuestaApi = ($cita->consultarEnvio($tracking));
         $historico =($cita->consultarHistorico($tracking));
@@ -365,16 +374,26 @@ exit;
             return $response;
         }
         $cita = $envioSearch->idCita;
-
-        $respuestaApi = json_decode($cita->consultarEnvio($envio));
+        $envioSearch->txt_respuesta_api = $cita->consultarEnvio($envio);
+        $respuestaApi = json_decode($envioSearch->txt_respuesta_api);
 
         if(!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api"=>$respuestaApi->ClaveEvento])->one()){
             $response->message = "No se encontro el status del api en la base de datos";
             return $response;
         }
 
-        
+
         $cita->id_status = $statusApi->id_statu_cita;
+
+        if($cita->id_status==Constantes::STATUS_ENTREGADO){
+            $envioSearch->fch_entrega = $respuestaApi->Fecha;
+            $envioSearch->b_cerrado = 1;
+        }
+        $envioSearch->save();
+        
+
+
+
         if(!$cita->save()){
             $response->message = "No se pudo guardar la cita";
             $response->result = $cita->errors;
