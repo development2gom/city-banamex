@@ -118,7 +118,9 @@ $hasEvidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->
                             <?php
                                 if(isset($historico->History)){
                                     usort($historico->History, function($a, $b) { return strtotime($b->Fecha) - strtotime($a->Fecha); });
+                                    $localizaciones = [];
                                     foreach($historico->History as $key=>$historial){
+                                        $localizaciones[] = (isset($historial->Geolocation) && $historial->Geolocation)?$historial->Geolocation:null;
                             ?>
                                 <tr>
                                     <td>
@@ -164,9 +166,9 @@ $hasEvidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->
                                     </td>
                                     <td>
                                         <?php 
-                                            if(isset($historial->Geolocation)&&$historial->Geolocation){
+                                            if(isset($localizaciones[$key])){
                                                 
-                                                $coordenadas = explode("|" , $historial->Geolocation);
+                                                $coordenadas = explode("|" , $localizaciones[$key]);
 
                                                 $latitud = $coordenadas[0];
                                                 $longitud = $coordenadas[1];

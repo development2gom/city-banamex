@@ -10,7 +10,9 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\components\AccessControlExtend;
-
+use app\models\EntEnvios;
+use app\modules\ModUsuarios\models\Utils;
+use yii\db\Expression;
 class SiteController extends Controller
 {
     /**
@@ -79,12 +81,23 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        
-        // $usuario = Yii::$app->user->identity;
-        // $auth = \Yii::$app->authManager;
-        // $authorRole = $auth->getRole('test');
-        // $auth->assign($authorRole, $usuario->getId());
-        return $this->render('index');
+        $hoy = Utils::getFechaActual();
+
+        $citasEntregadas = (new \yii\db\Query())
+        ->select(['E.fch_entrega'])
+        ->from('ent_citas C')
+        ->join('INNER JOIN', 'ent_horarios_areas HA', 'HA.id_horario_area = C.id_horario')
+        ->join('INNER JOIN', 'ent_envios E', 'C.id_envio = E.id_envio AND E.b_cerrado = 1 AND TIME_FORMAT(E.fch_entrega, "%H" ) BETWEEN TIME_FORMAT(HA.txt_hora_inicial, "%H" ) AND TIME_FORMAT(HA.txt_hora_final, "%H" )')
+        ->all();
+
+        $envios = EntEnvios::find()
+            ->where(['>=','fch_entrega', new Expression("curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY") ])
+            ->andWhere(['<','fch_entrega', new Expression("curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY") ])
+            ->all();
+        $numeroEnvios = count($envios);
+        $numeroEnviosExitosos = count($citasEntregadas);
+       // $citasAutorizadas = EntCitas::find()->where()->all();
+        return $this->render('index', ["numeroEnvios"=>$numeroEnvios, "numeroEnviosExitosos"=>$numeroEnviosExitosos]);
     }
 
     /**
