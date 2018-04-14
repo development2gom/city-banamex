@@ -123,25 +123,16 @@ $usuarioLogueado = EntUsuarios::getUsuarioLogueado();
                                 <th>Evidencia</th>
                                 <th>Firma</th>
                                 <th>Comentarios</th>
+                                <th>Mapa</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                                 if(isset($historico->History)){
                                     usort($historico->History, function($a, $b) { return strtotime($b->Fecha) - strtotime($a->Fecha); });
-                                    
-                                    foreach($historico->History as $historial){
-                                        $imagenHistorial = false;
-                                        if(isset($respuestaApi->ImagesLinks)){
-                                            foreach($respuestaApi->ImagesLinks as $imagen){
-                                                $fechaHistorial = Calendario::getDateSimple($historial->Fecha);
-                                                $fechaImagen =Calendario::getDateSimple($imagen->Creacion);
-                                                if($fechaHistorial == $fechaImagen){
-                                                    $imagenHistorial = $imagen->Link;
-                                                }
-                                            }
-                                        }
-
+                                    $localizaciones = [];
+                                    foreach($historico->History as $key=>$historial){
+                                        $localizaciones[] = (isset($historial->Geolocation) && $historial->Geolocation)?$historial->Geolocation:null;
                             ?>
                                 <tr>
                                     <td>
@@ -160,15 +151,18 @@ $usuarioLogueado = EntUsuarios::getUsuarioLogueado();
                                     </td>
                                     <td>
                                         <?php
-                                        if($imagenHistorial){
+                                        if(isset($historico->Images)){
+                                            if(isset($historico->Images[$key])){
+                                             ?>
+                                             <a class="magnific" href="<?=$historico->Images[$key]->Link?>" >
+                                                <img class="avatar avatar-sm" src="<?=$historico->Images[$key]->Link?>"  data-container="body" title="">
+                                            </a>
+                                             <?php
+                                            }
+                                        }    
                                         ?>
-                                        <a class="magnific" href="<?=$imagenHistorial?>"><img class="avatar avatar-sm" src="<?=$imagenHistorial?>"></a>
-                                        <?php
-                                        }
-                                        ?>
-                                        
-                                       
-                                        <!-- SSYBS01031800012 SSYBS13031800002<img class="avatar avatar-sm" src="http://via.placeholder.com/200x200" data-toggle="tooltip" data-original-title="Crystal Bates" data-container="body" title=""> -->
+
+                                        <!-- <img class="avatar avatar-sm" src="http://via.placeholder.com/200x200" data-toggle="tooltip" data-original-title="Crystal Bates" data-container="body" title=""> -->
                                     </td>
                                     <td>
                                         <!-- <img class="avatar avatar-sm" src="http://via.placeholder.com/200x200" data-toggle="tooltip" data-original-title="Crystal Bates" data-container="body" title=""> -->
@@ -181,6 +175,27 @@ $usuarioLogueado = EntUsuarios::getUsuarioLogueado();
                                     </td>
                                     <td>
                                         <?=$historial->Comentario?>
+                                    </td>
+                                    <td>
+                                        <?php 
+                                            if(isset($localizaciones[$key])){
+                                                
+                                                $coordenadas = explode("|" , $localizaciones[$key]);
+
+                                                $latitud = $coordenadas[0];
+                                                $longitud = $coordenadas[1];
+                                                ?>
+                                                
+                                                    <a class="magnific" href="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&markers=color:red%7C<?=$latitud?>,<?=$longitud?>&zoom=19&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" >
+                                                        <img  class="avatar avatar-sm" src="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&markers=color:red%7C<?=$latitud?>,<?=$longitud?>&zoom=19&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" alt="...">
+                                                    </a>
+                                                    
+                                            <?php
+                                            }else{
+                                                echo "Sin posición";
+                                            }
+                                            
+                                        ?>
                                     </td>
                                 </tr>
                             <?php

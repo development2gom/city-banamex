@@ -7,6 +7,7 @@ use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\web\View;
 use app\models\Constantes;
+use app\modules\ModUsuarios\models\EntUsuarios;
 
 ?>
 <div class="row">
@@ -54,6 +55,9 @@ use app\models\Constantes;
                 || $model->txt_auth_item==$usuarioMaster){
                     $isCallCenter = true;
                 }
+
+                $usuario = EntUsuarios::getIdentity();
+                if(!($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC || $usuario->txt_auth_item==Constantes::USUARIO_MASTER_CALL_CENTER)){
                 ?>
                 <div class="col-md-6 contenedor-call-center" style="display:<?=$isCallCenter?'display':'none'?>;">
                      <?= $form->field($model, 'id_call_center')
@@ -68,6 +72,10 @@ use app\models\Constantes;
                     ?> 
 
                 </div>
+
+                <?php
+                }
+                ?>
             </div>
             
             <div class="row">
@@ -84,17 +92,7 @@ use app\models\Constantes;
                 <div class="col-md-12">
                     <?= $form->field($model, 'txt_email')->textInput(['maxlength' => true, 'placeholder' => 'Usuario'])->label(false) ?>
                 </div>
-            </div>     
-
-             <div class="row">
-                 <div class="col-md-6">
-                    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true, 'placeholder' => 'Contraseña'])->label(false) ?>
-                 </div>
-                 <div class="col-md-6">
-                    <?php #$form->field($model, 'repeatPassword')->passwordInput(['maxlength' => true, 'placeholder' => 'Repetir contraseña'])->label(false)->hint('<span class="form-pass-info"><i class="icon wb-help" aria-hidden="true"></i></span>') ?>
-                    <?=$form->field($model, 'repeatPassword')->passwordInput(['maxlength' => true, 'placeholder' => 'Repetir contraseña'])->label(false) ?>
-                 </div>
-             </div>       
+            </div>         
 
             <div class="row">
                 <div class="col-md-12">

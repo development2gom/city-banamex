@@ -58,7 +58,8 @@ role="navigation">
             </span>
           </a>
           <div class="dropdown-menu" role="menu">
-            <a class="dropdown-item" href="<?=Url::base()?>/usuarios/update/<?=$usuario->id_usuario?>" role="menuitem"><i class="icon wb-user" aria-hidden="true"></i> Perfil</a>
+            <a class="dropdown-item no-pjax" href="<?=Url::base()?>/usuarios/update/<?=$usuario->id_usuario?>" role="menuitem"><i class="icon wb-user" aria-hidden="true"></i> Perfil</a>
+            <a class="dropdown-item no-pjax" href="<?=Url::base()?>/usuarios/cambiar-pass" role="menuitem"><i class="icon wb-more-horizontal" aria-hidden="true"></i> Cambiar contraseña</a>
             <div class="dropdown-divider" role="presentation"></div>
             <a class="dropdown-item no-pjax" href="<?=Url::base()?>/site/logout" role="menuitem"><i class="icon wb-power" aria-hidden="true"></i> Logout</a>
           </div>

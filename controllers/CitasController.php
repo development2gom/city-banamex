@@ -336,10 +336,18 @@ class CitasController extends Controller
         $cita = new EntCitas();
         $envio = EntEnvios::find()->where(['txt_token'=>$token])->one();
         
-        $respuestaApi = json_decode($cita->consultarEnvio($envio->txt_tracking));
-        $historico = json_decode($cita->consultarHistorico($envio->txt_tracking));
-
+        $envio->txt_respuesta_api = $cita->consultarEnvio($envio->txt_tracking);
+        $respuestaApi = json_decode($envio->txt_respuesta_api);
+        $envio->txt_historial_api = ($cita->consultarHistorico($envio->txt_tracking));
+        $historico = json_decode($envio->txt_historial_api);
        
+
+        if($cita->id_status==Constantes::STATUS_ENTREGADO){
+            $envio->fch_entrega = $respuestaApi->Fecha;
+            $envio->b_cerrado = 1;
+        }
+        
+        $envio->save();
        
         return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi, "historico"=>$historico]);
     }
@@ -368,16 +376,26 @@ exit;
             return $response;
         }
         $cita = $envioSearch->idCita;
-
-        $respuestaApi = json_decode($cita->consultarEnvio($envio));
+        $envioSearch->txt_respuesta_api = $cita->consultarEnvio($envio);
+        $respuestaApi = json_decode($envioSearch->txt_respuesta_api);
 
         if(!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api"=>$respuestaApi->ClaveEvento])->one()){
             $response->message = "No se encontro el status del api en la base de datos";
             return $response;
         }
 
-        
+
         $cita->id_status = $statusApi->id_statu_cita;
+
+        if($cita->id_status==Constantes::STATUS_ENTREGADO){
+            $envioSearch->fch_entrega = $respuestaApi->Fecha;
+            $envioSearch->b_cerrado = 1;
+        }
+        $envioSearch->save();
+        
+
+
+
         if(!$cita->save()){
             $response->message = "No se pudo guardar la cita";
             $response->result = $cita->errors;
@@ -393,7 +411,7 @@ exit;
             [
                 'id'=>"js-cita-envio-".$cita->txt_token,
                 'data-envio'=>$envio,
-                'class'=>'btn badge '.$statusColor.' no-pjax ',
+                'class'=>'btn badge '.$statusColor.' no-pjax actualizar-envio',
             ]
         );
         $response->result["token"] = $cita->txt_token;
@@ -464,6 +482,41 @@ exit;
 
 
 
+public function actionEnvios(){
+    //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    //$envios = EntEnvios::find()->select("txt_respuesta_api")->all();
 
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=data.csv');
+
+// create a file pointer connected to the output stream
+$output = fopen('php://output', 'w');
+
+    $items = Yii::$app->db->createCommand('select 
+     EN.txt_historial_api
+       from ent_citas C
+    LEFT JOIN cat_tipos_tramites TT ON TT.id_tramite = C.id_tipo_tramite
+    LEFT JOIN cat_equipos E ON E.id_equipo = C.id_equipo
+    LEFT JOIN cat_areas A ON A.id_area = C.id_area
+    LEFT JOIN mod_usuarios_ent_usuarios U ON U.id_usuario = C.id_usuario
+    LEFT JOIN cat_status_citas SC ON SC.id_statu_cita = C.id_status
+    LEFT JOIN cat_tipos_clientes TC ON TC.id_tipo_cliente = C.id_tipo_cliente
+    LEFT JOIN cat_tipos_identificaciones TI ON TI.id_tipo_identificacion = C.id_tipo_identificacion
+    LEFT JOIN ent_horarios_areas HA ON HA.id_horario_area = C.id_horario
+    LEFT JOIN cat_cats CC ON CC.id_cat = C.id_cat
+    LEFT JOIN ent_envios EN ON EN.id_envio = C.id_envio;
+    
+    
+    ');
+    
+    $items = $items->query();
+    
+
+    foreach($items as $row) {
+        fputcsv($output, $row);
+    }
+
+   
+}
     
 }

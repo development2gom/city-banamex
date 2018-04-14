@@ -146,10 +146,12 @@ class UsuariosSearch extends EntUsuarios
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_usuario' => $this->id_usuario,
+            
             'fch_actualizacion' => $this->fch_actualizacion,
             'id_status' => $this->id_status,
         ]);
+
+        $query = Permisos::getUsuarios($query);
 
         if($this->fch_creacion){
             $this->fch_creacion = Utils::changeFormatDateInputShort($this->fch_creacion);

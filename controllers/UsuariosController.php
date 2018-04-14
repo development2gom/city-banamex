@@ -58,7 +58,7 @@ class UsuariosController extends Controller
 
         $hijos = $auth->getChildRoles($usuario->txt_auth_item);
 
-      
+        //unset($hijos[$usuario->txt_auth_item]);
         ksort($hijos);
        
         $roles = AuthItem::find()->where(['in', 'name', array_keys($hijos)])->orderBy("name")->all();
@@ -111,21 +111,33 @@ class UsuariosController extends Controller
         ]);
 
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }
 
         if ($model->load(Yii::$app->request->post())) {
 
+            $model->password = $model->randomPassword();
+            $model->repeatPassword = $model->password;
+            
+            if(($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC || $usuario->txt_auth_item==Constantes::USUARIO_MASTER_CALL_CENTER)){
+           
+                $model->id_call_center = $usuario->id_call_center;
+            }
+
             if ($user = $model->signup()) {
+
+                $user->enviarEmailBienvenida();
 
                 return $this->redirect(['index']);
             }
+            
         
         // return $this->redirect(['view', 'id' => $model->id_usuario]);
         }
 
-        $callCenters = CatCallsCenters::find()->all();
+        $callCenters = CatCallsCenters::find()->orderBy("txt_nombre")->all();
         return $this->render('create', [
             'model' => $model,
             'roles'=>$roles,
@@ -165,6 +177,10 @@ class UsuariosController extends Controller
             if($model->password){
                 $model->setPassword($_POST["EntUsuarios"]['password']);
                 $model->generateAuthKey();
+            }
+
+            if((!$usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC || $usuario->txt_auth_item==Constantes::STATUS_AUTORIZADA_POR_MASTER_CALL_CENTER)){
+                $model->id_call_center = $usuario->id_call_center;
             }
             if($model->save()){
 
@@ -368,6 +384,28 @@ class UsuariosController extends Controller
         $hijos = $auth->getChildRoles($usuario->txt_auth_item);
         ksort($hijos);
         print_r($hijos);
+    }
+
+    public function actionCambiarPass(){
+        $model = EntUsuarios::getUsuarioLogueado();
+        
+		$model->scenario = 'cambiarPass';
+		
+		// Si los campos estan correctos por POST
+		if ($model->load ( Yii::$app->request->post () )) {
+			$model->setPassword ( $model->password );
+			if($model->save ()){
+
+                $this->goHome();
+			}
+			
+			
+        }
+        
+		return $this->render ( 'cambiar-pass', [ 
+            'model' => $model 
+        ] );
+        
     }
 
 }

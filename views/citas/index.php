@@ -198,7 +198,7 @@ $this->registerJsFile(
                             $classActualizar = "actualizar-envio";
                             $isBuscar = false;
                             $dataEnvio = '';
-                            if($data->id_envio && ($data->id_status != Constantes::STATUS_ENTREGADO || Constantes::STATUS_CANCELADO)){
+                            if($data->id_envio && (Constantes::STATUS_CANCELADO)){
                                 $isBuscar = true;
                                 $dataEnvio = $data->txtTracking;
                             }

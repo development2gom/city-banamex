@@ -9,6 +9,45 @@ use app\modules\ModUsuarios\models\EntUsuarios;
 class Permisos
 {
 
+    public static function getUsuarios($query){
+        $usuario = Yii::$app->user->identity;
+
+        switch ($usuario->txt_auth_item) {
+            case Constantes::USUARIO_CALL_CENTER:
+                
+                break;
+            case Constantes::USUARIO_SUPERVISOR:
+                
+                break;
+            case Constantes::USUARIO_ADMINISTRADOR_CC:
+                $query->andFilterWhere(['id_call_center'=>$usuario->id_call_center]);
+                $query->andFilterWhere(['!=', 'id_usuario', $usuario->id_usuario]);
+                # code...
+                break;
+            case Constantes::USUARIO_SUPERVISOR_TELCEL:
+            
+                # code...
+                break;
+            case Constantes::USUARIO_ADMINISTRADOR_TELCEL:
+                # code...
+                break;
+            case Constantes::USUARIO_MASTER_CALL_CENTER:
+                $query->andFilterWhere(['id_call_center'=>$usuario->id_call_center]);
+                $query->andFilterWhere(['!=', 'id_usuario', $usuario->id_usuario]);
+                # code...
+                break;
+            case Constantes::USUARIO_MASTER_TELCEL:
+                # code...
+                break;
+            case Constantes::USUARIO_MASTER_BRIGHT_STAR:
+                # code...
+                break;
+
+        }
+
+        return $query;
+    }
+
     public static function getCitasByRole($query)
     {
         $usuario = Yii::$app->user->identity;

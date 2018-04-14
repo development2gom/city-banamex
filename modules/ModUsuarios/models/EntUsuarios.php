@@ -12,6 +12,7 @@ use yii\web\UploadedFile;
 use app\models\AuthItem;
 use app\models\Constantes;
 use app\models\EntGruposTrabajo;
+use app\models\Email;
 
 /**
  * This is the model class for table "ent_usuarios".
@@ -105,13 +106,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 						return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
 					}"
 				],
-				[ 
-						'password',
-						'compare',
-						'compareAttribute' => 'repeatPassword',
-						'on' => 'registerInput',
-						'message'=>'Las contraseñas deben coincidir'
-				],
+				
 				[ 
 						'txt_email',
 						'trim' 
@@ -517,12 +512,14 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 		}
 
 		if($user->save()){
+			
 			$usuario =$user;
          	$auth = \Yii::$app->authManager;
          	$authorRole = $auth->getRole($this->txt_auth_item);
 			$auth->assign($authorRole, $usuario->getId());
 			return $user;
 		}else{
+			
 			return null;
 		}
 		
@@ -723,4 +720,42 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				break;
 		}
 	}
+
+	public function enviarEmailBienvenida(){
+		
+		// Parametros para el email
+		$params ['url'] = Yii::$app->urlManager->createAbsoluteUrl ( [ 
+			'ingresar/' . $this->txt_token 
+		] );
+		$params ['user'] = $this->nombreCompleto;
+		$params ['usuario'] = $this->txt_email;
+		$params ['password'] = $this->password;
+		
+		
+			$email = new Email();
+			$email->emailHtml = "@app/modules/ModUsuarios/email/bienvenida";
+			$email->emailText = "@app/modules/ModUsuarios/email/layouts/text";
+			$email->to = $this->txt_email;
+			$email->subject = "Bienvenido";
+			$email->params =$params ;
+			
+			// Envio de correo electronico
+			$email->sendEmail();
+			return true;
+		
+
+	}
+
+	public function randomPassword() {
+		$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+		$pass = array(); //remember to declare $pass as an array
+		$alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+		for ($i = 0; $i < 8; $i++) {
+			$n = rand(0, $alphaLength);
+			$pass[] = $alphabet[$n];
+
+            	
+        }
+        return implode($pass);
+    }
 }
