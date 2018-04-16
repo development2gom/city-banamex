@@ -171,6 +171,10 @@ class EntCitas extends \yii\db\ActiveRecord
         $this->id_usuario = $usuario->id_usuario;;
         $this->txt_token = Utils::generateToken("cit_");
 
+        if($usuario->id_call_center){
+            $this->id_call_center = $usuario->id_call_center;
+        }
+
         if (YII_ENV_DEV) {
             $this->txt_telefono = "1234567890";
             $this->txt_nombre = "John";

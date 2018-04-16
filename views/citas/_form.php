@@ -279,14 +279,20 @@ $cat = $model->idCat;
                         return markup; }'),
                     'templateResult' => new JsExpression('formatRepoCat'),
                     'templateSelection' => new JsExpression('function (equipo) { 
-                        console.log(equipo);
+                        
                         if(equipo.id){
                             habilitarCamposDireccion();
                             colocarCamposDireccion(equipo);
+                            if ($("#entcitas-txt_codigo_postal").data("select2")) {
+                                $("#entcitas-txt_codigo_postal").select2("trigger", "select", {
+                                    data: { id: equipo.txt_codigo_postal, txt_nombre:equipo.txt_codigo_postal }
+                                });
+                            }    
                         }else{
                             colocarCamposDireccionPredeterminados();
                             deshabilitarCamposDireccion();
                             limpiarCamposDireccion();
+                            
                         }
 
                         if(equipo.txt_nombre){
@@ -339,6 +345,7 @@ $cat = $model->idCat;
                         'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
                         'templateResult' => new JsExpression('function(equipo) { return equipo.txt_nombre; }'),
                         'templateSelection' => new JsExpression('function (equipo) { 
+                            console.log(equipo);
                                     if(equipo.txt_nombre){
                                         return equipo.txt_nombre;
                                     }else{

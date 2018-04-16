@@ -131,7 +131,8 @@ $usuarioLogueado = EntUsuarios::getUsuarioLogueado();
                                 if(isset($historico->History)){
                                     usort($historico->History, function($a, $b) { return strtotime($b->Fecha) - strtotime($a->Fecha); });
                                     $localizaciones = [];
-                                    foreach($historico->History as $key=>$historial){
+                                    $index = count($historico->Images);
+                                    foreach($historico->History as $key=>$historial):
                                         $localizaciones[] = (isset($historial->Geolocation) && $historial->Geolocation)?$historial->Geolocation:null;
                             ?>
                                 <tr>
@@ -151,11 +152,12 @@ $usuarioLogueado = EntUsuarios::getUsuarioLogueado();
                                     </td>
                                     <td>
                                         <?php
-                                        if(isset($historico->Images)){
-                                            if(isset($historico->Images[$key])){
+                                        if(isset($historico->Images) && $index>=0){
+                                            if(isset($historico->Images[$index])){
+
                                              ?>
-                                             <a class="magnific" href="<?=$historico->Images[$key]->Link?>" >
-                                                <img class="avatar avatar-sm" src="<?=$historico->Images[$key]->Link?>"  data-container="body" title="">
+                                             <a class="magnific" href="<?=$historico->Images[$index]->Link?>" >
+                                                <img class="avatar avatar-sm" src="<?=$historico->Images[$index]->Link?>"  data-container="body" title="">
                                             </a>
                                              <?php
                                             }
@@ -199,7 +201,8 @@ $usuarioLogueado = EntUsuarios::getUsuarioLogueado();
                                     </td>
                                 </tr>
                             <?php
-                                }
+                            $index--;
+                                endforeach;
                                 }
                             ?>
                         </tbody>

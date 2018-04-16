@@ -90,7 +90,7 @@ use app\models\EntGruposTrabajo;
         
         'value'=>function($data) use ($model){
           
-          $usuarioAsignado = EntGruposTrabajo::find()->where(['id_usuario'=>$model->id_usuario, 'id_usuario_asignado'=>$model->id_usuario])->one();
+          $usuarioAsignado = EntGruposTrabajo::find()->where(['id_usuario'=>$model->id_usuario, 'id_usuario_asignado'=>$data->id_usuario])->one();
         $activo = $data->id_status == 2?'active':'';
         $inactivo = $data->id_status == 1||$data->id_status == 3?'active':'';
             
