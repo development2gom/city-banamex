@@ -278,7 +278,7 @@ $this->registerJsFile(
                         'value'=>'txtTracking',
                         'format'=>'raw',
                         'filterInputOptions' => [
-                            'autocomplete' => 'new-password', 
+                            'autocomplete' => 'nope', 
                             'class'=>"form-control"
                           ],
                         'value'=>function($data){
