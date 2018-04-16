@@ -8,6 +8,8 @@ use app\models\RelMunicipioCodigoPostalSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\ResponseServices;
+use app\models\Calendario;
 
 /**
  * RelMunicipioCodigoPostalController implements the CRUD actions for RelMunicipioCodigoPostal model.
@@ -124,5 +126,50 @@ class RelMunicipioCodigoPostalController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionBuscarMunicipioCp($cp=null){
+        $respuesta = new ResponseServices();
+
+        if(!$cp){
+            $respuesta->status = "success";
+            $respuesta->message = "municipio";
+            $respuesta->result["id_area"] = "";
+            $respuesta->result["txt_area"] = "";
+            $respuesta->result["txt_municipio"] = "";
+            $respuesta->result["num_dias_servicios"] = "";
+        }
+
+        
+        $rel = RelMunicipioCodigoPostal::find()->where(["txt_codigo_postal"=>$cp])->one();
+        $municipio = $rel->idMunicipio;
+        $diasServicio = $this->getDiasServicio($municipio);
+        $area = $municipio->idArea;
+        
+        $respuesta->status = "success";
+        $respuesta->message = "municipio";
+        $respuesta->result["id_area"] = $area->id_area;
+        $respuesta->result["txt_area"] = $area->txt_nombre;
+        $respuesta->result["txt_municipio"] = $municipio->txt_nombre;
+        $respuesta->result["num_dias_servicios"] = $diasServicio;
+        
+        return $respuesta;
+
+    }
+
+    public function getDiasServicio($municipio){
+
+        $l = $municipio->b_lunes?'L,':'';
+        $m = $municipio->b_martes?'M,':'';
+        $mi = $municipio->b_miercoles?'Mi,':'';
+        $j = $municipio->b_jueves?'J,':'';
+        $v = $municipio->b_viernes?'V,':'';
+        $s = $municipio->b_sabado?'S,':'';
+        $d = $municipio->b_domingo?'D,':'';
+
+        $dias = $l.$m.$mi.$j.$v.$s.$d;
+        return $dias;
+
+
     }
 }

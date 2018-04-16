@@ -6,6 +6,29 @@ var inputRFC = $("#entcitas-txt_rfc");
 
 $(document).ready(function(){
 
+	$("#entcitas-txt_codigo_postal").on("change", function(){
+		var elemento = $(this);
+		var token = elemento.val();
+		$.ajax({
+			url:baseUrl+"rel-municipio-codigo-postal/buscar-municipio-cp?cp="+token,
+			success:function(r){
+				if(r.status=="success"){
+					$("#entcitas-id_area").val(r.result.id_area);
+					$("#txt_area").val(r.result.txt_area);
+
+					$("#entcitas-num_dias_servicio").val(r.result.num_dias_servicios);
+					$("#num_dias_servicio").val(r.result.num_dias_servicios);
+
+					$("#entcitas-txt_municipio").val(r.result.txt_municipio);
+					
+				}
+			},
+			error:function(){
+				
+			}
+		});
+	});
+
     inputNombre.on("change", function(){
         calculaRFC();
     });

@@ -22,7 +22,7 @@ use app\models\Permisos;
  $this->title = 'Citas';
  $this->params['classBody'] = "site-navbar-small site-menubar-hide";
  if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){
-      $this->params['headerActions'] = '<a class="btn btn-success ladda-button" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label no-pjax"><i class="icon wb-plus"></i>Agregar</span></a>';
+      $this->params['headerActions'] = '<a class="btn btn-success ladda-button no-pjax" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label no-pjax"><i class="icon wb-plus"></i>Agregar</span></a>';
  }
 $this->params['breadcrumbs'][] = [
     'label' => '<i class="icon pe-7s-headphones"></i>Citas',

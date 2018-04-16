@@ -419,45 +419,12 @@ $cat = $model->idCat;
 
     <div class="row">
         <div class="col-sm-3 col-md-3">
-            <?= $form->field($model, 'id_area')
-                                        ->widget(Select2::classname(), [
-                                            //'value'=>$areaDefault->id_area,
-                                            'data' => ArrayHelper::map($areas, 'id_area', 'txt_nombre'),
-                                            'language' => 'es',
-                                            'options' => ['placeholder' => 'Seleccionar identificación'],
-                                            
-                                        ]);
-                ?>
-            <?php
-    
-                echo $form->field($model, 'id_area')->widget(DepDrop::classname(), [
-                    
-                    'options' => ['placeholder' => 'Seleccionar ...'],
-                    'type' => DepDrop::TYPE_SELECT2,
-                    'select2Options'=>[
-                        'pluginOptions'=>[
-                            
-                            'allowClear'=>true,
-                            'escapeMarkup' => new JsExpression('function (markup) { 
-                                
-                            return markup; }'),
-                            'templateResult' => new JsExpression('formatRepo'),
-                        ],
-                        ],
-                    'pluginOptions'=>[
-                        'initialize' => true,
-                        'url' => Url::to(['/horarios-areas/get-horarios-disponibilidad-by-area?horario='.$model->id_horario]),
-                        'depends'=>['entcitas-txt_codigo_postal'],
-                        'params'=>[
-                            'entcitas-txt_codigo_postal',
-                            
-                        ],  
-                        'loadingText' => 'Cargando área ...',
-                        
-                    ]
-                    
-                ]);
-            ?>      
+            <div class="form-group">
+                <?=Html::label("Área", "txt_area", ["class"=>"form-control-label"])?>
+                <?=Html::textInput("txt_area", $model->idArea->txt_nombre, ['class'=>'form-control', 'disabled'=>'disabled', 'id'=>'txt_area' ])?>
+            </div>    
+                <?= $form->field($model, 'id_area')->hiddenInput(['maxlength' => true])->label(false) ?>
+              
         </div>
         <div class="col-sm-3 col-md-3">
             <div class="form-group">
