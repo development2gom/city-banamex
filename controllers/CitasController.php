@@ -354,7 +354,7 @@ class CitasController extends Controller
 
 
     public function actionTestApiImage(){
-        $tracking = "SSYBS01031800012";
+        $tracking = "SSYBS15041800003";
         $cita = new EntCitas();
         $respuestaApi = ($cita->consultarEnvio($tracking));
         $historico =($cita->consultarHistorico($tracking));

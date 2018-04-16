@@ -78,6 +78,7 @@ $this->registerJsFile(
         'layout' => '{items}{summary}{pager}',
         'columns' =>[
           [
+            
             'attribute' => 'nombreCompleto',
             
             'format'=>'raw',

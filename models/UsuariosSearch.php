@@ -157,6 +157,7 @@ class UsuariosSearch extends EntUsuarios
             $this->fch_creacion = Utils::changeFormatDateInputShort($this->fch_creacion);
         }  
         
+        
         $query->andFilterWhere(['in','txt_auth_item', $this->txt_auth_item])
             ->andFilterWhere(['like', 'txt_token', $this->txt_token])
             ->andFilterWhere(['like', 'txt_imagen', $this->txt_imagen])

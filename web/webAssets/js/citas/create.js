@@ -6,9 +6,11 @@ var inputRFC = $("#entcitas-txt_rfc");
 
 $(document).ready(function(){
 
+
 	$("#entcitas-txt_codigo_postal").on("change", function(){
 		var elemento = $(this);
 		var token = elemento.val();
+		//03100
 		$.ajax({
 			url:baseUrl+"rel-municipio-codigo-postal/buscar-municipio-cp?cp="+token,
 			success:function(r){
@@ -120,6 +122,7 @@ function colocarCampos(estadoP, calleYNumeroP, coloniaP, cPP, municipioP, entreC
 	$("#entcitas-txt_estado").val(estadoP);
 	$("#entcitas-txt_calle_numero").val(calleYNumeroP);
 	$("#entcitas-txt_colonia").val(coloniaP);
+	
 	$("#entcitas-txt_codigo_postal").val(cPP);
 	$("#entcitas-txt_municipio").val(municipioP);
 	$("#entcitas-txt_entre_calles").val(entreCallesP);
