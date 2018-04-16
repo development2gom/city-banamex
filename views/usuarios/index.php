@@ -79,7 +79,7 @@ $this->registerJsFile(
         'columns' =>[
           [
             'filterInputOptions' => [
-              'autocomplete' => 'off', 
+              'autocomplete' => 'new-password', 
               'class'=>"form-control"
             ],
             'attribute' => 'nombreCompleto',

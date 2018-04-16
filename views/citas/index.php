@@ -139,10 +139,7 @@ $this->registerJsFile(
             }
         ],
         [
-            'filterInputOptions' => [
-                'autocomplete' => 'off', 
-                'class'=>"form-control"
-              ],
+           
             'attribute'=>'id_envio',
             
             'value'=>'idEnvio.txt_tracking'
@@ -280,6 +277,10 @@ $this->registerJsFile(
                         'attribute'=>'txtTracking',
                         'value'=>'txtTracking',
                         'format'=>'raw',
+                        'filterInputOptions' => [
+                            'autocomplete' => 'new-password', 
+                            'class'=>"form-contol"
+                          ],
                         'value'=>function($data){
 
                             if($data->id_envio){
