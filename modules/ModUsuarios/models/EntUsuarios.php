@@ -492,6 +492,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 		$user->txt_email = $this->txt_email;
 		$user->txt_auth_item = $this->txt_auth_item;
 		$user->id_call_center = $this->id_call_center;
+		$user->password = $this->password;
 		
 		
 		if($user->image){
