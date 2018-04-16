@@ -139,6 +139,10 @@ $this->registerJsFile(
             }
         ],
         [
+            'filterInputOptions' => [
+                'autocomplete' => 'off', 
+                'class'=>"form-control"
+              ],
             'attribute'=>'id_envio',
             
             'value'=>'idEnvio.txt_tracking'
