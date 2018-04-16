@@ -78,7 +78,10 @@ $this->registerJsFile(
         'layout' => '{items}{summary}{pager}',
         'columns' =>[
           [
-            
+            'filterInputOptions' => [
+              'autocomplete' => 'off', 
+              'class'=>"form-control"
+            ],
             'attribute' => 'nombreCompleto',
             
             'format'=>'raw',
