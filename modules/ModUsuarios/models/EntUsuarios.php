@@ -12,6 +12,7 @@ use yii\web\UploadedFile;
 use app\models\AuthItem;
 use app\models\Constantes;
 use app\models\EntGruposTrabajo;
+use app\models\Email;
 
 /**
  * This is the model class for table "ent_usuarios".
@@ -57,6 +58,34 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	 */
 	public function rules() {
 		return [ 
+				[
+					['id_call_center'], 'required', 
+					'when' => function ($model) {
+						$usuarioCallCenter = Constantes::USUARIO_CALL_CENTER;
+						$usuarioSupervisor = Constantes::USUARIO_SUPERVISOR;
+						$usuarioAdministrador = Constantes::USUARIO_ADMINISTRADOR_CC;
+						$usuarioMaster = Constantes::USUARIO_MASTER_CALL_CENTER;
+						if($model->txt_auth_item==$usuarioCallCenter 
+						|| $model->txt_auth_item == $usuarioSupervisor 
+						|| $model->txt_auth_item==$usuarioAdministrador
+						|| $model->txt_auth_item==$usuarioMaster){
+							return true;
+						}
+						return false;
+					}, 'whenClient' => "function (attribute, value) {
+						
+						var elemento = $('#entusuarios-txt_auth_item');
+						var usuarioCallCenter = '".Constantes::USUARIO_CALL_CENTER."';
+						var usuarioSupervisor = '".Constantes::USUARIO_SUPERVISOR."';
+						var usuarioAdministrador = '".Constantes::USUARIO_ADMINISTRADOR_CC."';
+						var usuarioMaster = '".Constantes::USUARIO_MASTER_CALL_CENTER."';
+						if(elemento.val()==usuarioCallCenter || elemento.val()==usuarioSupervisor || elemento.val()==usuarioAdministrador || elemento.val()==usuarioMaster){
+							return true;
+						}
+
+						return false;
+					}"
+				],
 				
 				[
 					['repeatPassword', 'password'], 'required', 'on'=>'update',
@@ -69,6 +98,11 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				],
 
 				[
+					['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'cambiarPass',
+					
+				],
+
+				[
 					['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'update',
 					'when' => function ($model) {
 						return $model->password || $model->repeatPassword;
@@ -77,13 +111,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 						return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
 					}"
 				],
-				[ 
-						'password',
-						'compare',
-						'compareAttribute' => 'repeatPassword',
-						'on' => 'registerInput',
-						'message'=>'Las contraseñas deben coincidir'
-				],
+				
 				[ 
 						'txt_email',
 						'trim' 
@@ -243,6 +271,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				'txt_auth_item'=>'Tipo de usuario',
 				'nombreCompleto'=>'Nombre',
 				'roleDescription'=>'Tipo de usuario',
+				'id_call_center'=>'Call center'
 		];
 	}
 	
@@ -452,8 +481,6 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	 */
 	public function signup($isFacebook=false) {
 		
-		
-
 		if (! $this->validate ()) {
 			return null;
 		}
@@ -469,6 +496,8 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 		$user->txt_apellido_materno = $this->txt_apellido_materno;
 		$user->txt_email = $this->txt_email;
 		$user->txt_auth_item = $this->txt_auth_item;
+		$user->id_call_center = $this->id_call_center;
+		$user->password = $this->password;
 		
 		
 		if($user->image){
@@ -489,12 +518,14 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 		}
 
 		if($user->save()){
+			
 			$usuario =$user;
          	$auth = \Yii::$app->authManager;
          	$authorRole = $auth->getRole($this->txt_auth_item);
 			$auth->assign($authorRole, $usuario->getId());
 			return $user;
 		}else{
+			
 			return null;
 		}
 		
@@ -695,4 +726,42 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				break;
 		}
 	}
+
+	public function enviarEmailBienvenida(){
+		
+		// Parametros para el email
+		$params ['url'] = Yii::$app->urlManager->createAbsoluteUrl ( [ 
+			'ingresar/' . $this->txt_token 
+		] );
+		$params ['user'] = $this->nombreCompleto;
+		$params ['usuario'] = $this->txt_email;
+		$params ['password'] = $this->password;
+		
+		
+			$email = new Email();
+			$email->emailHtml = "@app/modules/ModUsuarios/email/bienvenida";
+			$email->emailText = "@app/modules/ModUsuarios/email/layouts/text";
+			$email->to = $this->txt_email;
+			$email->subject = "Bienvenido";
+			$email->params =$params ;
+			
+			// Envio de correo electronico
+			$email->sendEmail();
+			return true;
+		
+
+	}
+
+	public function randomPassword() {
+		$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+		$pass = array(); //remember to declare $pass as an array
+		$alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+		for ($i = 0; $i < 8; $i++) {
+			$n = rand(0, $alphaLength);
+			$pass[] = $alphabet[$n];
+
+            	
+        }
+        return implode($pass);
+    }
 }

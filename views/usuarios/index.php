@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = [
   'template'=>'<li class="breadcrumb-item">{link}</li>', 
 ];
 
-$this->params['headerActions'] = '<a class="btn btn-success" href="'.Url::base().'/usuarios/create"><i class="icon wb-plus"></i> Agregar usuario</a>';
+$this->params['headerActions'] = '<a class="btn btn-success no-pjax" href="'.Url::base().'/usuarios/create"><i class="icon wb-plus"></i> Agregar usuario</a>';
 
 $this->params['classBody'] = "site-navbar-small page-user";
 
@@ -78,6 +78,10 @@ $this->registerJsFile(
         'layout' => '{items}{summary}{pager}',
         'columns' =>[
           [
+            'filterInputOptions' => [
+              'autocomplete' => 'new-password', 
+              'class'=>"form-control"
+            ],
             'attribute' => 'nombreCompleto',
             
             'format'=>'raw',
@@ -142,7 +146,7 @@ $this->registerJsFile(
            
             'value'=>function($data){
                 
-              return '<a href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'" class="btn btn-outline btn-success btn-sm"><i class="icon wb-edit"></i></a>';
+              return '<a href="'.Url::base().'/usuarios/update/'.$data->id_usuario.'" class="btn btn-outline btn-success btn-sm no-pjax"><i class="icon wb-edit"></i></a>';
             }
           ]
         ],

@@ -1,3 +1,11 @@
+$(document).ready(function(){
+    $("#pjax-usuarios").on('pjax:complete', function() {
+        $("#entcitassearch-fch_creacion").kvDatepicker({"clearBtn": true,"autoclose":true,"format":"dd-mm-yyyy","language":"es"});
+        $("#entcitassearch-fch_cita").kvDatepicker({"clearBtn": true,"autoclose":true,"format":"dd-mm-yyyy","language":"es"});
+        
+      })
+});
+
 $(document).on({
     'click': function(){
         mostrarLoading();

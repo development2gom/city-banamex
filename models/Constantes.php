@@ -10,6 +10,12 @@ class Constantes{
     const STATUS_CANCELADA_ADMINISTRADOR_CC = 12;
     const STATUS_CANCELADA_ADMINISTRADOR_TELCEL = 13;
     const STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL = 7;
+    const STATUS_AUTORIZADA_POR_MASTER_BRIGHT_STAR= 14;
+    const STATUS_AUTORIZADA_POR_MASTER_TELCEL = 15;
+    const STATUS_AUTORIZADA_POR_MASTER_CALL_CENTER = 16;
+    const STATUS_CANCELADA_POR_MASTER_BRIGHT_STAR = 17;
+    const STATUS_CANCELADA_POR_MASTER_TELCEL = 18;
+    const STATUS_CANCELADAS_POR_MASTER_CALL_CENTER = 19;
     const STATUS_RECIBIDO_MENSAJERIA = 21;
     const STATUS_LISTO_ENTREGA = 22;
     const STATUS_ANOMALO = 23;
@@ -27,6 +33,9 @@ class Constantes{
     const USUARIO_SUPERVISOR_TELCEL = "supervisor-tel";
     const USUARIO_ADMINISTRADOR_TELCEL = "administrador-tel";
     const USUARIO_ADMINISTRADOR_CC = "administrador-call-center";
+    const USUARIO_MASTER_TELCEL = "master-telcel";
+    const USUARIO_MASTER_BRIGHT_STAR = "master-bright-star";
+    const USUARIO_MASTER_CALL_CENTER = "master-call-center";
 
     // Colores status
     const COLOR_STATUS_CREADA = "warning";

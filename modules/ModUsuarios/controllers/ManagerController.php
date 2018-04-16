@@ -326,4 +326,34 @@ class ManagerController extends Controller {
 			throw new NotFoundHttpException ( 'The requested page does not exist.' );
 		}
 	}
+
+	/**
+	 * Ingresa automaticamente al portal
+	 */
+	public function actionIngresar($t=null){
+		
+		$usuario = EntUsuarios::find()->where(["txt_token"=>$t])->one();
+
+
+		if($usuario && $usuario->id_status == EntUsuarios::STATUS_BLOCKED){
+			// Mandar 
+
+			return false;
+		}
+
+
+		if($usuario){
+		Yii::$app->getUser ()->login ( $usuario );
+		
+		//exit;
+			
+			$usuario->id_status = EntUsuarios::STATUS_ACTIVED;
+			$usuario->save();
+			//return $this->redirect(["//citas/index"]);
+		}
+
+		
+
+		return $this->goHome();
+	}
 }

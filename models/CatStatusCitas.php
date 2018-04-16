@@ -74,6 +74,10 @@ class CatStatusCitas extends \yii\db\ActiveRecord
             return $this->hasMany(EntCitas::className(), ['id_status' => 'id_statu_cita'])
             ->where(['in', 'id_usuario', $usuarioAsignado]);
 
+        }else if($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC){
+
+            return $this->hasMany(EntCitas::className(), ['id_status' => 'id_statu_cita'])
+            ->where(["id_call_center"=>$usuario->id_call_center]);
         } else if ($usuario->txt_auth_item == Constantes::USUARIO_SUPERVISOR_TELCEL || $usuario->txt_auth_item == Constantes::USUARIO_ADMINISTRADOR_TELCEL ) {
             return $this->hasMany(EntCitas::className(), ['id_status' => 'id_statu_cita']);
         }  else {

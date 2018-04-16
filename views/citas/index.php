@@ -12,6 +12,8 @@ use app\models\Constantes;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use app\models\CatTiposTramites;
+use app\models\EntUsuarios;
+use app\models\Permisos;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\ModUsuarios\models\EntUsuariosSearch */
@@ -20,7 +22,7 @@ use app\models\CatTiposTramites;
  $this->title = 'Citas';
  $this->params['classBody'] = "site-navbar-small site-menubar-hide";
  if(\Yii::$app->user->can(Constantes::USUARIO_CALL_CENTER)){
-      $this->params['headerActions'] = '<a class="btn btn-success ladda-button no-pjax" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label"><i class="icon wb-plus"></i>Agregar</span></a>';
+      $this->params['headerActions'] = '<a class="btn btn-success ladda-button no-pjax" href="'.Url::base().'/citas/create" data-style="zoom-in"><span class="ladda-label no-pjax"><i class="icon wb-plus"></i>Agregar</span></a>';
  }
 $this->params['breadcrumbs'][] = [
     'label' => '<i class="icon pe-7s-headphones"></i>Citas',
@@ -36,6 +38,7 @@ $this->registerJsFile(
     '@web/webAssets/js/citas/index.js',
     ['depends' => [\app\assets\AppAsset::className()]]
 );
+
 ?>
 
 
@@ -136,6 +139,7 @@ $this->registerJsFile(
             }
         ],
         [
+           
             'attribute'=>'id_envio',
             
             'value'=>'idEnvio.txt_tracking'
@@ -273,16 +277,24 @@ $this->registerJsFile(
                         'attribute'=>'txtTracking',
                         'value'=>'txtTracking',
                         'format'=>'raw',
+                        'filterInputOptions' => [
+                            'autocomplete' => 'new-password', 
+                            'class'=>"form-control"
+                          ],
                         'value'=>function($data){
 
                             if($data->id_envio){
-                                return Html::a(
-                                    $data->txtTracking,
-                                    Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]),
-                                    [
-                                        'class'=>'id-send no-pjax'
-                                    ]
-                                );
+                                if(Permisos::canUsuarioVerStatusEnvio()){
+                                    return Html::a(
+                                        $data->txtTracking,
+                                        Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]),
+                                        [
+                                            'class'=>'id-send no-pjax'
+                                        ]
+                                    );
+                                }
+
+                                return "<span class='id-send-error'>".$data->txtTracking."</span>";
                             }
 
                             return "<span class='id-send-error'>---</span>";
