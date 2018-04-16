@@ -14,6 +14,8 @@ AppAsset::register($this);
 <!-- Etiqueta head -->
 <?=$this->render("//components/head")?>
 <body class="animsition body-bgkd <?=isset($this->params['classBody'])?$this->params['classBody']:''?>">
+<input style="display:none" type="text" name="email"/>
+<input style="display:none" type="password" name="fakepasswordremembered"/>
   <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->

@@ -44,8 +44,7 @@ $this->registerJsFile(
 
 
    
-   <input style="display:none" type="text" name="email"/>
-<input style="display:none" type="password" name="fakepasswordremembered"/>
+   
 
 <div class="row">
     
