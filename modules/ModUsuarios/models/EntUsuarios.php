@@ -98,6 +98,11 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				],
 
 				[
+					['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'cambiarPass',
+					
+				],
+
+				[
 					['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'update',
 					'when' => function ($model) {
 						return $model->password || $model->repeatPassword;

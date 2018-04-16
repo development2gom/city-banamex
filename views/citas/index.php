@@ -279,7 +279,7 @@ $this->registerJsFile(
                         'format'=>'raw',
                         'filterInputOptions' => [
                             'autocomplete' => 'new-password', 
-                            'class'=>"form-contol"
+                            'class'=>"form-control"
                           ],
                         'value'=>function($data){
 
