@@ -1,6 +1,7 @@
 <?php
 namespace app\models;
 
+use Yii;
 use app\models\Constantes;
 use app\modules\ModUsuarios\models\EntUsuarios;
 
@@ -22,9 +23,15 @@ class BotonesCitas
         
         $botones = "";
 
-        $botones .= $this->getBotonAutorizar($cita->id_status, $usuario);
-        $botones .= $this->getBotonActualizar($cita->id_status,$usuario);
-        $botones .= $this->getBotonCancelar($cita->id_status, $usuario);
+        $auth = Yii::$app->authManager;
+
+        $hijos = $auth->getChildRoles($usuario->txt_auth_item);
+        ksort($hijos);
+        
+
+        $botones .= $this->getBotonAutorizar($cita->id_status, array_keys($hijos));
+        $botones .= $this->getBotonActualizar($cita->id_status,array_keys($hijos));
+        $botones .= $this->getBotonCancelar($cita->id_status, array_keys($hijos));
 
         return $botones;
     }
@@ -32,7 +39,7 @@ class BotonesCitas
     
     public function getBotonAutorizar($statusCita, $usuario)
     {
-        $botonHabilitado = EntPermisosUsuarios::find()->where(["txt_auth_item"=>$usuario->txt_auth_item, "id_accion"=>Constantes::BTN_APROBAR, "id_status_cita"=>$statusCita])->one();
+        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->andWhere(["id_accion"=>Constantes::BTN_APROBAR, "id_status_cita"=>$statusCita])->one();
 
         if($botonHabilitado){
 
@@ -44,7 +51,7 @@ class BotonesCitas
 
     public function getBotonCancelar($statusCita, $usuario)
     {
-        $botonHabilitado = EntPermisosUsuarios::find()->where(["txt_auth_item"=>$usuario->txt_auth_item, "id_accion"=>Constantes::BTN_RECHAZAR, "id_status_cita"=>$statusCita])->one();
+        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->andWhere(["id_accion"=>Constantes::BTN_RECHAZAR, "id_status_cita"=>$statusCita])->one();
 
         if($botonHabilitado){
 
@@ -56,7 +63,7 @@ class BotonesCitas
 
     public function getBotonActualizar($statusCita, $usuario)
     {
-        $botonHabilitado = EntPermisosUsuarios::find()->where(["txt_auth_item"=>$usuario->txt_auth_item, "id_accion"=>Constantes::BTN_EDITAR, "id_status_cita"=>$statusCita])->one();
+        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->andWhere(["id_accion"=>Constantes::BTN_EDITAR, "id_status_cita"=>$statusCita])->one();
 
         if($botonHabilitado){
 

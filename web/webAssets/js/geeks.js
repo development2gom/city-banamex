@@ -37,7 +37,9 @@ $(document).ready(function () {
 
     $('#form-ajax').on('ajaxComplete', function (e, jqXHR, textStatus) {
         var l = Ladda.create($("#form-ajax button[type=submit]").get(0));
-        l.stop();
+        if(jqXHR.responseJSON){
+            l.stop();
+        };
         return true;
     });
 

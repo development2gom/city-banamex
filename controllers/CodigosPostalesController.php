@@ -8,6 +8,8 @@ use app\models\CatCodigosPostalesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\RelMunicipioCodigoPostal;
+use app\models\RelMunicipioCodigoPostalSearch;
 
 /**
  * CodigosPostalesController implements the CRUD actions for CatCodigosPostales model.
@@ -125,7 +127,7 @@ class CodigosPostalesController extends Controller
     public function actionBuscarCodigo($q=null, $page=0){
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $criterios['txt_codigo_postal'] = $q;
-        $searchModel = new CatCodigosPostalesSearch();
+        $searchModel = new RelMunicipioCodigoPostalSearch();
 
         if($page > 1){
             $page--;

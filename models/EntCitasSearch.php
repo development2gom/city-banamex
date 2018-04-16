@@ -70,20 +70,20 @@ class EntCitasSearch extends EntCitas
         ]);
 
         // Important: here is how we set up the sorting
-    // The key is the attribute name on our "TourSearch" instance
-    $dataProvider->sort->attributes['nombreCompleto'] = [
-        
-            'asc' => ['txt_nombre' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
-            'desc' => ['txt_nombre' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC],
+        // The key is the attribute name on our "TourSearch" instance
+        $dataProvider->sort->attributes['nombreCompleto'] = [
             
+                'asc' => ['txt_nombre' => SORT_ASC, 'txt_apellido_paterno' => SORT_ASC],
+                'desc' => ['txt_nombre' => SORT_DESC, 'txt_apellido_paterno' => SORT_DESC],
+                
+                
             
-        
-    ];
+        ];
 
-    $dataProvider->sort->attributes['txtTracking']=[
-        'asc' => ['ent_envios.txt_tracking' => SORT_ASC],
-            'desc' => ['ent_envios.txt_tracking' => SORT_DESC],
-    ];
+        $dataProvider->sort->attributes['txtTracking']=[
+            'asc' => ['ent_envios.txt_tracking' => SORT_ASC],
+                'desc' => ['ent_envios.txt_tracking' => SORT_DESC],
+        ];
       
 
         $this->load($params);
@@ -101,44 +101,12 @@ class EntCitasSearch extends EntCitas
         }
 
         $usuario = Yii::$app->user->identity;
-        if( $usuario->txt_auth_item==Constantes::USUARIO_CALL_CENTER){
-            $this->id_usuario = $usuario->id_usuario;
-            $query->andFilterWhere(['id_usuario' => $this->id_usuario]);
-        }
-
-        if($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR){
-
-            $misUsuarios = $usuario->entGruposTrabajos;
+        
+        $query = Permisos::getCitasByRole($query);
+        
+           
+        $query->andFilterWhere(['id_status' => $this->id_status]);
             
-            $usuarioAsignado = [];
-            $usuarioAsignado[] = $usuario->id_usuario;
-            foreach($misUsuarios as $miUsuario){
-                $usuarioAsignado[] = $miUsuario->id_usuario_asignado;
-            }
-
-            $query->andFilterWhere(['in','id_usuario', $usuarioAsignado]);
-        }
-
-        
-            //if($this->id_status){
-                
-                $query->andFilterWhere(['id_status' => $this->id_status]);
-            // }else if(($usuario->txt_auth_item==Constantes::USUARIO_SUPERVISOR_TELCEL) || ($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_TELCEL)){
-                
-            //     $query->andFilterWhere(['in', 'id_status', [
-            //         Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR, 
-            //         Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
-            //         Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL, 
-            //         Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
-            //         Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
-            //         Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL ]]);
-            // }else{
-            //     $query->andFilterWhere(['id_status' => $this->id_status]);
-            // }
-
-        
-       
-
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');

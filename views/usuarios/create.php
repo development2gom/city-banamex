@@ -38,7 +38,8 @@ use app\models\Constantes;
         <?= $this->render('_form', [
             'model' => $model,
             'roles'=>$roles,
-            'supervisores'=>$supervisores
+            'supervisores'=>$supervisores,
+            'callCenters'=>$callCenters
         ]) ?>
     </div>
 </div>
