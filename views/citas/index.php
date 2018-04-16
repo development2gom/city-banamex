@@ -43,6 +43,9 @@ $this->registerJsFile(
 
 
 
+   
+   <input style="display:none" type="text" name="email"/>
+<input style="display:none" type="password" name="fakepasswordremembered"/>
 
 <div class="row">
     
@@ -278,7 +281,7 @@ $this->registerJsFile(
                         'value'=>'txtTracking',
                         'format'=>'raw',
                         'filterInputOptions' => [
-                            'autocomplete' => 'false', 
+                            'autocomplete' => 'nofill', 
                             'class'=>"form-control"
                           ],
                         'value'=>function($data){
@@ -373,7 +376,3 @@ $this->registerJsFile(
 }
 
 </style>
-
-   
-   <input style="display:none" type="text" name="username-fake"/>
-<input style="display:none" type="password" name="fakepasswordremembered"/>
