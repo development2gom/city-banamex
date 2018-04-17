@@ -108,7 +108,9 @@ class CitasController extends Controller
         $areas = CatAreas::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
         
         if ($model->load(Yii::$app->request->post())) {
-            
+            $equipo = CatEquipos::find()->where(["txt_nombre"=>$model->id_equipo])->one();
+           
+            $model->id_equipo = $equipo->id_equipo;
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
             
              $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
@@ -146,6 +148,8 @@ class CitasController extends Controller
             'query' => $historialCambios
         ]);
 
+        
+
         return $this->render('view', [
             'model' => $model,
             'tiposTramites'=>$tiposTramites,
@@ -182,7 +186,9 @@ class CitasController extends Controller
         $model->iniciarModelo($idArea, $numServicios, $tipoEntrega);
 
         if ($model->load(Yii::$app->request->post())) {
-
+            $equipo = CatEquipos::find()->where(["txt_nombre"=>$model->id_equipo])->one();
+           
+            $model->id_equipo = $equipo->id_equipo;
             if($model->id_equipo==Constantes::SIN_EQUIPO){
                 $model->b_documentos = 1;
             }

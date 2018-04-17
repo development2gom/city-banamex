@@ -140,39 +140,48 @@ $cat = $model->idCat;
         </div>
         <div class="col-sm-3 col-md-3">
         <?php
-            require(__DIR__ . '/../components/select2.php');
-            $url = Url::to(['equipos/buscar-equipo']);
-            $valEquipo = empty($model->id_equipo) ? '' : $equipo->txt_nombre;
-            //$equipo = empty($model->id_equipo) ? '' : CatEquipos::findOne($model->id_equipo)->txt_nombre;
-            // render your widget
-            echo $form->field($model, 'id_equipo')->widget(Select2::classname(), [
-                //'initValueText' => $cityDesc,
-                'options' => ['placeholder' => 'Seleccionar equipo'],
-                'pluginOptions' => [
-                    //'allowClear' => true,
-                    'minimumInputLength' => 1,
-                    'ajax' => [
-                        'url' => $url,
-                        'dataType' => 'json',
-                        'delay' => 250,
-                        'data' => new JsExpression('function(params) { return {q:params.term, page: params.page}; }'),
-                        'processResults' => new JsExpression($resultsJs),
-                        'cache' => true
-                    ],
-                    'escapeMarkup' => new JsExpression('function (markup) { if(!markup){
-                        return "Selecciona equipo";
-                    }return markup; }'),
-                    'templateResult' => new JsExpression('formatRepoEquipo'),
-                    'templateSelection' => new JsExpression('function (equipo) { 
-                        if(equipo.txt_nombre){
-                            return equipo.txt_nombre; 
-                        }else{
-                            return "'.$valEquipo.'"
-                        } }'),
-                ],
-            ]);
+            $model->id_equipo = empty($model->id_equipo) ? '' : $equipo->txt_nombre;
+        ?>
+        <?= $form->field($model, 'id_equipo')->textInput(['maxlength' => true]) ?>
         
-        ?>       
+        <?php
+             require(__DIR__ . '/../components/select2.php');
+            // $url = Url::to(['equipos/buscar-equipo']);
+            // $valEquipo = empty($model->id_equipo) ? '' : $equipo->txt_nombre;
+            // //$equipo = empty($model->id_equipo) ? '' : CatEquipos::findOne($model->id_equipo)->txt_nombre;
+            // // render your widget
+            // echo $form->field($model, 'id_equipo')->widget(Select2::classname(), [
+            //     //'initValueText' => $cityDesc,
+            //     'options' => ['placeholder' => 'Seleccionar equipo'],
+            //     'pluginOptions' => [
+            //         //'allowClear' => true,
+            //         'minimumInputLength' => 1,
+            //         'ajax' => [
+            //             'url' => $url,
+            //             'dataType' => 'json',
+            //             'delay' => 250,
+            //             'data' => new JsExpression('function(params) { return {q:params.term, page: params.page}; }'),
+            //             'processResults' => new JsExpression($resultsJs),
+            //             'cache' => true
+            //         ],
+            //         'escapeMarkup' => new JsExpression('function (markup) { if(!markup){
+            //             return "Selecciona equipo";
+            //         }return markup; }'),
+            //         'templateResult' => new JsExpression('formatRepoEquipo'),
+            //         'templateSelection' => new JsExpression('function (equipo) { 
+            //             if(equipo.txt_nombre){
+            //                 return equipo.txt_nombre; 
+            //             }else{
+            //                 return "'.$valEquipo.'"
+            //             } }'),
+            //     ],
+            // ]);
+        
+        ?>  
+
+            <div>
+
+            </div>     
         </div>
         <div class="col-sm-3 col-md-3">
             <?= $form->field($model, 'txt_numero_telefonico_nuevo')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
