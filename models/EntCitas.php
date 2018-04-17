@@ -256,7 +256,7 @@ class EntCitas extends \yii\db\ActiveRecord
             [
                 [
                     'id_tipo_tramite',
-                    'id_equipo',
+                    //'id_equipo',
                     'id_area',
                     'id_tipo_entrega',
                     'id_usuario',
