@@ -143,7 +143,7 @@ $this->registerJsFile(
         [
            
             'attribute'=>'id_envio',
-            
+            'format'=>'raw',
             'value'=>'idEnvio.txt_tracking'
         ],
 
