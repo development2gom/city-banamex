@@ -526,7 +526,7 @@ $output = fopen('php://output', 'w');
 }
 
 public function actionTestCrear(){
-    $fichero = 'evidencias/gente.txt';
+    $fichero = 'evidencias/test/gente.txt';
 // Abre el fichero para obtener el contenido existente
 $actual = file_get_contents($fichero);
 // Añade una nueva persona al fichero
