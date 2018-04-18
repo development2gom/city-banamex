@@ -326,6 +326,7 @@ $this->registerJsFile(
                     'label' => 'Exportar',
                     'fontAwesome' => true,
                     'showConfirmAlert'=>false,
+                    'enableFormatter'=>false,
                     'itemsAfter'=> [
                         '<li role="presentation" class="divider"></li>',
                         '<li class="dropdown-header">Export todos los datos</li>',
