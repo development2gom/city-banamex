@@ -450,8 +450,6 @@ exit;
         $path = "evidencias/".$cita->txt_token."/".$namefile;
         $isSaved = $file->saveAs($path);
 
-        echo $isSaved;
-        exit;
         if($isSaved){
            
             $evidencia->id_cita = $cita->id_cita;
@@ -528,7 +526,15 @@ $output = fopen('php://output', 'w');
 }
 
 public function actionTestCrear(){
-    Files::validarDirectorio("evidencias/test");
+    $fichero = 'evidencias/gente.txt';
+// Abre el fichero para obtener el contenido existente
+$actual = file_get_contents($fichero);
+// Añade una nueva persona al fichero
+$actual .= "John Smith\n";
+// Escribe el contenido al fichero
+
+    
+    file_put_contents($fichero, $actual);
 }
     
 }
