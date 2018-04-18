@@ -131,7 +131,7 @@ $usuarioLogueado = EntUsuarios::getUsuarioLogueado();
                                 if(isset($historico->History)){
                                     usort($historico->History, function($a, $b) { return strtotime($b->Fecha) - strtotime($a->Fecha); });
                                     $localizaciones = [];
-                                    $index = count($historico->Images);
+                                    $index = count($historico->Images)-1;
                                     foreach($historico->History as $key=>$historial):
                                         $localizaciones[] = (isset($historial->Geolocation) && $historial->Geolocation)?$historial->Geolocation:null;
                             ?>

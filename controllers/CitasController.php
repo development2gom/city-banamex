@@ -360,7 +360,7 @@ class CitasController extends Controller
 
 
     public function actionTestApiImage(){
-        $tracking = "SSYBS15041800003";
+        $tracking = "SSYBS15041800002";
         $cita = new EntCitas();
         $respuestaApi = ($cita->consultarEnvio($tracking));
         $historico =($cita->consultarHistorico($tracking));
@@ -445,9 +445,9 @@ exit;
             return $response;
         }
 
-        Files::validarDirectorio("evidencias/".$cita->txt_token);
+        //Files::validarDirectorio("evidencias/".$cita->txt_token);
         $namefile = uniqid("pdf").".".$file->extension;
-        $path = "evidencias/".$cita->txt_token."/".$namefile;
+        $path = "evidencias/".$cita->txt_identificador_cliente."-".$namefile;
         $isSaved = $file->saveAs($path);
 
         if($isSaved){
@@ -523,6 +523,18 @@ $output = fopen('php://output', 'w');
     }
 
    
+}
+
+public function actionTestCrear(){
+    $fichero = 'evidencias/test/gente.txt';
+// Abre el fichero para obtener el contenido existente
+$actual = file_get_contents($fichero);
+// Añade una nueva persona al fichero
+$actual .= "John Smith\n";
+// Escribe el contenido al fichero
+
+    
+    file_put_contents($fichero, $actual);
 }
     
 }

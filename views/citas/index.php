@@ -143,7 +143,7 @@ $this->registerJsFile(
         [
            
             'attribute'=>'id_envio',
-            'format'=>'raw',
+            
             'value'=>'idEnvio.txt_tracking'
         ],
 
@@ -153,13 +153,32 @@ $this->registerJsFile(
     $fullExportMenu = ExportMenu::widget([
         'dataProvider' => $dataProvider,
         'columns' => $gridColumns,
+        "pjaxContainerId"=>'pjax-citas',
         'target' => ExportMenu::TARGET_BLANK,
         'showConfirmAlert'=>false,
         'fontAwesome' => true,
         'asDropdown' => false,
+        
          'exportConfig'=>[
             ExportMenu::FORMAT_HTML => false,
-            
+            ExportMenu::FORMAT_CSV => [
+                'label' => Yii::t('kvgrid', 'CSV'),
+                'icon' =>'file-code-o', 
+                'iconOptions' => false,
+                'showHeader' => true,
+                'showPageSummary' => true,
+                'showFooter' => true,
+                'showCaption' => true,
+                'filename' => Yii::t('kvgrid', 'grid-export'),
+                'alertMsg' => Yii::t('kvgrid', 'The CSV export file will be generated for download.'),
+                'options' => ['title' => Yii::t('kvgrid', 'Comma Separated Values')],
+                'mime' => 'application/csv',
+                'writer' => ExportMenu::FORMAT_CSV,
+                'config' => [
+                    'colDelimiter' => ",",
+                    'rowDelimiter' => "\r\n",
+                ],
+            ],
             ExportMenu::FORMAT_TEXT =>false,
             ExportMenu::FORMAT_PDF => false,
             ExportMenu::FORMAT_EXCEL => false,
@@ -181,7 +200,7 @@ $this->registerJsFile(
                 'pjaxSettings'=>[
                     'options'=>[
                       'linkSelector'=>"a:not(.no-pjax)",
-                      'id'=>'pjax-usuarios'
+                      'id'=>'pjax-citas'
                     ]
                   ],
                 'dataProvider' => $dataProvider,
@@ -323,6 +342,7 @@ $this->registerJsFile(
                     '{export}',
                 ],
                 'export' => [
+                    "pjaxContainerId"=>'pjax-citas',
                     'label' => 'Exportar',
                     'fontAwesome' => true,
                     'showConfirmAlert'=>false,
@@ -349,6 +369,7 @@ $this->registerJsFile(
                         'alertMsg' => Yii::t('kvgrid', 'The CSV export file will be generated for download.'),
                         'options' => ['title' => Yii::t('kvgrid', 'Comma Separated Values')],
                         'mime' => 'application/csv',
+                        'writer' => ExportMenu::FORMAT_CSV,
                         'config' => [
                             'colDelimiter' => ",",
                             'rowDelimiter' => "\r\n",

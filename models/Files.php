@@ -5,6 +5,7 @@ class Files{
     public static function validarDirectorio($path){
         if (!file_exists($path)) {
 			mkdir($path, 0777);
+			
 		}
     }
 
