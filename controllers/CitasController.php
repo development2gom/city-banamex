@@ -445,9 +445,9 @@ exit;
             return $response;
         }
 
-        Files::validarDirectorio("evidencias/".$cita->txt_token);
+        //Files::validarDirectorio("evidencias/".$cita->txt_token);
         $namefile = uniqid("pdf").".".$file->extension;
-        $path = "evidencias/".$cita->txt_token."/".$namefile;
+        $path = $namefile;
         $isSaved = $file->saveAs($path);
 
         if($isSaved){
