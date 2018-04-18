@@ -450,6 +450,8 @@ exit;
         $path = "evidencias/".$cita->txt_token."/".$namefile;
         $isSaved = $file->saveAs($path);
 
+        echo $isSaved;
+        exit;
         if($isSaved){
            
             $evidencia->id_cita = $cita->id_cita;
