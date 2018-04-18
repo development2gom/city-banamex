@@ -524,5 +524,9 @@ $output = fopen('php://output', 'w');
 
    
 }
+
+public function actionTestCrear(){
+    Files::validarDirectorio("evidencias/test");
+}
     
 }
