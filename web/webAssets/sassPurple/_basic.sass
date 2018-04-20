@@ -1,0 +1,392 @@
+/*!
+	-----------------------------------------------------------------------------
+
+	2.0 - Basicos
+			#
+			# Login
+			# Footer
+			# Usuarios
+
+	-----------------------------------------------------------------------------
+	*/
+
+/*  Load Overlay
+	======================================= */
+.loader-overlay
+	background-color: $mls-black
+
+/*  A
+	======================================= */
+a
+	color: $link-primary
+	&:active,
+	&:focus,
+	&:hover
+		color: $link-primary-active
+
+/*  Btn
+	======================================= */
+/* primary */
+.btn-primary
+	border-color: $btn-primary
+    background-color: $btn-primary
+	&:active,
+	&:focus,
+	&:hover
+		border-color: $btn-primary-active
+		background-color: $btn-primary-active
+
+/* succes */
+.btn-success
+	border-color: $success
+	background-color: $success
+	&:active,
+	&:focus,
+	&:hover
+		border-color: $success-active
+		background-color: $success-active
+
+/* danger */
+.btn-danger
+	border-color: $error
+    background-color: $error
+	&:active,
+	&:focus,
+	&:hover
+		border-color: $error-active
+		background-color: $error-active
+
+/*  Label
+	======================================= */
+/* Normal */
+.page-login-v3
+	form
+		.form-material
+			label
+				color: #a3afb7
+
+.form-material
+	.form-control:-webkit-autofill~.floating-label
+		top: -1.3rem
+
+	.form-control~.floating-label
+		padding: 0 10px
+
+/* Active */
+.form-material
+	.form-control.focus~.floating-label,
+	.form-control:focus~.floating-label
+		color: $color-primary
+		top: -1.3rem
+
+/* Error */
+.form-material.form-group.has-danger
+	.form-control.focus~.floating-label,
+	.form-control:focus~.floating-label,
+	.form-control:not(.empty)~.floating-label
+		color: $error
+		top: -1.3rem
+
+/* Succes */
+.form-material.form-group.has-success
+	.form-control.focus~.floating-label,
+	.form-control:focus~.floating-label,
+	.form-control:not(.empty)~.floating-label
+		color: $color-primary
+		top: -1.3rem
+
+/*  Input
+	======================================= */
+.form-material
+	.form-control,
+	.form-control.focus,
+	.form-control:focus
+		background-image: -webkit-gradient(linear,left top,left bottom,from($color-primary),to($color-primary)),-webkit-gradient(linear,left top,left bottom,from($color-gray),to($color-gray))
+		background-image: -webkit-linear-gradient($color-primary,$color-primary),-webkit-linear-gradient($color-gray,$color-gray)
+		background-image: -o-linear-gradient($color-primary,$color-primary),-o-linear-gradient($color-gray,$color-gray)
+		background-image: linear-gradient($color-primary,$color-primary),linear-gradient($color-gray,$color-gray)
+		
+/*  Login
+	======================================= */
+/* Imagen de fondo */
+.page-login-v3
+	&:before
+		background-color: $mls-black
+		background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+)
+		background-image: -webkit-gradient(linear, left top, left bottom, from($bg-primary), to(#3583ca))
+		background-image: -webkit-linear-gradient(top, $bg-primary 0%, #3583ca 100%)
+		background-image: -o-linear-gradient(top, $bg-primary 0%, #3583ca 100%)
+		background-image: url('https://drscdn.500px.org/photo/230473379/q%3D80_m%3D2000/v2?webp=true&sig=8098ec687c2dacf53ba17515209dca4cf6ee1ad91d7e0aae23a217db2089824c')
+
+/* Login */
+.login
+	
+	.brand
+		.brand-img
+			height: 100px
+			margin-bottom: 20px
+	
+	form
+		.form-group
+			.help-block.help-block-error
+				color: $error
+				font-size: .9rem
+				text-align: left
+
+.form-material
+	.form-control
+		padding: 0 10px
+			
+
+/*  Header
+	======================================= */
+.navbar-inverse
+	background-color: $bg-primary
+	.navbar-collapse,
+	.navbar-form
+		border-color: $border-color
+
+/*  Footer
+	======================================= */
+.site-footer
+	.site-footer-legal
+		img
+			height: 30px
+	
+	.site-footer-right
+		img
+			height: 30px
+
+.page-copyright
+	.social
+		a
+			img
+				height: 30px
+
+/*  Usuarios
+	======================================= */
+/* Crear */
+.usuarios-create
+	.user-file
+		cursor: pointer
+		display: block
+		height: 200px
+		margin: 0 auto
+		max-width: 80%
+		width: 200px
+
+/* Actualizar */
+.usuarios-actualizar
+	.user-file
+		cursor: pointer
+		display: block
+		height: 200px
+		margin: 0 auto
+		max-width: 80%
+		width: 200px
+
+/*  Usuarios
+	======================================= */
+.page-bg-trans
+	background-color: $bg-trans
+
+
+/*  Badge - Colors
+	======================================= */
+.badge
+
+	&.warning
+		background-color: $error
+	&.green-light
+		background-color: $green-light
+	&.green-medium
+		background-color: $green-medium
+	&.green
+		background-color: $mls-green
+	&.danger
+		background-color: $error
+
+/*  Pagination
+	======================================= */
+.pagination
+	display: flex
+	justify-content: flex-end
+	li,
+	.page-item
+		display: flex
+		a,
+		span,
+		.page-link
+			align-items: center
+			background-color: transparent
+			border: 1px solid rgba($white,.4)
+			color: $white
+			display: flex
+			font-weight: $regular
+			justify-content: center
+			margin: 0 2px
+			padding: 4px 2px
+			color: $white
+			text-decoration: none
+			width: 40px
+			&:hover
+				background-color: rgba($white,.16)
+				border-color: rgba($white,.16)
+				color: rgba($white,.85)
+		&.prev,
+		&.next
+			a
+				color: $white
+		&.disabled
+			span
+				background-color: rgba($white,.16)
+				border-color: rgba($white,.16)
+				color: rgba($white,.4)
+		&.active
+			a
+				background-color: $mls-aqua
+				border-color: $mls-aqua
+				color: $mls-black
+				&:hover
+					background-color: rgba($mls-aqua,.25)
+					border-color: rgba($mls-aqua,.65)
+					color: rgba($white,.85)
+
+
+/*  EXTRAS
+	======================================= */
+.old
+	&.day
+		opacity: .4
+
+.disabled
+	&.day,
+	&.disabled-date
+		cursor: not-allowed
+		opacity: .4
+
+.select2-container--krajee
+    z-index: 9999!important
+
+.datepicker
+	z-index: 1401 !important
+
+.filters
+	.form-control
+		background-color: $bg-input
+		border-color: $bg-input
+		font-weight: $light
+
+// Select 2 Global
+.select2-container--krajee
+	.select2-dropdown
+		border-color: $bg-input !important
+
+.select2-dropdown
+	background-color: $mls-bg-a !important
+	border-color: $bg-input !important
+
+.select2-container--krajee
+	.select2-search--dropdown
+		.select2-search__field
+			background-color: $bg-input !important
+
+.select2-container--krajee
+	.select2-results__option[aria-selected]
+		background-color: $bg-input !important
+		color: rgba($mls-black,.65) !important
+
+.select2-container--krajee
+	.select2-results__option--highlighted[aria-selected]
+		color: rgba($mls-black,.98) !important
+
+// Dropdown
+.dropdown-menu
+	background-color: $mls-purple !important
+	border-color: $mls-purple !important
+	color: rgba($white,.75) !important
+
+.dropdown-item:focus,
+.dropdown-item:hover
+	background-color: $mls-black !important
+	color: rgba($white,.85) !important
+
+// Datepicker
+.dropdown-divider
+	border-top-color: $mls-grey !important
+
+.datepicker.datepicker-dropdown
+    z-index: 1651 !important
+
+.datepicker-dropdown.datepicker-orient-top:after,
+.datepicker-dropdown.datepicker-orient-top:before
+	border-top-color: $mls-purple !important
+
+.datepicker table tr td.active:active,
+.datepicker table tr td.active.highlighted:active,
+.datepicker table tr td.active.active,
+.datepicker table tr td.active.highlighted.active
+	background-color: rgba($mls-aqua,.85) !important
+	border-color: rgba($mls-aqua,.6) !important
+
+.datepicker table tr td.day:hover,
+.datepicker table tr td.focused
+	background-color: rgba($mls-aqua,.2) !important
+	border-color: rgba($mls-aqua,.2) !important
+
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover
+	color: rgba($white,.8) !important
+
+.datepicker table tr td.new,
+.datepicker table tr td.old
+	color: rgba($white,.65) !important
+
+.datepicker .datepicker-switch:hover,
+.datepicker .next:hover,
+.datepicker .prev:hover,
+.datepicker tfoot tr th:hover
+	background-color: rgba($mls-aqua,.75) !important
+	color: rgba($white,.8) !important
+
+// Select con input
+.select2-container--krajee
+	.select2-search--dropdown
+		.select2-search__field
+			border-color: darken($bg-input, 4%) !important
+
+// Select con introduzca un caracter
+.select2-container--krajee
+	li.select2-results__option
+		background-color: darken($bg-input, 4%) !important
+		color: rgba($mls-black,.9) !important
+
+
+// Checkbox
+.checkbox-primary
+	input[type=radio]:checked+input[type=hidden]+label::before,
+	input[type=radio]:checked+label::before,
+	input[type=checkbox]:checked+input[type=hidden]+label::before, 
+	input[type=checkbox]:checked+label::before
+		background-color: $mls-aqua
+		border-color: $mls-aqua
+
+// Radio
+.radio-custom label::before
+	background-color: $mls-grey
+	border-color: $mls-grey
+	
+.radio-primary
+	input[type=radio]:checked+input[type=hidden]+label::before,
+	input[type=radio]:checked+label::before
+		background-color: $mls-aqua
+		border-color: $mls-aqua
+
+	input[type=radio]:checked+input[type=hidden]+label::after,
+	input[type=radio]:checked+label::after
+		background-color: $mls-grey
+		border-color: $mls-grey
+
+//
+.panel.panel-usuarios-create
+	box-shadow: none

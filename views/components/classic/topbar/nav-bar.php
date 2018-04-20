@@ -57,7 +57,7 @@ role="navigation">
               <i></i>
             </span>
           </a>
-          <div class="dropdown-menu" role="menu">
+          <div class="dropdown-menu dropdown-menu-usuario" role="menu">
             <a class="dropdown-item no-pjax" href="<?=Url::base()?>/usuarios/update/<?=$usuario->id_usuario?>" role="menuitem"><i class="icon wb-user" aria-hidden="true"></i> Perfil</a>
             <a class="dropdown-item no-pjax" href="<?=Url::base()?>/usuarios/cambiar-pass" role="menuitem"><i class="icon wb-more-horizontal" aria-hidden="true"></i> Cambiar contraseña</a>
             <div class="dropdown-divider" role="presentation"></div>
