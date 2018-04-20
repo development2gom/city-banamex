@@ -21,8 +21,8 @@ class AppAsset extends AssetBundle
         'plugins/ladda/ladda.css',
         // 'css/site-extend.css.map',
         // 'css/site-extend.css',
-        'css/site-light.css.map',
-        'css/site-light.css'
+        'css/site-purple.css.map',
+        'css/site-purple.css'
     ];
     public $js = [
         'plugins/ladda/spin.min.js',
