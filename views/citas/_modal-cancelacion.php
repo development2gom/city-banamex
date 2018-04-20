@@ -31,14 +31,8 @@ if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)){
             'action'=>'cancelar?token='.$model->txt_token
             ]);
 
-            echo $form->field($model, 'id_tipo_cancelacion')
-            ->widget(Select2::classname(), [
-                //'value'=>$areaDefault->id_area,
-                'data' => ArrayHelper::map($tiposCancelacion, 'id_tipo_cancelacion', 'txt_nombre'),
-                'language' => 'es',
-                'options' => ['placeholder' => 'Seleccionar motivo de cancelación'],
-                
-            ]);
+            echo $form->field($model, 'txt_motivo_cancelacion_rechazo')->textarea();
+
 
 
         echo Html::submitButton('Cancelar cita', ['class' => 'btn btn-warning']);

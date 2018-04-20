@@ -139,10 +139,8 @@ $cat = $model->idCat;
                 ?>  
         </div>
         <div class="col-sm-3 col-md-3">
-        <?php
-            $model->id_equipo = empty($model->id_equipo) ? '' : $equipo->txt_nombre;
-        ?>
-        <?= $form->field($model, 'id_equipo')->textInput(['maxlength' => true]) ?>
+        
+        <?= $form->field($model, 'txt_equipo')->textInput(['maxlength' => true]) ?>
         
         <?php
              require(__DIR__ . '/../components/select2.php');
@@ -358,6 +356,7 @@ $cat = $model->idCat;
                                     if(equipo.txt_nombre){
                                         return equipo.txt_nombre;
                                     }else{
+                                        
                                         return "'.$model->txt_codigo_postal.'"
                                     }
                         }'),
@@ -561,8 +560,8 @@ $this->registerJs(
 
                 if(res.status=="error"){
                     swal({
-                        title: "Datos no válido",
-                        text: "El número teléfonico " + res.tel + " ya se encuentra en una cita activa",
+                        title: "Datos no válidos",
+                        text: res.mensaje,
                         type: "warning",
                         showCancelButton: false,
                         confirmButtonClass: "btn-warning",

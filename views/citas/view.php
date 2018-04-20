@@ -61,8 +61,7 @@ $this->registerJsFile(
         'tiposTramites'=>$tiposTramites,
         'tiposClientes'=>$tiposClientes,
         'tiposIdentificaciones'=>$tiposIdentificaciones,
-        'areas'=>$areas,
-        'areaDefault'=>$areaDefault
+      
     ]) ?>
     
     <div class="panel-citas-btns">

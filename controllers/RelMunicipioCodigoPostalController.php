@@ -10,6 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\ResponseServices;
 use app\models\Calendario;
+use app\models\EntCitas;
+use app\modules\ModUsuarios\models\Utils;
 
 /**
  * RelMunicipioCodigoPostalController implements the CRUD actions for RelMunicipioCodigoPostal model.
@@ -146,7 +148,15 @@ class RelMunicipioCodigoPostalController extends Controller
         $diasServicio = $this->getDiasServicio($municipio);
         $diasServicioNum = $this->getDiasServicioNum($municipio);
         $area = $municipio->idArea;
-        
+
+        $fechaInicio= EntCitas::getFechaEntrega(Utils::getFechaActual());
+        $fechaInicio= Utils::changeFormatDate($fechaInicio);
+
+
+        $startDate = $fechaInicio;
+        $end = date('Y-m-d', strtotime('+2 months'));
+        $end = Utils::changeFormatDate($end);
+
         $respuesta->status = "success";
         $respuesta->message = "municipio";
         $respuesta->result["id_area"] = $area->id_area;
@@ -154,6 +164,8 @@ class RelMunicipioCodigoPostalController extends Controller
         $respuesta->result["txt_municipio"] = $municipio->txt_nombre;
         $respuesta->result["text_dias_servicios"] = $diasServicio;
         $respuesta->result["num_dias_servicios"] = $diasServicioNum;
+        $respuesta->result["fch_inicio"] = $fechaInicio;
+        $respuesta->result["fch_final"] = $end;
         
         return $respuesta;
 
