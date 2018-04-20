@@ -42,7 +42,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	const STATUS_PENDIENTED = 1;
 	const STATUS_ACTIVED = 2;
 	const STATUS_BLOCKED = 3;
-	public $password;
+	
 	public $repeatPassword;
 	public $image;
 	
@@ -87,30 +87,30 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 					}"
 				],
 				
-				[
-					['repeatPassword', 'password'], 'required', 'on'=>'update',
-					'when' => function ($model) {
-						return $model->password || $model->repeatPassword;
-					}, 'whenClient' => "function (attribute, value) {
+				// [
+				// 	['repeatPassword', 'password'], 'required', 'on'=>'update',
+				// 	'when' => function ($model) {
+				// 		return $model->password || $model->repeatPassword;
+				// 	}, 'whenClient' => "function (attribute, value) {
 						
-						return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
-					}"
-				],
+				// 		return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
+				// 	}"
+				// ],
 
-				[
-					['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'cambiarPass',
+				// [
+				// 	['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'cambiarPass',
 					
-				],
+				// ],
 
-				[
-					['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'update',
-					'when' => function ($model) {
-						return $model->password || $model->repeatPassword;
-					}, 'whenClient' => "function (attribute, value) {
+				// [
+				// 	['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'update',
+				// 	'when' => function ($model) {
+				// 		return $model->password || $model->repeatPassword;
+				// 	}, 'whenClient' => "function (attribute, value) {
 						
-						return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
-					}"
-				],
+				// 		return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
+				// 	}"
+				// ],
 				
 				[ 
 						'txt_email',

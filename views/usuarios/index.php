@@ -98,26 +98,8 @@ $this->registerJsFile(
             'attribute' => 'roleDescription',
             'filter'=>ArrayHelper::map($roles, 'name', 'description'),
           ],
-          
-          [
-            'attribute' => 'fch_creacion',
-            'filter'=>DatePicker::widget([
-              'model'=>$searchModel,
-              'attribute'=>'fch_creacion',
-              'pickerButton'=>false,
-              'removeButton'=>false,
-              'type' => DatePicker::TYPE_INPUT,
-              'pluginOptions' => [
-                  'autoclose'=>true,
-                  'format' => 'dd-mm-yyyy'
-              ]
-            ]),
-            'format'=>'raw',
-            'value'=>function($data){
-                
-              return Calendario::getDateSimple($data->fch_creacion);
-            }
-          ],
+          'txt_email',
+          'password',
           [
             'attribute' => 'id_status',
             'filter'=>[EntUsuarios::STATUS_ACTIVED=>'Activo', EntUsuarios::STATUS_BLOCKED=>'Inactivo'],

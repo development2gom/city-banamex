@@ -117,18 +117,15 @@ class UsuariosController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post())) {
-
-            $model->password = $model->randomPassword();
             $model->repeatPassword = $model->password;
-            
             if(($usuario->txt_auth_item==Constantes::USUARIO_ADMINISTRADOR_CC || $usuario->txt_auth_item==Constantes::USUARIO_MASTER_CALL_CENTER)){
            
                 $model->id_call_center = $usuario->id_call_center;
             }
 
             if ($user = $model->signup()) {
-
-                $user->enviarEmailBienvenida();
+                
+                //$user->enviarEmailBienvenida();
 
                 return $this->redirect(['index']);
             }
@@ -138,6 +135,12 @@ class UsuariosController extends Controller
         }
 
         $callCenters = CatCallsCenters::find()->orderBy("txt_nombre")->all();
+
+        if(!$model->password){
+            $model->password = $model->randomPassword();
+            $model->repeatPassword = $model->password;
+        }
+
         return $this->render('create', [
             'model' => $model,
             'roles'=>$roles,

@@ -89,8 +89,15 @@ use app\modules\ModUsuarios\models\EntUsuarios;
             
             <h4>Datos de Usuario</h4>
             <div class="row">
-                <div class="col-md-12">
-                    <?= $form->field($model, 'txt_email')->textInput(['maxlength' => true, 'placeholder' => 'correo eléctronico (Este será el usuario con el cual iniciara sesión)'])->label(false) ?>
+                <div class="col-md-6">
+                    <?= $form->field($model, 'txt_email')->textInput(['maxlength' => true, 'placeholder' => 'Usuario'])->label(false) ?>
+                </div>
+                <div class="col-md-6">
+                <?= $form->field($model, 'password')
+                    ->textInput(['placeholder' => 'Contraseña'])
+                    ->label(false)
+                    
+                     ?>
                 </div>
             </div>         
 
