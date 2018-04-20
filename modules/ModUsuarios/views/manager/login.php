@@ -11,6 +11,11 @@ use yii\helpers\Url;
 $this->title = 'Login';
 $this->params['classBody'] = "page-login-v3 layout-full";
 
+$this->registerCssFile(
+    '@web/webAssets/css/site-purple.css',
+    ['depends' => [\app\assets\AppAsset::className()]]
+);
+
 ?>
 
 <div class="panel">
