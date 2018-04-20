@@ -165,8 +165,8 @@ class EntCitas extends \yii\db\ActiveRecord
             $this->id_status = Constantes::STATUS_CREADA;
         }
 
-        $this->id_area = $idArea;
-        $this->num_dias_servicio = $numServicios;
+        //$this->id_area = $idArea;
+        //$this->num_dias_servicio = $numServicios;
         $this->id_tipo_entrega = $tipoEntrega;
         $this->id_usuario = $usuario->id_usuario;;
         $this->txt_token = Utils::generateToken("cit_");
@@ -482,7 +482,7 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public static function getFechaEntrega($fecha)
     {
-        $tiempo = strtotime($fecha . "+2 day");
+        $tiempo = strtotime($fecha . "+4 day");
         $fecha = date('d-m-Y', $tiempo);
 
         return self::validarDiaEntrega($fecha);

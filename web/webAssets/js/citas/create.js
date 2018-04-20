@@ -19,9 +19,14 @@ $(document).ready(function(){
 					$("#txt_area").val(r.result.txt_area);
 
 					$("#entcitas-num_dias_servicio").val(r.result.num_dias_servicios);
-					$("#num_dias_servicio").val(r.result.num_dias_servicios);
+					$("#num_dias_servicio").val(r.result.text_dias_servicios);
 
 					$("#entcitas-txt_municipio").val(r.result.txt_municipio);
+
+					$("#entcitas-fch_cita").kvDatepicker('destroy');
+					$("#entcitas-fch_cita").kvDatepicker({
+						"clearBtn": true,
+						"autoclose":true,"format":"dd-mm-yyyy","language":"es",'daysOfWeekDisabled':r.result.num_dias_servicios});
 					
 				}
 			},

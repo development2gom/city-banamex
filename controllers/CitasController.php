@@ -171,9 +171,9 @@ class CitasController extends Controller
     public function actionCreate()
     {
 
-        $areaDefault = CatAreas::findOne(1); 
-        $idArea = $areaDefault->id_area;
-        $numServicios = $areaDefault->txt_dias_servicio;
+        // $areaDefault = CatAreas::findOne(1); 
+        // $idArea = $areaDefault->id_area;
+        // $numServicios = $areaDefault->txt_dias_servicio;
         $tipoEntrega = 1;
         
         $usuario = EntUsuarios::getUsuarioLogueado();
@@ -183,7 +183,7 @@ class CitasController extends Controller
         if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
             $model = new EntCitas(['scenario'=>'autorizar']);
         }
-        $model->iniciarModelo($idArea, $numServicios, $tipoEntrega);
+        $model->iniciarModelo(1, null, $tipoEntrega);
 
         if ($model->load(Yii::$app->request->post())) {
             $equipo = CatEquipos::find()->where(["txt_nombre"=>$model->id_equipo])->one();
@@ -233,7 +233,7 @@ class CitasController extends Controller
             'tiposClientes'=>$tiposClientes,
             'tiposIdentificaciones'=>$tiposIdentificaciones,
             'areas'=>$areas,
-            'areaDefault'=>$areaDefault
+            
         ]);
         
     }

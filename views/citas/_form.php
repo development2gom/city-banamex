@@ -436,8 +436,11 @@ $cat = $model->idCat;
     <div class="row">
         <div class="col-sm-3 col-md-3">
             <div class="form-group">
+                <?php
+                $areaText = $model->id_area?$model->idArea->txt_nombre:'';
+                ?>
                 <?=Html::label("Área", "txt_area", ["class"=>"form-control-label"])?>
-                <?=Html::textInput("txt_area", $model->idArea->txt_nombre, ['class'=>'form-control', 'disabled'=>'disabled', 'id'=>'txt_area' ])?>
+                <?=Html::textInput("txt_area", $areaText, ['class'=>'form-control', 'disabled'=>'disabled', 'id'=>'txt_area' ])?>
             </div>    
                 <?= $form->field($model, 'id_area')->hiddenInput(['maxlength' => true])->label(false) ?>
               
@@ -463,7 +466,7 @@ $cat = $model->idCat;
                 'pluginOptions' => [
                     'autoclose'=>true,
                     'format' => 'dd-mm-yyyy',
-                    'daysOfWeekDisabled'=> "0",
+                    'daysOfWeekDisabled'=> "0,",
                     'startDate' => $startDate, //date("d-m-Y")
                     'endDate'=>$end
                 ]

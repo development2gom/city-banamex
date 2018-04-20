@@ -144,6 +144,7 @@ class RelMunicipioCodigoPostalController extends Controller
         $rel = RelMunicipioCodigoPostal::find()->where(["txt_codigo_postal"=>$cp])->one();
         $municipio = $rel->idMunicipio;
         $diasServicio = $this->getDiasServicio($municipio);
+        $diasServicioNum = $this->getDiasServicioNum($municipio);
         $area = $municipio->idArea;
         
         $respuesta->status = "success";
@@ -151,7 +152,8 @@ class RelMunicipioCodigoPostalController extends Controller
         $respuesta->result["id_area"] = $area->id_area;
         $respuesta->result["txt_area"] = $area->txt_nombre;
         $respuesta->result["txt_municipio"] = $municipio->txt_nombre;
-        $respuesta->result["num_dias_servicios"] = $diasServicio;
+        $respuesta->result["text_dias_servicios"] = $diasServicio;
+        $respuesta->result["num_dias_servicios"] = $diasServicioNum;
         
         return $respuesta;
 
@@ -166,6 +168,22 @@ class RelMunicipioCodigoPostalController extends Controller
         $v = $municipio->b_viernes?'V,':'';
         $s = $municipio->b_sabado?'S,':'';
         $d = $municipio->b_domingo?'D,':'';
+
+        $dias = $l.$m.$mi.$j.$v.$s.$d;
+        return $dias;
+
+
+    }
+
+    public function getDiasServicioNum($municipio){
+
+        $l = !$municipio->b_lunes?'1,':'';
+        $m = !$municipio->b_martes?'2,':'';
+        $mi = !$municipio->b_miercoles?'3,':'';
+        $j = !$municipio->b_jueves?'4,':'';
+        $v = !$municipio->b_viernes?'5,':'';
+        $s = !$municipio->b_sabado?'6,':'';
+        $d = !$municipio->b_domingo?'0,':'';
 
         $dias = $l.$m.$mi.$j.$v.$s.$d;
         return $dias;

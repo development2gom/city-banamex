@@ -39,6 +39,6 @@ $this->registerJsFile(
             'tiposClientes'=>$tiposClientes,
             'tiposIdentificaciones'=>$tiposIdentificaciones,
             'areas'=>$areas,
-            'areaDefault'=>$areaDefault
+            
         ]) ?>
 </div>
