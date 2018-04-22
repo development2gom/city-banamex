@@ -86,3 +86,31 @@
 	-----------------------------------------------------------------------------
 	*/
 /*# sourceMappingURL=site-purple.css.map */
+
+
+.pagination li a, .pagination li span, .pagination li .page-link, .pagination .page-item a, .pagination .page-item span, .pagination .page-item .page-link {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid rgb(61, 219, 195);
+    color: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-weight: 400;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin: 0 2px;
+    padding: 4px 2px;
+    color: black;
+    text-decoration: none;
+    width: 40px;
+}
+
+.pagination li a:hover, .pagination li span:hover, .pagination li .page-link:hover, .pagination .page-item a:hover, .pagination .page-item span:hover, .pagination .page-item .page-link:hover {
+    background-color: rgb(126, 229, 211);
+    border-color: rgba(255,255,255,0.16);
+    color: rgba(255,255,255,0.85);
+}
