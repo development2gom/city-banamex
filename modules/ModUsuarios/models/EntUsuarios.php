@@ -262,7 +262,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				'txt_auth_key' => 'Txt Auth Key',
 				'txt_password_hash' => 'Txt Password Hash',
 				'txt_password_reset_token' => 'Txt Password Reset Token',
-				'txt_email' => 'Correo electrónico',
+				'txt_email' => 'Usuario',
 				'fch_creacion' => 'Fecha creación',
 				'fch_actualizacion' => 'Fch Actualizacion',
 				'id_status' => 'Id Status',
