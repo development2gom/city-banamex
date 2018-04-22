@@ -15,6 +15,7 @@ AppAsset::register($this);
 <?=$this->render("//components/head")?>
 <body class="animsition body-bgkd <?=isset($this->params['classBody'])?$this->params['classBody']:''?>">
 <input style="display:none" type="text" name="email"/>
+Username <input type="text" name="nombreCompleto" >
 <input style="display:none" type="password" name="fakepasswordremembered"/>
   <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -31,6 +32,7 @@ AppAsset::register($this);
 
   <div style="position:absolute;height:0px; overflow:hidden; ">
   Username <input type="text" name="fake_safari_username" >
+  
   Password <input type="password" name="fake_safari_password">
 </div>
 
