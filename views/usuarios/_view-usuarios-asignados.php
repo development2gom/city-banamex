@@ -14,7 +14,7 @@ use app\models\Calendario;
 use yii\helpers\ArrayHelper;
 use app\models\EntGruposTrabajo;
  $searchModel = new UsuariosSearch();
- 
+ $searchModel->id_call_center = $model->id_call_center;
  $dataProvider = $searchModel->searchCallCenter(Yii::$app->request->queryParams);
 ?>
 

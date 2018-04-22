@@ -23,7 +23,7 @@ class UsuariosSearch extends EntUsuarios
     {
         return [
             [['id_usuario', 'id_status'], 'integer'],
-            [['roleDescription','roleDescription','nombreCompleto','txt_auth_item', 'txt_token', 'txt_imagen', 'txt_username', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_auth_key', 'txt_password_hash', 'txt_password_reset_token', 'txt_email', 'fch_creacion', 'fch_actualizacion'], 'safe'],
+            [['roleDescription','id_call_center','roleDescription','nombreCompleto','txt_auth_item', 'txt_token', 'txt_imagen', 'txt_username', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_auth_key', 'txt_password_hash', 'txt_password_reset_token', 'txt_email', 'fch_creacion', 'fch_actualizacion'], 'safe'],
         ];
     }
 
@@ -78,6 +78,7 @@ class UsuariosSearch extends EntUsuarios
             'fch_creacion' => $this->fch_creacion,
             'fch_actualizacion' => $this->fch_actualizacion,
             'id_status' => $this->id_status,
+            'id_call_center' => $this->id_call_center,
             'txt_auth_item'=>Constantes::USUARIO_CALL_CENTER
         ]);
 
