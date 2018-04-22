@@ -169,12 +169,16 @@ class UsuariosSearch extends EntUsuarios
             ->andFilterWhere(['like', 'fch_creacion', $this->fch_creacion])
             
             ->andFilterWhere(['like', 'txt_auth_item', $this->roleDescription])
-            ->andFilterWhere(['like', 'CONCAT(txt_username, " ", txt_apellido_paterno)', $this->nombreCompleto]);
+            ->andFilterWhere(['like', 'CONCAT(txt_username, " ", IF(ISNULL(txt_apellido_paterno), "", txt_apellido_paterno))', $this->nombreCompleto]);
   
 
         if($this->fch_creacion){
             $this->fch_creacion = Utils::changeFormatDate($this->fch_creacion);
         }
+
+         // filter by person full name
+        //  $query->andWhere('txt_username LIKE "%' . $this->nombreCompleto . '%" ' .
+        //  'OR txt_apellido_paterno LIKE "%' . $this->nombreCompleto . '%"');
 
         return $dataProvider;
     }
