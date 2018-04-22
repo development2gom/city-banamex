@@ -139,10 +139,8 @@ $cat = $model->idCat;
                 ?>  
         </div>
         <div class="col-sm-3 col-md-3">
-        <?php
-            $model->id_equipo = empty($model->id_equipo) ? '' : $equipo->txt_nombre;
-        ?>
-        <?= $form->field($model, 'id_equipo')->textInput(['maxlength' => true]) ?>
+        
+        <?= $form->field($model, 'txt_equipo')->textInput(['maxlength' => true]) ?>
         
         <?php
              require(__DIR__ . '/../components/select2.php');
@@ -236,7 +234,7 @@ $cat = $model->idCat;
         
         </div>
         <div class="col-sm-3 col-md-3 contenedor-promocionales">
-            <?= $form->field($model, 'txt_promocional')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'txt_promocional')->textarea(["rows"=>7]) ?>
         </div>
     </div>
 
@@ -358,6 +356,7 @@ $cat = $model->idCat;
                                     if(equipo.txt_nombre){
                                         return equipo.txt_nombre;
                                     }else{
+                                        
                                         return "'.$model->txt_codigo_postal.'"
                                     }
                         }'),
@@ -436,8 +435,11 @@ $cat = $model->idCat;
     <div class="row">
         <div class="col-sm-3 col-md-3">
             <div class="form-group">
+                <?php
+                $areaText = $model->id_area?$model->idArea->txt_nombre:'';
+                ?>
                 <?=Html::label("Área", "txt_area", ["class"=>"form-control-label"])?>
-                <?=Html::textInput("txt_area", $model->idArea->txt_nombre, ['class'=>'form-control', 'disabled'=>'disabled', 'id'=>'txt_area' ])?>
+                <?=Html::textInput("txt_area", $areaText, ['class'=>'form-control', 'disabled'=>'disabled', 'id'=>'txt_area' ])?>
             </div>    
                 <?= $form->field($model, 'id_area')->hiddenInput(['maxlength' => true])->label(false) ?>
               
@@ -463,7 +465,7 @@ $cat = $model->idCat;
                 'pluginOptions' => [
                     'autoclose'=>true,
                     'format' => 'dd-mm-yyyy',
-                    'daysOfWeekDisabled'=> "0",
+                    'daysOfWeekDisabled'=> "0,",
                     'startDate' => $startDate, //date("d-m-Y")
                     'endDate'=>$end
                 ]
@@ -558,8 +560,8 @@ $this->registerJs(
 
                 if(res.status=="error"){
                     swal({
-                        title: "Datos no válido",
-                        text: "El número teléfonico " + res.tel + " ya se encuentra en una cita activa",
+                        title: "Datos no válidos",
+                        text: res.mensaje,
                         type: "warning",
                         showCancelButton: false,
                         confirmButtonClass: "btn-warning",

@@ -42,7 +42,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 	const STATUS_PENDIENTED = 1;
 	const STATUS_ACTIVED = 2;
 	const STATUS_BLOCKED = 3;
-	public $password;
+	
 	public $repeatPassword;
 	public $image;
 	
@@ -87,30 +87,30 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 					}"
 				],
 				
-				[
-					['repeatPassword', 'password'], 'required', 'on'=>'update',
-					'when' => function ($model) {
-						return $model->password || $model->repeatPassword;
-					}, 'whenClient' => "function (attribute, value) {
+				// [
+				// 	['repeatPassword', 'password'], 'required', 'on'=>'update',
+				// 	'when' => function ($model) {
+				// 		return $model->password || $model->repeatPassword;
+				// 	}, 'whenClient' => "function (attribute, value) {
 						
-						return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
-					}"
-				],
+				// 		return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
+				// 	}"
+				// ],
 
-				[
-					['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'cambiarPass',
+				// [
+				// 	['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'cambiarPass',
 					
-				],
+				// ],
 
-				[
-					['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'update',
-					'when' => function ($model) {
-						return $model->password || $model->repeatPassword;
-					}, 'whenClient' => "function (attribute, value) {
+				// [
+				// 	['repeatPassword', 'password'], 'compare', 'compareAttribute' => 'repeatPassword', 'on'=>'update',
+				// 	'when' => function ($model) {
+				// 		return $model->password || $model->repeatPassword;
+				// 	}, 'whenClient' => "function (attribute, value) {
 						
-						return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
-					}"
-				],
+				// 		return $('#entusuarios-password').val() || $('#entusuarios-repeatpassword').val();
+				// 	}"
+				// ],
 				
 				[ 
 						'txt_email',
@@ -262,7 +262,7 @@ class EntUsuarios extends \yii\db\ActiveRecord implements IdentityInterface
 				'txt_auth_key' => 'Txt Auth Key',
 				'txt_password_hash' => 'Txt Password Hash',
 				'txt_password_reset_token' => 'Txt Password Reset Token',
-				'txt_email' => 'Correo electrónico',
+				'txt_email' => 'Usuario',
 				'fch_creacion' => 'Fecha creación',
 				'fch_actualizacion' => 'Fch Actualizacion',
 				'id_status' => 'Id Status',

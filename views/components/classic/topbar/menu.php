@@ -74,7 +74,7 @@ $usuario = EntUsuarios::getUsuarioLogueado();
                         <a class="animsition-link" href="<?=Url::base()?>/usuarios">
                           <span class="site-menu-title">
                           <i class="site-menu-icon pe-7s-users" aria-hidden="true"></i>
-                             Usuarios
+                            Listado de usuarios
                             </span>
                         </a>
                       </li>

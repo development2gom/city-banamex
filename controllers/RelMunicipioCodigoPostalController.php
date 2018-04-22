@@ -10,6 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\ResponseServices;
 use app\models\Calendario;
+use app\models\EntCitas;
+use app\modules\ModUsuarios\models\Utils;
 
 /**
  * RelMunicipioCodigoPostalController implements the CRUD actions for RelMunicipioCodigoPostal model.
@@ -144,14 +146,26 @@ class RelMunicipioCodigoPostalController extends Controller
         $rel = RelMunicipioCodigoPostal::find()->where(["txt_codigo_postal"=>$cp])->one();
         $municipio = $rel->idMunicipio;
         $diasServicio = $this->getDiasServicio($municipio);
+        $diasServicioNum = $this->getDiasServicioNum($municipio);
         $area = $municipio->idArea;
-        
+
+        $fechaInicio= EntCitas::getFechaEntrega(Utils::getFechaActual());
+        $fechaInicio= Utils::changeFormatDate($fechaInicio);
+
+
+        $startDate = $fechaInicio;
+        $end = date('Y-m-d', strtotime('+2 months'));
+        $end = Utils::changeFormatDate($end);
+
         $respuesta->status = "success";
         $respuesta->message = "municipio";
         $respuesta->result["id_area"] = $area->id_area;
         $respuesta->result["txt_area"] = $area->txt_nombre;
         $respuesta->result["txt_municipio"] = $municipio->txt_nombre;
-        $respuesta->result["num_dias_servicios"] = $diasServicio;
+        $respuesta->result["text_dias_servicios"] = $diasServicio;
+        $respuesta->result["num_dias_servicios"] = $diasServicioNum;
+        $respuesta->result["fch_inicio"] = $fechaInicio;
+        $respuesta->result["fch_final"] = $end;
         
         return $respuesta;
 
@@ -166,6 +180,22 @@ class RelMunicipioCodigoPostalController extends Controller
         $v = $municipio->b_viernes?'V,':'';
         $s = $municipio->b_sabado?'S,':'';
         $d = $municipio->b_domingo?'D,':'';
+
+        $dias = $l.$m.$mi.$j.$v.$s.$d;
+        return $dias;
+
+
+    }
+
+    public function getDiasServicioNum($municipio){
+
+        $l = !$municipio->b_lunes?'1,':'';
+        $m = !$municipio->b_martes?'2,':'';
+        $mi = !$municipio->b_miercoles?'3,':'';
+        $j = !$municipio->b_jueves?'4,':'';
+        $v = !$municipio->b_viernes?'5,':'';
+        $s = !$municipio->b_sabado?'6,':'';
+        $d = !$municipio->b_domingo?'0,':'';
 
         $dias = $l.$m.$mi.$j.$v.$s.$d;
         return $dias;

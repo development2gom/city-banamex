@@ -67,7 +67,7 @@ class H2H
         $this->colonia = $cita->txt_colonia;
         $this->direccion = "";
         $this->telefonoRef = $cita->txt_telefono."|".$cita->txt_numero_referencia."|".$cita->txt_numero_referencia_2."|".$cita->txt_numero_referencia_3;
-        $this->contenido = $cita->idEquipo->txt_nombre;
+        $this->contenido = $cita->txt_equipo;
         $this->empaque = "";
         $this->valor = $cita->txt_tpv?$cita->txt_tpv:0;
     }

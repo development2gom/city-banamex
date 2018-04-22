@@ -6,29 +6,24 @@ var inputRFC = $("#entcitas-txt_rfc");
 
 $(document).ready(function(){
 
-
+	buscarMunicipioCodigo($("#entcitas-txt_codigo_postal").val());
 	$("#entcitas-txt_codigo_postal").on("change", function(){
 		var elemento = $(this);
 		var token = elemento.val();
-		//03100
-		$.ajax({
-			url:baseUrl+"rel-municipio-codigo-postal/buscar-municipio-cp?cp="+token,
-			success:function(r){
-				if(r.status=="success"){
-					$("#entcitas-id_area").val(r.result.id_area);
-					$("#txt_area").val(r.result.txt_area);
+		if(token!=""){
+			buscarMunicipioCodigo(token);
+		}else{
+			$("#entcitas-id_area").val("");
+			$("#txt_area").val("");
 
-					$("#entcitas-num_dias_servicio").val(r.result.num_dias_servicios);
-					$("#num_dias_servicio").val(r.result.num_dias_servicios);
+			$("#entcitas-num_dias_servicio").val("");
+			$("#num_dias_servicio").val("");
 
-					$("#entcitas-txt_municipio").val(r.result.txt_municipio);
-					
-				}
-			},
-			error:function(){
-				
-			}
-		});
+			$("#entcitas-txt_municipio").val("");
+
+		}
+	
+		
 	});
 
     inputNombre.on("change", function(){
@@ -49,6 +44,41 @@ $(document).ready(function(){
 	
 
 });
+
+function buscarMunicipioCodigo(token){
+//03100
+$.ajax({
+	url:baseUrl+"rel-municipio-codigo-postal/buscar-municipio-cp?cp="+token,
+	success:function(r){
+		if(r.status=="success"){
+			$("#entcitas-id_area").val(r.result.id_area);
+			$("#txt_area").val(r.result.txt_area);
+
+			$("#entcitas-num_dias_servicio").val(r.result.num_dias_servicios);
+			$("#num_dias_servicio").val(r.result.text_dias_servicios);
+
+			$("#entcitas-txt_municipio").val(r.result.txt_municipio);
+
+			$("#entcitas-fch_cita").kvDatepicker('destroy');
+			$("#entcitas-fch_cita").kvDatepicker({
+				"clearBtn": true,
+				"autoclose":true,
+				"format":"dd-mm-yyyy",
+				"language":"es",
+				'daysOfWeekDisabled':r.result.num_dias_servicios,
+				'startDate' : r.result.fch_inicio, //date("d-m-Y")
+                    'endDate':r.result.fch_final
+			});
+
+			$("#entcitas-fch_cita").trigger("change");
+			
+		}
+	},
+	error:function(){
+		
+	}
+});
+}
 
 function calculaRFC() {
 	function quitaArticulos(palabra) {

@@ -75,7 +75,7 @@ class EntCitas extends \yii\db\ActiveRecord
     {
         $consecutivo = count(EntCitas::find()->where(new Expression('date_format(fch_creacion, "%Y-%m-%d")=date_format(NOW(), "%Y-%m-%d")'))->all());
         $consecutivo++;
-        $identificador = Constantes::IDENTIFICADOR_CLIENTE . Calendario::getYearLastDigit() . Calendario::getMonthNumber() . Calendario::getDayNumber() . "-" . $consecutivo;
+        $identificador = Constantes::IDENTIFICADOR_CLIENTE  . Calendario::getDayNumber(). Calendario::getMonthNumber().Calendario::getYearLastDigit()  . "-" . $consecutivo;
         $this->txt_identificador_cliente = $identificador;
 
     }
@@ -165,11 +165,12 @@ class EntCitas extends \yii\db\ActiveRecord
             $this->id_status = Constantes::STATUS_CREADA;
         }
 
-        $this->id_area = $idArea;
-        $this->num_dias_servicio = $numServicios;
+        //$this->id_area = $idArea;
+        //$this->num_dias_servicio = $numServicios;
         $this->id_tipo_entrega = $tipoEntrega;
         $this->id_usuario = $usuario->id_usuario;;
         $this->txt_token = Utils::generateToken("cit_");
+        $this->id_equipo = 1;
 
         if($usuario->id_call_center){
             $this->id_call_center = $usuario->id_call_center;
@@ -213,8 +214,29 @@ class EntCitas extends \yii\db\ActiveRecord
             ->where(['txt_telefono' => $this->txt_telefono])
             ->andWhere(['in', 'id_status', [
                 Constantes::STATUS_CREADA,
+                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR,
+                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL,
                 Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
-                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR
+                // Constantes::STATUS_CANCELADA_SUPERVISOR_CC,
+                // Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL,
+                // Constantes::STATUS_CANCELADA_ADMINISTRADOR_CC,
+                // Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_BRIGHT_STAR,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_CALL_CENTER,
+                // Constantes::STATUS_CANCELADA_POR_MASTER_BRIGHT_STAR,
+                // Constantes::STATUS_CANCELADA_POR_MASTER_TELCEL,
+                // Constantes::STATUS_CANCELADAS_POR_MASTER_CALL_CENTER,
+                Constantes::STATUS_RECIBIDO_MENSAJERIA,
+                Constantes::STATUS_LISTO_ENTREGA,
+                Constantes::STATUS_ANOMALO,
+                // Constantes::STATUS_ENTREGADO,
+                // Constantes::STATUS_CANCELADO,
+                // Constantes::STATUS_NO_ENTREGADO,
+                Constantes::STATUS_NO_VISITADO,
+                Constantes::STATUS_PRIMERA_VISITA,
+                Constantes::STATUS_SEGUNDA_VISITA,
             ]])
             ->all();
 
@@ -276,6 +298,7 @@ class EntCitas extends \yii\db\ActiveRecord
             [[
                 'id_usuario', 'id_status', 'txt_telefono', 'txt_email', 'txt_nombre', 'txt_apellido_paterno', 'txt_folio_identificacion',
                 'txt_email',
+                'txt_equipo',
                 'fch_nacimiento',
                 'num_dias_servicio',
                 'txt_estado',
@@ -288,7 +311,7 @@ class EntCitas extends \yii\db\ActiveRecord
                 'txt_token', 'id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status', 'id_tipo_cliente', 'id_tipo_identificacion', 'id_horario'
             ], 'required'],
             [['id_tipo_cancelacion'], 'exist', 'skipOnError' => true, 'targetClass' => CatTiposCancelacion::className(), 'targetAttribute' => ['id_tipo_cancelacion' => 'id_tipo_cancelacion']],
-            [['id_tipo_cancelacion'], 'required', 'on' => 'cancelar'],
+            [['txt_motivo_cancelacion_rechazo'], 'required', 'on' => 'cancelar'],
             [['txt_telefono', 'txt_numero_referencia'], 'string', 'max' => 10, 'min' => 10, 'tooLong' => 'El campo no debe superar 10 dígitos', 'tooShort' => 'El campo debe ser mínimo de 10 digítos'],
             [['txt_email'], 'email'],
             [['txt_tpv'], 'trim'],
@@ -372,6 +395,7 @@ class EntCitas extends \yii\db\ActiveRecord
             'b_entrega_cat' => "Entrega en CAC",
             'id_cat' => "CAC",
             'txtTracking' => "Id. envio",
+            'txt_equipo' => "Equipo",
         ];
     }
 
@@ -482,7 +506,7 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public static function getFechaEntrega($fecha)
     {
-        $tiempo = strtotime($fecha . "+2 day");
+        $tiempo = strtotime($fecha . "+4 day");
         $fecha = date('d-m-Y', $tiempo);
 
         return self::validarDiaEntrega($fecha);

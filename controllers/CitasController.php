@@ -94,23 +94,18 @@ class CitasController extends Controller
     public function actionView($token)
     {
 
-        $areaDefault = CatAreas::findOne(1); 
-        $idArea = $areaDefault->id_area;
-        $numServicios = $areaDefault->txt_dias_servicio;
-        $tipoEntrega = 1;
-
         $model = EntCitas::find()->where(['txt_token'=>$token])->one();
         $model->scenario = "autorizar-update";
 
         $tiposTramites = CatTiposTramites::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
         $tiposClientes = CatTiposClientes::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
         $tiposIdentificaciones = CatTiposIdentificaciones::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
-        $areas = CatAreas::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
+      
         
         if ($model->load(Yii::$app->request->post())) {
-            $equipo = CatEquipos::find()->where(["txt_nombre"=>$model->id_equipo])->one();
+            // $equipo = CatEquipos::find()->where(["txt_nombre"=>$model->id_equipo])->one();
            
-            $model->id_equipo = $equipo->id_equipo;
+            // $model->id_equipo = $equipo->id_equipo;
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
             
              $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
@@ -155,8 +150,7 @@ class CitasController extends Controller
             'tiposTramites'=>$tiposTramites,
             'tiposClientes'=>$tiposClientes,
             'tiposIdentificaciones'=>$tiposIdentificaciones,
-            'areas'=>$areas,
-            'areaDefault'=>$areaDefault,
+            
             'historial'=>$dataProvider
         ]);
     }
@@ -171,9 +165,9 @@ class CitasController extends Controller
     public function actionCreate()
     {
 
-        $areaDefault = CatAreas::findOne(1); 
-        $idArea = $areaDefault->id_area;
-        $numServicios = $areaDefault->txt_dias_servicio;
+        // $areaDefault = CatAreas::findOne(1); 
+        // $idArea = $areaDefault->id_area;
+        // $numServicios = $areaDefault->txt_dias_servicio;
         $tipoEntrega = 1;
         
         $usuario = EntUsuarios::getUsuarioLogueado();
@@ -183,15 +177,15 @@ class CitasController extends Controller
         if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
             $model = new EntCitas(['scenario'=>'autorizar']);
         }
-        $model->iniciarModelo($idArea, $numServicios, $tipoEntrega);
+        $model->iniciarModelo(1, null, $tipoEntrega);
 
         if ($model->load(Yii::$app->request->post())) {
-            $equipo = CatEquipos::find()->where(["txt_nombre"=>$model->id_equipo])->one();
            
-            $model->id_equipo = $equipo->id_equipo;
-            if($model->id_equipo==Constantes::SIN_EQUIPO){
-                $model->b_documentos = 1;
-            }
+          
+            // $model->id_equipo = $equipo->id_equipo;
+            // if($model->id_equipo==Constantes::SIN_EQUIPO){
+            //     $model->b_documentos = 1;
+            // }
 
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
@@ -221,19 +215,20 @@ class CitasController extends Controller
         $tiposTramites = CatTiposTramites::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
         $tiposClientes = CatTiposClientes::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
         $tiposIdentificaciones = CatTiposIdentificaciones::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
-        $areas = CatAreas::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
+        
        
 
-        $model->fch_cita = EntCitas::getFechaEntrega(Utils::getFechaActual());
-        $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
+        //$model->fch_cita = EntCitas::getFechaEntrega(Utils::getFechaActual());
+        //$model->fch_cita = Utils::changeFormatDate($model->fch_cita);
+
 
         return $this->render('create', [
             'model' => $model,
             'tiposTramites'=>$tiposTramites,
             'tiposClientes'=>$tiposClientes,
             'tiposIdentificaciones'=>$tiposIdentificaciones,
-            'areas'=>$areas,
-            'areaDefault'=>$areaDefault
+            
+            
         ]);
         
     }
@@ -310,14 +305,35 @@ class CitasController extends Controller
             ->where(['txt_telefono'=>$tel])
             ->andWhere(['in', 'id_status', [
                 Constantes::STATUS_CREADA,
+                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR,
+                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL,
                 Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
-                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR
+                // Constantes::STATUS_CANCELADA_SUPERVISOR_CC,
+                // Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL,
+                // Constantes::STATUS_CANCELADA_ADMINISTRADOR_CC,
+                // Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_BRIGHT_STAR,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_CALL_CENTER,
+                // Constantes::STATUS_CANCELADA_POR_MASTER_BRIGHT_STAR,
+                // Constantes::STATUS_CANCELADA_POR_MASTER_TELCEL,
+                // Constantes::STATUS_CANCELADAS_POR_MASTER_CALL_CENTER,
+                Constantes::STATUS_RECIBIDO_MENSAJERIA,
+                Constantes::STATUS_LISTO_ENTREGA,
+                Constantes::STATUS_ANOMALO,
+                // Constantes::STATUS_ENTREGADO,
+                // Constantes::STATUS_CANCELADO,
+                // Constantes::STATUS_NO_ENTREGADO,
+                Constantes::STATUS_NO_VISITADO,
+                Constantes::STATUS_PRIMERA_VISITA,
+                Constantes::STATUS_SEGUNDA_VISITA,
                 ]])
-            ->all();
+            ->one();
 
         if($telefonoDisponible){
             $respuesta["status"] = "error";
-            $respuesta["mensaje"] = "Teléfono no esta disponible";
+            $respuesta["mensaje"] = "El número teléfonico ".$tel." ya se encuentra en una cita activa: ".$telefonoDisponible->txt_identificador_cliente;
         }
         
 
