@@ -62,7 +62,7 @@ $usuario = EntUsuarios::getUsuarioLogueado();
           <li class="dropdown site-menu-item has-sub">
             <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
               <i class="site-menu-icon pe-users" aria-hidden="true"></i>
-              <span class="site-menu-title">Usuarios</span>
+              <span class="site-menu-title">Listado de usuarios</span>
               <span class="site-menu-arrow"></span>
             </a>
             <div class="dropdown-menu">

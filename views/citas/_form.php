@@ -234,7 +234,7 @@ $cat = $model->idCat;
         
         </div>
         <div class="col-sm-3 col-md-3 contenedor-promocionales">
-            <?= $form->field($model, 'txt_promocional')->textarea() ?>
+            <?= $form->field($model, 'txt_promocional')->textarea(["rows"=>7]) ?>
         </div>
     </div>
 
