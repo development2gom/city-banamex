@@ -25,6 +25,8 @@ class Constantes{
     const STATUS_NO_VISITADO = 27;
     const STATUS_PRIMERA_VISITA = 28;
     const STATUS_SEGUNDA_VISITA = 29;
+    const STATUS_DEVOLUCION_TRANSITO = 30;
+    const STATUS_DEVOLUCION = 31;
 
     //TIPOS DE USUARIOS
     const USURIO_ADMIN = "admin";

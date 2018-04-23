@@ -368,6 +368,9 @@ class CitasController extends Controller
         $envio->txt_historial_api = ($cita->consultarHistorico($envio->txt_tracking));
         $historico = json_decode($envio->txt_historial_api);
        
+        if($respuestaApi->Response=="Failure"){
+            return $this->render("sin-envio-h2h");
+        }
 
         if($cita->id_status==Constantes::STATUS_ENTREGADO){
             $envio->fch_entrega = $respuestaApi->Fecha;
@@ -381,7 +384,7 @@ class CitasController extends Controller
 
 
     public function actionTestApiImage(){
-        $tracking = "SSYBS15041800001";
+        $tracking = "BGR17041800BN0001";
         $cita = new EntCitas();
         $respuestaApi = ($cita->consultarEnvio($tracking));
         $historico =($cita->consultarHistorico($tracking));
