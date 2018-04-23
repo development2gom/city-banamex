@@ -124,11 +124,14 @@ class CitasController extends Controller
                     if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)){      
                         $model->generarNumeroEnvio();
                     } 
+
                     if($model->save()){
                         $model->guardarHistorialDependiendoUsuario();
                         
                         return $this->redirect(['index']);
-                    } 
+                    }else{
+                        print_r($model->errors);
+                    }
                 }
             }
 
@@ -201,7 +204,9 @@ class CitasController extends Controller
                 } 
                 if($model->save()){
                     
-                } 
+                }else{
+                    
+                }
 
                 $model->guardarHistorialDependiendoUsuario(true);
                 
@@ -376,7 +381,7 @@ class CitasController extends Controller
 
 
     public function actionTestApiImage(){
-        $tracking = "SSYBS15041800002";
+        $tracking = "SSYBS15041800001";
         $cita = new EntCitas();
         $respuestaApi = ($cita->consultarEnvio($tracking));
         $historico =($cita->consultarHistorico($tracking));
@@ -551,6 +556,14 @@ $actual .= "John Smith\n";
 
     
     file_put_contents($fichero, $actual);
+}
+
+public function actionCrearPass(){
+    $usuario = new EntUsuarios();
+    $usuario->setPassword("springer");
+
+    echo $usuario->txt_password_hash;
+    exit;
 }
     
 }
