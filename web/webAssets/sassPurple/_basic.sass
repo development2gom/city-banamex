@@ -13,7 +13,7 @@
 /*  Load Overlay
 	======================================= */
 .loader-overlay
-	background-color: $mls-black
+	background-color: $mls-purple
 
 /*  A
 	======================================= */
@@ -111,8 +111,8 @@ a
 /* Imagen de fondo */
 .page-login-v3
 	&:before
-		background-color: $mls-black
-		background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+)
+		background-color: $mls-purple
+		background-image: url(data:image/svg+xmlbase64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+)
 		background-image: -webkit-gradient(linear, left top, left bottom, from($bg-primary), to(#3583ca))
 		background-image: -webkit-linear-gradient(top, $bg-primary 0%, #3583ca 100%)
 		background-image: -o-linear-gradient(top, $bg-primary 0%, #3583ca 100%)
@@ -219,37 +219,38 @@ a
 		.page-link
 			align-items: center
 			background-color: transparent
-			border: 1px solid rgba($white,.4)
-			color: $white
+			// background-color: red
+			border: 1px solid rgba($mls-purple,.4)
+			color: $mls-purple
 			display: flex
 			font-weight: $regular
+			height: 32px
 			justify-content: center
 			margin: 0 2px
 			padding: 4px 2px
-			color: $white
 			text-decoration: none
 			width: 40px
 			&:hover
-				background-color: rgba($white,.16)
-				border-color: rgba($white,.16)
-				color: rgba($white,.85)
+				background-color: rgba($mls-purple,.65)
+				border-color: rgba($mls-purple,.86)
+				color: rgba($white,.95)
 		&.prev,
 		&.next
 			a
-				color: $white
+				color: $mls-purple
 		&.disabled
 			span
-				background-color: rgba($white,.16)
-				border-color: rgba($white,.16)
-				color: rgba($white,.4)
+				background-color: rgba($mls-purple,.16)
+				border-color: rgba($mls-purple,.16)
+				color: rgba($mls-purple,.1)
 		&.active
 			a
-				background-color: $mls-aqua
-				border-color: $mls-aqua
-				color: $mls-black
+				background-color: $mls-purple
+				border-color: $mls-purple
+				color: $white
 				&:hover
-					background-color: rgba($mls-aqua,.25)
-					border-color: rgba($mls-aqua,.65)
+					background-color: rgba($mls-purple,.25)
+					border-color: rgba($mls-purple,.65)
 					color: rgba($white,.85)
 
 
@@ -390,3 +391,40 @@ a
 //
 .panel.panel-usuarios-create
 	box-shadow: none
+
+// Pagination
+
+// .pagination li a,
+// .pagination li span,
+// .pagination li .page-link,
+// .pagination .page-item a,
+// .pagination .page-item span, 
+// .pagination .page-item .page-link
+// 	-webkit-box-align: center
+// 	-ms-flex-align: center
+// 	align-items: center
+// 	background-color: transparent
+// 	border: 1px solid rgb(61, 219, 195)
+// 	color: #fff
+// 	display: -webkit-box
+// 	display: -ms-flexbox
+// 	display: flex
+// 	font-weight: 400
+// 	-webkit-box-pack: center
+// 	-ms-flex-pack: center
+// 	justify-content: center
+// 	margin: 0 2px
+// 	padding: 4px 2px
+// 	color: black
+// 	text-decoration: none
+// 	width: 40px
+
+// .pagination li a:hover,
+// .pagination li span:hover,
+// .pagination li .page-link:hover,
+// .pagination .page-item a:hover,
+// .pagination .page-item span:hover,
+// .pagination .page-item .page-link:hover
+// 	background-color: rgb(126, 229, 211)
+// 	border-color: rgba(255,255,255,0.16)
+// 	color: rgba(255,255,255,0.85)

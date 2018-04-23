@@ -417,30 +417,32 @@
 			margin-left: 12px
 			&.btn-form-actualizar
 				background-color: $mls-aqua
-				border: 1px solid rgba$mls-aqua
+				border: 1px solid $mls-aqua
 				border-color: $mls-aqua
-				color: $mls-black
+				color: $white
 				&:active,
 				&:focus,
 				&:hover
-					background-color: rgba($mls-aqua,.25)
+					background-color: darken($mls-aqua,10%)
 					color: $white
 			&.btn-form-aprobar
 				background-color: transparent
-				border: 1px solid $white
-				color: $white
+				border: 1px solid $mls-aqua
+				color: $mls-aqua
 				&:active,
 				&:focus,
 				&:hover
-					background-color: rgba($white,.25)
+					background-color: rgba($mls-aqua,.55)
+					color: $white
 			&.btn-form-cancelar
 				background-color: transparent
 				border: 1px solid $mls-aqua
-				color: $white
+				color: $mls-aqua
 				&:active,
 				&:focus,
 				&:hover
-					background-color: rgba($mls-aqua,.25)
+					background-color: rgba($mls-aqua,.55)
+					color: $white
 
 	
 	.citas-cont
