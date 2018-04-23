@@ -210,39 +210,39 @@ class EntCitas extends \yii\db\ActiveRecord
     public function validateTel($attribute, $params, $validator)
     {
 
-        $telefonoDisponible = EntCitas::find()
-            ->where(['txt_telefono' => $this->txt_telefono])
-            ->andWhere(['in', 'id_status', [
-                Constantes::STATUS_CREADA,
-                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR,
-                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL,
-                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
-                // Constantes::STATUS_CANCELADA_SUPERVISOR_CC,
-                // Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL,
-                // Constantes::STATUS_CANCELADA_ADMINISTRADOR_CC,
-                // Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
-                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
-                Constantes::STATUS_AUTORIZADA_POR_MASTER_BRIGHT_STAR,
-                Constantes::STATUS_AUTORIZADA_POR_MASTER_TELCEL,
-                Constantes::STATUS_AUTORIZADA_POR_MASTER_CALL_CENTER,
-                // Constantes::STATUS_CANCELADA_POR_MASTER_BRIGHT_STAR,
-                // Constantes::STATUS_CANCELADA_POR_MASTER_TELCEL,
-                // Constantes::STATUS_CANCELADAS_POR_MASTER_CALL_CENTER,
-                Constantes::STATUS_RECIBIDO_MENSAJERIA,
-                Constantes::STATUS_LISTO_ENTREGA,
-                Constantes::STATUS_ANOMALO,
-                // Constantes::STATUS_ENTREGADO,
-                // Constantes::STATUS_CANCELADO,
-                // Constantes::STATUS_NO_ENTREGADO,
-                Constantes::STATUS_NO_VISITADO,
-                Constantes::STATUS_PRIMERA_VISITA,
-                Constantes::STATUS_SEGUNDA_VISITA,
-            ]])
-            ->all();
+        // $telefonoDisponible = EntCitas::find()
+        //     ->where(['txt_telefono' => $this->txt_telefono])
+        //     ->andWhere(['in', 'id_status', [
+        //         Constantes::STATUS_CREADA,
+        //         Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR,
+        //         Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL,
+        //         Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
+        //         // Constantes::STATUS_CANCELADA_SUPERVISOR_CC,
+        //         // Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL,
+        //         // Constantes::STATUS_CANCELADA_ADMINISTRADOR_CC,
+        //         // Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
+        //         Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
+        //         Constantes::STATUS_AUTORIZADA_POR_MASTER_BRIGHT_STAR,
+        //         Constantes::STATUS_AUTORIZADA_POR_MASTER_TELCEL,
+        //         Constantes::STATUS_AUTORIZADA_POR_MASTER_CALL_CENTER,
+        //         // Constantes::STATUS_CANCELADA_POR_MASTER_BRIGHT_STAR,
+        //         // Constantes::STATUS_CANCELADA_POR_MASTER_TELCEL,
+        //         // Constantes::STATUS_CANCELADAS_POR_MASTER_CALL_CENTER,
+        //         Constantes::STATUS_RECIBIDO_MENSAJERIA,
+        //         Constantes::STATUS_LISTO_ENTREGA,
+        //         Constantes::STATUS_ANOMALO,
+        //         // Constantes::STATUS_ENTREGADO,
+        //         // Constantes::STATUS_CANCELADO,
+        //         // Constantes::STATUS_NO_ENTREGADO,
+        //         Constantes::STATUS_NO_VISITADO,
+        //         Constantes::STATUS_PRIMERA_VISITA,
+        //         Constantes::STATUS_SEGUNDA_VISITA,
+        //     ]])
+        //     ->all();
 
-        if ($telefonoDisponible) {
-            $this->addError($attribute, 'El número teléfonico ya se encuentra en una cita activa');
-        }
+        // if ($telefonoDisponible) {
+        //     $this->addError($attribute, 'El número teléfonico ya se encuentra en una cita activa');
+        // }
 
 
     }
