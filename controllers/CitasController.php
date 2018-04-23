@@ -125,8 +125,6 @@ class CitasController extends Controller
                         $model->generarNumeroEnvio();
                     } 
 
-                    print_r($model);
-                    exit;
                     if($model->save()){
                         $model->guardarHistorialDependiendoUsuario();
                         
