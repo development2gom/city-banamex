@@ -369,7 +369,7 @@ class CitasController extends Controller
         $historico = json_decode($envio->txt_historial_api);
        
         if($respuestaApi->Response=="Failure"){
-            return $this->render("sin-envio-h2h");
+            return $this->render("sin-envio-h2h", ["tracking"=>$envio->txt_tracking]);
         }
 
         if($cita->id_status==Constantes::STATUS_ENTREGADO){

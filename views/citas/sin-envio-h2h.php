@@ -1,6 +1,6 @@
 <?php
 
-$this->title = 'En proceso de carga';
+$this->title = '';
 $this->params['classBody'] = "site-navbar-small site-menubar-hide";
 
 ?>
@@ -12,7 +12,7 @@ $this->params['classBody'] = "site-navbar-small site-menubar-hide";
 
             <div class="citas-stat-send-grals">
                 <h3>
-                    <span>Esta cita se ha importado desde otro sistema. Por el momento no será visible el rastreo hasta que finalice la configuración necesaria.</span>
+                    <span>No se encontro el envío. Es posible que el tracking: <?=$tracking?> haya sido borrado del sistema</span>
             </div>    
         </div>        
     </div>            
