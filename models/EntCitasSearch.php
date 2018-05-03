@@ -17,6 +17,7 @@ class EntCitasSearch extends EntCitas
     public $endDate;
     public $nombreCompleto;
     public $txtTracking;
+    public $pageSize;
     
     /**
      * @inheritdoc
@@ -25,7 +26,7 @@ class EntCitasSearch extends EntCitas
     {
         return [
             [['id_cita', 'id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status',  'id_tipo_cliente', 'id_tipo_identificacion', 'id_horario'], 'integer'],
-            [['txtTracking','nombreCompleto','startDate','endDate','txt_telefono', 'txt_identificador_cliente','txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_rfc', 'txt_numero_telefonico_nuevo', 'txt_email', 'txt_folio_identificacion', 'fch_nacimiento', 'num_dias_servicio', 'txt_token', 'txt_iccid', 'txt_imei', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3', 'txt_estado', 'txt_calle_numero', 'txt_colonia', 'txt_codigo_postal', 'txt_municipio', 'txt_entre_calles', 'txt_observaciones_punto_referencia', 'txt_motivo_cancelacion_rechazo', 'fch_cita', 'fch_creacion'], 'safe'],
+            [['txtTracking','pageSize', 'nombreCompleto','startDate','endDate','txt_telefono', 'txt_identificador_cliente','txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_rfc', 'txt_numero_telefonico_nuevo', 'txt_email', 'txt_folio_identificacion', 'fch_nacimiento', 'num_dias_servicio', 'txt_token', 'txt_iccid', 'txt_imei', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3', 'txt_estado', 'txt_calle_numero', 'txt_colonia', 'txt_codigo_postal', 'txt_municipio', 'txt_entre_calles', 'txt_observaciones_punto_referencia', 'txt_motivo_cancelacion_rechazo', 'fch_cita', 'fch_creacion'], 'safe'],
         ];
     }
 
@@ -167,6 +168,32 @@ class EntCitasSearch extends EntCitas
             //       }
             //   }]);
         
+        return $dataProvider;
+    }
+
+    public function searchExport($params){
+        $query = EntCitas::find()->with(
+            "idEnvio", "idArea", "idHorario", 
+            "idStatus", "idTipoCliente", "idMunicipio", 
+            "idTipoTramite", "idCallCenter", "idMunicipio.idTipo");
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination'=>[
+                'pageSize' => $this->pageSize,
+                //'pageSizeLimit'=>[1,10]
+                
+            ],
+            
+            'sort' => [
+                'defaultOrder' => [
+                    'fch_creacion' => \SORT_DESC
+                ]
+            ],
+            
+        ]);
         return $dataProvider;
     }
 }

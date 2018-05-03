@@ -48,12 +48,12 @@ class CitasController extends Controller
                 'only' => ['create', 'index', 'view', 'actualizar-envio', 'upload-file'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'index', 'view','actualizar-envio', 'upload-file'],
-                    'allow' => true,
+                        'actions' => ['create', 'index', 'view', 'actualizar-envio', 'upload-file'],
+                        'allow' => true,
                         'roles' => [Constantes::USUARIO_CALL_CENTER],
                     ],
-                    
-                  
+
+
                 ],
             ],
             'verbs' => [
@@ -71,10 +71,10 @@ class CitasController extends Controller
      */
     public function actionIndex()
     {
-        
-        $statusCitas = CatStatusCitas::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
-        
-        
+
+        $statusCitas = CatStatusCitas::find()->where(['b_habilitado' => 1])->orderBy("txt_nombre")->all();
+
+
 
         $searchModel = new EntCitasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -82,7 +82,7 @@ class CitasController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'status'=>$statusCitas,
+            'status' => $statusCitas,
         ]);
     }
 
@@ -94,49 +94,49 @@ class CitasController extends Controller
     public function actionView($token)
     {
 
-        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
+        $model = EntCitas::find()->where(['txt_token' => $token])->one();
         $model->scenario = "autorizar-update";
 
-        $tiposTramites = CatTiposTramites::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
-        $tiposClientes = CatTiposClientes::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
-        $tiposIdentificaciones = CatTiposIdentificaciones::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
-      
-        
+        $tiposTramites = CatTiposTramites::find()->where(['b_habilitado' => 1])->orderBy("txt_nombre")->all();
+        $tiposClientes = CatTiposClientes::find()->where(['b_habilitado' => 1])->orderBy("txt_nombre")->all();
+        $tiposIdentificaciones = CatTiposIdentificaciones::find()->where(['b_habilitado' => 1])->orderBy("txt_nombre")->all();
+
+
         if ($model->load(Yii::$app->request->post())) {
             // $equipo = CatEquipos::find()->where(["txt_nombre"=>$model->id_equipo])->one();
            
             // $model->id_equipo = $equipo->id_equipo;
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
-            
-             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
-            
+
+            $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
+
             $model->setAddresCat();
-           
-            if($model->isEdicion){
-                if($model->save()){
+
+            if ($model->isEdicion) {
+                if ($model->save()) {
                     $model->guardarHistorialUpdate();
                     return $this->redirect(['index']);
                 }
 
-            }else{
-                if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) ){
+            } else {
+                if (\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)) {
                     $model->statusAprobacionDependiendoUsuario();
-                    if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)){      
+                    if (\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)) {
                         $model->generarNumeroEnvio();
-                    } 
+                    }
 
-                    if($model->save()){
+                    if ($model->save()) {
                         $model->guardarHistorialDependiendoUsuario();
-                        
+
                         return $this->redirect(['index']);
-                    }else{
+                    } else {
                         print_r($model->errors);
                     }
                 }
             }
 
-        } 
-        
+        }
+
         $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
         $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);
 
@@ -146,19 +146,19 @@ class CitasController extends Controller
             'query' => $historialCambios
         ]);
 
-        
+
 
         return $this->render('view', [
             'model' => $model,
-            'tiposTramites'=>$tiposTramites,
-            'tiposClientes'=>$tiposClientes,
-            'tiposIdentificaciones'=>$tiposIdentificaciones,
-            
-            'historial'=>$dataProvider
+            'tiposTramites' => $tiposTramites,
+            'tiposClientes' => $tiposClientes,
+            'tiposIdentificaciones' => $tiposIdentificaciones,
+
+            'historial' => $dataProvider
         ]);
     }
 
-    
+
 
     /**
      * Creates a new EntCitas model.
@@ -172,13 +172,13 @@ class CitasController extends Controller
         // $idArea = $areaDefault->id_area;
         // $numServicios = $areaDefault->txt_dias_servicio;
         $tipoEntrega = 1;
-        
-        $usuario = EntUsuarios::getUsuarioLogueado();
-        
-        $model = new EntCitas(['scenario'=>'create-call-center']);
 
-        if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
-            $model = new EntCitas(['scenario'=>'autorizar']);
+        $usuario = EntUsuarios::getUsuarioLogueado();
+
+        $model = new EntCitas(['scenario' => 'create-call-center']);
+
+        if (\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)) {
+            $model = new EntCitas(['scenario' => 'autorizar']);
         }
         $model->iniciarModelo(1, null, $tipoEntrega);
 
@@ -192,34 +192,34 @@ class CitasController extends Controller
 
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
-            
+
             $model->fch_creacion = Utils::getFechaActual();
             $model->getConsecutivo();
             $model->statusAprobacionDependiendoUsuario();
             $model->setAddresCat();
-            if($model->save()){
+            if ($model->save()) {
 
-                if(\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)){      
+                if (\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)) {
                     $model->generarNumeroEnvio();
-                } 
-                if($model->save()){
-                    
-                }else{
-                    
+                }
+                if ($model->save()) {
+
+                } else {
+
                 }
 
                 $model->guardarHistorialDependiendoUsuario(true);
-                
+
                 return $this->redirect(['index']);
-            }   
+            }
 
             $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
             $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);
-        } 
+        }
 
-        $tiposTramites = CatTiposTramites::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
-        $tiposClientes = CatTiposClientes::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
-        $tiposIdentificaciones = CatTiposIdentificaciones::find()->where(['b_habilitado'=>1])->orderBy("txt_nombre")->all();
+        $tiposTramites = CatTiposTramites::find()->where(['b_habilitado' => 1])->orderBy("txt_nombre")->all();
+        $tiposClientes = CatTiposClientes::find()->where(['b_habilitado' => 1])->orderBy("txt_nombre")->all();
+        $tiposIdentificaciones = CatTiposIdentificaciones::find()->where(['b_habilitado' => 1])->orderBy("txt_nombre")->all();
         
        
 
@@ -229,13 +229,13 @@ class CitasController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'tiposTramites'=>$tiposTramites,
-            'tiposClientes'=>$tiposClientes,
-            'tiposIdentificaciones'=>$tiposIdentificaciones,
-            
-            
+            'tiposTramites' => $tiposTramites,
+            'tiposClientes' => $tiposClientes,
+            'tiposIdentificaciones' => $tiposIdentificaciones,
+
+
         ]);
-        
+
     }
 
     /**
@@ -287,19 +287,21 @@ class CitasController extends Controller
     }
 
 
-    public function actionCancelar($token=null){
-        $model = EntCitas::find()->where(['txt_token'=>$token])->one();
+    public function actionCancelar($token = null)
+    {
+        $model = EntCitas::find()->where(['txt_token' => $token])->one();
 
-        
+
         $model->statusCancelarDependiendoUsuario();
-        if($model->save()){
+        if ($model->save()) {
             $model->guardarHistorialDependiendoUsuario(false, true);
             $this->redirect(["index"]);
-        } 
-       
+        }
+
     }
 
-    public function actionValidarTelefono($tel=null){
+    public function actionValidarTelefono($tel = null)
+    {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         $respuesta["status"] = "success";
@@ -307,7 +309,7 @@ class CitasController extends Controller
         $respuesta["tel"] = $tel;
 
         $telefonoDisponible = EntCitas::find()
-            ->where(['txt_telefono'=>$tel])
+            ->where(['txt_telefono' => $tel])
             ->andWhere(['in', 'id_status', [
                 Constantes::STATUS_CREADA,
                 Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR,
@@ -333,75 +335,80 @@ class CitasController extends Controller
                 Constantes::STATUS_NO_VISITADO,
                 Constantes::STATUS_PRIMERA_VISITA,
                 Constantes::STATUS_SEGUNDA_VISITA,
-                ]])
+            ]])
             ->one();
 
-        if($telefonoDisponible){
+        if ($telefonoDisponible) {
             $respuesta["status"] = "error";
-            $respuesta["mensaje"] = "El número teléfonico ".$tel." ya se encuentra en una cita activa: ".$telefonoDisponible->txt_identificador_cliente;
+            $respuesta["mensaje"] = "El número teléfonico " . $tel . " ya se encuentra en una cita activa: " . $telefonoDisponible->txt_identificador_cliente;
         }
-        
+
 
         return $respuesta;
 
     }
 
-    public function actionTestApi(){
+    public function actionTestApi()
+    {
         $apiEnvio = new H2H();
         $cita = EntCitas::find()->one();
-        $respuestaApi =  $apiEnvio->crearEnvio($cita);
+        $respuestaApi = $apiEnvio->crearEnvio($cita);
         echo $respuestaApi;
     }
 
-    public function actionConsultar(){
+    public function actionConsultar()
+    {
         $cita = new EntCitas();
         echo $cita->consultarEnvio("SSYBS01031800012");
     }
 
-    public function actionVerStatusEnvio($token=null){
+    public function actionVerStatusEnvio($token = null)
+    {
 
         $cita = new EntCitas();
-        $envio = EntEnvios::find()->where(['txt_token'=>$token])->one();
-        
+        $envio = EntEnvios::find()->where(['txt_token' => $token])->one();
+
         $envio->txt_respuesta_api = $cita->consultarEnvio($envio->txt_tracking);
         $respuestaApi = json_decode($envio->txt_respuesta_api);
         $envio->txt_historial_api = ($cita->consultarHistorico($envio->txt_tracking));
         $historico = json_decode($envio->txt_historial_api);
-       
-        if($respuestaApi->Response=="Failure"){
-            return $this->render("sin-envio-h2h", ["tracking"=>$envio->txt_tracking]);
+
+        if ($respuestaApi->Response == "Failure") {
+            return $this->render("sin-envio-h2h", ["tracking" => $envio->txt_tracking]);
         }
 
-        if($cita->id_status==Constantes::STATUS_ENTREGADO){
+        if ($cita->id_status == Constantes::STATUS_ENTREGADO) {
             $envio->fch_entrega = $respuestaApi->Fecha;
             $envio->b_cerrado = 1;
         }
-        
+
         $envio->save();
-       
-        return $this->render("ver-status-envio", ['envio'=>$envio, "respuestaApi"=>$respuestaApi, "historico"=>$historico]);
+
+        return $this->render("ver-status-envio", ['envio' => $envio, "respuestaApi" => $respuestaApi, "historico" => $historico]);
     }
 
 
-    public function actionTestApiImage(){
-        $tracking = "BGR17041800BN0001";
+    public function actionTestApiImage($tracking = null)
+    {
+        //$tracking = "BGR17041800BN0001";
         $cita = new EntCitas();
         $respuestaApi = ($cita->consultarEnvio($tracking));
-        $historico =($cita->consultarHistorico($tracking));
+        $historico = ($cita->consultarHistorico($tracking));
 
-echo $historico;
-echo $respuestaApi;
-exit;
+        echo $historico;
+        echo $respuestaApi;
+        exit;
         print_r($respuestaApi);
 
         print_r($historico);
         exit;
-        
+
     }
 
-    public function actionActualizarEnvio($envio){
+    public function actionActualizarEnvio($envio)
+    {
         $response = new ResponseServices();
-        if(!$envioSearch = EntEnvios::find()->where(["txt_tracking"=>$envio])->one()){
+        if (!$envioSearch = EntEnvios::find()->where(["txt_tracking" => $envio])->one()) {
             $response->message = "No se encontro el envio en la base de datos";
             return $response;
         }
@@ -409,7 +416,7 @@ exit;
         $envioSearch->txt_respuesta_api = $cita->consultarEnvio($envio);
         $respuestaApi = json_decode($envioSearch->txt_respuesta_api);
 
-        if(!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api"=>$respuestaApi->ClaveEvento])->one()){
+        if (!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api" => $respuestaApi->ClaveEvento])->one()) {
             $response->message = "No se encontro el status del api en la base de datos";
             return $response;
         }
@@ -417,16 +424,14 @@ exit;
 
         $cita->id_status = $statusApi->id_statu_cita;
 
-        if($cita->id_status==Constantes::STATUS_ENTREGADO){
+        if ($cita->id_status == Constantes::STATUS_ENTREGADO) {
             $envioSearch->fch_entrega = $respuestaApi->Fecha;
             $envioSearch->b_cerrado = 1;
         }
         $envioSearch->save();
-        
 
 
-
-        if(!$cita->save()){
+        if (!$cita->save(false)) {
             $response->message = "No se pudo guardar la cita";
             $response->result = $cita->errors;
             return $response;
@@ -437,11 +442,11 @@ exit;
         $statusColor = EntCitas::getColorStatus($cita->id_status);
         $response->result["a"] = Html::a(
             $statusApi->txt_nombre,
-            Url::to(['citas/view', 'token' => $cita->txt_token]), 
+            Url::to(['citas/view', 'token' => $cita->txt_token]),
             [
-                'id'=>"js-cita-envio-".$cita->txt_token,
-                'data-envio'=>$envio,
-                'class'=>'btn badge '.$statusColor.' no-pjax actualizar-envio',
+                'id' => "js-cita-envio-" . $cita->txt_token,
+                'data-envio' => $envio,
+                'class' => 'btn badge ' . $statusColor . ' no-pjax actualizar-envio',
             ]
         );
         $response->result["token"] = $cita->txt_token;
@@ -449,80 +454,83 @@ exit;
         return $response;
     }
 
-    public function actionUploadFile($token=null){
-        $cita = EntCitas::find()->where(["txt_token"=>$token])->one();
-        $evidencia = EntEvidenciasCitas::find()->where(["id_cita"=>$cita->id_cita])->one();
+    public function actionUploadFile($token = null)
+    {
+        $cita = EntCitas::find()->where(["txt_token" => $token])->one();
+        $evidencia = EntEvidenciasCitas::find()->where(["id_cita" => $cita->id_cita])->one();
 
-        if($evidencia){
+        if ($evidencia) {
             Files::borrarArchivo($evidencia->txt_url);
-        }else{
+        } else {
             $evidencia = new EntEvidenciasCitas();
         }
-        
+
         $response = new ResponseServices();
 
         $file = UploadedFile::getInstanceByName("file-upload");
         //$response->result = $file;
 
-        if(!$file){
+        if (!$file) {
             $response->message = "Archivo nulo";
             return $response;
         }
 
         //Files::validarDirectorio("evidencias/".$cita->txt_token);
-        $namefile = uniqid("pdf").".".$file->extension;
-        $path = "evidencias/".$cita->txt_identificador_cliente."-".$namefile;
+        $namefile = uniqid("pdf") . "." . $file->extension;
+        $path = "evidencias/" . $cita->txt_identificador_cliente . "-" . $namefile;
         $isSaved = $file->saveAs($path);
 
-        if($isSaved){
-           
+        if ($isSaved) {
+
             $evidencia->id_cita = $cita->id_cita;
             $evidencia->txt_url = $path;
             $evidencia->txt_nombre_original = $file->name;
             $evidencia->txt_token = Utils::generateToken("FIL");
             $evidencia->fch_creacion = Calendario::getFechaActual();
-           
-            if($evidencia->save()){
+
+            if ($evidencia->save()) {
                 $response->message = "Archivo guardado.";
                 $response->status = "success";
-                $response->result['url'] = Url::base()."/citas/descargar-evidencia?token=".$evidencia->txt_token;
-            }else{
-                $response->message="Ocurrio un problema al guardar en la base de datos.";
+                $response->result['url'] = Url::base() . "/citas/descargar-evidencia?token=" . $evidencia->txt_token;
+            } else {
+                $response->message = "Ocurrio un problema al guardar en la base de datos.";
                 Files::borrarArchivo($path);
             }
-            
-            
-        }else{
-            $response->message= "El archivo no se pudo guardar.";
+
+
+        } else {
+            $response->message = "El archivo no se pudo guardar.";
         }
 
         return $response;
     }
 
-    public function actionDescargarEvidencia($token=null){
-        $evidencia = EntEvidenciasCitas::find(["txt_token"=>$token])->one();
+    public function actionDescargarEvidencia($token = null)
+    {
+        $evidencia = EntEvidenciasCitas::find(["txt_token" => $token])->one();
         $cita = $evidencia->idCita;
         if (file_exists($evidencia->txt_url)) {
-            Yii::$app->response->sendFile($evidencia->txt_url, "Evidencia_".$cita->txt_identificador_cliente.".pdf");
-        }else{
+            Yii::$app->response->sendFile($evidencia->txt_url, "Evidencia_" . $cita->txt_identificador_cliente . ".pdf");
+        } else {
             echo $evidencia->txt_url;
         }
-        
+
     }
 
 
 
-public function actionEnvios(){
+    public function actionEnvios()
+    {
     //\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
     //$envios = EntEnvios::find()->select("txt_respuesta_api")->all();
 
-    header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=data.csv');
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=data.csv');
 
 // create a file pointer connected to the output stream
-$output = fopen('php://output', 'w');
+        $output = fopen('php://output', 'w');
 
-    $items = Yii::$app->db->createCommand('select 
+        $items = Yii::$app->db->createCommand('select 
      EN.txt_historial_api
        from ent_citas C
     LEFT JOIN cat_tipos_tramites TT ON TT.id_tramite = C.id_tipo_tramite
@@ -538,35 +546,80 @@ $output = fopen('php://output', 'w');
     
     
     ');
-    
-    $items = $items->query();
-    
 
-    foreach($items as $row) {
-        fputcsv($output, $row);
+        $items = $items->query();
+
+
+        foreach ($items as $row) {
+            fputcsv($output, $row);
+        }
+
+
     }
 
-   
-}
-
-public function actionTestCrear(){
-    $fichero = 'evidencias/test/gente.txt';
+    public function actionTestCrear()
+    {
+        $fichero = 'evidencias/test/gente.txt';
 // Abre el fichero para obtener el contenido existente
-$actual = file_get_contents($fichero);
+        $actual = file_get_contents($fichero);
 // Añade una nueva persona al fichero
-$actual .= "John Smith\n";
+        $actual .= "John Smith\n";
 // Escribe el contenido al fichero
 
-    
-    file_put_contents($fichero, $actual);
-}
 
-public function actionCrearPass(){
-    $usuario = new EntUsuarios();
-    $usuario->setPassword("springer");
+        file_put_contents($fichero, $actual);
+    }
 
-    echo $usuario->txt_password_hash;
-    exit;
-}
-    
+    public function actionCrearPass()
+    {
+        $usuario = new EntUsuarios();
+        $usuario->setPassword("springer");
+
+        echo $usuario->txt_password_hash;
+        exit;
+    }
+
+    public function actionExportar()
+    {
+
+        //The name of the CSV file that will be downloaded by the user.
+        $fileName = 'example.csv';
+ 
+//Set the Content-Type and Content-Disposition headers.
+        header('Content-Type: application/excel');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+ 
+//A multi-dimensional array containing our CSV data.
+        $data = array(
+    //Our header (optional).
+            array("Name", "Registration Date"),
+    //Our data
+            array("Tom", "2012-01-04"),
+            array("Lisa", "2011-09-29"),
+            array("Harry", "2013-12-12")
+        );
+ 
+//Open up a PHP output stream using the function fopen.
+        $fp = fopen('php://output', 'w');
+ 
+//Loop through the array containing our CSV data.
+        foreach ($data as $row) {
+    //fputcsv formats the array into a CSV format.
+    //It then writes the result to our output stream.
+            fputcsv($fp, $row);
+        }
+ 
+//Close the file handle.
+        fclose($fp);
+        exit;
+        $modelSearch = new EntCitasSearch();
+        $dataProvider = $modelSearch->searchExport(Yii::$app->request->queryParams);
+
+        foreach ($dataProvider->getModels() as $key => $modelo) {
+            echo $key . "<br>";
+        }
+
+        return $this->render("exportar", ["dataProvider" => $dataProvider]);
+    }
+
 }

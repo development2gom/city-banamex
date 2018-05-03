@@ -420,7 +420,7 @@ class EntCitas extends \yii\db\ActiveRecord
      */
     public function getIdHorario()
     {
-        return $this->hasOne(CatHorarios::className(), ['id_horario' => 'id_horario']);
+        return $this->hasOne(EntHorariosAreas::className(), ['id_horario_area' => 'id_horario']);
     }
 
     /**
@@ -445,6 +445,14 @@ class EntCitas extends \yii\db\ActiveRecord
     public function getIdTipoEntrega()
     {
         return $this->hasOne(CatTiposEntrega::className(), ['id_tipo_entrega' => 'id_tipo_entrega']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdMunicipio()
+    {
+        return $this->hasOne(CatMunicipios::className(), ['id_municipio' => 'id_municipio']);
     }
 
     /**
@@ -477,6 +485,14 @@ class EntCitas extends \yii\db\ActiveRecord
     public function getIdUsuario()
     {
         return $this->hasOne(EntUsuarios::className(), ['id_usuario' => 'id_usuario']);
+    }
+
+     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdCallCenter()
+    {
+        return $this->hasOne(CatCallsCenters::className(), ['id_call_center' => 'id_call_center']);
     }
 
     /**
