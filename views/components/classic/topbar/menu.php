@@ -50,6 +50,20 @@ $usuario = EntUsuarios::getUsuarioLogueado();
                       <?php
                       }
                       ?>
+
+                      <?php
+                      if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){?>
+                      <li class="site-menu-item">
+                        <a class="animsition-link" href="<?=Url::base()?>/citas/exportar">
+                          <span class="site-menu-title">
+                            <i class="site-menu-icon pe-7s-download" aria-hidden="true"></i>
+                            Descarga de reportes
+                          </span>
+                        </a>
+                      </li>
+                      <?php
+                      }
+                      ?>
                     </ul>
                   </div>
                 </div>

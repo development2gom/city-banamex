@@ -41,11 +41,6 @@ $this->registerJsFile(
 
 ?>
 
-
-
-   
-   
-
 <div class="row">
     
     <?php
