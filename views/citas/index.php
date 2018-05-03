@@ -96,98 +96,6 @@ $this->registerJsFile(
     </div>
 </div> -->
 
-
-    <?php
-
-    $gridColumns =  [
-        'txt_identificador_cliente',
-        [
-            'attribute' => 'id_status',
-            'format'=>'raw',
-            'value'=>function($data){
-                
-                return $data->idStatus->txt_nombre;
-            }
-        ],
-        'txt_telefono',
-        [
-            'attribute'=>'txt_nombre',
-            'format'=>'raw',
-            'value'=>function($data){
-                return $data->nombreCompleto;
-            }
-        ],
-
-        [
-            'attribute'=>'id_tipo_tramite',
-            'value'=>'idTipoTramite.txt_nombre'
-        ],
-        [
-            'attribute'=>'fch_creacion',
-            'format'=>'raw',
-            'value'=>function($data){
-
-                return Calendario::getDateCompleteHour($data->fch_creacion);
-            }
-        ],
-        [
-            'attribute'=>'fch_cita',
-            'format'=>'raw',
-            'value'=>function($data){
-                if(!$data->fch_cita){
-                    return "(no definido)";
-                }
-                return Calendario::getDateComplete($data->fch_cita);
-            }
-        ],
-        [
-           
-            'attribute'=>'id_envio',
-            
-            'value'=>'idEnvio.txt_tracking'
-        ],
-
-        
-    ] ;           
-
-    $fullExportMenu = ExportMenu::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => $gridColumns,
-        "pjaxContainerId"=>'pjax-citas',
-        'target' => ExportMenu::TARGET_BLANK,
-        'showConfirmAlert'=>false,
-        'fontAwesome' => true,
-        'asDropdown' => false,
-        
-         'exportConfig'=>[
-            ExportMenu::FORMAT_HTML => false,
-            ExportMenu::FORMAT_CSV => [
-                'label' => Yii::t('kvgrid', 'CSV'),
-                'icon' =>'file-code-o', 
-                'iconOptions' => false,
-                'showHeader' => true,
-                'showPageSummary' => true,
-                'showFooter' => true,
-                'showCaption' => true,
-                'filename' => Yii::t('kvgrid', 'grid-export'),
-                'alertMsg' => Yii::t('kvgrid', 'The CSV export file will be generated for download.'),
-                'options' => ['title' => Yii::t('kvgrid', 'Comma Separated Values')],
-                'mime' => 'application/csv',
-                'writer' => ExportMenu::FORMAT_CSV,
-                'config' => [
-                    'colDelimiter' => ",",
-                    'rowDelimiter' => "\r\n",
-                ],
-            ],
-            ExportMenu::FORMAT_TEXT =>false,
-            ExportMenu::FORMAT_PDF => false,
-            ExportMenu::FORMAT_EXCEL => false,
-            ExportMenu::FORMAT_EXCEL_X => false,
-        ],
-        
-    ]);
-
-    ?>  
     <div class="panel-table">
         <?php
         
@@ -326,7 +234,8 @@ $this->registerJsFile(
                     
                 ],
                 'panelTemplate' => "{panelHeading}\n{items}\n{summary}\n{pager}",
-                "panelHeadingTemplate"=>"{export}",
+                //"panelHeadingTemplate"=>"{export}",
+                "panelHeadingTemplate"=>"",
                 'responsive'=>true,
                 'striped'=>false,
                 'hover'=>false,
@@ -338,44 +247,44 @@ $this->registerJsFile(
                     'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
                     'footer'=>false
                 ],
-                'toolbar' => [
-                    '{export}',
-                ],
-                'export' => [
-                    "pjaxContainerId"=>'pjax-citas',
-                    'label' => 'Exportar',
-                    'fontAwesome' => true,
-                    'showConfirmAlert'=>false,
-                    'enableFormatter'=>false,
-                    'itemsAfter'=> [
-                        '<li role="presentation" class="divider"></li>',
-                        '<li class="dropdown-header">Export todos los datos</li>',
-                        $fullExportMenu
-                    ],
-                    'options'=>[
-                        'class' => 'btn btn-exportar',
-                    ]
-                ],
-                'exportConfig'=>[
-                    GridView::CSV => [
-                        'label' => Yii::t('kvgrid', 'CSV'),
-                        'icon' =>'file-code-o', 
-                        'iconOptions' => false,
-                        'showHeader' => true,
-                        'showPageSummary' => true,
-                        'showFooter' => true,
-                        'showCaption' => true,
-                        'filename' => Yii::t('kvgrid', 'grid-export'),
-                        'alertMsg' => Yii::t('kvgrid', 'The CSV export file will be generated for download.'),
-                        'options' => ['title' => Yii::t('kvgrid', 'Comma Separated Values')],
-                        'mime' => 'application/csv',
-                        'writer' => ExportMenu::FORMAT_CSV,
-                        'config' => [
-                            'colDelimiter' => ",",
-                            'rowDelimiter' => "\r\n",
-                        ],
-                    ],
-                ],
+                // 'toolbar' => [
+                //     '{export}',
+                // ],
+                // 'export' => [
+                //     "pjaxContainerId"=>'pjax-citas',
+                //     'label' => 'Exportar',
+                //     'fontAwesome' => true,
+                //     'showConfirmAlert'=>false,
+                //     'enableFormatter'=>false,
+                //     'itemsAfter'=> [
+                //         '<li role="presentation" class="divider"></li>',
+                //         '<li class="dropdown-header">Export todos los datos</li>',
+                //         $fullExportMenu
+                //     ],
+                //     'options'=>[
+                //         'class' => 'btn btn-exportar',
+                //     ]
+                // ],
+                // 'exportConfig'=>[
+                //     GridView::CSV => [
+                //         'label' => Yii::t('kvgrid', 'CSV'),
+                //         'icon' =>'file-code-o', 
+                //         'iconOptions' => false,
+                //         'showHeader' => true,
+                //         'showPageSummary' => true,
+                //         'showFooter' => true,
+                //         'showCaption' => true,
+                //         'filename' => Yii::t('kvgrid', 'grid-export'),
+                //         'alertMsg' => Yii::t('kvgrid', 'The CSV export file will be generated for download.'),
+                //         'options' => ['title' => Yii::t('kvgrid', 'Comma Separated Values')],
+                //         'mime' => 'application/csv',
+                //         'writer' => ExportMenu::FORMAT_CSV,
+                //         'config' => [
+                //             'colDelimiter' => ",",
+                //             'rowDelimiter' => "\r\n",
+                //         ],
+                //     ],
+                // ],
                 'pager'=>[
                     'linkOptions' => [
                         'class' => 'page-link'
