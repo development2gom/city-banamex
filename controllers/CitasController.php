@@ -405,6 +405,47 @@ class CitasController extends Controller
 
     }
 
+    public function actionActualizarTodaInformacion(){
+        $response = new ResponseServices();
+        $envios = EntEnvios::find()->all();
+        foreach($envios as $envioSearch){
+            $cita = $envioSearch->idCita;
+            $envioSearch->txt_respuesta_api = $cita->consultarEnvio($envioSearch->txt_tracking);
+            $envioSearch->txt_historial_api = $cita->consultarHistorico($envioSearch->txt_tracking);
+            $respuestaApi = json_decode($envioSearch->txt_respuesta_api);
+
+    
+            if (!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api" => $respuestaApi->ClaveEvento])->one()) {
+                $response->message = "No se encontro el status del api en la base de datos";
+                continue;
+            }
+    
+    
+            $cita->id_status = $statusApi->id_statu_cita;
+    
+            if ($cita->id_status == Constantes::STATUS_ENTREGADO) {
+                $envioSearch->fch_entrega = $respuestaApi->Fecha;
+                $envioSearch->b_cerrado = 1;
+            }
+            $envioSearch->save();
+    
+    
+            if (!$cita->save(false)) {
+                $response->message = "No se pudo guardar la cita";
+                $response->result = $cita->errors;
+                return $response;
+            }
+    
+            $response->status = "success";
+            $response->message = "Todo correcto";
+            
+    
+            
+        }
+
+        return $response;
+    }
+
     public function actionActualizarEnvio($envio)
     {
         $response = new ResponseServices();
@@ -414,6 +455,7 @@ class CitasController extends Controller
         }
         $cita = $envioSearch->idCita;
         $envioSearch->txt_respuesta_api = $cita->consultarEnvio($envio);
+        $envioSearch->txt_historial_api = $cita->consultarHistorico($envioSearch->txt_tracking);
         $respuestaApi = json_decode($envioSearch->txt_respuesta_api);
 
         if (!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api" => $respuestaApi->ClaveEvento])->one()) {
@@ -582,44 +624,126 @@ class CitasController extends Controller
     public function actionExportar()
     {
 
-        //The name of the CSV file that will be downloaded by the user.
-        $fileName = 'example.csv';
- 
-//Set the Content-Type and Content-Disposition headers.
-        header('Content-Type: application/excel');
-        header('Content-Disposition: attachment; filename="' . $fileName . '"');
- 
-//A multi-dimensional array containing our CSV data.
-        $data = array(
-    //Our header (optional).
-            array("Name", "Registration Date"),
-    //Our data
-            array("Tom", "2012-01-04"),
-            array("Lisa", "2011-09-29"),
-            array("Harry", "2013-12-12")
-        );
- 
-//Open up a PHP output stream using the function fopen.
-        $fp = fopen('php://output', 'w');
- 
-//Loop through the array containing our CSV data.
-        foreach ($data as $row) {
-    //fputcsv formats the array into a CSV format.
-    //It then writes the result to our output stream.
-            fputcsv($fp, $row);
-        }
- 
-//Close the file handle.
-        fclose($fp);
-        exit;
+        
+
         $modelSearch = new EntCitasSearch();
         $dataProvider = $modelSearch->searchExport(Yii::$app->request->queryParams);
 
-        foreach ($dataProvider->getModels() as $key => $modelo) {
-            echo $key . "<br>";
-        }
+        
+        return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch"=>$modelSearch]);
+    }
 
-        return $this->render("exportar", ["dataProvider" => $dataProvider]);
+    public function actionDownloadData(){
+
+        $modelSearch = new EntCitasSearch();
+        $dataProvider = $modelSearch->searchExport(Yii::$app->request->queryParams);
+
+        if(Yii::$app->request->isGet):
+            //The name of the CSV file that will be downloaded by the user.
+            $fileName = 'Reporte.csv';
+            $data = [];
+            $data[0] = $this->setHeadersCsv();
+            foreach ($dataProvider->getModels() as $key =>$modelo):
+
+                $data[$modelo->id_cita] =[
+                    $modelo->txt_identificador_cliente,
+                    $modelo->txt_telefono,
+                    $modelo->idEnvio?$modelo->idEnvio->txt_tracking:'',
+                    $modelo->idMunicipio?$modelo->idMunicipio->idTipo->txt_nombre:'',
+                    $modelo->idMunicipio?$modelo->idMunicipio->diasServicio:"",
+                    $modelo->idTipoTramite->txt_nombre,
+                    $modelo->b_entrega_cat?"CAC":"Domicilio",
+                    $modelo->idCallCenter?$modelo->idCallCenter->txt_nombre:'',
+                    Calendario::getDateComplete($modelo->fch_creacion),
+                    Calendario::getDateComplete($modelo->fch_cita),
+                    $modelo->idHorario?$modelo->idHorario->txt_hora_inicial." - ".$modelo->idHorario->txt_hora_final:"",
+                    $modelo->idStatus?$modelo->idStatus->txt_nombre:'',
+                    $modelo->nombreCompleto,
+                    $modelo->txt_equipo,
+                    $modelo->txt_imei,
+                    $modelo->txt_iccid,
+                    $modelo->txt_promocional,
+                    $modelo->txt_tpv,
+                    $modelo->txt_calle_numero,
+                    $modelo->txt_colonia,
+                    $modelo->txt_municipio,
+                    $modelo->txt_estado,
+                    $modelo->txt_codigo_postal,
+                    $modelo->txt_entre_calles
+                ];
+
+                $historico = [];
+                if($modelo->idEnvio):
+                    $i = 23;
+                    if($modelo->idEnvio->txt_historial_api):
+                        $json = json_decode($modelo->idEnvio->txt_historial_api);
+                        $countEvento = 1;
+                        foreach($json->History as $llave=>$historial):
+                            if($historial->EventoClave > 3){
+                                $data[0][++$i] = "Evento #".$countEvento; 
+                                $historico[] = $historial->Evento;
+                                $data[0][++$i] = "Comentario #".$countEvento; 
+                                $historico[] = $historial->Comentario;
+                                $data[0][++$i] = "Motivo #".$countEvento; 
+                                $historico[] = $historial->Motivo;
+                                $data[0][++$i] = "Fecha #".$countEvento; 
+                                $historico[] = $historial->Fecha;
+                                $countEvento++;
+                            }
+                        endforeach;
+                    // elseif($modelo->idEnvio->txt_respuesta_api):
+                    //     $json = json_decode($modelo->idEnvio->txt_respuesta_api);
+                    //     $data[0][] = "Evento"; 
+                    //     $historico[] = $json->Evento;
+                    //     $data[0][++$i] = "Comentario";
+                    //     $historico[] = "";
+                    //     $data[0][++$i] = "Motivo";
+                    //     $historico[] = $json->Motivo;
+                    //     $data[0][++$i] = "Fecha";
+                    //     $historico[] = $json->Fecha;
+                    endif;
+                    
+                endif;
+
+                $data[$modelo->id_cita] = array_merge($data[$modelo->id_cita], $historico);
+
+            endforeach;
+
+            // print_r($historico);
+            // exit;
+            
+
+            
+            //Set the Content-Type and Content-Disposition headers.
+            header('Content-Type: application/excel');
+            header('Content-Disposition: attachment; filename="' . $fileName . '"');
+    
+            //Open up a PHP output stream using the function fopen.
+            $fp = fopen('php://output', 'w');
+    
+            //Loop through the array containing our CSV data.
+            foreach ($data as $row) {
+            //fputcsv formats the array into a CSV format.
+            //It then writes the result to our output stream.
+                fputcsv($fp, $row);
+            }
+    
+            //Close the file handle.
+            fclose($fp);
+            exit;
+        endif;
+
+        return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch"=>$modelSearch]);
+    }
+
+    public function setHeadersCsv(){
+      return  [
+          "Consecutivo", "Teléfono", "Identificador de envio", "Tipo / Zona",
+          "Frecuencia", "Trámite", "Entrega en", "Fza Vta", "Fecha captura",
+          "Fecha cita", "Horario cita", "Estatus cita", "Cliente","Equipo", "IMEI", 
+          "ICCID", "Promocionales", "TPV", "Calle y número", "Colonia", "Municipio", 
+          "Estado", "C.P.",  "Referencias"
+      ];
     }
 
 }

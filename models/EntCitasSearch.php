@@ -181,11 +181,7 @@ class EntCitasSearch extends EntCitas
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=>[
-                'pageSize' => $this->pageSize,
-                //'pageSizeLimit'=>[1,10]
-                
-            ],
+            'pagination'=>false,
             
             'sort' => [
                 'defaultOrder' => [
@@ -194,6 +190,20 @@ class EntCitasSearch extends EntCitas
             ],
             
         ]);
+
+        $this->load($params);
+          
+        if($this->startDate && $this->endDate){
+            $this->startDate = Utils::changeFormatDateInputShort($this->startDate);
+            $this->endDate = Utils::changeFormatDateInputShort($this->endDate);
+            $query->andFilterWhere([
+                "between", "date_format(fch_creacion, '%Y-%m-%d')",$this->startDate, $this->endDate
+            
+            ]);
+
+        }
+
+        
         return $dataProvider;
     }
 }

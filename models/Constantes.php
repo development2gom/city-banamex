@@ -27,6 +27,9 @@ class Constantes{
     const STATUS_SEGUNDA_VISITA = 29;
     const STATUS_DEVOLUCION_TRANSITO = 30;
     const STATUS_DEVOLUCION = 31;
+    const STATUS_INCIDENCIA = 32;
+    const STATUS_REPROGRAMACION= 33;
+    const STATUS_NO_ASIGNADO = 34;
 
     //TIPOS DE USUARIOS
     const USURIO_ADMIN = "admin";
