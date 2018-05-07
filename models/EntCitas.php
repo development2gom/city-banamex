@@ -109,6 +109,11 @@ class EntCitas extends \yii\db\ActiveRecord
 
     }
 
+    public function setAutorizadaPor(){
+        $usuario = EntUsuarios::getUsuarioLogueado();
+        $this->txt_autorizado_por = "Autorizado por: ".$usuario->txt_auth_item;
+    }
+
     public function setAddresCat()
     {
         if ($this->b_entrega_cat && $this->id_cat) {

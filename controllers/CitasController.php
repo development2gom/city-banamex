@@ -123,6 +123,7 @@ class CitasController extends Controller
                     $model->statusAprobacionDependiendoUsuario();
                     if (\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)) {
                         $model->generarNumeroEnvio();
+                        $model->setAutorizadaPor();
                     }
 
                     if ($model->save()) {
@@ -201,6 +202,7 @@ class CitasController extends Controller
 
                 if (\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)) {
                     $model->generarNumeroEnvio();
+                    $model->setAutorizadaPor();
                 }
                 if ($model->save()) {
 
@@ -648,6 +650,7 @@ class CitasController extends Controller
                 $data[$modelo->id_cita] =[
                     $modelo->txt_identificador_cliente,
                     $modelo->txt_telefono,
+                    $modelo->txt_autorizado_por,
                     $modelo->idEnvio?$modelo->idEnvio->txt_tracking:'',
                     $modelo->idMunicipio?$modelo->idMunicipio->idTipo->txt_nombre:'',
                     $modelo->idMunicipio?$modelo->idMunicipio->diasServicio:"",
@@ -674,23 +677,25 @@ class CitasController extends Controller
 
                 $historico = [];
                 if($modelo->idEnvio):
-                    $i = 23;
+                    $i = 24;
                     if($modelo->idEnvio->txt_historial_api):
                         $json = json_decode($modelo->idEnvio->txt_historial_api);
                         $countEvento = 1;
-                        foreach($json->History as $llave=>$historial):
-                            if($historial->EventoClave > 3){
-                                $data[0][++$i] = "Evento #".$countEvento; 
-                                $historico[] = $historial->Evento;
-                                $data[0][++$i] = "Comentario #".$countEvento; 
-                                $historico[] = $historial->Comentario;
-                                $data[0][++$i] = "Motivo #".$countEvento; 
-                                $historico[] = $historial->Motivo;
-                                $data[0][++$i] = "Fecha #".$countEvento; 
-                                $historico[] = $historial->Fecha;
-                                $countEvento++;
-                            }
-                        endforeach;
+                        if(isset($json->History)):
+                            foreach($json->History as $llave=>$historial):
+                                if($historial->EventoClave > 3){
+                                    $data[0][++$i] = "Evento #".$countEvento; 
+                                    $historico[] = $historial->Evento;
+                                    $data[0][++$i] = "Comentario #".$countEvento; 
+                                    $historico[] = $historial->Comentario;
+                                    $data[0][++$i] = "Motivo #".$countEvento; 
+                                    $historico[] = $historial->Motivo;
+                                    $data[0][++$i] = "Fecha #".$countEvento; 
+                                    $historico[] = $historial->Fecha;
+                                    $countEvento++;
+                                }
+                            endforeach;
+                        endif;    
                     // elseif($modelo->idEnvio->txt_respuesta_api):
                     //     $json = json_decode($modelo->idEnvio->txt_respuesta_api);
                     //     $data[0][] = "Evento"; 
@@ -715,7 +720,8 @@ class CitasController extends Controller
 
             
             //Set the Content-Type and Content-Disposition headers.
-            header('Content-Type: application/excel');
+            
+            header('Content-Type: application/excel; charset=utf-8');
             header('Content-Disposition: attachment; filename="' . $fileName . '"');
     
             //Open up a PHP output stream using the function fopen.
@@ -738,7 +744,7 @@ class CitasController extends Controller
 
     public function setHeadersCsv(){
       return  [
-          "Consecutivo", "Teléfono", "Identificador de envio", "Tipo / Zona",
+          "Consecutivo", "Teléfono","Autorizado por", "Identificador de envio", "Tipo / Zona",
           "Frecuencia", "Trámite", "Entrega en", "Fza Vta", "Fecha captura",
           "Fecha cita", "Horario cita", "Estatus cita", "Cliente","Equipo", "IMEI", 
           "ICCID", "Promocionales", "TPV", "Calle y número", "Colonia", "Municipio", 

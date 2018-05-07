@@ -58,7 +58,8 @@ class EntCitasSearch extends EntCitas
             'query' => $query,
             'pagination'=>[
                 'pageSize' => 30,
-                //'pageSizeLimit'=>[1,10]
+                
+                'pageSizeLimit'=>[1,2]
                 
             ],
             
@@ -116,15 +117,16 @@ class EntCitasSearch extends EntCitas
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_cita' => $this->id_cita,
+            
             'id_tipo_tramite' => $this->id_tipo_tramite,
-            'id_equipo' => $this->id_equipo,
-            'id_area' => $this->id_area,
-            'id_tipo_entrega' => $this->id_tipo_entrega,
+            
+            
+            
         
         ]);
 
-        $query->andFilterWhere(['like', 'num_dias_servicio', $this->num_dias_servicio])
+        $query
+        
             ->andFilterWhere(['like', 'txt_token', $this->txt_token])
             ->andFilterWhere(['like', 'txt_iccid', $this->txt_iccid])
             ->andFilterWhere(['like', 'txt_imei', $this->txt_imei])
@@ -138,7 +140,7 @@ class EntCitasSearch extends EntCitas
             ->andFilterWhere(['like', 'txt_codigo_postal', $this->txt_codigo_postal])
             ->andFilterWhere(['like', 'txt_municipio', $this->txt_municipio])
             ->andFilterWhere(['like', 'txt_entre_calles', $this->txt_entre_calles])
-            ->andFilterWhere(['like', 'txt_observaciones_punto_referencia', $this->txt_observaciones_punto_referencia])
+            ->andFilterWhere(['like', 'txt_oservaciones_punto_referencia', $this->txt_observaciones_punto_referencia])
             ->andFilterWhere(['like', 'fch_cita', $this->fch_cita])
             ->andFilterWhere(['like', 'fch_creacion', $this->fch_creacion])
             ->andFilterWhere(['like', 'ent_envios.txt_tracking', $this->txtTracking]);

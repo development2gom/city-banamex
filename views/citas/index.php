@@ -128,7 +128,7 @@ $this->registerJsFile(
                                 $dataEnvio = $data->txtTracking;
                             }
                             return Html::a(
-                                $data->idStatus->txt_nombre,
+                                Html::encode($data->idStatus->txt_nombre),
                                 Url::to(['citas/view', 'token' => $data->txt_token]), 
                                 [
                                     'id'=>"js-cita-envio-".$data->txt_token,
@@ -144,7 +144,7 @@ $this->registerJsFile(
                         //'filter'=>"",
                         'format'=>'raw',
                         'value'=>function($data){
-                            return $data->nombreCompleto;
+                            return Html::encode($data->nombreCompleto);
                         }
                     ],
                     [
@@ -210,7 +210,7 @@ $this->registerJsFile(
                             if($data->id_envio){
                                 if(Permisos::canUsuarioVerStatusEnvio()){
                                     return Html::a(
-                                        $data->txtTracking,
+                                        Html::encode($data->txtTracking),
                                         Url::to(['citas/ver-status-envio', 'token' => $data->idEnvio->txt_token]),
                                         [
                                             'class'=>'id-send no-pjax'
@@ -218,7 +218,7 @@ $this->registerJsFile(
                                     );
                                 }
 
-                                return "<span class='id-send-error'>".$data->txtTracking."</span>";
+                                return "<span class='id-send-error'>".Html::encode($data->txtTracking)."</span>";
                             }
 
                             return "<span class='id-send-error'>---</span>";
