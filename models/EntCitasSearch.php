@@ -59,7 +59,6 @@ class EntCitasSearch extends EntCitas
             'pagination'=>[
                 'pageSize' => 30,
                 
-                'pageSizeLimit'=>[1,2]
                 
             ],
             

@@ -41,7 +41,7 @@ $this->registerJsFile(
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-3">
 
                 <div class="form-group">
                     <?php
@@ -66,6 +66,9 @@ $this->registerJsFile(
                        ]);
                     ?>
                 </div>    
+            </div>
+            <div class="col-md-3">
+                
             </div>
         </div>    
         <div class="row">
