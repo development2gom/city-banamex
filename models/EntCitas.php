@@ -109,6 +109,11 @@ class EntCitas extends \yii\db\ActiveRecord
 
     }
 
+    public function setAutorizadaPor(){
+        $usuario = EntUsuarios::getUsuarioLogueado();
+        $this->txt_autorizado_por = $usuario->txt_auth_item;
+    }
+
     public function setAddresCat()
     {
         if ($this->b_entrega_cat && $this->id_cat) {
@@ -262,6 +267,53 @@ class EntCitas extends \yii\db\ActiveRecord
                     return $('#entcitas-id_equipo').val()=='" . Constantes::SIN_EQUIPO . "';
                 }"
             ],
+
+            [
+                ['txt_sap_promocional'], 'required', 'on' => ['autorizar', 'autorizar-update'],
+                'when' => function ($model) {
+                    return $model->txt_promocional;
+                }, 'whenClient' => "function (attribute, value) {
+                    
+                    return $('#entcitas-txt_promocional').val();
+                }"
+            ],
+            [
+                ['txt_sap_promocional_2'], 'required', 'on' => ['autorizar', 'autorizar-update'],
+                'when' => function ($model) {
+                    return $model->txt_promocional_2;
+                }, 'whenClient' => "function (attribute, value) {
+                    
+                    return $('#entcitas-txt_promocional_2').val();
+                }"
+            ],
+            [
+                ['txt_sap_promocional_3'], 'required', 'on' => ['autorizar', 'autorizar-update'],
+                'when' => function ($model) {
+                    return $model->txt_promocional_3;
+                }, 'whenClient' => "function (attribute, value) {
+                    
+                    return $('#entcitas-txt_promocional_3').val();
+                }"
+            ],
+            [
+                ['txt_sap_promocional_4'], 'required', 'on' => ['autorizar', 'autorizar-update'],
+                'when' => function ($model) {
+                    return $model->txt_promocional_4;
+                }, 'whenClient' => "function (attribute, value) {
+                    
+                    return $('#entcitas-txt_promocional_4').val();
+                }"
+            ],
+            [
+                ['txt_sap_promocional_5'], 'required', 'on' => ['autorizar', 'autorizar-update'],
+                'when' => function ($model) {
+                    return $model->txt_promocional_5;
+                }, 'whenClient' => "function (attribute, value) {
+                    
+                    return $('#entcitas-txt_promocional_5').val();
+                }"
+            ],
+            
             [
                 ['id_cat'], 'required',
                 'when' => function ($model) {
@@ -326,7 +378,8 @@ class EntCitas extends \yii\db\ActiveRecord
             [['txt_iccid', 'txt_imei', 'txt_calle_numero'], 'string', 'max' => 150],
             [['txt_codigo_postal'], 'string', 'max' => 5],
             [['txt_entre_calles', 'txt_observaciones_punto_referencia'], 'string', 'max' => 500],
-            [['txt_motivo_cancelacion_rechazo', 'txt_promocional'], 'string', 'max' => 700],
+            [['txt_motivo_cancelacion_rechazo', 'txt_promocional', 'txt_promocional_2', 'txt_promocional_3','txt_promocional_4','txt_promocional_5'], 'string', 'max' => 700],
+            [['txt_sap_promocional', 'txt_sap_promocional_2', 'txt_sap_promocional_3','txt_sap_promocional_4','txt_sap_promocional_5'], 'string', 'max' => 50],
             [['txt_token'], 'unique'],
             [['id_area'], 'exist', 'skipOnError' => true, 'targetClass' => CatAreas::className(), 'targetAttribute' => ['id_area' => 'id_area']],
             [['id_equipo'], 'exist', 'skipOnError' => true, 'targetClass' => CatEquipos::className(), 'targetAttribute' => ['id_equipo' => 'id_equipo']],
@@ -396,6 +449,20 @@ class EntCitas extends \yii\db\ActiveRecord
             'id_cat' => "CAC",
             'txtTracking' => "Id. envio",
             'txt_equipo' => "Equipo",
+            'txt_promocional'=>"Promocional #1",
+            'txt_sap_promocional'=>"Clave SAP promocional #1",
+
+            'txt_promocional_2'=>"Promocional #2",
+            'txt_sap_promocional_2'=>"Clave SAP promocional #2",
+
+            'txt_promocional_3'=>"Promocional #3",
+            'txt_sap_promocional_3'=>"Clave SAP promocional #3",
+
+            'txt_promocional_4'=>"Promocional #4",
+            'txt_sap_promocional_4'=>"Clave SAP promocional #4",
+
+            'txt_promocional_5'=>"Promocional #5",
+            'txt_sap_promocional_5'=>"Clave SAP promocional #5",
         ];
     }
 
@@ -647,6 +714,51 @@ class EntCitas extends \yii\db\ActiveRecord
     public function getTxtTracking()
     {
         return $this->entEnvios->txt_tracking;
+    }
+
+    public function getPromocionalesData(){
+        $promocionales = "";
+        if($this->txt_promocional){
+            $promocionales .= $this->txt_sap_promocional." - ".$this->txt_promocional.",";
+        }
+
+        if($this->txt_promocional_2){
+            $promocionales .= $this->txt_sap_promocional_2." - ".$this->txt_promocional_2.",";
+        }
+
+        if($this->txt_promocional_3){
+            $promocionales .= $this->txt_sap_promocional_3." - ".$this->txt_promocional_3.",";
+        }
+
+        if($this->txt_promocional_4){
+            $promocionales .= $this->txt_sap_promocional_4." - ".$this->txt_promocional_4.",";
+        }
+
+        if($this->txt_promocional_5){
+            $promocionales .= $this->txt_sap_promocional_5." - ".$this->txt_promocional_5.",";
+        }
+
+        return $promocionales;
+    }
+
+    public function getPromocional1(){
+        return $this->txt_sap_promocional." - ".$this->txt_promocional;
+    }
+
+    public function getPromocional2(){
+        return $this->txt_sap_promocional_2." - ".$this->txt_promocional_2;
+    }
+
+    public function getPromocional3(){
+        return $this->txt_sap_promocional_3." - ".$this->txt_promocional_3;
+    }
+
+    public function getPromocional4(){
+        return $this->txt_sap_promocional_4." - ".$this->txt_promocional_4;
+    }
+
+    public function getPromocional5(){
+        return $this->txt_sap_promocional_5." - ".$this->txt_promocional_5;
     }
 
 }

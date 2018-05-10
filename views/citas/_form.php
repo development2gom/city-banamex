@@ -229,14 +229,39 @@ $cat = $model->idCat;
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-3 col-md-3">
-        
+    <div class="row contenedor-promocionales">
+        <div class="col-md-3">
+            <?= $form->field($model, 'txt_promocional')->textInput() ?>
         </div>
-        <div class="col-sm-3 col-md-3 contenedor-promocionales">
-            <?= $form->field($model, 'txt_promocional')->textarea(["rows"=>7]) ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'txt_sap_promocional')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'txt_promocional_2')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'txt_sap_promocional_2')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'txt_promocional_3')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'txt_sap_promocional_3')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'txt_promocional_4')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'txt_sap_promocional_4')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'txt_promocional_5')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'txt_sap_promocional_5')->textInput() ?>
         </div>
     </div>
+
 
 </div>
 

@@ -31,6 +31,7 @@ use yii\web\UploadedFile;
 use app\models\Calendario;
 use app\models\CatCallsCenters;
 use app\models\CatEquipos;
+use app\models\RelMunicipioCodigoPostal;
 
 /**
  * CitasController implements the CRUD actions for EntCitas model.
@@ -111,7 +112,10 @@ class CitasController extends Controller
             $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
 
             $model->setAddresCat();
-
+            $municipio = RelMunicipioCodigoPostal::find()->where(["txt_codigo_postal"=>$model->txt_codigo_postal])->one();
+            if($municipio){
+                $model->id_municipio = $municipio->id_municipio;
+            }
             if ($model->isEdicion) {
                 if ($model->save()) {
                     $model->guardarHistorialUpdate();
@@ -123,6 +127,7 @@ class CitasController extends Controller
                     $model->statusAprobacionDependiendoUsuario();
                     if (\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)) {
                         $model->generarNumeroEnvio();
+                        $model->setAutorizadaPor();
                     }
 
                     if ($model->save()) {
@@ -184,7 +189,10 @@ class CitasController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
            
-          
+            $municipio = RelMunicipioCodigoPostal::find()->where(["txt_codigo_postal"=>$model->txt_codigo_postal])->one();
+            if($municipio){
+                $model->id_municipio = $municipio->id_municipio;
+            }
             // $model->id_equipo = $equipo->id_equipo;
             // if($model->id_equipo==Constantes::SIN_EQUIPO){
             //     $model->b_documentos = 1;
@@ -201,6 +209,7 @@ class CitasController extends Controller
 
                 if (\Yii::$app->user->can(Constantes::USUARIO_ADMINISTRADOR_TELCEL)) {
                     $model->generarNumeroEnvio();
+                    $model->setAutorizadaPor();
                 }
                 if ($model->save()) {
 
@@ -648,6 +657,7 @@ class CitasController extends Controller
                 $data[$modelo->id_cita] =[
                     $modelo->txt_identificador_cliente,
                     $modelo->txt_telefono,
+                    $modelo->txt_autorizado_por,
                     $modelo->idEnvio?$modelo->idEnvio->txt_tracking:'',
                     $modelo->idMunicipio?$modelo->idMunicipio->idTipo->txt_nombre:'',
                     $modelo->idMunicipio?$modelo->idMunicipio->diasServicio:"",
@@ -662,7 +672,11 @@ class CitasController extends Controller
                     $modelo->txt_equipo,
                     $modelo->txt_imei,
                     $modelo->txt_iccid,
-                    $modelo->txt_promocional,
+                    $modelo->promocional1,
+                    $modelo->promocional2,
+                    $modelo->promocional3,
+                    $modelo->promocional4,
+                    $modelo->promocional5,
                     $modelo->txt_tpv,
                     $modelo->txt_calle_numero,
                     $modelo->txt_colonia,
@@ -674,23 +688,25 @@ class CitasController extends Controller
 
                 $historico = [];
                 if($modelo->idEnvio):
-                    $i = 23;
+                    $i = 28;
                     if($modelo->idEnvio->txt_historial_api):
                         $json = json_decode($modelo->idEnvio->txt_historial_api);
                         $countEvento = 1;
-                        foreach($json->History as $llave=>$historial):
-                            if($historial->EventoClave > 3){
-                                $data[0][++$i] = "Evento #".$countEvento; 
-                                $historico[] = $historial->Evento;
-                                $data[0][++$i] = "Comentario #".$countEvento; 
-                                $historico[] = $historial->Comentario;
-                                $data[0][++$i] = "Motivo #".$countEvento; 
-                                $historico[] = $historial->Motivo;
-                                $data[0][++$i] = "Fecha #".$countEvento; 
-                                $historico[] = $historial->Fecha;
-                                $countEvento++;
-                            }
-                        endforeach;
+                        if(isset($json->History)):
+                            foreach($json->History as $llave=>$historial):
+                                if($historial->EventoClave > 3){
+                                    $data[0][++$i] = "Evento #".$countEvento; 
+                                    $historico[] = $historial->Evento;
+                                    $data[0][++$i] = "Comentario #".$countEvento; 
+                                    $historico[] = $historial->Comentario;
+                                    $data[0][++$i] = "Motivo #".$countEvento; 
+                                    $historico[] = $historial->Motivo;
+                                    $data[0][++$i] = "Fecha #".$countEvento; 
+                                    $historico[] = $historial->Fecha;
+                                    $countEvento++;
+                                }
+                            endforeach;
+                        endif;    
                     // elseif($modelo->idEnvio->txt_respuesta_api):
                     //     $json = json_decode($modelo->idEnvio->txt_respuesta_api);
                     //     $data[0][] = "Evento"; 
@@ -715,12 +731,14 @@ class CitasController extends Controller
 
             
             //Set the Content-Type and Content-Disposition headers.
-            header('Content-Type: application/excel');
+            
+            header('Content-Type: application/csv; charset=utf-8');
             header('Content-Disposition: attachment; filename="' . $fileName . '"');
     
             //Open up a PHP output stream using the function fopen.
             $fp = fopen('php://output', 'w');
-    
+    //add BOM to fix UTF-8 in Excel
+fputs($fp, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
             //Loop through the array containing our CSV data.
             foreach ($data as $row) {
             //fputcsv formats the array into a CSV format.
@@ -738,10 +756,10 @@ class CitasController extends Controller
 
     public function setHeadersCsv(){
       return  [
-          "Consecutivo", "Teléfono", "Identificador de envio", "Tipo / Zona",
+          "Consecutivo", "Teléfono","Autorizado por", "Identificador de envio", "Tipo / Zona",
           "Frecuencia", "Trámite", "Entrega en", "Fza Vta", "Fecha captura",
           "Fecha cita", "Horario cita", "Estatus cita", "Cliente","Equipo", "IMEI", 
-          "ICCID", "Promocionales", "TPV", "Calle y número", "Colonia", "Municipio", 
+          "ICCID", "Promocional","Promocional 2","Promocional 3","Promocional 4","Promocional 5", "TPV", "Calle y número", "Colonia", "Municipio", 
           "Estado", "C.P.",  "Referencias"
       ];
     }

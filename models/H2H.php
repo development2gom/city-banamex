@@ -55,7 +55,7 @@ class H2H
     public function setDataCrearEnvio($cita){
         $this->numServicio = $cita->txt_identificador_cliente;
         $this->observaciones = $cita->txt_entre_calles." ".$cita->txt_observaciones_punto_referencia;
-        $this->observacionesContenido = $cita->txt_promocional;
+        $this->observacionesContenido = $cita->promocionalesData;
         $this->nombre = $cita->txt_nombre." ".$cita->txt_apellido_paterno." ".$cita->txt_apellido_materno;
         $this->email = $cita->txt_email;
         $this->cp = $cita->txt_codigo_postal;
@@ -71,6 +71,7 @@ class H2H
         $this->empaque = "";
         $this->valor = $cita->txt_tpv?$cita->txt_tpv:0;
     }
+
 
     public function setDataConsultarEnvio($tracking){
         $this->numeroTracking = $tracking;
