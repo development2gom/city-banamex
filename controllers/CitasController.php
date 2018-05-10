@@ -662,14 +662,14 @@ class CitasController extends Controller
                         
                         if(isset($json->History)):
                             foreach($json->History as $llave=>$historial):
-                                if($historial->EventoClave > 11){
+                                if($historial->EventoClave == 11){
                                     $intentos++;
                                 }
-                                if($historial->EventoClave > 12){
+                                if($historial->EventoClave == 12){
                                     $intentos++;
                                 }
 
-                                if($historial->EventoClave > 5){
+                                if($historial->EventoClave == 5){
                                     $intentos++;
                                 }
                             endforeach;
