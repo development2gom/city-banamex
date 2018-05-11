@@ -111,7 +111,7 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public function setAutorizadaPor(){
         $usuario = EntUsuarios::getUsuarioLogueado();
-        $this->txt_autorizado_por = $usuario->txt_auth_item;
+        //$this->txt_autorizado_por = $usuario->txt_auth_item;
     }
 
     public function setAddresCat()
@@ -141,8 +141,12 @@ class EntCitas extends \yii\db\ActiveRecord
     public function guardarHistorialUpdate()
     {
         $usuario = EntUsuarios::getUsuarioLogueado();
+        
+        $message = "Cita editada por " . $usuario->txtAuthItem->description;
+        EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
 
-        EntHistorialCambiosCitas::guardarHistorial($this->id_cita, "Cita editada por " . $usuario->txtAuthItem->description);
+        $this->txt_autorizado_por = $message;
+        $this->save();
     }
 
     public function guardarHistorialDependiendoUsuario($new = false, $cancel = false)
@@ -158,7 +162,8 @@ class EntCitas extends \yii\db\ActiveRecord
         }
 
         EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
-
+        $this->txt_autorizado_por = $message;
+        $this->save();
     }
 
     public function iniciarModelo($idArea = null, $numServicios = null, $tipoEntrega = null)
@@ -569,6 +574,8 @@ class EntCitas extends \yii\db\ActiveRecord
     {
         return $this->hasMany(EntHistorialCambiosCitas::className(), ['id_cita' => 'id_cita'])->orderBy('fch_modificacion DESC');
     }
+
+   
 
     public static function validarDiaEntrega($fecha)
     {

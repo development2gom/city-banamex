@@ -651,13 +651,38 @@ class CitasController extends Controller
             //The name of the CSV file that will be downloaded by the user.
             $fileName = 'Reporte.csv';
             $data = [];
-            $data[0] = $this->setHeadersCsv();
+            $data[0] = $this->setHeadersCsvT();
             foreach ($dataProvider->getModels() as $key =>$modelo):
+                
+                $intentos = 0;
+                if($modelo->idEnvio):
+                    
+                    if($modelo->idEnvio->txt_historial_api):
+                        $json = json_decode($modelo->idEnvio->txt_historial_api);
+                        
+                        if(isset($json->History)):
+                            foreach($json->History as $llave=>$historial):
+                                if($historial->EventoClave == 11){
+                                    $intentos++;
+                                }
+                                if($historial->EventoClave == 12){
+                                    $intentos++;
+                                }
+
+                                if($historial->EventoClave == 5){
+                                    $intentos++;
+                                }
+                            endforeach;
+                        endif;    
+                    
+                    endif;
+                    
+                endif;
+
 
                 $data[$modelo->id_cita] =[
                     $modelo->txt_identificador_cliente,
                     $modelo->txt_telefono,
-                    $modelo->txt_autorizado_por,
                     $modelo->idEnvio?$modelo->idEnvio->txt_tracking:'',
                     $modelo->idMunicipio?$modelo->idMunicipio->idTipo->txt_nombre:'',
                     $modelo->idMunicipio?$modelo->idMunicipio->diasServicio:"",
@@ -667,59 +692,25 @@ class CitasController extends Controller
                     Calendario::getDateComplete($modelo->fch_creacion),
                     Calendario::getDateComplete($modelo->fch_cita),
                     $modelo->idHorario?$modelo->idHorario->txt_hora_inicial." - ".$modelo->idHorario->txt_hora_final:"",
+                    $modelo->txt_autorizado_por,
+                    $intentos,
                     $modelo->idStatus?$modelo->idStatus->txt_nombre:'',
+
                     $modelo->nombreCompleto,
                     $modelo->txt_equipo,
-                    $modelo->txt_imei,
-                    $modelo->txt_iccid,
+                    $modelo->txt_imei."*",
+                    $modelo->txt_iccid."*",
                     $modelo->promocional1,
                     $modelo->promocional2,
                     $modelo->promocional3,
                     $modelo->promocional4,
                     $modelo->promocional5,
                     $modelo->txt_tpv,
-                    $modelo->txt_calle_numero,
-                    $modelo->txt_colonia,
-                    $modelo->txt_municipio,
-                    $modelo->txt_estado,
-                    $modelo->txt_codigo_postal,
-                    $modelo->txt_entre_calles
+                    
                 ];
 
                 $historico = [];
-                if($modelo->idEnvio):
-                    $i = 28;
-                    if($modelo->idEnvio->txt_historial_api):
-                        $json = json_decode($modelo->idEnvio->txt_historial_api);
-                        $countEvento = 1;
-                        if(isset($json->History)):
-                            foreach($json->History as $llave=>$historial):
-                                if($historial->EventoClave > 3){
-                                    $data[0][++$i] = "Evento #".$countEvento; 
-                                    $historico[] = $historial->Evento;
-                                    $data[0][++$i] = "Comentario #".$countEvento; 
-                                    $historico[] = $historial->Comentario;
-                                    $data[0][++$i] = "Motivo #".$countEvento; 
-                                    $historico[] = $historial->Motivo;
-                                    $data[0][++$i] = "Fecha #".$countEvento; 
-                                    $historico[] = $historial->Fecha;
-                                    $countEvento++;
-                                }
-                            endforeach;
-                        endif;    
-                    // elseif($modelo->idEnvio->txt_respuesta_api):
-                    //     $json = json_decode($modelo->idEnvio->txt_respuesta_api);
-                    //     $data[0][] = "Evento"; 
-                    //     $historico[] = $json->Evento;
-                    //     $data[0][++$i] = "Comentario";
-                    //     $historico[] = "";
-                    //     $data[0][++$i] = "Motivo";
-                    //     $historico[] = $json->Motivo;
-                    //     $data[0][++$i] = "Fecha";
-                    //     $historico[] = $json->Fecha;
-                    endif;
-                    
-                endif;
+                
 
                 $data[$modelo->id_cita] = array_merge($data[$modelo->id_cita], $historico);
 
@@ -737,8 +728,8 @@ class CitasController extends Controller
     
             //Open up a PHP output stream using the function fopen.
             $fp = fopen('php://output', 'w');
-    //add BOM to fix UTF-8 in Excel
-fputs($fp, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+        //add BOM to fix UTF-8 in Excel
+        fputs($fp, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
             //Loop through the array containing our CSV data.
             foreach ($data as $row) {
             //fputcsv formats the array into a CSV format.
@@ -754,14 +745,126 @@ fputs($fp, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
         return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch"=>$modelSearch]);
     }
 
+    // ublic function actionDownloadData(){
+
+    //     $modelSearch = new EntCitasSearch();
+    //     $dataProvider = $modelSearch->searchExport(Yii::$app->request->queryParams);
+
+    //     if(Yii::$app->request->isGet):
+    //         //The name of the CSV file that will be downloaded by the user.
+    //         $fileName = 'Reporte.csv';
+    //         $data = [];
+    //         $data[0] = $this->setHeadersCsv();
+    //         foreach ($dataProvider->getModels() as $key =>$getEntHistorialCambiosCitasOne):
+    //             $statusCita = $modelo->entHistorialCambiosCitasOne->tx_modificacion;
+    //             $data[$modelo->id_cita] =[
+    //                 $modelo->txt_identificador_cliente,
+    //                 $modelo->txt_telefono,
+    //                 $modelo->txt_autorizado_por,
+    //                 $modelo->idEnvio?$modelo->idEnvio->txt_tracking:'',
+    //                 $modelo->idMunicipio?$modelo->idMunicipio->idTipo->txt_nombre:'',
+    //                 $modelo->idMunicipio?$modelo->idMunicipio->diasServicio:"",
+    //                 $modelo->idTipoTramite->txt_nombre,
+    //                 $modelo->b_entrega_cat?"CAC":"Domicilio",
+    //                 $modelo->idCallCenter?$modelo->idCallCenter->txt_nombre:'',
+    //                 Calendario::getDateComplete($modelo->fch_creacion),
+    //                 Calendario::getDateComplete($modelo->fch_cita),
+    //                 $modelo->idHorario?$modelo->idHorario->txt_hora_inicial." - ".$modelo->idHorario->txt_hora_final:"",
+    //                 $modelo->idStatus?$modelo->idStatus->txt_nombre:'',
+    //                 $modelo->nombreCompleto,
+    //                 $modelo->txt_equipo,
+    //                 $modelo->txt_imei,
+    //                 $modelo->txt_iccid,
+    //                 $modelo->promocional1,
+    //                 $modelo->promocional2,
+    //                 $modelo->promocional3,
+    //                 $modelo->promocional4,
+    //                 $modelo->promocional5,
+    //                 $modelo->txt_tpv,
+    //                 $modelo->txt_calle_numero,
+    //                 $modelo->txt_colonia,
+    //                 $modelo->txt_municipio,
+    //                 $modelo->txt_estado,
+    //                 $modelo->txt_codigo_postal,
+    //                 $modelo->txt_entre_calles
+    //             ];
+
+    //             $historico = [];
+    //             if($modelo->idEnvio):
+    //                 $i = 28;
+    //                 if($modelo->idEnvio->txt_historial_api):
+    //                     $json = json_decode($modelo->idEnvio->txt_historial_api);
+    //                     $countEvento = 1;
+    //                     if(isset($json->History)):
+    //                         foreach($json->History as $llave=>$historial):
+    //                             if($historial->EventoClave > 3){
+    //                                 $data[0][++$i] = "Evento #".$countEvento; 
+    //                                 $historico[] = $historial->Evento;
+    //                                 $data[0][++$i] = "Comentario #".$countEvento; 
+    //                                 $historico[] = $historial->Comentario;
+    //                                 $data[0][++$i] = "Motivo #".$countEvento; 
+    //                                 $historico[] = $historial->Motivo;
+    //                                 $data[0][++$i] = "Fecha #".$countEvento; 
+    //                                 $historico[] = $historial->Fecha;
+    //                                 $countEvento++;
+    //                             }
+    //                         endforeach;
+    //                     endif;    
+                    
+    //                 endif;
+                    
+    //             endif;
+
+    //             $data[$modelo->id_cita] = array_merge($data[$modelo->id_cita], $historico);
+
+    //         endforeach;
+
+    //         // print_r($historico);
+    //         // exit;
+            
+
+            
+    //         //Set the Content-Type and Content-Disposition headers.
+            
+    //         header('Content-Type: application/csv; charset=utf-8');
+    //         header('Content-Disposition: attachment; filename="' . $fileName . '"');
+    
+    //         //Open up a PHP output stream using the function fopen.
+    //         $fp = fopen('php://output', 'w');
+    //     //add BOM to fix UTF-8 in Excel
+    //     fputs($fp, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+    //         //Loop through the array containing our CSV data.
+    //         foreach ($data as $row) {
+    //         //fputcsv formats the array into a CSV format.
+    //         //It then writes the result to our output stream.
+    //             fputcsv($fp, $row);
+    //         }
+    
+    //         //Close the file handle.
+    //         fclose($fp);
+    //         exit;
+    //     endif;
+
+    //     return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch"=>$modelSearch]);
+    // }
+
     public function setHeadersCsv(){
       return  [
-          "Consecutivo", "Teléfono","Autorizado por", "Identificador de envio", "Tipo / Zona",
-          "Frecuencia", "Trámite", "Entrega en", "Fza Vta", "Fecha captura",
-          "Fecha cita", "Horario cita", "Estatus cita", "Cliente","Equipo", "IMEI", 
+          "Identificador único", "Número celular","Identificador de envio", "Tipo / Zona",
+          "Frecuencia", "Trámite", "En", "Fza Vta", "Captura",
+          "CitaOrig", "HoraOrig", "EstatusCita","IntentosEntrega", "EstatusEntrega","Cliente","Equipo", "IMEI", 
           "ICCID", "Promocional","Promocional 2","Promocional 3","Promocional 4","Promocional 5", "TPV", "Calle y número", "Colonia", "Municipio", 
           "Estado", "C.P.",  "Referencias"
       ];
     }
+
+    public function setHeadersCsvT(){
+        return  [
+            "Identificador único", "Número celular","Identificador de envio", "Tipo / Zona",
+            "Frecuencia", "Trámite", "En", "Fza Vta", "Captura",
+            "CitaOrig", "HoraOrig", "EstatusCita","IntentosEntrega", "EstatusEntrega","Cliente","Equipo", "IMEI", 
+            "ICCID", "Promocional","Promocional 2","Promocional 3","Promocional 4","Promocional 5", "TPV"
+        ];
+      }
 
 }

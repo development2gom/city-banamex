@@ -6,6 +6,11 @@ var inputRFC = $("#entcitas-txt_rfc");
 
 $(document).ready(function(){
 
+	$("input:not(#entcitas-txt_email)").on("change", function(){
+		
+		$(this).val($(this).val().toUpperCase());
+	});
+
 	buscarMunicipioCodigo($("#entcitas-txt_codigo_postal").val());
 	$("#entcitas-txt_codigo_postal").on("change", function(){
 		var elemento = $(this);
