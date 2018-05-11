@@ -679,6 +679,13 @@ class CitasController extends Controller
                     
                 endif;
 
+                $estatusEntrega = "";
+                if($modelo->idStatus){
+                    if($modelo->idStatus->txt_identificador_api){
+                        $estatusEntrega = $modelo->idStatus->txt_nombre;
+                    }
+                }
+                
 
                 $data[$modelo->id_cita] =[
                     $modelo->txt_identificador_cliente,
@@ -694,7 +701,7 @@ class CitasController extends Controller
                     $modelo->idHorario?$modelo->idHorario->txt_hora_inicial." - ".$modelo->idHorario->txt_hora_final:"",
                     $modelo->txt_autorizado_por,
                     $intentos,
-                    $modelo->idStatus?$modelo->idStatus->txt_nombre:'',
+                    $estatusEntrega,
 
                     $modelo->nombreCompleto,
                     $modelo->txt_equipo,
