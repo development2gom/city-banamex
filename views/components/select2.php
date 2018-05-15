@@ -35,7 +35,7 @@ var formatRepo = function (repo) {
     }
     var markup =
 '<div class="row">' + 
-    '<div class="col-md-8">' +
+    '<div class="col-md-12">' +
         '<b style="margin-left:5px">' + repo.text + '</b>' + 
     '</div>' +
    // '<div class="col-md-4">' + cantidadDisponible + '</div>' +

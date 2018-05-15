@@ -14,6 +14,7 @@ use app\models\EntCitas;
 use app\models\Calendario;
 use app\modules\ModUsuarios\models\Utils;
 use app\models\ResponseServices;
+use app\models\CatCats;
 
 /**
  * HorariosAreasController implements the CRUD actions for EntHorariosAreas model.
@@ -126,6 +127,52 @@ class HorariosAreasController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionGetHorariosDisponibilidadByCac($cac = null){
+        $respuesta = new ResponseServices();
+        $out = [];
+
+        if (isset($_POST['depdrop_all_params']['entcitas-id_cat'])) {
+
+            $id = $_POST['depdrop_all_params']['entcitas-id_cat'];
+
+            $cac = CatCats::find()->where(["id_cat"=>$id])->one();
+
+            if(!$id){
+                echo Json::encode(['output' => $out, 'selected'=>'']);
+                return;
+            }
+           
+
+            
+            $selected  = null;
+            if ($id != null) {
+                $selected = '';
+                
+                            $out[0] = [
+                                'id' => $cac->txt_horario1, 
+                                'name' => $cac->txt_horario1,
+                                'cantidad'=>0];
+
+                            $out[1] = [
+                                'id' => $cac->txt_horario2,
+                                'name' => $cac->txt_horario2,
+                                    'cantidad'=>0];   
+                        
+                      
+
+                        $selected = $cac;
+
+                // Shows how you can preselect a value
+                echo Json::encode(['output' => $out, 'selected'=>$selected]);
+                return;
+            }
+        }
+        
+        echo Json::encode(['output' => $out, 'selected'=>'']);
+        
+
     }
 
     public function actionGetHorariosDisponibilidadByArea($horario = null){

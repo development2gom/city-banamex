@@ -513,7 +513,7 @@ $cat = $model->idCat;
             ?>
         </div>
         
-        <div class="col-sm-3 col-md-3"> 
+        <div class="col-sm-3 col-md-3 horario-area" > 
             <?php
     
             echo $form->field($model, 'id_horario')->widget(DepDrop::classname(), [
@@ -537,6 +537,39 @@ $cat = $model->idCat;
                     'params'=>[
                         'entcitas-id_area',
                         'entcitas-fch_cita'
+                    ],  
+                    'loadingText' => 'Cargando horarios ...',
+                    
+                ]
+                
+            ]);
+        ?>
+        </div>
+
+        <div class="col-sm-3 col-md-3 horario-cac"> 
+            <?php
+    
+            echo $form->field($model, 'txt_horario_entrega_cat')->widget(DepDrop::classname(), [
+                
+                'options' => ['placeholder' => 'Seleccionar ...'],
+                'type' => DepDrop::TYPE_SELECT2,
+                'select2Options'=>[
+                    'pluginOptions'=>[
+                        
+                        'allowClear'=>true,
+                        'escapeMarkup' => new JsExpression('function (markup) { 
+                            
+                            return markup; }'),
+                        'templateResult' => new JsExpression('formatRepo'),
+                    ],
+                    ],
+                'pluginOptions'=>[
+                    'initialize' => true,
+                    'url' => Url::to(['/horarios-areas/get-horarios-disponibilidad-by-cac?cac='.$model->txt_horario_entrega_cat]),
+                    'depends'=>['entcitas-id_cat'],
+                    'params'=>[
+                        'entcitas-id_cat',
+                        //'entcitas-fch_cita'
                     ],  
                     'loadingText' => 'Cargando horarios ...',
                     
@@ -642,7 +675,9 @@ function checkIsCat(){
         $(".contenedor-cat").show();
         $(".js-puntos-referencias").hide();
         habilitarCamposDireccion();
+        mostrarHorarioCac();
     }else{
+        ocultarHorarioCac();
         $("#entcitas-id_cat").select2("val", "");
         $(".contenedor-cat").hide();
         $(".js-puntos-referencias").show();
@@ -653,6 +688,15 @@ function checkIsCat(){
     }
 }
 
+function mostrarHorarioCac(){
+    $(".horario-cac").show();
+    $(".horario-area").hide();
+}
+
+function ocultarHorarioCac(){
+    $(".horario-cac").hide();
+    $(".horario-area").show();
+}
 
 $("#entcitas-b_entrega_cat").on("change", function(){
    
