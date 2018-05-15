@@ -39,49 +39,7 @@ $this->registerJsFile(
     ['depends' => [\app\assets\AppAsset::className()]]
 );
 
-?>
-
-<div class="row">
-    
-    <?php
-    if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)){?>
-    <div class="col-md-12">
-        <div class="list-group list-group-full">
-            <?php
-            foreach($status as $statu){
-                $statusColor = EntCitas::getColorStatus($statu->id_statu_cita);
-            ?>
-
-            <!-- <a class="list-group-item" href="<?=Url::base()?>/citas/index?EntCitasSearch[id_status]=<?=$statu->id_statu_cita?>">
-                <i class="icon wb-calendar" aria-hidden="true"></i>  
-                <span class="float-right badge badge-<?=$statusColor?> badge-pill text-white">
-                    <?=count($statu->entCitas)?>
-                </span>
-                <?=$statu->txt_nombre?>
-            </a> -->
-            
-            <!-- Active -->
-            <a class="list-group-item list-group-item-tag" href="<?=Url::base()?>/citas/index?EntCitasSearch[id_status]=<?=$statu->id_statu_cita?>">
-                <span class="badge badge-pill badge-<?=$statusColor?>"><?=count($statu->entCitas)?></span>
-                <?=$statu->txt_nombre?>
-            </a>
-            
-            <?php
-                }
-            ?>
-            <div class="list-group-item-lg">
-                <a class="list-group-item-more" href="<?=Url::base()?>/citas/index">
-                    Mostrar todas
-                </a>
-            </div>
-           
-        </div>
-    </div>    
-    <?php
-    }
-    ?>
-
-</div>    
+?>  
 
 <!-- <div class="row">
     <div class="col-md-12 <?=\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR) || \Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR_TELCEL)?"9":"12"?>">

@@ -49,7 +49,7 @@ class EntCitasSearch extends EntCitas
      */
     public function searchMes($params)
     {
-        $query = EntCitas::find()->leftJoin("ent_envios", "ent_envios.id_envio = ent_citas.id_envio");
+        $query = EntCitas::find()->with("idStatus")->leftJoin("ent_envios", "ent_envios.id_envio = ent_citas.id_envio");
 
         // add conditions that should always apply here
 

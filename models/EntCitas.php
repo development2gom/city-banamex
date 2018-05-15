@@ -373,7 +373,7 @@ class EntCitas extends \yii\db\ActiveRecord
                 'integer'
             ],
             [[
-                'id_usuario', 'id_status', 'txt_telefono', 'txt_email', 'txt_nombre', 'txt_apellido_paterno', 'txt_folio_identificacion',
+                'id_usuario', 'id_status', 'txt_telefono', 'txt_email', 'txt_nombre', 'txt_apellido_paterno',
                 'txt_email',
                 'txt_equipo',
                 'fch_nacimiento',
