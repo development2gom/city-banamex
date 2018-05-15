@@ -125,7 +125,7 @@ class EntCitasSearch extends EntCitas
 
         if(!$this->fch_creacion){
             //$this->fch_creacion = Utils::changeFormatDateInputShort($this->fch_creacion);
-            $query->andFilterWhere(['>', new Expression('date_format(fch_creacion, "%Y-%m-%d")'), new Expression('date_format((CURRENT_DATE- INTERVAL 1 MONTH), "%Y-%m-%d")')]);
+            //$query->andFilterWhere(['>', new Expression('date_format(fch_creacion, "%Y-%m-%d")'), new Expression('date_format((CURRENT_DATE- INTERVAL 1 MONTH), "%Y-%m-%d")')]);
         }
 
         $query
