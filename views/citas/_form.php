@@ -182,16 +182,22 @@ $cat = $model->idCat;
             </div>     
         </div>
         <div class="col-sm-3 col-md-3">
-            <?= $form->field($model, 'txt_numero_telefonico_nuevo')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
+            <?= $form->field($model, 'txt_sap_equipo')->textInput(['maxlength' => true, 'class'=>'form-control']) ?>
         </div>
     </div>
     
     <div class="row">
         <div class="col-sm-3 col-md-3">
-            <?= $form->field($model, 'txt_imei')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'txt_sap_iccid')->textInput(['maxlength' => true, "autocomplete"=>"off"]) ?>
         </div>
         <div class="col-sm-3 col-md-3">
-            <?= $form->field($model, 'txt_iccid')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'txt_iccid')->textInput(['maxlength' => true, "autocomplete"=>"off"]) ?>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <?= $form->field($model, 'txt_imei')->textInput(['maxlength' => true, "autocomplete"=>"off"]) ?>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <?= $form->field($model, 'txt_numero_telefonico_nuevo')->textInput(['maxlength' => true, 'class'=>'form-control input-number']) ?>
         </div>
     </div>
     <div class="row">
