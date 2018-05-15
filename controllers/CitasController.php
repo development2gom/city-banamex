@@ -683,6 +683,13 @@ class CitasController extends Controller
                         $estatusEntrega = $modelo->idStatus->txt_nombre;
                     }
                 }
+
+                $horario = "";
+                if($modelo->b_entrega_cat){
+                    $horario = $modelo->txt_horario_entrega_cat;
+                }else{
+                    $horario = $modelo->idHorario?$modelo->idHorario->txt_hora_inicial." - ".$modelo->idHorario->txt_hora_final:"";
+                }
                 
 
                 $data[$modelo->id_cita] =[
@@ -696,7 +703,7 @@ class CitasController extends Controller
                     $modelo->idCallCenter?$modelo->idCallCenter->txt_nombre:'',
                     Utils::changeFormatDateInputShort($modelo->fch_creacion),
                     Utils::changeFormatDateInputShort($modelo->fch_cita),
-                    $modelo->idHorario?$modelo->idHorario->txt_hora_inicial." - ".$modelo->idHorario->txt_hora_final:"",
+                    $horario,
                     $modelo->txt_autorizado_por,
                     $intentos,
                     $estatusEntrega,

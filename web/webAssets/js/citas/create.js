@@ -11,12 +11,24 @@ $(document).ready(function(){
 		$(this).val($(this).val().toUpperCase());
 	});
 
-	buscarMunicipioCodigo($("#entcitas-txt_codigo_postal").val());
+	if($("#entcitas-b_entrega_cat").prop("checked")){
+		
+		buscarCaC($("#entcitas-txt_codigo_postal").val());
+	}else{
+		buscarMunicipioCodigo($("#entcitas-txt_codigo_postal").val());
+	}
+	
+
 	$("#entcitas-txt_codigo_postal").on("change", function(){
 		var elemento = $(this);
 		var token = elemento.val();
 		if(token!=""){
-			buscarMunicipioCodigo(token);
+			if($("#entcitas-b_entrega_cat").prop("checked")){
+				buscarCaC(token);
+			}else{
+				buscarMunicipioCodigo(token);
+			}
+			
 		}else{
 			$("#entcitas-id_area").val("");
 			$("#txt_area").val("");
@@ -30,6 +42,44 @@ $(document).ready(function(){
 	
 		
 	});
+
+	function buscarCaC(token){
+		var cac = $("#entcitas-id_cat").val();
+		//03100
+		$.ajax({
+			url:baseUrl+"rel-municipio-codigo-postal/buscar-cac?cp="+token+"&cac="+cac,
+			success:function(r){
+				if(r.status=="success"){
+					$("#entcitas-id_area").val(r.result.id_area);
+					$("#txt_area").val(r.result.txt_area);
+		
+					console.log(r);
+						$("#entcitas-num_dias_servicio").val(r.result.num_dias_servicios);
+						$("#num_dias_servicio").val(r.result.text_dias_servicios);
+					
+		
+					$("#entcitas-txt_municipio").val(r.result.txt_municipio);
+		
+					$("#entcitas-fch_cita").kvDatepicker('destroy');
+					$("#entcitas-fch_cita").kvDatepicker({
+						"clearBtn": true,
+						"autoclose":true,
+						"format":"dd-mm-yyyy",
+						"language":"es",
+						'daysOfWeekDisabled':r.result.num_dias_servicios,
+						'startDate' : r.result.fch_inicio, //date("d-m-Y")
+							'endDate':r.result.fch_final
+					});
+		
+					$("#entcitas-fch_cita").trigger("change");
+					
+				}
+			},
+			error:function(){
+				
+			}
+		});
+		}
 
     inputNombre.on("change", function(){
         calculaRFC();
@@ -59,8 +109,10 @@ $.ajax({
 			$("#entcitas-id_area").val(r.result.id_area);
 			$("#txt_area").val(r.result.txt_area);
 
-			$("#entcitas-num_dias_servicio").val(r.result.num_dias_servicios);
-			$("#num_dias_servicio").val(r.result.text_dias_servicios);
+			console.log(r);
+				$("#entcitas-num_dias_servicio").val(r.result.num_dias_servicios);
+				$("#num_dias_servicio").val(r.result.text_dias_servicios);
+			
 
 			$("#entcitas-txt_municipio").val(r.result.txt_municipio);
 

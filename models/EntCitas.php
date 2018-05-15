@@ -319,6 +319,25 @@ class EntCitas extends \yii\db\ActiveRecord
                     return $('#entcitas-txt_promocional_5').val();
                 }"
             ],
+            [
+                ['id_horario'], 'required', 'on' => ['autorizar', 'autorizar-update'],
+                'when' => function ($model) {
+                    return $model->b_entrega_cat==0;
+                }, 'whenClient' => "function (attribute, value) {
+                    
+                    return !$('#entcitas-b_entrega_cat').prop('checked');
+                }"
+            ],
+            [
+                ['txt_horario_entrega_cat'], 'required', 'on' => ['autorizar', 'autorizar-update'],
+                'when' => function ($model) {
+                    return $model->b_entrega_cat==1;
+                }, 'whenClient' => "function (attribute, value) {
+                    
+                    return $('#entcitas-b_entrega_cat').prop('checked');
+                }"
+            ],
+            
             
             [
                 ['id_cat'], 'required',
@@ -366,7 +385,7 @@ class EntCitas extends \yii\db\ActiveRecord
                 'txt_municipio',
                 'fch_cita',
                 'txt_numero_referencia',
-                'txt_token', 'id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status', 'id_tipo_cliente', 'id_tipo_identificacion', 'id_horario'
+                'txt_token', 'id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status', 'id_tipo_cliente', 'id_tipo_identificacion', 
             ], 'required'],
             [['id_tipo_cancelacion'], 'exist', 'skipOnError' => true, 'targetClass' => CatTiposCancelacion::className(), 'targetAttribute' => ['id_tipo_cancelacion' => 'id_tipo_cancelacion']],
             [['txt_motivo_cancelacion_rechazo'], 'required', 'on' => 'cancelar'],
@@ -379,7 +398,7 @@ class EntCitas extends \yii\db\ActiveRecord
             [['txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_folio_identificacion'], 'string', 'max' => 200],
             [['txt_numero_telefonico_nuevo'], 'string', 'max' => 10],
             [['txt_email', 'txt_colonia', 'txt_municipio'], 'string', 'max' => 100],
-            [['num_dias_servicio', 'isEdicion'], 'string', 'max' => 50],
+            [['num_dias_servicio', 'isEdicion', 'txt_horario_entrega_cat'], 'string', 'max' => 50],
             [['txt_token', 'txt_identificador_cliente'], 'string', 'max' => 60],
             [['txt_iccid'], 'string', 'max' => 19],
             [['txt_imei'], 'string', 'max' => 15],
@@ -419,6 +438,7 @@ class EntCitas extends \yii\db\ActiveRecord
             'id_tipo_cliente' => 'Tipo de cliente',
             'id_tipo_identificacion' => 'Tipo de identificación',
             'id_horario' => 'Horario',
+            'txt_horario_entrega_cat' => 'Horario',
             'txt_telefono' => 'Teléfono',
             'txt_nombre' => 'Nombre',
             'txt_apellido_paterno' => 'Apellido paterno',
