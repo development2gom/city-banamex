@@ -309,6 +309,7 @@ class EntCitas extends \yii\db\ActiveRecord
                     return $('#entcitas-txt_promocional_4').val();
                 }"
             ],
+            [["txt_sap_equipo", "txt_sap_iccid"], 'required', 'on' => ['autorizar', 'autorizar-update']],
             [
                 ['txt_sap_promocional_5'], 'required', 'on' => ['autorizar', 'autorizar-update'],
                 'when' => function ($model) {
@@ -380,11 +381,13 @@ class EntCitas extends \yii\db\ActiveRecord
             [['txt_email', 'txt_colonia', 'txt_municipio'], 'string', 'max' => 100],
             [['num_dias_servicio', 'isEdicion'], 'string', 'max' => 50],
             [['txt_token', 'txt_identificador_cliente'], 'string', 'max' => 60],
-            [['txt_iccid', 'txt_imei', 'txt_calle_numero'], 'string', 'max' => 150],
+            [['txt_iccid'], 'string', 'max' => 19],
+            [['txt_imei'], 'string', 'max' => 15],
+            [['txt_calle_numero'], 'string', 'max' => 150],
             [['txt_codigo_postal'], 'string', 'max' => 5],
             [['txt_entre_calles', 'txt_observaciones_punto_referencia'], 'string', 'max' => 500],
             [['txt_motivo_cancelacion_rechazo', 'txt_promocional', 'txt_promocional_2', 'txt_promocional_3','txt_promocional_4','txt_promocional_5'], 'string', 'max' => 700],
-            [['txt_sap_promocional', 'txt_sap_promocional_2', 'txt_sap_promocional_3','txt_sap_promocional_4','txt_sap_promocional_5'], 'string', 'max' => 50],
+            [['txt_sap_promocional', 'txt_sap_promocional_2', 'txt_sap_promocional_3','txt_sap_promocional_4','txt_sap_promocional_5', "txt_sap_equipo", "txt_sap_iccid"], 'string', 'max' => 50],
             [['txt_token'], 'unique'],
             [['id_area'], 'exist', 'skipOnError' => true, 'targetClass' => CatAreas::className(), 'targetAttribute' => ['id_area' => 'id_area']],
             [['id_equipo'], 'exist', 'skipOnError' => true, 'targetClass' => CatEquipos::className(), 'targetAttribute' => ['id_equipo' => 'id_equipo']],
@@ -468,6 +471,8 @@ class EntCitas extends \yii\db\ActiveRecord
 
             'txt_promocional_5'=>"Promocional #5",
             'txt_sap_promocional_5'=>"Clave SAP promocional #5",
+            'txt_sap_equipo'=>"SAP equipo",
+            'txt_sap_iccid'=>"SAP ICCID",
         ];
     }
 

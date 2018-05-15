@@ -78,7 +78,7 @@ class CitasController extends Controller
 
 
         $searchModel = new EntCitasSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchMes(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -633,8 +633,6 @@ class CitasController extends Controller
     public function actionExportar()
     {
 
-        
-
         $modelSearch = new EntCitasSearch();
         $dataProvider = $modelSearch->searchExport(Yii::$app->request->queryParams);
 
@@ -696,17 +694,17 @@ class CitasController extends Controller
                     $modelo->idTipoTramite->txt_nombre,
                     $modelo->b_entrega_cat?"CAC":"Domicilio",
                     $modelo->idCallCenter?$modelo->idCallCenter->txt_nombre:'',
-                    Calendario::getDateComplete($modelo->fch_creacion),
-                    Calendario::getDateComplete($modelo->fch_cita),
+                    Utils::changeFormatDateInputShort($modelo->fch_creacion),
+                    Utils::changeFormatDateInputShort($modelo->fch_cita),
                     $modelo->idHorario?$modelo->idHorario->txt_hora_inicial." - ".$modelo->idHorario->txt_hora_final:"",
                     $modelo->txt_autorizado_por,
                     $intentos,
                     $estatusEntrega,
 
                     $modelo->nombreCompleto,
-                    $modelo->txt_equipo,
+                    $modelo->txt_sap_equipo." - ".$modelo->txt_equipo,
                     $modelo->txt_imei."*",
-                    $modelo->txt_iccid."*",
+                    $modelo->txt_sap_iccid." - ".$modelo->txt_iccid."*",
                     $modelo->promocional1,
                     $modelo->promocional2,
                     $modelo->promocional3,
