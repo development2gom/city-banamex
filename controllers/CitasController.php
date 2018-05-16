@@ -305,6 +305,8 @@ class CitasController extends Controller
         if ($model->save()) {
             $model->guardarHistorialDependiendoUsuario(false, true);
             $this->redirect(["index"]);
+        }else{
+            print_r($model->errors);
         }
 
     }
@@ -318,6 +320,8 @@ class CitasController extends Controller
         if ($model->save()) {
             $model->guardarHistorialDependiendoUsuario(false, false, true);
             $this->redirect(["index"]);
+        }else{
+            print_r($model->errors);
         }
 
     }
