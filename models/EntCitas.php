@@ -92,6 +92,12 @@ class EntCitas extends \yii\db\ActiveRecord
 
     }
 
+    public function statusRechazarDependiendoUsuario()
+    {
+        $this->id_status = Permisos::getStatusRechazarDependiendoUsuario();
+
+    }
+
     public function generarNumeroEnvio()
     {
         $apiEnvio = new H2H();
@@ -149,7 +155,7 @@ class EntCitas extends \yii\db\ActiveRecord
         $this->save();
     }
 
-    public function guardarHistorialDependiendoUsuario($new = false, $cancel = false)
+    public function guardarHistorialDependiendoUsuario($new = false, $cancel = false, $rechazar=false)
     {
         if($new){
             $message = Permisos::getMessageHistorialGuardar();
@@ -159,6 +165,10 @@ class EntCitas extends \yii\db\ActiveRecord
 
         if($cancel){
             $message = Permisos::getMessageHistorialCancelar();
+        }
+
+        if($rechazar){
+            $message = Permisos::getMessageHistorialRechazar();
         }
 
         EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
@@ -389,6 +399,7 @@ class EntCitas extends \yii\db\ActiveRecord
             ], 'required'],
             [['id_tipo_cancelacion'], 'exist', 'skipOnError' => true, 'targetClass' => CatTiposCancelacion::className(), 'targetAttribute' => ['id_tipo_cancelacion' => 'id_tipo_cancelacion']],
             [['txt_motivo_cancelacion_rechazo'], 'required', 'on' => 'cancelar'],
+            [['txt_motivo_rechazo'], 'required', 'on' => 'rechazo'],
             [['txt_telefono', 'txt_numero_referencia'], 'string', 'max' => 10, 'min' => 10, 'tooLong' => 'El campo no debe superar 10 dígitos', 'tooShort' => 'El campo debe ser mínimo de 10 digítos'],
             [['txt_email'], 'email'],
             [['txt_tpv'], 'trim'],
@@ -462,7 +473,7 @@ class EntCitas extends \yii\db\ActiveRecord
             'txt_municipio' => 'Municipio / Delegación',
             'txt_entre_calles' => 'Entre calles',
             'txt_observaciones_punto_referencia' => 'Puntos de referencia',
-            'txt_motivo_cancelacion_rechazo' => 'Motivo cancelación o rechazo',
+            'txt_motivo_cancelacion_rechazo' => 'Motivo cancelación',
             'fch_cita' => 'Fecha de la cita',
             'fch_creacion' => 'Fecha creación',
             'txt_tpv' => 'TPV',
@@ -493,6 +504,7 @@ class EntCitas extends \yii\db\ActiveRecord
             'txt_sap_promocional_5'=>"Clave SAP promocional #5",
             'txt_sap_equipo'=>"SAP equipo",
             'txt_sap_iccid'=>"SAP ICCID",
+            "txt_motivo_rechazo"=>"Motivo de rechazo"
         ];
     }
 

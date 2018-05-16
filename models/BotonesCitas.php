@@ -11,6 +11,7 @@ class BotonesCitas
     public $btnAutorizar =  "<a href='#'  class='btn btn-form-aprobar js-aprobar'>Aprobar</a>";
     public $btnActualizar = "<a href='#'  class='btn btn-form-actualizar js-actualizar'>Actualizar</a>";
     public $btnCancelar = "<a href='#'  class='btn btn-form-cancelar js-cancelar'>Cancelar</a>";
+    public $btnRechazar = "<a href='#'  class='btn btn-form-cancelar js-rechazar'>Rechazar</a>";
 
     /**
      * Obtiene los botones Actulizar, editar y cancelar
@@ -32,6 +33,7 @@ class BotonesCitas
         $botones .= $this->getBotonAutorizar($cita->id_status, array_keys($hijos));
         $botones .= $this->getBotonActualizar($cita->id_status,array_keys($hijos));
         $botones .= $this->getBotonCancelar($cita->id_status, array_keys($hijos));
+        $botones .= $this->getBotonRechazar($cita->id_status, array_keys($hijos));
 
         return $botones;
     }
@@ -56,6 +58,18 @@ class BotonesCitas
         if($botonHabilitado){
 
             return $this->btnCancelar;
+        }
+
+        return "";
+    }
+
+    public function getBotonRechazar($statusCita, $usuario)
+    {
+        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->andWhere(["id_accion"=>Constantes::BTN_RECHAZAR, "id_status_cita"=>$statusCita])->one();
+
+        if($botonHabilitado){
+
+            return $this->btnRechazar;
         }
 
         return "";

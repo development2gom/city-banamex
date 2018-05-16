@@ -166,6 +166,40 @@ class Permisos
         return $idStatus;
     }
 
+    public static function getStatusRechazarDependiendoUsuario(){
+
+        $usuario = EntUsuarios::getUsuarioLogueado();
+        switch ($usuario->txt_auth_item) {
+            
+            case Constantes::USUARIO_SUPERVISOR:
+                $idStatus = Constantes::STATUS_RECHAZO_SUPERVISOR_CC;
+                break;
+            case Constantes::USUARIO_ADMINISTRADOR_CC:
+                $idStatus = Constantes::STATUS_RECHAZO_ADMINISTRADOR_CC;
+                break;
+            case Constantes::USUARIO_SUPERVISOR_TELCEL:
+                $idStatus = Constantes::STATUS_RECHAZO_SUPERVISOR_TELCEL;
+                break;
+            case Constantes::USUARIO_ADMINISTRADOR_TELCEL:
+                $idStatus = Constantes::STATUS_RECHAZO_ADMINISTRADOR_TELCEL;
+                break;
+            case Constantes::USUARIO_MASTER_BRIGHT_STAR:
+                $idStatus = Constantes::STATUS_RECHAZO_POR_MASTER_BRIGHT_STAR;
+                break;
+            case Constantes::USUARIO_MASTER_CALL_CENTER:
+                $idStatus = Constantes::STATUS_RECHAZO_POR_MASTER_CALL_CENTER;
+                break;
+            case Constantes::USUARIO_MASTER_TELCEL:
+                $idStatus = Constantes::STATUS_RECHAZO_POR_MASTER_TELCEL;
+                break;
+            default:
+                $idStatus = null;
+            break;
+        
+        }
+        return $idStatus;
+    }
+
     public static function getStatusCancelacionesDependiendoUsuario(){
 
         $usuario = EntUsuarios::getUsuarioLogueado();
@@ -199,6 +233,8 @@ class Permisos
         }
         return $idStatus;
     }
+
+    
 
     public static function getMessageHistorialGuardar(){
         $usuario = EntUsuarios::getUsuarioLogueado();
@@ -242,25 +278,25 @@ class Permisos
                 return "";
                 break;
             case Constantes::USUARIO_SUPERVISOR:
-                return "Cita autorizada por supervisor cc";
+                return "Cita cancelada por supervisor cc";
                 break;
             case Constantes::USUARIO_ADMINISTRADOR_CC:
-                return "Cita autorizada por administrador cc";
+                return "Cita cancelada por administrador cc";
                 break;
             case Constantes::USUARIO_SUPERVISOR_TELCEL:
-                return "Cita autorizada por supervisor telcel";
+                return "Cita cancelada por supervisor telcel";
                 break;
             case Constantes::USUARIO_ADMINISTRADOR_TELCEL:
-                return "Cita autorizada por administador telcel";
+                return "Cita cancelada por administador telcel";
                 break;
             case Constantes::USUARIO_MASTER_BRIGHT_STAR:
-                return "Cita autorizada por master bright star";
+                return "Cita cancelada por master bright star";
                 break;
             case Constantes::USUARIO_MASTER_CALL_CENTER:
-                return "Cita autorizada por master cc";
+                return "Cita cancelada por master cc";
                 break;
             case Constantes::USUARIO_MASTER_TELCEL:
-                return "Cita autorizada por master telcel";
+                return "Cita cancelada por master telcel";
                 break;
             default:
                 return "";
@@ -268,7 +304,7 @@ class Permisos
         }
     }
 
-    public static function getMessageHistorialCancelar(){
+    public static function getMessageHistorialRechazar(){
         $usuario = EntUsuarios::getUsuarioLogueado();
 
         switch ($usuario->txt_auth_item) {
@@ -295,6 +331,40 @@ class Permisos
                 break;
             case Constantes::USUARIO_MASTER_TELCEL:
                 return "Cita rechazada por master telcel";
+                break;
+            default:
+                return "";
+            break;
+        }
+    }
+
+    public static function getMessageHistorialCancelar(){
+        $usuario = EntUsuarios::getUsuarioLogueado();
+
+        switch ($usuario->txt_auth_item) {
+            case Constantes::USUARIO_CALL_CENTER:
+                return "";
+                break;
+            case Constantes::USUARIO_SUPERVISOR:
+                return "Cita cancelada por supervisor cc";
+                break;
+            case Constantes::USUARIO_ADMINISTRADOR_CC:
+                return "Cita cancelada por administrador cc";
+                break;
+            case Constantes::USUARIO_SUPERVISOR_TELCEL:
+                return "Cita cancelada por supervisor telcel";
+                break;
+            case Constantes::USUARIO_ADMINISTRADOR_TELCEL:
+                return "Cita cancelada por administador telcel";
+                break;
+            case Constantes::USUARIO_MASTER_BRIGHT_STAR:
+                return "Cita cancelada por master bright star";
+                break;
+            case Constantes::USUARIO_MASTER_CALL_CENTER:
+                return "Cita cancelada por master cc";
+                break;
+            case Constantes::USUARIO_MASTER_TELCEL:
+                return "Cita cancelada por master telcel";
                 break;
             default:
                 return "";

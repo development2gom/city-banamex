@@ -221,6 +221,12 @@ if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
             $("#cita-cancelacion-modal").modal("show");
     
         })
+
+        $(".js-rechazar").on("click", function(e){
+            e.preventDefault();
+            $("#cita-rechazar-modal").modal("show");
+    
+        })
         ',
         View::POS_END,
         'cancelar-cita'
@@ -229,5 +235,7 @@ if(\Yii::$app->user->can(Constantes::USUARIO_SUPERVISOR)){
     
 
     $this->params['modal'] =  $this->render("_modal-cancelacion", ['model'=>$model]);
+
+    $this->params['modal'].=  $this->render("_modal-rechazo", ['model'=>$model]);
 }
 ?>
