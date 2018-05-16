@@ -321,7 +321,7 @@ class CitasController extends Controller
             $model->guardarHistorialDependiendoUsuario(false, false, true);
             $this->redirect(["index"]);
         }else{
-            print_r($model);
+            print_r($model->errors);
         }
 
     }
