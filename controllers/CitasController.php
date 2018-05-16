@@ -309,6 +309,20 @@ class CitasController extends Controller
 
     }
 
+    public function actionRechazar($token = null)
+    {
+        $model = EntCitas::find()->where(['txt_token' => $token])->one();
+
+
+        $model->statusRechazarDependiendoUsuario();
+        if ($model->save()) {
+            $model->guardarHistorialDependiendoUsuario(false, false, true);
+            $this->redirect(["index"]);
+        }
+
+    }
+    
+
     public function actionValidarTelefono($tel = null)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
