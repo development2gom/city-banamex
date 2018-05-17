@@ -703,21 +703,34 @@ class CitasController extends Controller
                 }
 
                 $horario = "";
-                if($modelo->b_entrega_cat){
+                if($modelo->b_entrega_cat && $modelo->id_cat){
                     $horario = $modelo->txt_horario_entrega_cat;
                 }else{
                     $horario = $modelo->idHorario?$modelo->idHorario->txt_hora_inicial." - ".$modelo->idHorario->txt_hora_final:"";
                 }
-                
+
+                $cac = "DOMICILIO";
+                if($modelo->b_entrega_cat && $modelo->id_cat){
+                    $cac = "CAC - ".$modelo->idCat->txt_nombre;
+                }else if ($modelo->b_entrega_cat){
+                    $cac = "CAC - ";
+                } 
 
                 $data[$modelo->id_cita] =[
                     $modelo->txt_identificador_cliente,
                     $modelo->txt_telefono,
                     $modelo->idEnvio?$modelo->idEnvio->txt_tracking:'',
+                    $modelo->idArea?$modelo->idArea->txt_nombre:'',
                     $modelo->idMunicipio?$modelo->idMunicipio->idTipo->txt_nombre:'',
                     $modelo->idMunicipio?$modelo->idMunicipio->diasServicio:"",
                     $modelo->idTipoTramite->txt_nombre,
-                    $modelo->b_entrega_cat?"CAC":"Domicilio",
+                    $cac,
+                    $modelo->txt_calle_numero,
+                    $modelo->txt_colonia,
+                    $modelo->txt_municipio,
+                    $modelo->txt_estado,
+                    $modelo->txt_codigo_postal,
+                    $modelo->txt_entre_calles,
                     $modelo->idCallCenter?$modelo->idCallCenter->txt_nombre:'',
                     Utils::changeFormatDateInputShort($modelo->fch_creacion),
                     Utils::changeFormatDateInputShort($modelo->fch_cita),
@@ -727,15 +740,23 @@ class CitasController extends Controller
                     $estatusEntrega,
 
                     $modelo->nombreCompleto,
-                    $modelo->txt_sap_equipo." - ".$modelo->txt_equipo,
-                    $modelo->txt_imei."*",
-                    $modelo->txt_sap_iccid." - ".$modelo->txt_iccid."*",
-                    $modelo->promocional1,
-                    $modelo->promocional2,
-                    $modelo->promocional3,
-                    $modelo->promocional4,
-                    $modelo->promocional5,
+                    $modelo->txt_sap_equipo,
+                    $modelo->txt_equipo,
+                    "'".$modelo->txt_imei,
+                    $modelo->txt_sap_iccid,
+                    "'".$modelo->txt_iccid,
+                    $modelo->txt_sap_promocional,
+                    $modelo->txt_promocional,
+                    $modelo->txt_sap_promocional_2,
+                    $modelo->txt_promocional_2,
+                    $modelo->txt_sap_promocional_3,
+                    $modelo->txt_promocional_3,
+                    $modelo->txt_sap_promocional_4,
+                    $modelo->txt_promocional_4,
+                    $modelo->txt_sap_promocional_5,
+                    $modelo->txt_promocional_5,
                     $modelo->txt_tpv,
+                    
                     
                 ];
 
@@ -774,6 +795,18 @@ class CitasController extends Controller
 
         return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch"=>$modelSearch]);
     }
+
+    public function setHeadersCsvT(){
+        
+       
+        return  [
+            "Identificador único", "Número celular","Identificador de envio","Area", "Tipo / Zona",
+            "Frecuencia", "Trámite", "En", "Calle", "Colonia", "Municipio", "Estado", "C.P.", "Entre calles", "Fza Vta", "Captura",
+            "CitaOrig", "HoraOrig", "EstatusCita","IntentosEntrega", "EstatusEntrega","Cliente","SAP Equipo","Equipo", "IMEI", 
+           "SAP ICCID", "ICCID", "SAP Promocional 1","Promocional","SAP Promocional 2","Promocional 2", "SAP Promocional 3","Promocional 3","SAP Promocional 4",
+           "Promocional 4","SAP Promocional 5","Promocional 5", "TPV"
+        ];
+      }
 
     // ublic function actionDownloadData(){
 
@@ -888,13 +921,6 @@ class CitasController extends Controller
       ];
     }
 
-    public function setHeadersCsvT(){
-        return  [
-            "Identificador único", "Número celular","Identificador de envio", "Tipo / Zona",
-            "Frecuencia", "Trámite", "En", "Fza Vta", "Captura",
-            "CitaOrig", "HoraOrig", "EstatusCita","IntentosEntrega", "EstatusEntrega","Cliente","Equipo", "IMEI", 
-            "ICCID", "Promocional","Promocional 2","Promocional 3","Promocional 4","Promocional 5", "TPV"
-        ];
-      }
+   
 
 }
