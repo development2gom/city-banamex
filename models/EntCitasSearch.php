@@ -311,6 +311,7 @@ class EntCitasSearch extends EntCitas
     public function searchExport($params){
         $query = EntCitas::find()->with(
             "idEnvio", "idArea", "idHorario", 
+            "idCat",
             "idStatus", "idTipoCliente", "idMunicipio", 
             "idTipoTramite", "idCallCenter", "idMunicipio.idTipo");
 
