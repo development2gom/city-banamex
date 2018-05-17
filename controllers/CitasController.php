@@ -731,6 +731,7 @@ class CitasController extends Controller
                     $modelo->txt_estado,
                     $modelo->txt_codigo_postal,
                     $modelo->txt_entre_calles,
+                    $modelo->txt_observaciones_punto_referencia,
                     $modelo->idCallCenter?$modelo->idCallCenter->txt_nombre:'',
                     Utils::changeFormatDateInputShort($modelo->fch_creacion),
                     Utils::changeFormatDateInputShort($modelo->fch_cita),
@@ -742,9 +743,9 @@ class CitasController extends Controller
                     $modelo->nombreCompleto,
                     $modelo->txt_sap_equipo,
                     $modelo->txt_equipo,
-                    "'".$modelo->txt_imei,
+                    " ".$modelo->txt_imei,
                     $modelo->txt_sap_iccid,
-                    "'".$modelo->txt_iccid,
+                    " ".$modelo->txt_iccid,
                     $modelo->txt_sap_promocional,
                     $modelo->txt_promocional,
                     $modelo->txt_sap_promocional_2,
@@ -801,7 +802,7 @@ class CitasController extends Controller
        
         return  [
             "Identificador único", "Número celular","Identificador de envio","Area", "Tipo / Zona",
-            "Frecuencia", "Trámite", "En", "Calle", "Colonia", "Municipio", "Estado", "C.P.", "Entre calles", "Fza Vta", "Captura",
+            "Frecuencia", "Trámite", "En", "Calle", "Colonia", "Municipio", "Estado", "C.P.", "Entre calles", "Referencias","Fza Vta", "Captura",
             "CitaOrig", "HoraOrig", "EstatusCita","IntentosEntrega", "EstatusEntrega","Cliente","SAP Equipo","Equipo", "IMEI", 
            "SAP ICCID", "ICCID", "SAP Promocional 1","Promocional","SAP Promocional 2","Promocional 2", "SAP Promocional 3","Promocional 3","SAP Promocional 4",
            "Promocional 4","SAP Promocional 5","Promocional 5", "TPV"
