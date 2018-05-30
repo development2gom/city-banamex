@@ -109,7 +109,10 @@ class CitasController extends Controller
             // $model->id_equipo = $equipo->id_equipo;
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
 
-            $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
+            if($model->fch_nacimiento){
+                $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
+            }
+            
 
             $model->setAddresCat();
             $municipio = RelMunicipioCodigoPostal::find()->where(["txt_codigo_postal"=>$model->txt_codigo_postal])->one();
@@ -143,7 +146,9 @@ class CitasController extends Controller
         }
 
         $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
-        $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);
+        if($model->fch_nacimiento){
+            $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);
+        }
 
         $historialCambios = $model->getEntHistorialCambiosCitas();
 
@@ -199,7 +204,9 @@ class CitasController extends Controller
             // }
 
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
-            $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
+            if($model->fch_nacimiento){
+                $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
+            }
 
             $model->fch_creacion = Utils::getFechaActual();
             $model->getConsecutivo();
@@ -223,7 +230,9 @@ class CitasController extends Controller
             }
 
             $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
-            $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);
+            if($model->fch_nacimiento){
+                $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);
+            }
         }
 
         $tiposTramites = CatTiposTramites::find()->where(['b_habilitado' => 1])->orderBy("txt_nombre")->all();
@@ -300,28 +309,31 @@ class CitasController extends Controller
     {
         $model = EntCitas::find()->where(['txt_token' => $token])->one();
 
-
-        $model->statusCancelarDependiendoUsuario();
-        if ($model->save()) {
-            $model->guardarHistorialDependiendoUsuario(false, true);
-            $this->redirect(["index"]);
-        }else{
-            print_r($model->errors);
+        if($model->load(Yii::$app->request->post())){
+            $model->statusCancelarDependiendoUsuario();
+            if ($model->save()) {
+                $model->guardarHistorialDependiendoUsuario(false, true);
+                $this->redirect(["index"]);
+            }else{
+                print_r($model->errors);
+                exit;
+            }
         }
-
     }
 
     public function actionRechazar($token = null)
     {
         $model = EntCitas::find()->where(['txt_token' => $token])->one();
 
-
-        $model->statusRechazarDependiendoUsuario();
-        if ($model->save()) {
-            $model->guardarHistorialDependiendoUsuario(false, false, true);
-            $this->redirect(["index"]);
-        }else{
-            print_r($model->errors);
+        if($model->load(Yii::$app->request->post())){
+            $model->statusRechazarDependiendoUsuario();
+            if ($model->save()) {
+                $model->guardarHistorialDependiendoUsuario(false, false, true);
+                $this->redirect(["index"]);
+            }else{
+                print_r($model->errors);
+                exit;
+            }
         }
 
     }
@@ -368,6 +380,111 @@ class CitasController extends Controller
         if ($telefonoDisponible) {
             $respuesta["status"] = "error";
             $respuesta["mensaje"] = "El número teléfonico " . $tel . " ya se encuentra en una cita activa: " . $telefonoDisponible->txt_identificador_cliente;
+        }
+
+
+        return $respuesta;
+
+    }
+
+    public function actionValidarImei($tel = null)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $respuesta["status"] = "success";
+        $respuesta["mensaje"] = "IMEI disponible";
+        $respuesta["tel"] = $tel;
+
+        if(!$tel){
+            return $respuesta;
+        }
+        $telefonoDisponible = EntCitas::find()
+            ->where(['txt_imei' => $tel])
+            ->andWhere(['in', 'id_status', [
+                Constantes::STATUS_CREADA,
+                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR,
+                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
+                // Constantes::STATUS_CANCELADA_SUPERVISOR_CC,
+                // Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL,
+                // Constantes::STATUS_CANCELADA_ADMINISTRADOR_CC,
+                // Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_BRIGHT_STAR,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_CALL_CENTER,
+                // Constantes::STATUS_CANCELADA_POR_MASTER_BRIGHT_STAR,
+                // Constantes::STATUS_CANCELADA_POR_MASTER_TELCEL,
+                // Constantes::STATUS_CANCELADAS_POR_MASTER_CALL_CENTER,
+                Constantes::STATUS_RECIBIDO_MENSAJERIA,
+                Constantes::STATUS_LISTO_ENTREGA,
+                Constantes::STATUS_ANOMALO,
+                // Constantes::STATUS_ENTREGADO,
+                // Constantes::STATUS_CANCELADO,
+                // Constantes::STATUS_NO_ENTREGADO,
+                Constantes::STATUS_NO_VISITADO,
+                Constantes::STATUS_PRIMERA_VISITA,
+                Constantes::STATUS_SEGUNDA_VISITA,
+            ]])
+            ->one();
+
+        if ($telefonoDisponible) {
+            $respuesta["status"] = "error";
+            $respuesta["mensaje"] = "El IMEI " . $tel . " ya se encuentra en una cita activa: " . $telefonoDisponible->txt_identificador_cliente;
+        }
+
+
+        return $respuesta;
+
+    }
+
+    public function actionValidarIccid($tel = null)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+
+
+        $respuesta["status"] = "success";
+        $respuesta["mensaje"] = "ICCID disponible";
+        $respuesta["tel"] = $tel;
+
+        if(!$tel){
+            return $respuesta;
+        }
+
+        $telefonoDisponible = EntCitas::find()
+            ->where(['txt_iccid' => $tel])
+            ->andWhere(['in', 'id_status', [
+                Constantes::STATUS_CREADA,
+                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR,
+                Constantes::STATUS_AUTORIZADA_POR_SUPERVISOR_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_CC,
+                // Constantes::STATUS_CANCELADA_SUPERVISOR_CC,
+                // Constantes::STATUS_CANCELADA_SUPERVISOR_TELCEL,
+                // Constantes::STATUS_CANCELADA_ADMINISTRADOR_CC,
+                // Constantes::STATUS_CANCELADA_ADMINISTRADOR_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_ADMINISTRADOR_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_BRIGHT_STAR,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_TELCEL,
+                Constantes::STATUS_AUTORIZADA_POR_MASTER_CALL_CENTER,
+                // Constantes::STATUS_CANCELADA_POR_MASTER_BRIGHT_STAR,
+                // Constantes::STATUS_CANCELADA_POR_MASTER_TELCEL,
+                // Constantes::STATUS_CANCELADAS_POR_MASTER_CALL_CENTER,
+                Constantes::STATUS_RECIBIDO_MENSAJERIA,
+                Constantes::STATUS_LISTO_ENTREGA,
+                Constantes::STATUS_ANOMALO,
+                // Constantes::STATUS_ENTREGADO,
+                // Constantes::STATUS_CANCELADO,
+                // Constantes::STATUS_NO_ENTREGADO,
+                Constantes::STATUS_NO_VISITADO,
+                Constantes::STATUS_PRIMERA_VISITA,
+                Constantes::STATUS_SEGUNDA_VISITA,
+            ]])
+            ->one();
+
+        if ($telefonoDisponible) {
+            $respuesta["status"] = "error";
+            $respuesta["mensaje"] = "El ICCID " . $tel . " ya se encuentra en una cita activa: " . $telefonoDisponible->txt_identificador_cliente;
         }
 
 
@@ -576,7 +693,7 @@ class CitasController extends Controller
 
     public function actionDescargarEvidencia($token = null)
     {
-        $evidencia = EntEvidenciasCitas::find(["txt_token" => $token])->one();
+        $evidencia = EntEvidenciasCitas::find()->where(["txt_token" => $token])->one();
         $cita = $evidencia->idCita;
         if (file_exists($evidencia->txt_url)) {
             Yii::$app->response->sendFile($evidencia->txt_url, "Evidencia_" . $cita->txt_identificador_cliente . ".pdf");
@@ -743,9 +860,9 @@ class CitasController extends Controller
                     $modelo->nombreCompleto,
                     $modelo->txt_sap_equipo,
                     $modelo->txt_equipo,
-                    " ".$modelo->txt_imei,
+                    "'".$modelo->txt_imei,
                     $modelo->txt_sap_iccid,
-                    " ".$modelo->txt_iccid,
+                    "'".$modelo->txt_iccid,
                     $modelo->txt_sap_promocional,
                     $modelo->txt_promocional,
                     $modelo->txt_sap_promocional_2,
@@ -782,6 +899,7 @@ class CitasController extends Controller
             $fp = fopen('php://output', 'w');
         //add BOM to fix UTF-8 in Excel
         fputs($fp, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+        
             //Loop through the array containing our CSV data.
             foreach ($data as $row) {
             //fputcsv formats the array into a CSV format.
@@ -796,6 +914,8 @@ class CitasController extends Controller
 
         return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch"=>$modelSearch]);
     }
+
+   
 
     public function setHeadersCsvT(){
         

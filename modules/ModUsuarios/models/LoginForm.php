@@ -4,6 +4,8 @@ namespace app\modules\ModUsuarios\models;
 
 use Yii;
 use yii\base\Model;
+use app\models\EntUsuariosBloqueados;
+use yii\db\Expression;
 
 /**
  * LoginForm is the model behind the login form.
@@ -16,6 +18,8 @@ class LoginForm extends Model {
 	public $password;
 	public $rememberMe = true;
 	public $userEncontrado;
+	private $minutosBloqueado = 15;
+	private $numIntentos = 5;
 	private $_user = false;
 
 	/**
@@ -93,14 +97,57 @@ class LoginForm extends Model {
 	 *        	the additional name-value pairs given in the rule
 	 */
 	public function validatePassword($attribute, $params) {
+
 		if (! $this->hasErrors ()) {
 			$user = $this->getUser ();
+
+			$isUsuarioBloqueado = EntUsuariosBloqueados::find()->where(['id_usuario'=>$user->id_usuario, "b_bloqueado"=>1])
+			->andWhere(["<=", new Expression("TIMESTAMPDIFF(MINUTE,fch_bloqueo,NOW())"), $this->minutosBloqueado])
+			->one();
+
+			if($isUsuarioBloqueado){
+				$this->addError ( $attribute, 'Usuario bloqueado.' );
+			}
+			$usuarioIntentando = EntUsuariosBloqueados::find()
+				->where([
+					'id_usuario'=>$user->id_usuario, 
+					"b_bloqueado"=>0])
+				->one();
+
+			if(!$usuarioIntentando){
+				$usuarioIntentando = new EntUsuariosBloqueados();
+				$usuarioIntentando->id_usuario = $user->id_usuario;
+				$usuarioIntentando->fch_bloqueo = Utils::getFechaActual();
+			}
 			
 			if (! $user || ! $user->validatePassword ( $this->password )) {
+				$usuarioIntentando->num_intentos++;
+				if($usuarioIntentando->num_intentos==$this->numIntentos){
+					$usuarioIntentando->fch_bloqueo = Utils::getFechaActual();
+					$usuarioIntentando->b_bloqueado = 1;
+				} 
+
+				$usuarioIntentando->save();
+				
 				$this->addError ( $attribute, 'Usuario o contraseña incorrectos.' );
+			}else{
+				if($usuarioIntentando){
+					$usuarioIntentando->delete();
+				}
 			}
 		}
 	}
+
+	// public function validateBloqueo(){
+	// 	if (! $this->hasErrors ()) {
+	// 		$user = $this->getUser ();
+
+	// 		if (! $user || ! $user->validatePassword ( $this->password )) {
+	// 			$this->addError ( $attribute, 'Usuario o contraseña incorrectos.' );
+	// 		}
+	// 	}
+	// }
+
 	
 	/**
 	 * Valida que el usuario exista

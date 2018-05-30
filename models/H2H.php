@@ -32,6 +32,8 @@ class H2H
     public $ancho;
     public $largo;
     public $numeroTracking;
+    public $fechaCita;
+    public $fechaHora;
 
     public function crearEnvio($cita)
     {
@@ -70,6 +72,15 @@ class H2H
         $this->contenido = $cita->txt_equipo;
         $this->empaque = "";
         $this->valor = $cita->txt_tpv?$cita->txt_tpv:0;
+        $this->fchCita = $cita->fch_cita;
+
+        $horario = "";
+        if($cita->b_entrega_cat && $cita->id_cat){
+            $horario = $cita->txt_horario_entrega_cat;
+        }else{
+            $horario = $cita->idHorario?$cita->idHorario->txt_hora_inicial." - ".$cita->idHorario->txt_hora_final:"";
+        }
+        $this->fechaHora = $horario;
     }
 
 
@@ -94,6 +105,8 @@ class H2H
             'ObservacionesContenido' => $this->observacionesContenido,
             'EMail'=>$this->email,
             'Referencias'=>$this->observaciones,
+            "CitaFecha"=>$this->fechaCita,
+            "CitaHora"=>$this->fechaHora
             
         ];
 

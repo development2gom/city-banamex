@@ -10,7 +10,7 @@ class Files{
     }
 
     public static function borrarArchivo($path){
-        unlink($path);
+        return unlink($path);
     }
 
     /**

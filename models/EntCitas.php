@@ -102,7 +102,10 @@ class EntCitas extends \yii\db\ActiveRecord
     {
         $apiEnvio = new H2H();
         $respuestaApi = json_decode($apiEnvio->crearEnvio($this));
-        $tracking = $respuestaApi->NoTracking;
+        if(isset($respuestaApi->NoTracking)){
+            $tracking = $respuestaApi->NoTracking;
+        }
+       
         $envio = new EntEnvios();
         $envio->id_cita = $this->id_cita;
         $envio->txt_token = Utils::generateToken("env_");
@@ -283,6 +286,7 @@ class EntCitas extends \yii\db\ActiveRecord
                 }"
             ],
 
+          
             [
                 ['txt_sap_promocional'], 'required', 'on' => ['autorizar', 'autorizar-update'],
                 'when' => function ($model) {
@@ -386,7 +390,7 @@ class EntCitas extends \yii\db\ActiveRecord
                 'id_usuario', 'id_status', 'txt_telefono', 'txt_email', 'txt_nombre', 'txt_apellido_paterno',
                 'txt_email',
                 'txt_equipo',
-                'fch_nacimiento',
+                //'fch_nacimiento',
                 'num_dias_servicio',
                 'txt_estado',
                 'txt_calle_numero',
@@ -416,7 +420,7 @@ class EntCitas extends \yii\db\ActiveRecord
             [['txt_calle_numero'], 'string', 'max' => 150],
             [['txt_codigo_postal'], 'string', 'max' => 5],
             [['txt_entre_calles', 'txt_observaciones_punto_referencia'], 'string', 'max' => 500],
-            [['txt_motivo_cancelacion_rechazo', 'txt_promocional', 'txt_promocional_2', 'txt_promocional_3','txt_promocional_4','txt_promocional_5'], 'string', 'max' => 700],
+            [['txt_motivo_cancelacion_rechazo',"txt_motivo_rechazo", 'txt_promocional', 'txt_promocional_2', 'txt_promocional_3','txt_promocional_4','txt_promocional_5'], 'string', 'max' => 700],
             [['txt_sap_promocional', 'txt_sap_promocional_2', 'txt_sap_promocional_3','txt_sap_promocional_4','txt_sap_promocional_5', "txt_sap_equipo", "txt_sap_iccid"], 'string', 'max' => 50],
             [['txt_token'], 'unique'],
             [['id_area'], 'exist', 'skipOnError' => true, 'targetClass' => CatAreas::className(), 'targetAttribute' => ['id_area' => 'id_area']],
