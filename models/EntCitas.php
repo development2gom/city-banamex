@@ -285,7 +285,7 @@ class EntCitas extends \yii\db\ActiveRecord
                     return $('#entcitas-id_equipo').val()=='" . Constantes::SIN_EQUIPO . "';
                 }"
             ],
-
+            
           
             [
                 ['txt_sap_promocional'], 'required', 'on' => ['autorizar', 'autorizar-update'],

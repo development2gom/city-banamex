@@ -613,7 +613,43 @@ $this->registerJs(
     <?php
 $this->registerJs(
   '
-  
+
+  $("#entcitas-txt_numero_referencia").on("blur", function(){
+    var valor = $(this).val();
+    var comparar1 = $("#entcitas-txt_numero_referencia_2").val();
+    var comparar2 = $("#entcitas-txt_numero_referencia_3").val();
+    if(valor){
+        if(valor == comparar1 || valor==comparar2){
+            
+            $("#form-cita").yiiActiveForm("updateAttribute", "entcitas-txt_numero_referencia", ["No puede repetir el número de referencia"]);
+        }
+    }
+  });
+
+  $("#entcitas-txt_numero_referencia_2").on("blur", function(){
+        var valor = $(this).val();
+        var comparar1 = $("#entcitas-txt_numero_referencia_1").val();
+        var comparar2 = $("#entcitas-txt_numero_referencia_3").val();
+        if(valor){
+            if(valor == comparar1 || valor==comparar2){
+                
+                $("#form-cita").yiiActiveForm("updateAttribute", "entcitas-txt_numero_referencia_2", ["No puede repetir el número de referencia"]);
+            }
+        }
+    });
+
+    $("#entcitas-txt_numero_referencia_3").on("blur", function(){
+        var valor = $(this).val();
+        var comparar1 = $("#entcitas-txt_numero_referencia_1").val();
+        var comparar2 = $("#entcitas-txt_numero_referencia_2").val();
+        if(valor){
+            if(valor == comparar1 || valor==comparar2){
+               
+                $("#form-cita").yiiActiveForm("updateAttribute", "entcitas-txt_numero_referencia_3", ["No puede repetir el número de referencia"]);
+            }
+        }
+    });  
+
   $("#entcitas-txt_telefono").on("change", function(){
     var elemento = $(this);
     var data = elemento.val();
