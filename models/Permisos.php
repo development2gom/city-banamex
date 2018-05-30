@@ -278,25 +278,25 @@ class Permisos
                 return "";
                 break;
             case Constantes::USUARIO_SUPERVISOR:
-                return "Cita cancelada por supervisor cc";
+                return "Cita aprobada por supervisor cc";
                 break;
             case Constantes::USUARIO_ADMINISTRADOR_CC:
-                return "Cita cancelada por administrador cc";
+                return "Cita aprobada por administrador cc";
                 break;
             case Constantes::USUARIO_SUPERVISOR_TELCEL:
-                return "Cita cancelada por supervisor telcel";
+                return "Cita aprobada por supervisor telcel";
                 break;
             case Constantes::USUARIO_ADMINISTRADOR_TELCEL:
-                return "Cita cancelada por administador telcel";
+                return "Cita aprobada por administador telcel";
                 break;
             case Constantes::USUARIO_MASTER_BRIGHT_STAR:
-                return "Cita cancelada por master bright star";
+                return "Cita aprobada por master bright star";
                 break;
             case Constantes::USUARIO_MASTER_CALL_CENTER:
-                return "Cita cancelada por master cc";
+                return "Cita aprobada por master cc";
                 break;
             case Constantes::USUARIO_MASTER_TELCEL:
-                return "Cita cancelada por master telcel";
+                return "Cita aprobada por master telcel";
                 break;
             default:
                 return "";

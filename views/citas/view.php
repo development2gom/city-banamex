@@ -50,6 +50,51 @@ $this->registerJsFile(
 ?>
 <input class="token-cita" type="hidden" data-token="<?=$model->txt_token?>"/>
 
+<?php
+if($model->txt_motivo_rechazo){
+?>
+<div class="panel-citas-view">
+    <div class="citas-cont">
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="panel-title">Motivo de rechazo</h5>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 col-md-3">
+                <?=$model->txt_motivo_rechazo?>
+            </div>
+        </div>
+    </div>    
+</div>
+<?php
+}
+?>
+
+<?php
+if($model->txt_motivo_cancelacion_rechazo){
+?>
+<div class="panel-citas-view">
+    <div class="citas-cont">
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="panel-title">Motivo de cancelación</h5>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 col-md-3">
+                <?=$model->txt_motivo_cancelacion_rechazo?>
+            </div>
+        </div>
+    </div> 
+</div>    
+<?php
+}
+?>
+
+
 <div class="panel-citas-view">
 
     <div class="panel-citas-btns mb-20">

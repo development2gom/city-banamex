@@ -598,13 +598,13 @@ if($model->isNewRecord){
 <?php
 $this->registerJs(
   '
-    var codigoPostal = "'.$model->txt_codigo_postal.'";
-    var calleYNumbero = "'.$model->txt_calle_numero.'";
-    var colonia = "'.$model->txt_colonia.'";
-    var municipio = "'.$model->txt_municipio.'";
-    var estado = "'.$model->txt_estado.'";
-    var entreCalles = "'.$model->txt_entre_calles.'";
-    var pReferencias = "'.$model->txt_observaciones_punto_referencia.'";
+    var codigoPostal = "'. trim(preg_replace('/\s+/', ' ',addslashes($model->txt_codigo_postal))).'";
+    var calleYNumbero = "'. trim(preg_replace('/\s+/', ' ',addslashes($model->txt_calle_numero))).'";
+    var colonia = "'. trim(preg_replace('/\s+/', ' ',addslashes($model->txt_colonia))).'";
+    var municipio = "'. trim(preg_replace('/\s+/', ' ',addslashes($model->txt_municipio))).'";
+    var estado = "'. trim(preg_replace('/\s+/', ' ',addslashes($model->txt_estado))).'";
+    var entreCalles = "'. trim(preg_replace('/\s+/', ' ',addslashes($model->txt_entre_calles))).'";
+    var pReferencias = "'. trim(preg_replace('/\s+/', ' ',addslashes($model->txt_observaciones_punto_referencia))).'";
   ',
   View::POS_BEGIN,
   'variables'
@@ -640,6 +640,64 @@ $this->registerJs(
             }
         });
     }
+
+  });
+
+  $("#entcitas-txt_iccid").on("change", function(){
+    var elemento = $(this);
+    var data = elemento.val();
+    
+        $.ajax({
+            url: baseUrl+"citas/validar-iccid?tel="+data,
+            success:function(res){
+
+                if(res.status=="error"){
+                    swal({
+                        title: "Datos no válidos",
+                        text: res.mensaje,
+                        type: "warning",
+                        showCancelButton: false,
+                        confirmButtonClass: "btn-warning",
+                        confirmButtonText: "Ok",
+                        cancelButtonText: "No, revisaré una vez más",
+                        closeOnConfirm: true,
+                        //closeOnCancel: false
+                    });
+                    elemento.val("");
+                    elemento.trigger("change");
+                }    
+            }
+        });
+    
+
+  });
+
+  $("#entcitas-txt_imei").on("change", function(){
+    var elemento = $(this);
+    var data = elemento.val();
+    
+        $.ajax({
+            url: baseUrl+"citas/validar-imei?tel="+data,
+            success:function(res){
+
+                if(res.status=="error"){
+                    swal({
+                        title: "Datos no válidos",
+                        text: res.mensaje,
+                        type: "warning",
+                        showCancelButton: false,
+                        confirmButtonClass: "btn-warning",
+                        confirmButtonText: "Ok",
+                        cancelButtonText: "No, revisaré una vez más",
+                        closeOnConfirm: true,
+                        //closeOnCancel: false
+                    });
+                    elemento.val("");
+                    elemento.trigger("change");
+                }    
+            }
+        });
+    
 
   });
 

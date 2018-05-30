@@ -19,6 +19,8 @@ class EntCitasSearch extends EntCitas
     public $nombreCompleto;
     public $txtTracking;
     public $pageSize;
+    public $startDateCita;
+    public $endDateCita;
     
     /**
      * @inheritdoc
@@ -27,7 +29,7 @@ class EntCitasSearch extends EntCitas
     {
         return [
             [['id_cita', 'id_tipo_tramite', 'id_equipo', 'id_area', 'id_tipo_entrega', 'id_usuario', 'id_status',  'id_tipo_cliente', 'id_tipo_identificacion', 'id_horario'], 'integer'],
-            [['txtTracking','pageSize', 'nombreCompleto','startDate','endDate','txt_telefono', 'txt_identificador_cliente','txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_rfc', 'txt_numero_telefonico_nuevo', 'txt_email', 'txt_folio_identificacion', 'fch_nacimiento', 'num_dias_servicio', 'txt_token', 'txt_iccid', 'txt_imei', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3', 'txt_estado', 'txt_calle_numero', 'txt_colonia', 'txt_codigo_postal', 'txt_municipio', 'txt_entre_calles', 'txt_observaciones_punto_referencia', 'txt_motivo_cancelacion_rechazo', 'fch_cita', 'fch_creacion'], 'safe'],
+            [['txtTracking','pageSize','startDateCita','endDateCita', 'nombreCompleto','startDate','endDate','txt_telefono', 'txt_identificador_cliente','txt_nombre', 'txt_apellido_paterno', 'txt_apellido_materno', 'txt_rfc', 'txt_numero_telefonico_nuevo', 'txt_email', 'txt_folio_identificacion', 'fch_nacimiento', 'num_dias_servicio', 'txt_token', 'txt_iccid', 'txt_imei', 'txt_numero_referencia', 'txt_numero_referencia_2', 'txt_numero_referencia_3', 'txt_estado', 'txt_calle_numero', 'txt_colonia', 'txt_codigo_postal', 'txt_municipio', 'txt_entre_calles', 'txt_observaciones_punto_referencia', 'txt_motivo_cancelacion_rechazo', 'fch_cita', 'fch_creacion'], 'safe'],
         ];
     }
 
@@ -330,6 +332,25 @@ class EntCitasSearch extends EntCitas
         ]);
 
         $this->load($params);
+
+        if($this->fch_cita){
+            
+            $this->fch_cita = Utils::changeFormatDateInputShort($this->fch_cita);
+            $query->andFilterWhere([
+                "=","date_format(fch_cita, '%Y-%m-%d')",$this->fch_cita
+            
+            ]);
+        }
+
+        if($this->fch_creacion){
+            
+            $this->fch_creacion = Utils::changeFormatDateInputShort($this->fch_creacion);
+            $query->andFilterWhere([
+                ">=","date_format(fch_creacion, '%Y-%m-%d')",new Expression("'".$this->fch_creacion."' - INTERVAL 7 DAY")
+            
+            ]);
+        }
+
           
         if($this->startDate && $this->endDate){
             $this->startDate = Utils::changeFormatDateInputShort($this->startDate);
@@ -340,6 +361,17 @@ class EntCitasSearch extends EntCitas
             ]);
 
         }
+
+        if($this->startDateCita && $this->endDateCita ){
+            $this->startDateCita  = Utils::changeFormatDateInputShort($this->startDateCita );
+            $this->endDateCita  = Utils::changeFormatDateInputShort($this->endDateCita );
+            $query->andFilterWhere([
+                "between", "date_format(fch_cita, '%Y-%m-%d')",$this->startDateCita , $this->endDateCita 
+            
+            ]);
+
+        }
+
 
         
         return $dataProvider;

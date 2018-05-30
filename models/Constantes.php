@@ -81,5 +81,6 @@ class Constantes{
     // botones acciones de cita
     const BTN_APROBAR = 2;
     const BTN_EDITAR = 3;
-    const BTN_RECHAZAR = 4;
+    const BTN_CANCELAR = 4;
+    const BTN_RECHAZAR = 5;
 }

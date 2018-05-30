@@ -53,7 +53,7 @@ class BotonesCitas
 
     public function getBotonCancelar($statusCita, $usuario)
     {
-        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->andWhere(["id_accion"=>Constantes::BTN_RECHAZAR, "id_status_cita"=>$statusCita])->one();
+        $botonHabilitado = EntPermisosUsuarios::find()->where([ 'in',"txt_auth_item", $usuario])->andWhere(["id_accion"=>Constantes::BTN_CANCELAR, "id_status_cita"=>$statusCita])->one();
 
         if($botonHabilitado){
 
