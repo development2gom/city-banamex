@@ -191,6 +191,7 @@ $usuarioLogueado = EntUsuarios::getUsuarioLogueado();
                                                     <a class="magnific" href="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&markers=color:red%7C<?=$latitud?>,<?=$longitud?>&zoom=19&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" >
                                                         <img  class="avatar avatar-sm" src="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&markers=color:red%7C<?=$latitud?>,<?=$longitud?>&zoom=19&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" alt="...">
                                                     </a>
+                                                   
                                                     
                                             <?php
                                             }else{
@@ -230,7 +231,9 @@ $usuarioLogueado = EntUsuarios::getUsuarioLogueado();
                             <div class="card card-shadow">
                                 <figure class="card-img-top overlay-hover overlay">
                                 <img class="overlay-figure overlay-scale" src="https://maps.googleapis.com/maps/api/staticmap?center=<?=$latitud?>,<?=$longitud?>&markers=color:red%7C<?=$latitud?>,<?=$longitud?>&zoom=19&size=600x400&key=AIzaSyBlkuXFs8ehiHk8mS_nozNbUoQH1_PyaLg" alt="...">
-                                
+                                <p></p>
+                                <p>Latitud: <?=$latitud?></p>
+                                <p>Longitud: <?=$longitud?></p>
                                 </figure>
                             </div>
                         <?php
