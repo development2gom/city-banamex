@@ -134,6 +134,7 @@ class CatsController extends Controller
         if ($page > 1) {
             $page--;
         }
+        $searchModel->b_habilitado = 1;
         $dataProvider = $searchModel->searchCat($criterios, $page);
         $response['results'] = null;
         $response['total_count'] = $dataProvider->getTotalCount();

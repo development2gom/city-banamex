@@ -41,6 +41,17 @@ class CitasController extends Controller
     /**
      * @inheritdoc
      */
+    public function beforeAction($action)
+    {
+        if ($action->id == 'actualizar-envio-service') {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
+    }
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -109,14 +120,14 @@ class CitasController extends Controller
             // $model->id_equipo = $equipo->id_equipo;
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
 
-            if($model->fch_nacimiento){
+            if ($model->fch_nacimiento) {
                 $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
             }
-            
+
 
             $model->setAddresCat();
-            $municipio = RelMunicipioCodigoPostal::find()->where(["txt_codigo_postal"=>$model->txt_codigo_postal])->one();
-            if($municipio){
+            $municipio = RelMunicipioCodigoPostal::find()->where(["txt_codigo_postal" => $model->txt_codigo_postal])->one();
+            if ($municipio) {
                 $model->id_municipio = $municipio->id_municipio;
             }
             if ($model->isEdicion) {
@@ -146,7 +157,7 @@ class CitasController extends Controller
         }
 
         $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
-        if($model->fch_nacimiento){
+        if ($model->fch_nacimiento) {
             $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);
         }
 
@@ -193,9 +204,9 @@ class CitasController extends Controller
         $model->iniciarModelo(1, null, $tipoEntrega);
 
         if ($model->load(Yii::$app->request->post())) {
-           
-            $municipio = RelMunicipioCodigoPostal::find()->where(["txt_codigo_postal"=>$model->txt_codigo_postal])->one();
-            if($municipio){
+
+            $municipio = RelMunicipioCodigoPostal::find()->where(["txt_codigo_postal" => $model->txt_codigo_postal])->one();
+            if ($municipio) {
                 $model->id_municipio = $municipio->id_municipio;
             }
             // $model->id_equipo = $equipo->id_equipo;
@@ -204,7 +215,7 @@ class CitasController extends Controller
             // }
 
             $model->fch_cita = Utils::changeFormatDateInput($model->fch_cita);
-            if($model->fch_nacimiento){
+            if ($model->fch_nacimiento) {
                 $model->fch_nacimiento = Utils::changeFormatDateInput($model->fch_nacimiento);
             }
 
@@ -230,7 +241,7 @@ class CitasController extends Controller
             }
 
             $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
-            if($model->fch_nacimiento){
+            if ($model->fch_nacimiento) {
                 $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);
             }
         }
@@ -309,12 +320,12 @@ class CitasController extends Controller
     {
         $model = EntCitas::find()->where(['txt_token' => $token])->one();
 
-        if($model->load(Yii::$app->request->post())){
+        if ($model->load(Yii::$app->request->post())) {
             $model->statusCancelarDependiendoUsuario();
             if ($model->save()) {
                 $model->guardarHistorialDependiendoUsuario(false, true);
                 $this->redirect(["index"]);
-            }else{
+            } else {
                 print_r($model->errors);
                 exit;
             }
@@ -325,19 +336,19 @@ class CitasController extends Controller
     {
         $model = EntCitas::find()->where(['txt_token' => $token])->one();
 
-        if($model->load(Yii::$app->request->post())){
+        if ($model->load(Yii::$app->request->post())) {
             $model->statusRechazarDependiendoUsuario();
             if ($model->save()) {
                 $model->guardarHistorialDependiendoUsuario(false, false, true);
                 $this->redirect(["index"]);
-            }else{
+            } else {
                 print_r($model->errors);
                 exit;
             }
         }
 
     }
-    
+
 
     public function actionValidarTelefono($tel = null)
     {
@@ -395,7 +406,7 @@ class CitasController extends Controller
         $respuesta["mensaje"] = "IMEI disponible";
         $respuesta["tel"] = $tel;
 
-        if(!$tel){
+        if (!$tel) {
             return $respuesta;
         }
         $telefonoDisponible = EntCitas::find()
@@ -448,7 +459,7 @@ class CitasController extends Controller
         $respuesta["mensaje"] = "ICCID disponible";
         $respuesta["tel"] = $tel;
 
-        if(!$tel){
+        if (!$tel) {
             return $respuesta;
         }
 
@@ -549,42 +560,43 @@ class CitasController extends Controller
 
     }
 
-    public function actionActualizarTodaInformacion(){
+    public function actionActualizarTodaInformacion()
+    {
         $response = new ResponseServices();
         $envios = EntEnvios::find()->all();
-        foreach($envios as $envioSearch){
+        foreach ($envios as $envioSearch) {
             $cita = $envioSearch->idCita;
             $envioSearch->txt_respuesta_api = $cita->consultarEnvio($envioSearch->txt_tracking);
             $envioSearch->txt_historial_api = $cita->consultarHistorico($envioSearch->txt_tracking);
             $respuestaApi = json_decode($envioSearch->txt_respuesta_api);
 
-    
+
             if (!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api" => $respuestaApi->ClaveEvento])->one()) {
                 $response->message = "No se encontro el status del api en la base de datos";
                 continue;
             }
-    
-    
+
+
             $cita->id_status = $statusApi->id_statu_cita;
-    
+
             if ($cita->id_status == Constantes::STATUS_ENTREGADO) {
                 $envioSearch->fch_entrega = $respuestaApi->Fecha;
                 $envioSearch->b_cerrado = 1;
             }
             $envioSearch->save();
-    
-    
+
+
             if (!$cita->save(false)) {
                 $response->message = "No se pudo guardar la cita";
                 $response->result = $cita->errors;
                 return $response;
             }
-    
+
             $response->status = "success";
             $response->message = "Todo correcto";
-            
-    
-            
+
+
+
         }
 
         return $response;
@@ -771,119 +783,120 @@ class CitasController extends Controller
         $modelSearch = new EntCitasSearch();
         $dataProvider = $modelSearch->searchExport(Yii::$app->request->queryParams);
 
-        
-        return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch"=>$modelSearch]);
+
+        return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch" => $modelSearch]);
     }
 
-    public function actionDownloadData(){
+    public function actionDownloadData()
+    {
 
         $modelSearch = new EntCitasSearch();
         $dataProvider = $modelSearch->searchExport(Yii::$app->request->queryParams);
 
-        if(Yii::$app->request->isGet):
+        if (Yii::$app->request->isGet) :
             //The name of the CSV file that will be downloaded by the user.
-            $fileName = 'Reporte.csv';
-            $data = [];
-            $data[0] = $this->setHeadersCsvT();
-            foreach ($dataProvider->getModels() as $key =>$modelo):
-                
-                $intentos = 0;
-                if($modelo->idEnvio):
-                    
-                    if($modelo->idEnvio->txt_historial_api):
-                        $json = json_decode($modelo->idEnvio->txt_historial_api);
-                        
-                        if(isset($json->History)):
-                            foreach($json->History as $llave=>$historial):
-                                if($historial->EventoClave == 11){
-                                    $intentos++;
-                                }
-                                if($historial->EventoClave == 12){
-                                    $intentos++;
-                                }
+        $fileName = 'Reporte.csv';
+        $data = [];
+        $data[0] = $this->setHeadersCsvT();
+        foreach ($dataProvider->getModels() as $key => $modelo) :
 
-                                if($historial->EventoClave == 5){
-                                    $intentos++;
-                                }
-                            endforeach;
-                        endif;    
-                    
-                    endif;
-                    
-                endif;
+            $intentos = 0;
+        if ($modelo->idEnvio) :
 
-                $estatusEntrega = "";
-                if($modelo->idStatus){
-                    if($modelo->idStatus->txt_identificador_api){
-                        $estatusEntrega = $modelo->idStatus->txt_nombre;
-                    }
-                }
+            if ($modelo->idEnvio->txt_historial_api) :
+            $json = json_decode($modelo->idEnvio->txt_historial_api);
 
-                $horario = "";
-                if($modelo->b_entrega_cat && $modelo->id_cat){
-                    $horario = $modelo->txt_horario_entrega_cat;
-                }else{
-                    $horario = $modelo->idHorario?$modelo->idHorario->txt_hora_inicial." - ".$modelo->idHorario->txt_hora_final:"";
-                }
+        if (isset($json->History)) :
+            foreach ($json->History as $llave => $historial) :
+            if ($historial->EventoClave == 11) {
+            $intentos++;
+        }
+        if ($historial->EventoClave == 12) {
+            $intentos++;
+        }
 
-                $cac = "DOMICILIO";
-                if($modelo->b_entrega_cat && $modelo->id_cat){
-                    $cac = "CAC - ".$modelo->idCat->txt_nombre;
-                }else if ($modelo->b_entrega_cat){
-                    $cac = "CAC - ";
-                } 
+        if ($historial->EventoClave == 5) {
+            $intentos++;
+        }
+        endforeach;
+        endif;
 
-                $data[$modelo->id_cita] =[
-                    $modelo->txt_identificador_cliente,
-                    $modelo->txt_telefono,
-                    $modelo->idEnvio?$modelo->idEnvio->txt_tracking:'',
-                    $modelo->idArea?$modelo->idArea->txt_nombre:'',
-                    $modelo->idMunicipio?$modelo->idMunicipio->idTipo->txt_nombre:'',
-                    $modelo->idMunicipio?$modelo->idMunicipio->diasServicio:"",
-                    $modelo->idTipoTramite->txt_nombre,
-                    $cac,
-                    $modelo->txt_calle_numero,
-                    $modelo->txt_colonia,
-                    $modelo->txt_municipio,
-                    $modelo->txt_estado,
-                    $modelo->txt_codigo_postal,
-                    $modelo->txt_entre_calles,
-                    $modelo->txt_observaciones_punto_referencia,
-                    $modelo->idCallCenter?$modelo->idCallCenter->txt_nombre:'',
-                    Utils::changeFormatDateInputShort($modelo->fch_creacion),
-                    Utils::changeFormatDateInputShort($modelo->fch_cita),
-                    $horario,
-                    $modelo->txt_autorizado_por,
-                    $intentos,
-                    $estatusEntrega,
+        endif;
 
-                    $modelo->nombreCompleto,
-                    $modelo->txt_sap_equipo,
-                    $modelo->txt_equipo,
-                    "'".$modelo->txt_imei,
-                    $modelo->txt_sap_iccid,
-                    "'".$modelo->txt_iccid,
-                    $modelo->txt_sap_promocional,
-                    $modelo->txt_promocional,
-                    $modelo->txt_sap_promocional_2,
-                    $modelo->txt_promocional_2,
-                    $modelo->txt_sap_promocional_3,
-                    $modelo->txt_promocional_3,
-                    $modelo->txt_sap_promocional_4,
-                    $modelo->txt_promocional_4,
-                    $modelo->txt_sap_promocional_5,
-                    $modelo->txt_promocional_5,
-                    $modelo->txt_tpv,
-                    
-                    
-                ];
+        endif;
 
-                $historico = [];
-                
+        $estatusEntrega = "";
+        if ($modelo->idStatus) {
+            if ($modelo->idStatus->txt_identificador_api) {
+                $estatusEntrega = $modelo->idStatus->txt_nombre;
+            }
+        }
 
-                $data[$modelo->id_cita] = array_merge($data[$modelo->id_cita], $historico);
+        $horario = "";
+        if ($modelo->b_entrega_cat && $modelo->id_cat) {
+            $horario = $modelo->txt_horario_entrega_cat;
+        } else {
+            $horario = $modelo->idHorario ? $modelo->idHorario->txt_hora_inicial . " - " . $modelo->idHorario->txt_hora_final : "";
+        }
 
-            endforeach;
+        $cac = "DOMICILIO";
+        if ($modelo->b_entrega_cat && $modelo->id_cat) {
+            $cac = "CAC - " . $modelo->idCat->txt_nombre;
+        } else if ($modelo->b_entrega_cat) {
+            $cac = "CAC - ";
+        }
+
+        $data[$modelo->id_cita] = [
+            $modelo->txt_identificador_cliente,
+            $modelo->txt_telefono,
+            $modelo->idEnvio ? $modelo->idEnvio->txt_tracking : '',
+            $modelo->idArea ? $modelo->idArea->txt_nombre : '',
+            $modelo->idMunicipio ? $modelo->idMunicipio->idTipo->txt_nombre : '',
+            $modelo->idMunicipio ? $modelo->idMunicipio->diasServicio : "",
+            $modelo->idTipoTramite->txt_nombre,
+            $cac,
+            $modelo->txt_calle_numero,
+            $modelo->txt_colonia,
+            $modelo->txt_municipio,
+            $modelo->txt_estado,
+            $modelo->txt_codigo_postal,
+            $modelo->txt_entre_calles,
+            $modelo->txt_observaciones_punto_referencia,
+            $modelo->idCallCenter ? $modelo->idCallCenter->txt_nombre : '',
+            Utils::changeFormatDateInputShort($modelo->fch_creacion),
+            Utils::changeFormatDateInputShort($modelo->fch_cita),
+            $horario,
+            $modelo->txt_autorizado_por,
+            $intentos,
+            $estatusEntrega,
+
+            $modelo->nombreCompleto,
+            $modelo->txt_sap_equipo,
+            $modelo->txt_equipo,
+            "'" . $modelo->txt_imei,
+            $modelo->txt_sap_iccid,
+            "'" . $modelo->txt_iccid,
+            $modelo->txt_sap_promocional,
+            $modelo->txt_promocional,
+            $modelo->txt_sap_promocional_2,
+            $modelo->txt_promocional_2,
+            $modelo->txt_sap_promocional_3,
+            $modelo->txt_promocional_3,
+            $modelo->txt_sap_promocional_4,
+            $modelo->txt_promocional_4,
+            $modelo->txt_sap_promocional_5,
+            $modelo->txt_promocional_5,
+            $modelo->txt_tpv,
+
+
+        ];
+
+        $historico = [];
+
+
+        $data[$modelo->id_cita] = array_merge($data[$modelo->id_cita], $historico);
+
+        endforeach;
 
             // print_r($historico);
             // exit;
@@ -891,43 +904,44 @@ class CitasController extends Controller
 
             
             //Set the Content-Type and Content-Disposition headers.
-            
-            header('Content-Type: application/csv; charset=utf-8');
-            header('Content-Disposition: attachment; filename="' . $fileName . '"');
+
+        header('Content-Type: application/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
     
             //Open up a PHP output stream using the function fopen.
-            $fp = fopen('php://output', 'w');
+        $fp = fopen('php://output', 'w');
         //add BOM to fix UTF-8 in Excel
-        fputs($fp, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+        fputs($fp, $bom = (chr(0xEF) . chr(0xBB) . chr(0xBF)));
         
             //Loop through the array containing our CSV data.
-            foreach ($data as $row) {
+        foreach ($data as $row) {
             //fputcsv formats the array into a CSV format.
             //It then writes the result to our output stream.
-                fputcsv($fp, $row);
-            }
+            fputcsv($fp, $row);
+        }
     
             //Close the file handle.
-            fclose($fp);
-            exit;
+        fclose($fp);
+        exit;
         endif;
 
-        return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch"=>$modelSearch]);
+        return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch" => $modelSearch]);
     }
 
-   
 
-    public function setHeadersCsvT(){
-        
-       
-        return  [
-            "Identificador único", "Número celular","Identificador de envio","Area", "Tipo / Zona",
-            "Frecuencia", "Trámite", "En", "Calle", "Colonia", "Municipio", "Estado", "C.P.", "Entre calles", "Referencias","Fza Vta", "Captura",
-            "CitaOrig", "HoraOrig", "EstatusCita","IntentosEntrega", "EstatusEntrega","Cliente","SAP Equipo","Equipo", "IMEI", 
-           "SAP ICCID", "ICCID", "SAP Promocional 1","Promocional","SAP Promocional 2","Promocional 2", "SAP Promocional 3","Promocional 3","SAP Promocional 4",
-           "Promocional 4","SAP Promocional 5","Promocional 5", "TPV"
+
+    public function setHeadersCsvT()
+    {
+
+
+        return [
+            "Identificador único", "Número celular", "Identificador de envio", "Area", "Tipo / Zona",
+            "Frecuencia", "Trámite", "En", "Calle", "Colonia", "Municipio", "Estado", "C.P.", "Entre calles", "Referencias", "Fza Vta", "Captura",
+            "CitaOrig", "HoraOrig", "EstatusCita", "IntentosEntrega", "EstatusEntrega", "Cliente", "SAP Equipo", "Equipo", "IMEI",
+            "SAP ICCID", "ICCID", "SAP Promocional 1", "Promocional", "SAP Promocional 2", "Promocional 2", "SAP Promocional 3", "Promocional 3", "SAP Promocional 4",
+            "Promocional 4", "SAP Promocional 5", "Promocional 5", "TPV"
         ];
-      }
+    }
 
     // ublic function actionDownloadData(){
 
@@ -1032,16 +1046,108 @@ class CitasController extends Controller
     //     return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch"=>$modelSearch]);
     // }
 
-    public function setHeadersCsv(){
-      return  [
-          "Identificador único", "Número celular","Identificador de envio", "Tipo / Zona",
-          "Frecuencia", "Trámite", "En", "Fza Vta", "Captura",
-          "CitaOrig", "HoraOrig", "EstatusCita","IntentosEntrega", "EstatusEntrega","Cliente","Equipo", "IMEI", 
-          "ICCID", "Promocional","Promocional 2","Promocional 3","Promocional 4","Promocional 5", "TPV", "Calle y número", "Colonia", "Municipio", 
-          "Estado", "C.P.",  "Referencias"
-      ];
+    public function setHeadersCsv()
+    {
+        return [
+            "Identificador único", "Número celular", "Identificador de envio", "Tipo / Zona",
+            "Frecuencia", "Trámite", "En", "Fza Vta", "Captura",
+            "CitaOrig", "HoraOrig", "EstatusCita", "IntentosEntrega", "EstatusEntrega", "Cliente", "Equipo", "IMEI",
+            "ICCID", "Promocional", "Promocional 2", "Promocional 3", "Promocional 4", "Promocional 5", "TPV", "Calle y número", "Colonia", "Municipio",
+            "Estado", "C.P.", "Referencias"
+        ];
     }
 
-   
+    /**
+     * Actualiza el envio
+     */
+    public function actionActualizarEnvioService()
+    {
+
+        $response = new ResponseServices();
+        try {
+            $headers = Yii::$app->request->headers;
+       
+        // returns the Accept header value
+            $auth = $headers->get('authentication-token');
+
+            if ($auth != "sGbMY0YViRodBMibIHLyjz2QZckDSEPm0+MPwQ3gI7u") {
+                $response->message = "Se necesita un token de acceso válido";
+
+                return $response;
+            }
+
+
+            if (!file_get_contents("php://input")) {
+                $response->message = "No se envio la información";
+                return $response;
+            }
+
+            $json = json_decode(file_get_contents("php://input"));
+
+            if (!isset($json->tracking)) {
+                $response->message = "No se envio el parametro de tracking";
+                return $response;
+            }
+
+            $tracking = $json->tracking;
+    
+
+        // BSMH-300518-3
+        // BGR30041801LA0236
+            $envioSearch = EntEnvios::find()->where(["txt_tracking" => $tracking])->one();
+
+            if (!$envioSearch) {
+                $response->message = "No existe el tracking en la base de datos.";
+                return $response;
+            }
+
+            $cita = $envioSearch->idCita;
+
+            if(!$cita){
+                $response->message = "El envio no tiene una cita asignada";
+                return $response;
+            }
+
+            $envioSearch->txt_respuesta_api = $cita->consultarEnvio($tracking);
+            $envioSearch->txt_historial_api = $cita->consultarHistorico($envioSearch->txt_tracking);
+            $respuestaApi = json_decode($envioSearch->txt_respuesta_api);
+
+            if (!$statusApi = CatStatusCitas::find()->where(["txt_identificador_api" => $respuestaApi->ClaveEvento])->one()) {
+                $response->message = "No se encontro el status del api en la base de datos";
+                return $response;
+            }
+
+
+            $cita->id_status = $statusApi->id_statu_cita;
+
+            if ($cita->id_status == Constantes::STATUS_ENTREGADO) {
+                $envioSearch->fch_entrega = $respuestaApi->Fecha;
+                $envioSearch->b_cerrado = 1;
+            }
+            
+            if(!$envioSearch->save()){
+                $response->message = "No se pudo actualizar el envio";
+                $response->result = $envioSearch->errors;
+                return $response;
+            }
+
+
+            if (!$cita->save(false)) {
+                $response->message = "No se pudo actualizar la cita";
+                $response->result = $cita->errors;
+                return $response;
+            }
+
+            $response->status = "success";
+            $response->message = "Actualización correcta";
+            
+
+            return $response;
+        } catch (\Exception $e) {
+            $response->message = "Ocurrio un problema con el servidor. Si el problema persiste comunicarse con 2 Geeks one Monkey";
+            return $response;
+        }
+    }
+
 
 }
