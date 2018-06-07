@@ -563,7 +563,7 @@ class CitasController extends Controller
     public function actionActualizarTodaInformacion()
     {
         $response = new ResponseServices();
-        $envios = EntEnvios::find()->all();
+        $envios = EntEnvios::find()->limit(300)->orderBy("id_envio desc")->all();
         foreach ($envios as $envioSearch) {
             $cita = $envioSearch->idCita;
             $envioSearch->txt_respuesta_api = $cita->consultarEnvio($envioSearch->txt_tracking);
