@@ -1090,7 +1090,7 @@ class CitasController extends Controller
             }
 
             $tracking = $json->tracking;
-    
+            Yii::info($json->tracking, 'peticiones');
 
         // BSMH-300518-3
         // BGR30041801LA0236
