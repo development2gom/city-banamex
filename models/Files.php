@@ -2,6 +2,14 @@
 namespace app\models;
 class Files{
 
+	public static function existeArchivo($path){
+		if (!file_exists($path)) {
+			return false;
+		}
+
+		return true;
+	}
+
     public static function validarDirectorio($path){
         if (!file_exists($path)) {
 			mkdir($path, 0777);

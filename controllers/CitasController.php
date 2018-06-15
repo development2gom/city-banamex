@@ -672,16 +672,17 @@ class CitasController extends Controller
             $response->message = "Archivo nulo";
             return $response;
         }
+       
 
-        //Files::validarDirectorio("evidencias/".$cita->txt_token);
-        $namefile = uniqid("pdf") . "." . $file->extension;
-        $path = "evidencias/" . $cita->txt_identificador_cliente . "-" . $namefile;
+        
+        $namefile = $cita->txt_identificador_cliente . "." . $file->extension;
+        $path =  $cita->pathBaseEvidencia.$namefile;
         $isSaved = $file->saveAs($path);
 
         if ($isSaved) {
 
             $evidencia->id_cita = $cita->id_cita;
-            $evidencia->txt_url = $path;
+            $evidencia->txt_url =$path;
             $evidencia->txt_nombre_original = $file->name;
             $evidencia->txt_token = Utils::generateToken("FIL");
             $evidencia->fch_creacion = Calendario::getFechaActual();
@@ -689,7 +690,7 @@ class CitasController extends Controller
             if ($evidencia->save()) {
                 $response->message = "Archivo guardado.";
                 $response->status = "success";
-                $response->result['url'] = Url::base() . "/citas/descargar-evidencia?token=" . $evidencia->txt_token;
+                $response->result['url'] = Url::base() . "/citas/descargar-evidencia?token=" . $cita->txt_identificador_cliente;
             } else {
                 $response->message = "Ocurrio un problema al guardar en la base de datos.";
                 Files::borrarArchivo($path);
@@ -705,12 +706,26 @@ class CitasController extends Controller
 
     public function actionDescargarEvidencia($token = null)
     {
-        $evidencia = EntEvidenciasCitas::find()->where(["txt_token" => $token])->one();
-        $cita = $evidencia->idCita;
-        if (file_exists($evidencia->txt_url)) {
-            Yii::$app->response->sendFile($evidencia->txt_url, "Evidencia_" . $cita->txt_identificador_cliente . ".pdf");
+        $cita = EntCitas::find()->where(["txt_identificador_cliente"=>$token])->one();
+
+        if(empty($cita)){
+            $evidencia = EntEvidenciasCitas::find()->where(["txt_token"=>$token])->one();
+            $cita = $evidencia->idCita;
+            if($evidencia){
+                $ubicacionArchivo = $evidencia->txt_url;
+            }else{
+                $ubicacionArchivo = "";
+            }
+
+        }else{
+            $ubicacionArchivo = $cita->pathBaseEvidencia.$cita->txt_identificador_cliente.".pdf";
+        }
+
+        
+        if (file_exists($ubicacionArchivo)) {
+            Yii::$app->response->sendFile($ubicacionArchivo, "Evidencia_" . $cita->txt_identificador_cliente . ".pdf");
         } else {
-            echo $evidencia->txt_url;
+            echo "No existe el archivo para descargar: ".$ubicacionArchivo;
         }
 
     }

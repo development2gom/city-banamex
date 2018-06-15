@@ -8,6 +8,7 @@ use yii\helpers\Url;
 
 use app\models\Constantes;
 use app\modules\ModUsuarios\models\EntUsuarios;
+use app\models\Files;
 $this->title = $envio->txt_tracking;
 $this->params['classBody'] = "site-navbar-small site-menubar-hide";
 
@@ -288,7 +289,16 @@ $usuarioLogueado = EntUsuarios::getUsuarioLogueado();
                     
                 <h5>
                     Subir evidencia
-                    <a class="badge float-right js-descargar-evidencia" style="display:<?=$hasEvidencia?'block':'none'?>" href="<?=$hasEvidencia?Url::base()."/citas/descargar-evidencia?token=".$hasEvidencia->txt_token:''?>" target="_blank"><i class="icon wb-download" aria-hidden="true"></i></a>
+                    <?php
+                    $ubicacionArchivo = $cita->pathBaseEvidencia.$cita->txt_identificador_cliente.".pdf";
+                    $token = false;
+                    if(Files::existeArchivo($ubicacionArchivo)){
+                        $token = $cita->txt_identificador_cliente;
+                    }else if($hasEvidencia){
+                        $token = $hasEvidencia->txt_token;
+                    };
+                    ?>
+                    <a class="badge float-right js-descargar-evidencia" style="display:<?=$token?'block':'none'?>" href="<?=$token?Url::base()."/citas/descargar-evidencia?token=".$token:''?>" target="_blank"><i class="icon wb-download" aria-hidden="true"></i></a>
                 </h5>
 
                 <div class="card card-dropify">

@@ -809,4 +809,17 @@ class EntCitas extends \yii\db\ActiveRecord
         return $this->txt_sap_promocional_5." - ".$this->txt_promocional_5;
     }
 
+    public function getPathBaseEvidencia(){
+        $pathBase = "evidencias/";
+        $anio = Calendario::getYearLastDigit($this->fch_cita);
+        $pathAnio = $pathBase.$anio."/";
+        Files::validarDirectorio($pathAnio);
+        $mes = Calendario::getMonthNumber($this->fch_cita);
+        $pathMes = $pathAnio.$mes."/";
+        Files::validarDirectorio($pathMes);
+
+        return $pathMes;
+
+    }
+
 }
