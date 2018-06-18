@@ -528,19 +528,23 @@ class CitasController extends Controller
         $cita = new EntCitas();
         $envio = EntEnvios::find()->where(['txt_token' => $token])->one();
 
-        if(!($envio->txt_respuesta_api && $envio->txt_historial_api)){
+        if($envio->txt_respuesta_api && $envio->txt_historial_api){
 
+            
+        }else{
             $envio->txt_respuesta_api = $cita->consultarEnvio($envio->txt_tracking);
            
             $envio->txt_historial_api = ($cita->consultarHistorico($envio->txt_tracking));
             
-            if ($respuestaApi->Response == "Failure") {
-                return $this->render("sin-envio-h2h", ["tracking" => $envio->txt_tracking]);
-            }
+           
         }
 
         $respuestaApi = json_decode($envio->txt_respuesta_api);
         $historico = json_decode($envio->txt_historial_api);
+
+        if ($respuestaApi->Response == "Failure") {
+            return $this->render("sin-envio-h2h", ["tracking" => $envio->txt_tracking]);
+        }
 
         if ($cita->id_status == Constantes::STATUS_ENTREGADO) {
             $envio->fch_entrega = $respuestaApi->Fecha;
