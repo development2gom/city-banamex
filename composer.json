@@ -26,7 +26,8 @@
         "phpoffice/phpspreadsheet": "^1.0",
         "sjaakp/yii2-alphapager": "*",
         "kartik-v/yii2-field-range": "*",
-        "kartik-v/yii2-date-range": "*"
+        "kartik-v/yii2-date-range": "*",
+        "2amigos/yii2-file-upload-widget": "~1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

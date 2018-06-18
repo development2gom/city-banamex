@@ -806,6 +806,13 @@ $("#entcitas-b_promocionales").on("change", function(){
 
   });
 
+  $("#form-cita").on("beforeSubmit", function(){
+      if($("#js-guardar-cita-btn").get(0)){
+        var l = Ladda.create($("#js-guardar-cita-btn").get(0));
+        l.start();
+      }
+  });
+
   $("#form-cita").on("afterValidate", function (e, attr, messages) {
     if(messages.length>0){
         toastr.options = {

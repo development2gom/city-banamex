@@ -75,7 +75,8 @@ class EntCitas extends \yii\db\ActiveRecord
     {
         $consecutivo = count(EntCitas::find()->where(new Expression('date_format(fch_creacion, "%Y-%m-%d")=date_format(NOW(), "%Y-%m-%d")'))->all());
         $consecutivo++;
-        $identificador = Constantes::IDENTIFICADOR_CLIENTE  . Calendario::getDayNumber(). Calendario::getMonthNumber().Calendario::getYearLastDigit()  . "-" . $consecutivo;
+        $usuario = EntUsuarios::getUsuarioLogueado();
+        $identificador = Constantes::IDENTIFICADOR_CLIENTE . Calendario::getDayNumber(). Calendario::getMonthNumber().Calendario::getYearLastDigit()  . "-" . $consecutivo.$usuario->id_usuario;
         $this->txt_identificador_cliente = $identificador;
 
     }
@@ -695,7 +696,7 @@ class EntCitas extends \yii\db\ActiveRecord
     public function getBotonGuardar()
     {
         if ($this->isNewRecord) {
-            return Html::submitButton("<span class='ladda-label'> <i class='site-menu-icon pe-headphones' aria-hidden='true'></i> " . ($this->isNewRecord ? 'Generar cita' : 'Actualizar cita') . "</span>", ['class' => ($this->isNewRecord ? 'btn btn-success btn-form-save' : 'btn btn-primary ') . "  float-right ladda-button", "data-style" => "zoom-in"]);
+            return Html::submitButton("<span class='ladda-label'> <i class='site-menu-icon pe-headphones' aria-hidden='true'></i> " . ($this->isNewRecord ? 'Generar cita' : 'Actualizar cita') . "</span>", ['id'=>"js-guardar-cita-btn", 'class' => ($this->isNewRecord ? 'btn btn-success btn-form-save' : 'btn btn-primary ') . "  float-right ladda-button", "data-style" => "zoom-in"]);
         }
         return "";
     }
@@ -807,6 +808,19 @@ class EntCitas extends \yii\db\ActiveRecord
 
     public function getPromocional5(){
         return $this->txt_sap_promocional_5." - ".$this->txt_promocional_5;
+    }
+
+    public function getPathBaseEvidencia(){
+        $pathBase = "evidencias/";
+        $anio = Calendario::getYearLastDigit($this->fch_cita);
+        $pathAnio = $pathBase.$anio."/";
+        Files::validarDirectorio($pathAnio);
+        $mes = Calendario::getMonthNumber($this->fch_cita);
+        $pathMes = $pathAnio.$mes."/";
+        Files::validarDirectorio($pathMes);
+
+        return $pathMes;
+
     }
 
 }

@@ -64,6 +64,11 @@ class CitasController extends Controller
                         'allow' => true,
                         'roles' => [Constantes::USUARIO_CALL_CENTER],
                     ],
+                    [
+                        'actions' => ['guardar-archivos'],
+                        'allow' => true,
+                        'roles' => [Constantes::USUARIO_MASTER_BRIGHT_STAR],
+                    ],
 
 
                 ],
@@ -523,14 +528,19 @@ class CitasController extends Controller
         $cita = new EntCitas();
         $envio = EntEnvios::find()->where(['txt_token' => $token])->one();
 
-        $envio->txt_respuesta_api = $cita->consultarEnvio($envio->txt_tracking);
-        $respuestaApi = json_decode($envio->txt_respuesta_api);
-        $envio->txt_historial_api = ($cita->consultarHistorico($envio->txt_tracking));
-        $historico = json_decode($envio->txt_historial_api);
+        if(!($envio->txt_respuesta_api && $envio->txt_historial_api)){
 
-        if ($respuestaApi->Response == "Failure") {
-            return $this->render("sin-envio-h2h", ["tracking" => $envio->txt_tracking]);
+            $envio->txt_respuesta_api = $cita->consultarEnvio($envio->txt_tracking);
+           
+            $envio->txt_historial_api = ($cita->consultarHistorico($envio->txt_tracking));
+            
+            if ($respuestaApi->Response == "Failure") {
+                return $this->render("sin-envio-h2h", ["tracking" => $envio->txt_tracking]);
+            }
         }
+
+        $respuestaApi = json_decode($envio->txt_respuesta_api);
+        $historico = json_decode($envio->txt_historial_api);
 
         if ($cita->id_status == Constantes::STATUS_ENTREGADO) {
             $envio->fch_entrega = $respuestaApi->Fecha;
@@ -672,16 +682,17 @@ class CitasController extends Controller
             $response->message = "Archivo nulo";
             return $response;
         }
+       
 
-        //Files::validarDirectorio("evidencias/".$cita->txt_token);
-        $namefile = uniqid("pdf") . "." . $file->extension;
-        $path = "evidencias/" . $cita->txt_identificador_cliente . "-" . $namefile;
+        
+        $namefile = $cita->txt_telefono . "." . $file->extension;
+        $path =  $cita->pathBaseEvidencia.$namefile;
         $isSaved = $file->saveAs($path);
 
         if ($isSaved) {
 
             $evidencia->id_cita = $cita->id_cita;
-            $evidencia->txt_url = $path;
+            $evidencia->txt_url =$path;
             $evidencia->txt_nombre_original = $file->name;
             $evidencia->txt_token = Utils::generateToken("FIL");
             $evidencia->fch_creacion = Calendario::getFechaActual();
@@ -689,7 +700,7 @@ class CitasController extends Controller
             if ($evidencia->save()) {
                 $response->message = "Archivo guardado.";
                 $response->status = "success";
-                $response->result['url'] = Url::base() . "/citas/descargar-evidencia?token=" . $evidencia->txt_token;
+                $response->result['url'] = Url::base() . "/citas/descargar-evidencia?token=" . $cita->txt_identificador_cliente;
             } else {
                 $response->message = "Ocurrio un problema al guardar en la base de datos.";
                 Files::borrarArchivo($path);
@@ -705,12 +716,26 @@ class CitasController extends Controller
 
     public function actionDescargarEvidencia($token = null)
     {
-        $evidencia = EntEvidenciasCitas::find()->where(["txt_token" => $token])->one();
-        $cita = $evidencia->idCita;
-        if (file_exists($evidencia->txt_url)) {
-            Yii::$app->response->sendFile($evidencia->txt_url, "Evidencia_" . $cita->txt_identificador_cliente . ".pdf");
+        $cita = EntCitas::find()->where(["txt_identificador_cliente"=>$token])->one();
+
+        if(empty($cita)){
+            $evidencia = EntEvidenciasCitas::find()->where(["txt_token"=>$token])->one();
+            $cita = $evidencia->idCita;
+            if($evidencia){
+                $ubicacionArchivo = $evidencia->txt_url;
+            }else{
+                $ubicacionArchivo = "";
+            }
+
+        }else{
+            $ubicacionArchivo = $cita->pathBaseEvidencia.$cita->txt_telefono.".pdf";
+        }
+
+        
+        if (file_exists($ubicacionArchivo)) {
+            Yii::$app->response->sendFile($ubicacionArchivo, "Evidencia_" . $cita->txt_telefono . ".pdf");
         } else {
-            echo $evidencia->txt_url;
+            echo "No existe el archivo para descargar: ".$ubicacionArchivo;
         }
 
     }
@@ -1090,7 +1115,7 @@ class CitasController extends Controller
             }
 
             $tracking = $json->tracking;
-    
+            Yii::info($json->tracking, 'peticiones');
 
         // BSMH-300518-3
         // BGR30041801LA0236
@@ -1149,5 +1174,50 @@ class CitasController extends Controller
         }
     }
 
+    public function actionSubirArchivos(){
+
+    
+
+        return $this->render("subir-archivos");
+    
+    }
+
+    public function actionGuardarArchivos(){
+        $response = new ResponseServices();
+       
+        $archivo = UploadedFile::getInstanceByName("file");
+
+        if(!$archivo){
+            $response->message = "No hay archivos";
+            return $response;
+        }
+
+        if(isset($_POST["fecha"]) && $_POST["fecha"]){
+            $anio = Calendario::getYearLastDigit($_POST["fecha"]);
+            $mes = Calendario::getMonthNumber($_POST["fecha"]);
+        }else{
+            $anio = Calendario::getYearLastDigit();
+            $mes = Calendario::getMonthNumber();
+        }
+
+
+        $pathBase = "evidencias/";
+        
+        $pathAnio = $pathBase.$anio."/";
+        Files::validarDirectorio($pathAnio);
+      
+        $pathMes = $pathAnio.$mes."/";
+        Files::validarDirectorio($pathMes);
+
+        if($archivo->saveAs($pathMes. $archivo->baseName . '.' . $archivo->extension)){
+            $response->status = "success";
+            $response->message = "Archivo guardado";
+        }else{
+            $response->message = "No se pudo guardar el archivo";
+        }
+        
+        return $response;
+
+    }
 
 }

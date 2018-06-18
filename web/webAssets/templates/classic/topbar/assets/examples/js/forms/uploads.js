@@ -22,7 +22,7 @@
     downloadTemplateId: false,
     uploadTemplate: tmpl(
       '{% for (var i=0, file; file=o.files[i]; i++) { %}' +
-      '<div class="file-item-wrap template-upload fade col-lg-2 col-md-4 col-sm-6 {%=file.type.search("image") !== -1? "image" : "other-file"%}">' +
+      '<div class="file-item-wrap template-upload col-lg-2 col-md-4 col-sm-6 {%=file.type.search("image") !== -1? "image" : "other-file"%}">' +
       '<div class="file-item">' +
       '<div class="preview vertical-align">' +
       '<div class="file-action-wrap">' +
@@ -48,7 +48,7 @@
     ),
     downloadTemplate: tmpl(
       '{% for (var i=0, file; file=o.files[i]; i++) { %}' +
-      '<div class="file-item-wrap template-download fade col-lg-2 col-md-4 col-sm-6 {%=file.type.search("image") !== -1? "image" : "other-file"%}">' +
+      '<div class="file-item-wrap template-download  col-lg-2 col-md-4 col-sm-6 {%=file.type.search("image") !== -1? "image" : "other-file"%}">' +
       '<div class="file-item">' +
       '<div class="preview vertical-align">' +
       '<div class="file-action-wrap">' +
@@ -108,7 +108,7 @@
     if ($(e.target).parents('.file-item-wrap').length === 0) $('#inputUpload').trigger('click');
   });
 
-  $(document).bind('dragover', function(e) {
+  $(document).on('dragover', function(e) {
     var dropZone = $('#exampleUploadForm'),
       timeout = window.dropZoneTimeout;
     if (!timeout) {
