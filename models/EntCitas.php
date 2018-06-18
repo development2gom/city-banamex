@@ -75,7 +75,8 @@ class EntCitas extends \yii\db\ActiveRecord
     {
         $consecutivo = count(EntCitas::find()->where(new Expression('date_format(fch_creacion, "%Y-%m-%d")=date_format(NOW(), "%Y-%m-%d")'))->all());
         $consecutivo++;
-        $identificador = Constantes::IDENTIFICADOR_CLIENTE  . Calendario::getDayNumber(). Calendario::getMonthNumber().Calendario::getYearLastDigit()  . "-" . $consecutivo;
+        $usuario = EntUsuarios::getUsuarioLogueado();
+        $identificador = Constantes::IDENTIFICADOR_CLIENTE . Calendario::getDayNumber(). Calendario::getMonthNumber().Calendario::getYearLastDigit()  . "-" . $consecutivo.$usuario->id_usuario;
         $this->txt_identificador_cliente = $identificador;
 
     }

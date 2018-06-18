@@ -64,6 +64,11 @@ class CitasController extends Controller
                         'allow' => true,
                         'roles' => [Constantes::USUARIO_CALL_CENTER],
                     ],
+                    [
+                        'actions' => ['guardar-archivos'],
+                        'allow' => true,
+                        'roles' => [Constantes::USUARIO_MASTER_BRIGHT_STAR],
+                    ],
 
 
                 ],
@@ -523,14 +528,19 @@ class CitasController extends Controller
         $cita = new EntCitas();
         $envio = EntEnvios::find()->where(['txt_token' => $token])->one();
 
-        $envio->txt_respuesta_api = $cita->consultarEnvio($envio->txt_tracking);
-        $respuestaApi = json_decode($envio->txt_respuesta_api);
-        $envio->txt_historial_api = ($cita->consultarHistorico($envio->txt_tracking));
-        $historico = json_decode($envio->txt_historial_api);
+        if(!($envio->txt_respuesta_api && $envio->txt_historial_api)){
 
-        if ($respuestaApi->Response == "Failure") {
-            return $this->render("sin-envio-h2h", ["tracking" => $envio->txt_tracking]);
+            $envio->txt_respuesta_api = $cita->consultarEnvio($envio->txt_tracking);
+           
+            $envio->txt_historial_api = ($cita->consultarHistorico($envio->txt_tracking));
+            
+            if ($respuestaApi->Response == "Failure") {
+                return $this->render("sin-envio-h2h", ["tracking" => $envio->txt_tracking]);
+            }
         }
+
+        $respuestaApi = json_decode($envio->txt_respuesta_api);
+        $historico = json_decode($envio->txt_historial_api);
 
         if ($cita->id_status == Constantes::STATUS_ENTREGADO) {
             $envio->fch_entrega = $respuestaApi->Fecha;
@@ -675,7 +685,7 @@ class CitasController extends Controller
        
 
         
-        $namefile = $cita->txt_identificador_cliente . "." . $file->extension;
+        $namefile = $cita->txt_telefono . "." . $file->extension;
         $path =  $cita->pathBaseEvidencia.$namefile;
         $isSaved = $file->saveAs($path);
 
@@ -718,12 +728,12 @@ class CitasController extends Controller
             }
 
         }else{
-            $ubicacionArchivo = $cita->pathBaseEvidencia.$cita->txt_identificador_cliente.".pdf";
+            $ubicacionArchivo = $cita->pathBaseEvidencia.$cita->txt_telefono.".pdf";
         }
 
         
         if (file_exists($ubicacionArchivo)) {
-            Yii::$app->response->sendFile($ubicacionArchivo, "Evidencia_" . $cita->txt_identificador_cliente . ".pdf");
+            Yii::$app->response->sendFile($ubicacionArchivo, "Evidencia_" . $cita->txt_telefono . ".pdf");
         } else {
             echo "No existe el archivo para descargar: ".$ubicacionArchivo;
         }
@@ -1164,5 +1174,50 @@ class CitasController extends Controller
         }
     }
 
+    public function actionSubirArchivos(){
+
+    
+
+        return $this->render("subir-archivos");
+    
+    }
+
+    public function actionGuardarArchivos(){
+        $response = new ResponseServices();
+       
+        $archivo = UploadedFile::getInstanceByName("file");
+
+        if(!$archivo){
+            $response->message = "No hay archivos";
+            return $response;
+        }
+
+        if(isset($_POST["fecha"]) && $_POST["fecha"]){
+            $anio = Calendario::getYearLastDigit($_POST["fecha"]);
+            $mes = Calendario::getMonthNumber($_POST["fecha"]);
+        }else{
+            $anio = Calendario::getYearLastDigit();
+            $mes = Calendario::getMonthNumber();
+        }
+
+
+        $pathBase = "evidencias/";
+        
+        $pathAnio = $pathBase.$anio."/";
+        Files::validarDirectorio($pathAnio);
+      
+        $pathMes = $pathAnio.$mes."/";
+        Files::validarDirectorio($pathMes);
+
+        if($archivo->saveAs($pathMes. $archivo->baseName . '.' . $archivo->extension)){
+            $response->status = "success";
+            $response->message = "Archivo guardado";
+        }else{
+            $response->message = "No se pudo guardar el archivo";
+        }
+        
+        return $response;
+
+    }
 
 }

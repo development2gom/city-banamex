@@ -79,8 +79,11 @@ $(document).ready(function(){
 });
 
 function actualizarEnvios(){
+    return false;
 // The .each() method is unnecessary here:
 $( ".actualizar-envio" ).each(function() {
+
+    
     var elemento = $(this);
     var envio = elemento.data("envio");
     $.ajax({
