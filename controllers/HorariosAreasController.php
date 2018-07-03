@@ -189,7 +189,7 @@ class HorariosAreasController extends Controller
             
 
             $selected  = null;
-            if ($id != null) {
+            if ($id != null && $cac) {
                 $selected = '';
                 
                             $out[0] = [
