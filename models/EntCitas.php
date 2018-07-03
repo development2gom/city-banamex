@@ -344,11 +344,12 @@ class EntCitas extends \yii\db\ActiveRecord
                 }"
             ],
             [
-                ['txt_horario_entrega_cat'], 'required',
+                ['txt_horario_entrega_cat'], 'required', 'on' => ['autorizar', 'autorizar-update'],
                 'when' => function ($model) {
                     return $model->b_entrega_cat==1;
                 }, 'whenClient' => "function (attribute, value) {
-                    alert($('#entcitas-b_entrega_cat').prop('checked'));
+                    console.log(attribute);
+                    console.log(value);
                     return $('#entcitas-b_entrega_cat').prop('checked');
                 }"
             ],
