@@ -153,30 +153,44 @@ class HorariosAreasController extends Controller
             $numDia = Calendario::getNumberDayWeek($fecha);
             if($numDia==1){
                 $cac = CatCats::find()->where(["id_cat"=>$id, "b_lunes"=>1])->one();
+                echo $numDia;
+                exit;
             }
 
             if($numDia==2){
                 $cac = CatCats::find()->where(["id_cat"=>$id, "b_martes"=>1])->one();
+                echo $numDia;
+                exit;
             }
 
             if($numDia==3){
                 $cac = CatCats::find()->where(["id_cat"=>$id, "b_miercoles"=>1])->one();
+                echo $numDia;
+                exit;
             }
 
             if($numDia==4){
                 $cac = CatCats::find()->where(["id_cat"=>$id, "b_jueves"=>1])->one();
+                echo $numDia;
+                exit;
             }
 
             if($numDia==5){
                 $cac = CatCats::find()->where(["id_cat"=>$id, "b_viernes"=>1])->one();
+                echo $numDia;
+                exit;
             }
 
             if($numDia==6){
                 $cac = CatCats::find()->where(["id_cat"=>$id, "b_sabado"=>1])->one();
+                echo $numDia;
+                exit;
             }
 
             if($numDia==7){
                 $cac = CatCats::find()->where(["id_cat"=>$id, "b_domingo"=>1])->one();
+                echo $numDia;
+                exit;
             }
 
             
