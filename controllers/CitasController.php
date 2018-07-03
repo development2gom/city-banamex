@@ -161,6 +161,7 @@ class CitasController extends Controller
 
         }
 
+        
         $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
         if ($model->fch_nacimiento) {
             $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);
@@ -511,9 +512,9 @@ class CitasController extends Controller
     public function actionTestApi()
     {
         $apiEnvio = new H2H();
-        $cita = EntCitas::find()->one();
-        $respuestaApi = $apiEnvio->crearEnvio($cita);
-        echo $respuestaApi;
+        $cita = EntCitas::find()->where(["txt_telefono"=>"5583046022"])->one();
+        $cita->generarNumeroEnvio();
+        $cita->save();
     }
 
     public function actionConsultar()
@@ -542,7 +543,7 @@ class CitasController extends Controller
         $respuestaApi = json_decode($envio->txt_respuesta_api);
         $historico = json_decode($envio->txt_historial_api);
 
-        if ($respuestaApi->Response == "Failure") {
+        if (isset($respuestaApi->Response) && $respuestaApi->Response== "Failure") {
             return $this->render("sin-envio-h2h", ["tracking" => $envio->txt_tracking]);
         }
 

@@ -64,7 +64,7 @@ class H2H
         $this->calle = $cita->txt_calle_numero;
         $this->numInterior = "";
         $this->numExterior = "";
-        $this->estado = $cita->txt_estado;
+        $this->estado = $cita->idArea->txt_nombre;
         $this->municipio = $cita->txt_municipio;
         $this->colonia = $cita->txt_colonia;
         $this->direccion = "";
