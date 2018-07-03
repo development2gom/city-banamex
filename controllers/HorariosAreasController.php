@@ -138,7 +138,7 @@ class HorariosAreasController extends Controller
 
             $id = $_POST['depdrop_all_params']['entcitas-id_cat'];
             $fecha = $_POST['depdrop_all_params']['entcitas-fch_cita'];
-            $cac = CatCats::find()->where(["id_cat"=>$id])->one();
+           
 
             if(!$id){
                 echo Json::encode(['output' => $out, 'selected'=>'']);
