@@ -152,7 +152,7 @@ class EntCitas extends \yii\db\ActiveRecord
     {
         $usuario = EntUsuarios::getUsuarioLogueado();
         
-        $message = "Cita editada por " . $usuario->txtAuthItem->description;
+        $message = "Cita editada por " . $usuario->txtAuthItem->description.". Fecha promesa: ".Calendario::getDateComplete($this->fch_cita);
         EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
 
         $this->txt_autorizado_por = $message;
@@ -175,7 +175,7 @@ class EntCitas extends \yii\db\ActiveRecord
             $message = Permisos::getMessageHistorialRechazar();
         }
 
-        EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
+        EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message.". Fecha promesa: ".Calendario::getDateComplete($this->fch_cita));
         $this->txt_autorizado_por = $message;
         $this->save();
     }

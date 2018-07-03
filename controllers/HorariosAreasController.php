@@ -133,10 +133,11 @@ class HorariosAreasController extends Controller
         $respuesta = new ResponseServices();
         $out = [];
 
-        if (isset($_POST['depdrop_all_params']['entcitas-id_cat'])) {
+        if (isset($_POST['depdrop_all_params']['entcitas-id_cat'])&&
+        isset($_POST['depdrop_all_params']['entcitas-fch_cita'])) {
 
             $id = $_POST['depdrop_all_params']['entcitas-id_cat'];
-
+            $fecha = $_POST['depdrop_all_params']['entcitas-fch_cita'];
             $cac = CatCats::find()->where(["id_cat"=>$id])->one();
 
             if(!$id){
@@ -144,8 +145,42 @@ class HorariosAreasController extends Controller
                 return;
             }
            
+            if(!$fecha){
+                echo Json::encode(['output' => $out, 'selected'=>'']);
+                return;
+            }
+            // fch_cita id_tipo_entrega
+            $numDia = Calendario::getNumberDayWeek($fecha);
+            if($numDia==1){
+                $cac = CatCats::find()->where(["id_cat"=>$id, "b_lunes"=>1])->one();
+            }
+
+            if($numDia==2){
+                $cac = CatCats::find()->where(["id_cat"=>$id, "b_martes"=>1])->one();
+            }
+
+            if($numDia==3){
+                $cac = CatCats::find()->where(["id_cat"=>$id, "b_miercoles"=>1])->one();
+            }
+
+            if($numDia==4){
+                $cac = CatCats::find()->where(["id_cat"=>$id, "b_jueves"=>1])->one();
+            }
+
+            if($numDia==5){
+                $cac = CatCats::find()->where(["id_cat"=>$id, "b_viernes"=>1])->one();
+            }
+
+            if($numDia==6){
+                $cac = CatCats::find()->where(["id_cat"=>$id, "b_sabado"=>1])->one();
+            }
+
+            if($numDia==7){
+                $cac = CatCats::find()->where(["id_cat"=>$id, "b_domingo"=>1])->one();
+            }
 
             
+
             $selected  = null;
             if ($id != null) {
                 $selected = '';

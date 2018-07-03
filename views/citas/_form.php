@@ -525,7 +525,7 @@ $cat = $model->idCat;
                         
                         'allowClear'=>true,
                         'escapeMarkup' => new JsExpression('function (markup) { 
-                            
+                            console.log();
                             return markup; }'),
                         'templateResult' => new JsExpression('formatRepo'),
                     ],
@@ -566,10 +566,10 @@ $cat = $model->idCat;
                 'pluginOptions'=>[
                     'initialize' => true,
                     'url' => Url::to(['/horarios-areas/get-horarios-disponibilidad-by-cac?cac='.$model->txt_horario_entrega_cat]),
-                    'depends'=>['entcitas-id_cat'],
+                    'depends'=>['entcitas-id_cat', 'entcitas-fch_cita'],
                     'params'=>[
                         'entcitas-id_cat',
-                        //'entcitas-fch_cita'
+                        'entcitas-fch_cita'
                     ],  
                     'loadingText' => 'Cargando horarios ...',
                     
