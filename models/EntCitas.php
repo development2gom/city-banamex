@@ -152,10 +152,11 @@ class EntCitas extends \yii\db\ActiveRecord
     {
         $usuario = EntUsuarios::getUsuarioLogueado();
         
-        $message = "Cita editada por " . $usuario->txtAuthItem->description;
+        $message = "Cita editada por " . $usuario->txtAuthItem->description.". Fecha promesa: ".Calendario::getDateComplete($this->fch_cita);
+        $message2 = "Cita editada por " . $usuario->txtAuthItem->description;
         EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
 
-        $this->txt_autorizado_por = $message;
+        $this->txt_autorizado_por = $message2;
         $this->save();
     }
 
@@ -175,7 +176,7 @@ class EntCitas extends \yii\db\ActiveRecord
             $message = Permisos::getMessageHistorialRechazar();
         }
 
-        EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message);
+        EntHistorialCambiosCitas::guardarHistorial($this->id_cita, $message.". Fecha promesa: ".Calendario::getDateComplete($this->fch_cita));
         $this->txt_autorizado_por = $message;
         $this->save();
     }
@@ -348,7 +349,8 @@ class EntCitas extends \yii\db\ActiveRecord
                 'when' => function ($model) {
                     return $model->b_entrega_cat==1;
                 }, 'whenClient' => "function (attribute, value) {
-                    
+                    console.log(attribute);
+                    console.log(value);
                     return $('#entcitas-b_entrega_cat').prop('checked');
                 }"
             ],

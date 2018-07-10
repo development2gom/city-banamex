@@ -6,13 +6,13 @@ $this->title = 'Subir evidencias';
 $this->params['classBody'] = "site-navbar-small site-menubar-hide";
 
 $this->registerCssFile(
-    'http://hayageek.github.io/jQuery-Upload-File/4.0.11/uploadfile.css',
+    '//hayageek.github.io/jQuery-Upload-File/4.0.11/uploadfile.css',
     ['depends' => [\app\assets\AppAsset::className()]]
 );
 
 
 $this->registerJsFile(
-    'http://hayageek.github.io/jQuery-Upload-File/4.0.11/jquery.uploadfile.min.js',
+    '//hayageek.github.io/jQuery-Upload-File/4.0.11/jquery.uploadfile.min.js',
     ['depends' => [\app\assets\AppAsset::className()]]
 );
 
