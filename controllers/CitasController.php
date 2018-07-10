@@ -161,7 +161,7 @@ class CitasController extends Controller
 
         }
 
-        
+
         $model->fch_cita = Utils::changeFormatDate($model->fch_cita);
         if ($model->fch_nacimiento) {
             $model->fch_nacimiento = Utils::changeFormatDate($model->fch_nacimiento);
@@ -512,7 +512,7 @@ class CitasController extends Controller
     public function actionTestApi()
     {
         $apiEnvio = new H2H();
-        $cita = EntCitas::find()->where(["txt_telefono"=>"5583046022"])->one();
+        $cita = EntCitas::find()->where(["txt_telefono" => "5583046022"])->one();
         $cita->generarNumeroEnvio();
         $cita->save();
     }
@@ -529,21 +529,21 @@ class CitasController extends Controller
         $cita = new EntCitas();
         $envio = EntEnvios::find()->where(['txt_token' => $token])->one();
 
-        if($envio->txt_respuesta_api && $envio->txt_historial_api){
+        if ($envio->txt_respuesta_api && $envio->txt_historial_api) {
 
-            
-        }else{
+
+        } else {
             $envio->txt_respuesta_api = $cita->consultarEnvio($envio->txt_tracking);
-           
+
             $envio->txt_historial_api = ($cita->consultarHistorico($envio->txt_tracking));
-            
-           
+
+
         }
 
         $respuestaApi = json_decode($envio->txt_respuesta_api);
         $historico = json_decode($envio->txt_historial_api);
 
-        if (isset($respuestaApi->Response) && $respuestaApi->Response== "Failure") {
+        if (isset($respuestaApi->Response) && $respuestaApi->Response == "Failure") {
             return $this->render("sin-envio-h2h", ["tracking" => $envio->txt_tracking]);
         }
 
@@ -687,17 +687,17 @@ class CitasController extends Controller
             $response->message = "Archivo nulo";
             return $response;
         }
-       
 
-        
+
+
         $namefile = $cita->txt_telefono . "." . $file->extension;
-        $path =  $cita->pathBaseEvidencia.$namefile;
+        $path = $cita->pathBaseEvidencia . $namefile;
         $isSaved = $file->saveAs($path);
 
         if ($isSaved) {
 
             $evidencia->id_cita = $cita->id_cita;
-            $evidencia->txt_url =$path;
+            $evidencia->txt_url = $path;
             $evidencia->txt_nombre_original = $file->name;
             $evidencia->txt_token = Utils::generateToken("FIL");
             $evidencia->fch_creacion = Calendario::getFechaActual();
@@ -721,26 +721,26 @@ class CitasController extends Controller
 
     public function actionDescargarEvidencia($token = null)
     {
-        $cita = EntCitas::find()->where(["txt_identificador_cliente"=>$token])->one();
+        $cita = EntCitas::find()->where(["txt_identificador_cliente" => $token])->one();
 
-        if(empty($cita)){
-            $evidencia = EntEvidenciasCitas::find()->where(["txt_token"=>$token])->one();
+        if (empty($cita)) {
+            $evidencia = EntEvidenciasCitas::find()->where(["txt_token" => $token])->one();
             $cita = $evidencia->idCita;
-            if($evidencia){
+            if ($evidencia) {
                 $ubicacionArchivo = $evidencia->txt_url;
-            }else{
+            } else {
                 $ubicacionArchivo = "";
             }
 
-        }else{
-            $ubicacionArchivo = $cita->pathBaseEvidencia.$cita->txt_telefono.".pdf";
+        } else {
+            $ubicacionArchivo = $cita->pathBaseEvidencia . $cita->txt_telefono . ".pdf";
         }
 
-        
+
         if (file_exists($ubicacionArchivo)) {
             Yii::$app->response->sendFile($ubicacionArchivo, "Evidencia_" . $cita->txt_telefono . ".pdf");
         } else {
-            echo "No existe el archivo para descargar: ".$ubicacionArchivo;
+            echo "No existe el archivo para descargar: " . $ubicacionArchivo;
         }
 
     }
@@ -973,108 +973,156 @@ class CitasController extends Controller
         ];
     }
 
-    // ublic function actionDownloadData(){
+    public function actionDownloadDataCitas()
+    {
 
-    //     $modelSearch = new EntCitasSearch();
-    //     $dataProvider = $modelSearch->searchExport(Yii::$app->request->queryParams);
+        $modelSearch = new EntCitasSearch();
+        $dataProvider = $modelSearch->searchExport(Yii::$app->request->queryParams);
 
-    //     if(Yii::$app->request->isGet):
-    //         //The name of the CSV file that will be downloaded by the user.
-    //         $fileName = 'Reporte.csv';
-    //         $data = [];
-    //         $data[0] = $this->setHeadersCsv();
-    //         foreach ($dataProvider->getModels() as $key =>$getEntHistorialCambiosCitasOne):
-    //             $statusCita = $modelo->entHistorialCambiosCitasOne->tx_modificacion;
-    //             $data[$modelo->id_cita] =[
-    //                 $modelo->txt_identificador_cliente,
-    //                 $modelo->txt_telefono,
-    //                 $modelo->txt_autorizado_por,
-    //                 $modelo->idEnvio?$modelo->idEnvio->txt_tracking:'',
-    //                 $modelo->idMunicipio?$modelo->idMunicipio->idTipo->txt_nombre:'',
-    //                 $modelo->idMunicipio?$modelo->idMunicipio->diasServicio:"",
-    //                 $modelo->idTipoTramite->txt_nombre,
-    //                 $modelo->b_entrega_cat?"CAC":"Domicilio",
-    //                 $modelo->idCallCenter?$modelo->idCallCenter->txt_nombre:'',
-    //                 Calendario::getDateComplete($modelo->fch_creacion),
-    //                 Calendario::getDateComplete($modelo->fch_cita),
-    //                 $modelo->idHorario?$modelo->idHorario->txt_hora_inicial." - ".$modelo->idHorario->txt_hora_final:"",
-    //                 $modelo->idStatus?$modelo->idStatus->txt_nombre:'',
-    //                 $modelo->nombreCompleto,
-    //                 $modelo->txt_equipo,
-    //                 $modelo->txt_imei,
-    //                 $modelo->txt_iccid,
-    //                 $modelo->promocional1,
-    //                 $modelo->promocional2,
-    //                 $modelo->promocional3,
-    //                 $modelo->promocional4,
-    //                 $modelo->promocional5,
-    //                 $modelo->txt_tpv,
-    //                 $modelo->txt_calle_numero,
-    //                 $modelo->txt_colonia,
-    //                 $modelo->txt_municipio,
-    //                 $modelo->txt_estado,
-    //                 $modelo->txt_codigo_postal,
-    //                 $modelo->txt_entre_calles
-    //             ];
-
-    //             $historico = [];
-    //             if($modelo->idEnvio):
-    //                 $i = 28;
-    //                 if($modelo->idEnvio->txt_historial_api):
-    //                     $json = json_decode($modelo->idEnvio->txt_historial_api);
-    //                     $countEvento = 1;
-    //                     if(isset($json->History)):
-    //                         foreach($json->History as $llave=>$historial):
-    //                             if($historial->EventoClave > 3){
-    //                                 $data[0][++$i] = "Evento #".$countEvento; 
-    //                                 $historico[] = $historial->Evento;
-    //                                 $data[0][++$i] = "Comentario #".$countEvento; 
-    //                                 $historico[] = $historial->Comentario;
-    //                                 $data[0][++$i] = "Motivo #".$countEvento; 
-    //                                 $historico[] = $historial->Motivo;
-    //                                 $data[0][++$i] = "Fecha #".$countEvento; 
-    //                                 $historico[] = $historial->Fecha;
-    //                                 $countEvento++;
-    //                             }
-    //                         endforeach;
-    //                     endif;    
-                    
-    //                 endif;
-                    
-    //             endif;
-
-    //             $data[$modelo->id_cita] = array_merge($data[$modelo->id_cita], $historico);
-
-    //         endforeach;
-
-    //         // print_r($historico);
-    //         // exit;
-            
-
-            
-    //         //Set the Content-Type and Content-Disposition headers.
-            
-    //         header('Content-Type: application/csv; charset=utf-8');
-    //         header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        if (Yii::$app->request->isGet) :
+            //The name of the CSV file that will be downloaded by the user.
+        $fileName = 'Reporte.csv';
+        $data = [];
+        $data[0] = $this->setHeadersCsv();
+        foreach ($dataProvider->getModels() as $key => $modelo) :
+                
+            $intentos = 0;
+            if ($modelo->idEnvio) :
     
-    //         //Open up a PHP output stream using the function fopen.
-    //         $fp = fopen('php://output', 'w');
-    //     //add BOM to fix UTF-8 in Excel
-    //     fputs($fp, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
-    //         //Loop through the array containing our CSV data.
-    //         foreach ($data as $row) {
-    //         //fputcsv formats the array into a CSV format.
-    //         //It then writes the result to our output stream.
-    //             fputcsv($fp, $row);
-    //         }
+                if ($modelo->idEnvio->txt_historial_api) :
+                $json = json_decode($modelo->idEnvio->txt_historial_api);
     
-    //         //Close the file handle.
-    //         fclose($fp);
-    //         exit;
-    //     endif;
+            if (isset($json->History)) :
+                foreach ($json->History as $llave => $historial) :
+                if ($historial->EventoClave == 11) {
+                $intentos++;
+            }
+            if ($historial->EventoClave == 12) {
+                $intentos++;
+            }
+    
+            if ($historial->EventoClave == 5) {
+                $intentos++;
+            }
+            endforeach;
+            endif;
+    
+            endif;
+    
+            endif;
+    
+            $estatusEntrega = "";
+            if ($modelo->idStatus) {
+                if ($modelo->idStatus->txt_identificador_api) {
+                    $estatusEntrega = $modelo->idStatus->txt_nombre;
+                }
+            }
+    
+            $horario = "";
+            if ($modelo->b_entrega_cat && $modelo->id_cat) {
+                $horario = $modelo->txt_horario_entrega_cat;
+            } else {
+                $horario = $modelo->idHorario ? $modelo->idHorario->txt_hora_inicial . " - " . $modelo->idHorario->txt_hora_final : "";
+            }
+    
+            $cac = "DOMICILIO";
+            if ($modelo->b_entrega_cat && $modelo->id_cat) {
+                $cac = "CAC - " . $modelo->idCat->txt_nombre;
+            } else if ($modelo->b_entrega_cat) {
+                $cac = "CAC - ";
+            }
+        $data[$modelo->id_cita] = [
+            $modelo->txt_identificador_cliente,
+            $modelo->txt_telefono,
 
-    //     return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch"=>$modelSearch]);
-    // }
+            $modelo->idEnvio ? $modelo->idEnvio->txt_tracking : '',
+            $modelo->idMunicipio ? $modelo->idMunicipio->idTipo->txt_nombre : '',
+            $modelo->idMunicipio ? $modelo->idMunicipio->diasServicio : "",
+            $modelo->idTipoTramite->txt_nombre,
+            $modelo->b_entrega_cat ? "CAC" : "Domicilio",
+            $modelo->idCallCenter ? $modelo->idCallCenter->txt_nombre : '',
+            Utils::changeFormatDateInputShort($modelo->fch_creacion),
+            Utils::changeFormatDateInputShort($modelo->fch_cita),
+            $modelo->idHorario ? $modelo->idHorario->txt_hora_inicial . " - " . $modelo->idHorario->txt_hora_final : "",
+            $modelo->idStatus ? $modelo->idStatus->txt_nombre : '',
+            $intentos,
+            $estatusEntrega,
+            $modelo->nombreCompleto,
+            $modelo->txt_equipo,
+            $modelo->txt_imei,
+            $modelo->txt_iccid,
+            $modelo->promocional1,
+            $modelo->promocional2,
+            $modelo->promocional3,
+            $modelo->promocional4,
+            $modelo->promocional5,
+            $modelo->txt_tpv,
+            $modelo->txt_calle_numero,
+            $modelo->txt_colonia,
+            $modelo->txt_municipio,
+            $modelo->txt_estado,
+            $modelo->txt_codigo_postal,
+            $modelo->txt_entre_calles
+        ];
+
+        $historico = [];
+        if ($modelo->idEnvio) :
+            $i = 30;
+        if ($modelo->idEnvio->txt_historial_api) :
+            $json = json_decode($modelo->idEnvio->txt_historial_api);
+        $countEvento = 1;
+        if (isset($json->History)) :
+            foreach ($json->History as $llave => $historial) :
+            if ($historial->EventoClave > 3) {
+            $data[0][++$i] = "Evento #" . $countEvento;
+            $historico[] = $historial->Evento;
+            $data[0][++$i] = "Comentario #" . $countEvento;
+            $historico[] = $historial->Comentario;
+            $data[0][++$i] = "Motivo #" . $countEvento;
+            $historico[] = $historial->Motivo;
+            $data[0][++$i] = "Fecha #" . $countEvento;
+            $historico[] = $historial->Fecha;
+            $countEvento++;
+        }
+        endforeach;
+        endif;
+
+        endif;
+
+        endif;
+
+        $data[$modelo->id_cita] = array_merge($data[$modelo->id_cita], $historico);
+
+        endforeach;
+
+            // print_r($historico);
+            // exit;
+            
+
+            
+            //Set the Content-Type and Content-Disposition headers.
+
+        header('Content-Type: application/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+    
+            //Open up a PHP output stream using the function fopen.
+        $fp = fopen('php://output', 'w');
+        //add BOM to fix UTF-8 in Excel
+        fputs($fp, $bom = (chr(0xEF) . chr(0xBB) . chr(0xBF)));
+            //Loop through the array containing our CSV data.
+        foreach ($data as $row) {
+            //fputcsv formats the array into a CSV format.
+            //It then writes the result to our output stream.
+            fputcsv($fp, $row);
+        }
+    
+            //Close the file handle.
+        fclose($fp);
+        exit;
+        endif;
+
+        return $this->render("exportar", ["dataProvider" => $dataProvider, "modelSearch" => $modelSearch]);
+    }
 
     public function setHeadersCsv()
     {
@@ -1133,7 +1181,7 @@ class CitasController extends Controller
 
             $cita = $envioSearch->idCita;
 
-            if(!$cita){
+            if (!$cita) {
                 $response->message = "El envio no tiene una cita asignada";
                 return $response;
             }
@@ -1154,8 +1202,8 @@ class CitasController extends Controller
                 $envioSearch->fch_entrega = $respuestaApi->Fecha;
                 $envioSearch->b_cerrado = 1;
             }
-            
-            if(!$envioSearch->save()){
+
+            if (!$envioSearch->save()) {
                 $response->message = "No se pudo actualizar el envio";
                 $response->result = $envioSearch->errors;
                 return $response;
@@ -1170,7 +1218,7 @@ class CitasController extends Controller
 
             $response->status = "success";
             $response->message = "Actualización correcta";
-            
+
 
             return $response;
         } catch (\Exception $e) {
@@ -1179,48 +1227,50 @@ class CitasController extends Controller
         }
     }
 
-    public function actionSubirArchivos(){
+    public function actionSubirArchivos()
+    {
 
-    
+
 
         return $this->render("subir-archivos");
-    
+
     }
 
-    public function actionGuardarArchivos(){
+    public function actionGuardarArchivos()
+    {
         $response = new ResponseServices();
-       
+
         $archivo = UploadedFile::getInstanceByName("file");
 
-        if(!$archivo){
+        if (!$archivo) {
             $response->message = "No hay archivos";
             return $response;
         }
 
-        if(isset($_POST["fecha"]) && $_POST["fecha"]){
+        if (isset($_POST["fecha"]) && $_POST["fecha"]) {
             $anio = Calendario::getYearLastDigit($_POST["fecha"]);
             $mes = Calendario::getMonthNumber($_POST["fecha"]);
-        }else{
+        } else {
             $anio = Calendario::getYearLastDigit();
             $mes = Calendario::getMonthNumber();
         }
 
 
         $pathBase = "evidencias/";
-        
-        $pathAnio = $pathBase.$anio."/";
+
+        $pathAnio = $pathBase . $anio . "/";
         Files::validarDirectorio($pathAnio);
-      
-        $pathMes = $pathAnio.$mes."/";
+
+        $pathMes = $pathAnio . $mes . "/";
         Files::validarDirectorio($pathMes);
 
-        if($archivo->saveAs($pathMes. $archivo->baseName . '.' . $archivo->extension)){
+        if ($archivo->saveAs($pathMes . $archivo->baseName . '.' . $archivo->extension)) {
             $response->status = "success";
             $response->message = "Archivo guardado";
-        }else{
+        } else {
             $response->message = "No se pudo guardar el archivo";
         }
-        
+
         return $response;
 
     }
