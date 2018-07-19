@@ -55,7 +55,7 @@ class H2H
     }
 
     public function setDataCrearEnvio($cita){
-        $this->numServicio = $cita->txt_identificador_cliente;
+        $this->numServicio = "test-ignorar";//$cita->txt_identificador_cliente;
         $this->observaciones = $cita->txt_entre_calles." ".$cita->txt_observaciones_punto_referencia;
         $this->observacionesContenido = $cita->promocionalesData;
         $this->nombre = $cita->txt_nombre." ".$cita->txt_apellido_paterno." ".$cita->txt_apellido_materno;
